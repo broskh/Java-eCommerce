@@ -1191,7 +1191,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "Negozio",
+											"text": "Magazzino",
 											"horizontalAlignment": 2,
 											"verticalAlignment": 5,
 											"wordWrap": false
@@ -1364,7 +1364,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": true,
-											"text": "+Negozio()",
+											"text": "+Magazzino()",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5,
 											"wordWrap": false
@@ -1422,7 +1422,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+salvaNegozio(file: File): bool",
+											"text": "+salvaMagazzino(file: File): bool",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5,
 											"wordWrap": false
@@ -1451,7 +1451,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+salvaNegozio(file: String): bool",
+											"text": "+salvaMagazzino(file: String): bool",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5,
 											"wordWrap": false
@@ -1480,7 +1480,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+caricaNegozio(file: File): bool",
+											"text": "+caricaMagazzino(file: File): bool",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5,
 											"wordWrap": false
@@ -1509,7 +1509,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+caricaNegozio(file: String): bool",
+											"text": "+caricaMagazzinoo(file: String): bool",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5,
 											"wordWrap": false
@@ -9351,7 +9351,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Negozio",
+					"name": "Magazzino",
 					"ownedElements": [
 						{
 							"_type": "UMLInterfaceRealization",
@@ -9397,7 +9397,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFZdP7NeSqEfrU="
 							},
-							"name": "Negozio",
+							"name": "Magazzino",
 							"visibility": "public",
 							"isStatic": true,
 							"isLeaf": false,
@@ -9442,7 +9442,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFZdP7NeSqEfrU="
 							},
-							"name": "salvaNegozio",
+							"name": "salvaMagazzino",
 							"visibility": "public",
 							"isStatic": false,
 							"isLeaf": false,
@@ -9489,7 +9489,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFZdP7NeSqEfrU="
 							},
-							"name": "salvaNegozio",
+							"name": "salvaMagazzino",
 							"visibility": "public",
 							"isStatic": false,
 							"isLeaf": false,
@@ -9536,7 +9536,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFZdP7NeSqEfrU="
 							},
-							"name": "caricaNegozio",
+							"name": "caricaMagazzino",
 							"visibility": "public",
 							"isStatic": false,
 							"isLeaf": false,
@@ -9583,7 +9583,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFZdP7NeSqEfrU="
 							},
-							"name": "caricaNegozio",
+							"name": "caricaMagazzinoo",
 							"visibility": "public",
 							"isStatic": false,
 							"isLeaf": false,
