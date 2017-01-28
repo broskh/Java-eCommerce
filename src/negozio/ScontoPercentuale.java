@@ -15,7 +15,12 @@ public class ScontoPercentuale extends Promozione {
 	 */
 	public ScontoPercentuale (int percentuale) {
 		super ();
-		this.setPercentuale (percentuale);
+		if (percentuale >= 0 && percentuale <= 100) {
+			this.percentuale = percentuale;
+		}
+		else {
+			this.percentuale = 0;
+		}
 	}
 	
 	/**
