@@ -1,17 +1,18 @@
 package negozio;
 
 /**
- * Classe per l'implementazione di una promozione.
+ * Classe astratta per l'implementazione di una promozione.
  * 
  * @author Alessio Scheri
  * @version 1.0
  */
 public abstract class Promozione {
 	/**
-	 * Calcola il prezzo scontato.
+	 * Calcola il prezzo scontato di una determinata quantita di prodotti dello stesso tipo.
 	 * 
-	 * @param prezzo Prezzo privo di sconto.
-	 * @return prezzo scontato.
+	 * @param prezzo Prezzo cadauno.
+	 * @param quantita Quantita di pezzi sui quali deve essere calcolato lo sconto.
+	 * @return il prezzo totale scontato.
 	 */
-	public abstract float applicaSconto (float prezzo);
+	public abstract float calcolaSconto (float prezzo, int quantita);
 }
