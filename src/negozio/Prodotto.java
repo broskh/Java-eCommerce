@@ -17,6 +17,98 @@ public class Prodotto {
 	private File immagine; /**<Immagine del prodotto.*/
 	private int quantita; /**<Quantità del prodotto presente.*/
 	private Promozione offerta; /**<Promozione attiva sul prodotto.*/
+
+	/**
+	 * Crea un Prodotto in offerta, completo di tutte le informazioni.
+	 * 
+	 * @param nome Nome del prodotto.
+	 * @param marca Marca del prodotto.
+	 * @param codice Codice del prodotto.
+	 * @param categoria Categoria del prodotto.
+	 * @param prezzo Prezzo del prodotto
+	 * @param immagine Immagine del prodotto.
+	 * @param quantita Quantita del prodotto.
+	 * @param offerta Offerta attiva sul prodotto.
+	 */
+	public Prodotto(String nome, String marca, String codice, String categoria, float prezzo, File immagine,
+			int quantita, Promozione offerta) {
+		this.nome = nome;
+		this.marca = marca;
+		this.codice = codice;
+		this.categoria = categoria;
+		if (prezzo > 0) {
+			this.prezzo = prezzo;			
+		}
+		else {
+			this.prezzo = 0;
+		}
+		if(immagine.exists() && !immagine.isDirectory()) { 
+			this.immagine = immagine;
+		}
+		else {
+			//METTERE IMMAGINE DEFAULT
+		}
+		if (quantita >= 0) {
+			this.quantita = quantita;
+		}
+		this.offerta = offerta;
+	}
+
+	/**
+	 * Crea un Prodotto in offerta, completo di tutte le informazioni.
+	 * 
+	 * @param nome Nome del prodotto.
+	 * @param marca Marca del prodotto.
+	 * @param codice Codice del prodotto.
+	 * @param categoria Categoria del prodotto.
+	 * @param prezzo Prezzo del prodotto
+	 * @param immagine Immagine del prodotto.
+	 * @param quantita Quantita del prodotto.
+	 * @param offerta Offerta attiva sul prodotto.
+	 */
+	public Prodotto(String nome, String marca, String codice, String categoria, float prezzo, String immagine,
+			int quantita, Promozione offerta) {
+		this (nome, marca, codice, categoria, prezzo, new File (immagine), quantita, offerta);
+	}
+
+	/**
+	 * Crea un Prodotto non in offerta, completo di tutte le informazioni.
+	 * 
+	 * @param nome Nome del prodotto.
+	 * @param marca Marca del prodotto.
+	 * @param codice Codice del prodotto.
+	 * @param categoria Categoria del prodotto.
+	 * @param prezzo Prezzo del prodotto
+	 * @param immagine Immagine del prodotto.
+	 * @param quantita Quantita del prodotto.
+	 */
+	public Prodotto(String nome, String marca, String codice, String categoria, float prezzo, File immagine,
+			int quantita) {
+		this (nome, marca, codice, categoria, prezzo, immagine, quantita, null);
+	}
+
+	/**
+	 * Crea un Prodotto non in offerta, completo di tutte le informazioni.
+	 * 
+	 * @param nome Nome del prodotto.
+	 * @param marca Marca del prodotto.
+	 * @param codice Codice del prodotto.
+	 * @param categoria Categoria del prodotto.
+	 * @param prezzo Prezzo del prodotto
+	 * @param immagine Immagine del prodotto.
+	 * @param quantita Quantita del prodotto.
+	 */
+	public Prodotto(String nome, String marca, String codice, String categoria, float prezzo, String immagine,
+			int quantita) {
+		this (nome, marca, codice, categoria, prezzo, new File (immagine), quantita, null);
+	}
+
+	/**
+	 * Crea un Prodotto vuoto, senza alcun tipo di informazione.
+	 */
+	public Prodotto() {
+		this ("", "", "", "", 0, new File (""), 0, null); //METTERE IMMAGINE DI DEFAULT
+	}
 	
 	/**
 	 * @return il nome del prodotto.
@@ -159,5 +251,23 @@ public class Prodotto {
 	 */
 	public void setOfferta(Promozione offerta) {
 		this.offerta = offerta;
+	}
+	
+	/**
+	 * Calcola il prezzo scontato di un'unità del prodotto.
+	 * 
+	 * @return il prezzo scontato cadauno.
+	 */
+	public float prezzoCadaunoScontato () {
+		return this.offerta.calcolaSconto(this.prezzo, 1);
+	}
+	
+	/**
+	 * Calcola il prezzo scontato dell'intera quantità del prodotto.
+	 * 
+	 * @return il prezzo scontato di tutte le unità del prodotto.
+	 */
+	public float prezzoTotaleScontato () {
+		return this.offerta.calcolaSconto(this.prezzo, this.quantita);
 	}
 }
