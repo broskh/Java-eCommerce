@@ -18,11 +18,15 @@ public interface GestioneProdotti {
 	public abstract void aggiungiProdotto (Prodotto prodotto);
 	
 	/**
-	 * Rimuove un prodotto dagli articoli presenti.
+	 * Rimuove un prodotto dagli articoli presenti. La quantità di unità del prodotto
+	 * da rimuovere deve essere positiva e non maggiore alla quantità attuale del
+	 * prodotto.
 	 * 
-	 * @param prodotto Prodotto da rimuovere.
+	 * @param codice Codice del prodotto da rimuovere.
+	 * @param quantita Quantità di unità del prodotto da rimuovere.
+	 * @return "true" se la rimozione è avvenuta con successo, "false" altrimenti.
 	 */
-	public abstract void rimuoviProdotto (Prodotto prodotto);
+	public boolean rimuoviProdotto(String codice, int quantita);
 	
 	/**
 	 * Rimuove tutti gli articoli presenti.

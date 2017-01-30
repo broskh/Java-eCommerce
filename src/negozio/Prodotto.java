@@ -254,12 +254,52 @@ public class Prodotto {
 	}
 	
 	/**
-	 * Calcola il prezzo scontato di un'unità del prodotto.
+	 * Decrementa la quantità del prodotto del valore indicato. Se il valore indicato
+	 * è negativo o maggiore della quantità attuale del prodotto, il decremento non
+	 * viene eseguito.
+	 * 
+	 * @param quantita Valore del quale decrementare la quantità del prodotto.
+	 * @return "true" se il decremento è avvenuto con successo, "false" altrimenti.
+	 */
+	public boolean decrementaQuantita (int quantita) {
+		if (quantita >= 0 && quantita <= this.quantita) {
+			this.quantita -= quantita;
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Incrementa la quantità del prodotto del valore indicato. Se il valore indicato
+	 * è negativo l'incremento non viene eseguito.
+	 * 
+	 * @param quantita Valore del quale incrementare la quantità del prodotto.
+	 * @return "true" se l'incremento è avvenuto con successo, "false" altrimenti.
+	 */
+	public boolean incrementaQuantita (int quantita) {
+		if (quantita >= 0) {
+			this.quantita += quantita;
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Calcola il prezzo scontato di una sola unità del prodotto.
 	 * 
 	 * @return il prezzo scontato cadauno.
 	 */
 	public float prezzoCadaunoScontato () {
 		return this.offerta.calcolaSconto(this.prezzo, 1);
+	}
+	
+	/**
+	 * Calcola il prezzo dell'intera quantità del prodotto.
+	 * 
+	 * @return il prezzo di tutte le unità del prodotto.
+	 */
+	public float prezzoTotale () {
+		return this.prezzo * this.quantita;
 	}
 	
 	/**
