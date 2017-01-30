@@ -270,4 +270,11 @@ public class Prodotto {
 	public float prezzoTotaleScontato () {
 		return this.offerta.calcolaSconto(this.prezzo, this.quantita);
 	}
+
+	@Override
+	public String toString() {
+		return "Prodotto [nome=" + nome + ", marca=" + marca + ", codice=" + codice + ", categoria=" + categoria
+				+ ", prezzo=" + prezzo + ", immagine=" + immagine + ", quantita=" + quantita + ", offerta=" + offerta
+				+ "]";
+	}
 }

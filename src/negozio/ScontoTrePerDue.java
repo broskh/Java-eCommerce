@@ -20,4 +20,9 @@ public class ScontoTrePerDue extends Promozione {
 	public float calcolaSconto (float prezzo, int quantita) {
 		return prezzo * (quantita - (quantita / 3));
 	}
+
+	@Override
+	public String toString() {
+		return "ScontoTrePerDue []";
+	}
 }
