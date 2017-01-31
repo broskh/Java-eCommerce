@@ -6,8 +6,6 @@ package negozio;
  * 
  * @author Alessio Scheri
  * @version 1.0
- * @see Carrello
- * @see Magazzino
  */
 public interface GestioneProdotti {
 	/**
@@ -27,9 +25,4 @@ public interface GestioneProdotti {
 	 * @return "true" se la rimozione è avvenuta con successo, "false" altrimenti.
 	 */
 	public boolean rimuoviProdotto(String codice, int quantita);
-	
-	/**
-	 * Rimuove tutti gli articoli presenti.
-	 */
-	public abstract void svuota ();
 }

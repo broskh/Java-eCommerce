@@ -17,6 +17,8 @@ public class Prodotto {
 	private File immagine; /**<Immagine del prodotto.*/
 	private int quantita; /**<Quantità del prodotto presente.*/
 	private Promozione offerta; /**<Promozione attiva sul prodotto.*/
+	
+	private static final File immagineDefault = new File ("media/img/immagine_non_disponibile.jpg"); /**<Immagine di default.*/ 
 
 	/**
 	 * Crea un Prodotto in offerta, completo di tutte le informazioni.
@@ -46,7 +48,7 @@ public class Prodotto {
 			this.immagine = immagine;
 		}
 		else {
-			//METTERE IMMAGINE DEFAULT
+			this.immagine = Prodotto.immagineDefault;
 		}
 		if (quantita >= 0) {
 			this.quantita = quantita;
@@ -107,7 +109,7 @@ public class Prodotto {
 	 * Crea un Prodotto vuoto, senza alcun tipo di informazione.
 	 */
 	public Prodotto() {
-		this ("", "", "", "", 0, new File (""), 0, null); //METTERE IMMAGINE DI DEFAULT
+		this ("", "", "", "", 0, Prodotto.immagineDefault, 0, null);
 	}
 	
 	/**
@@ -279,6 +281,18 @@ public class Prodotto {
 	public boolean incrementaQuantita (int quantita) {
 		if (quantita >= 0) {
 			this.quantita += quantita;
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Indica se un Prodotto è in offerta.
+	 * 
+	 * @return "true" se sul Prodotto è attiva un'offerta, "fasle" altrimenti.
+	 */
+	public boolean inOfferta () {
+		if (this.offerta != null) {
 			return true;
 		}
 		return false;

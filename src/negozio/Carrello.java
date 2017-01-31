@@ -7,9 +7,11 @@ import java.util.ArrayList;
  * 
  * @author Alessio Scheri
  * @version 1.0
+ * @see GestioneProdotti
+ * @see Prodotto
  */
 public class Carrello implements GestioneProdotti{
-	private ArrayList <Prodotto> articoli; /**<Articoli desiderati dal cliente.*/
+	private ArrayList <Prodotto> articoli; /**<Articoli aggiunti dal cliente nel carrello.*/
 	private float totale; /**<Totale dei costi degli articoli inseriti nel carrello.*/
 	private float totale_scontato; /**<Totale scontato dei costi degli articoli inseriti nel carrello.*/
 	
@@ -25,7 +27,7 @@ public class Carrello implements GestioneProdotti{
 	/**
 	 * @return gli articoli presenti nel carrello.
 	 */
-	public ArrayList<Prodotto> getArticoli() {
+	public ArrayList <Prodotto> getArticoli() {
 		return articoli;
 	}
 
@@ -41,6 +43,16 @@ public class Carrello implements GestioneProdotti{
 	 */
 	public float getTotale_scontato() {
 		return totale_scontato;
+	}
+
+
+	/**
+	 * Rimuove tutti gli articoli presenti.
+	 */
+	public void svuota() {
+		this.articoli.clear();
+		this.totale = 0;
+		this.totale_scontato = 0;
 	}
 
 	@Override
@@ -78,13 +90,6 @@ public class Carrello implements GestioneProdotti{
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public void svuota() {
-		this.articoli.clear();
-		this.totale = 0;
-		this.totale_scontato = 0;
 	}
 
 	@Override

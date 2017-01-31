@@ -6,6 +6,7 @@ package negozio;
  * 
  * @author Alessio Scheri
  * @version 1.0
+ * @see Promozione
  *  */
 public class ScontoTrePerDue extends Promozione {
 	
