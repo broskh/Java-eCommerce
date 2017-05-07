@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
-
 import utenza.Utente;
 
 public class JeCommerceFrame extends JFrame {
@@ -46,5 +45,7 @@ public class JeCommerceFrame extends JFrame {
 		else {
 			this.jMenuBar = new JClientMenuBar ();
 		}
+		this.remove(this.jMenuBar);
+		this.add(this.jMenuBar, BorderLayout.PAGE_START);
 	}
 }
