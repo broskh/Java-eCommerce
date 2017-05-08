@@ -1,4 +1,6 @@
 import grafica.JeCommerceFrame;
+import utenza.Cliente;
+import utenza.Utente;
 
 /**
  * La classe Java_eCommerce è la classe principale che contiene il
@@ -11,7 +13,9 @@ import grafica.JeCommerceFrame;
 public class Java_eCommerce {
 	public static void main(String[] args) {
 		
-		JeCommerceFrame jeCommerceFrame = new JeCommerceFrame();
+		Utente utente = new Cliente("Alessio", "Scheri");
+		
+		JeCommerceFrame jeCommerceFrame = new JeCommerceFrame(utente);
 		jeCommerceFrame.setVisible(true);
 	}
 }
