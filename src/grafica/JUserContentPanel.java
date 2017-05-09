@@ -4,16 +4,23 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JOptionPane;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JTextField;
 
-public class JUserContentPanel extends JPanel {
+import utenza.Amministratore;
+import utenza.Cliente;
+import utenza.Utente;
+
+public class JUserContentPanel extends JPanel implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 	private static final String testoNameLabel = "Nome:";
@@ -22,10 +29,7 @@ public class JUserContentPanel extends JPanel {
 	private static final String testoClientRadioButton = "Cliente";
 	private static final String testoAdminRadioButton = "Amministratore";
 	private static final String testoOkButton = "Accedi";
-//	private static final int altezzaTextBox = 14;
 	private static final int larghezzaTextBox = 30;
-//	private static final int altezzaButton = 15;
-//	private static final int larghezzaButton = 20;
 	
 	private JLabel jNameLabel;
 	private JTextField jNameTextField;
@@ -51,20 +55,56 @@ public class JUserContentPanel extends JPanel {
 		this.jOkButton = new JButton(JUserContentPanel.testoOkButton);
 		
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		this.setBackground(new Color(0, 0, 255)); //togliere
+		
 		JPanel pannelloAnagrafico = new JPanel(new GridLayout(2, 2));
 		pannelloAnagrafico.add (this.jNameLabel);
 		pannelloAnagrafico.add (this.jSurnameLabel);
 		pannelloAnagrafico.add (this.jNameTextField);
 		pannelloAnagrafico.add (this.jSurnameTextField);
-		pannelloAnagrafico.setBackground(new Color(255, 0, 0)); //togliere
 		JPanel pannelloTipoUtente = new JPanel(new GridLayout(3, 1));
 		pannelloTipoUtente.add(this.jUserTypeTitleLabel);
 		pannelloTipoUtente.add(this.jClientRadioButton);
 		pannelloTipoUtente.add(this.jAdminRadioButton);
-		pannelloTipoUtente.setBackground(new Color(0, 255, 0)); //togliere
 		this.add (pannelloAnagrafico);
 		this.add (pannelloTipoUtente);
 		this.add (this.jOkButton);
+		jOkButton.addActionListener(this);
+	}
+
+	
+	
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		if(jAdminRadioButton.isSelected())
+		{
+			Utente user = new Amministratore(jNameTextField.getText(),jSurnameTextField.getText());
+			JeCommerceFrame frame = new JeCommerceFrame(user);
+			if(jNameTextField.getText().equals("") || jSurnameTextField.getText().equals(""))
+			{
+				JOptionPane.showMessageDialog(this, "Inserire i propri dati correttamente","Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+			}
+			else
+			{
+				frame.setVisible(true);
+			}
+		}
+		else if(jClientRadioButton.isSelected())
+		{
+			Utente user = new Cliente(jNameTextField.getText(),jSurnameTextField.getText());
+			JeCommerceFrame frame = new JeCommerceFrame(user);
+			if(jNameTextField.getText().equals("") || jSurnameTextField.getText().equals(""))
+			{
+				JOptionPane.showMessageDialog(this, "Inserire i propri dati correttamente","Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+			}
+			else
+			{
+				frame.setVisible(true);
+			}
+		}
+		else
+		{
+			JOptionPane.showMessageDialog(this, "Selezionare il tipo di utente","Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+		}
 	}
 }

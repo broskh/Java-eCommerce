@@ -1,4 +1,10 @@
-import grafica.JeCommerceFrame;
+import grafica.JeCommerceFrame;		
+import grafica.JUserFrame;			
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+	
 import utenza.Cliente;
 import utenza.Utente;
 
@@ -10,12 +16,10 @@ import utenza.Utente;
  * @author Alessio Scheri
  * @version 1.0
  */
-public class Java_eCommerce {
+public class Java_eCommerce  {
+	
 	public static void main(String[] args) {
-		
-		Utente utente = new Cliente("Alessio", "Scheri");
-		
-		JeCommerceFrame jeCommerceFrame = new JeCommerceFrame(utente);
-		jeCommerceFrame.setVisible(true);
+		JUserFrame jUserFrame = new JUserFrame();	
+		jUserFrame.setVisible(true);				
 	}
 }
