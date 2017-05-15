@@ -1,6 +1,7 @@
 package grafica;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
@@ -22,8 +23,10 @@ public class JClientControlPanel extends JPanel {
 	private static final int ALTEZZA = 80;
 	private static final int LARGHEZZA_ICONA = 55;
 	private static final int ALTEZZA_ICONA = 60;
-	
-	private static final int MARGINE_LABEL = 20;	
+
+	private static final int MARGINE_LABEL = 20;
+	private static final int MARGINE_DESTRO = 20;
+	private static final int MARGINE_SINISTRO = 20;
 	private static final int MARGINE_ORIZZONTALE_LAYOUT = 80;
 
 	private static final String FILTER_TYPE_LABEL = "Filtra per:";
@@ -59,12 +62,14 @@ public class JClientControlPanel extends JPanel {
 		
 		this.filterButton = new JButton (FILTER_BUTTON_TEXT);
 	
-		leftPanel.add (Box.createVerticalStrut(ALTEZZA));
+		leftPanel.add (Box.createRigidArea(new Dimension(MARGINE_SINISTRO, ALTEZZA)));
 		leftPanel.add (filterTypePanel);
 		leftPanel.add (Box.createHorizontalStrut(MARGINE_ORIZZONTALE_LAYOUT));
 		leftPanel.add (filterStringPanel);
 		leftPanel.add (Box.createHorizontalStrut(MARGINE_ORIZZONTALE_LAYOUT));
 		leftPanel.add (this.filterButton);
+		
+		JPanel rightPanel = new JPanel ();
 		
 		this.cartButton = new JButton ();
 		try {
@@ -74,9 +79,12 @@ public class JClientControlPanel extends JPanel {
 			this.cartButton.setText(CART_BUTTON_TEXT);
 		}
 		
+		rightPanel.add (this.cartButton);
+		rightPanel.add (Box.createRigidArea(new Dimension(MARGINE_DESTRO, ALTEZZA)));
+		
 		this.setLayout(new BorderLayout());
 		this.add (leftPanel, BorderLayout.WEST);
-		this.add (this.cartButton, BorderLayout.EAST);
+		this.add (rightPanel, BorderLayout.EAST);
 	}
 	
 	private Image getScaledImage(Image srcImg, int w, int h){
