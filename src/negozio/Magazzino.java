@@ -207,7 +207,7 @@ public class Magazzino implements GestioneProdotti {
 	 * 
 	 * @return gli articoli che rispettano il criterio di filtraggio.
 	 */
-	public ArrayList <Prodotto> filtraPerOfferta () {
+	/*public ArrayList <Prodotto> filtraPerOfferta () {
 		ArrayList <Prodotto> articoliFiltrati = new ArrayList <Prodotto> ();
 		for (Prodotto articolo : this.articoli) {
 			if (articolo.inOfferta ()) {
@@ -215,7 +215,7 @@ public class Magazzino implements GestioneProdotti {
 			}
 		}
 		return articoliFiltrati;
-	}
+	}*/
 	
 	@Override
 	public void aggiungiProdotto(Prodotto prodotto) {

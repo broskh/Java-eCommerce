@@ -36,14 +36,14 @@ public class JStatusPanel extends JPanel{
 		this.setPreferredSize(new Dimension(this.getWidth(), altezza));
 		this.setLayout(new GridLayout(1,3));
 		//setto i vari componenti
-		this.jNameLabel = new JLabel(JStatusPanel.intestazioneNomeUtente + utente.getNome() + " " + utente.getCognome());
+		this.jNameLabel = new JLabel(intestazioneNomeUtente + utente.getNome() + " " + utente.getCognome());
 		if (utente.isAmministratore()) {
-			this.jTypeLabel = new JLabel(JStatusPanel.intestazioneTipoUtente + JStatusPanel.stringaTipoAmministratore);
+			this.jTypeLabel = new JLabel(intestazioneTipoUtente + stringaTipoAmministratore);
 		}
 		else {
-			this.jTypeLabel = new JLabel(JStatusPanel.intestazioneTipoUtente + JStatusPanel.stringaTipoCliente);
+			this.jTypeLabel = new JLabel(intestazioneTipoUtente + stringaTipoCliente);
 		}
-		this.jAuthorLabel = new JLabel(JStatusPanel.intestazioneAutore + JStatusPanel.autore);
+		this.jAuthorLabel = new JLabel(intestazioneAutore + autore);
 		this.jNameLabel.setBorder(new BevelBorder(BevelBorder.LOWERED));
 		this.jNameLabel.setHorizontalAlignment(JLabel.CENTER);
 		this.jTypeLabel.setBorder(new BevelBorder(BevelBorder.LOWERED));
@@ -104,8 +104,8 @@ public class JStatusPanel extends JPanel{
 //	}
 //	
 //	public void updateLabels () {
-//		this.jNameLabel.setText(JStatusPanel.intestazioneNomeUtente + this.nome + " " + this.cognome);
-//		this.jTypeLabel.setText(JStatusPanel.intestazioneTipoUtente + this.tipo);
-//		this.jAuthorLabel.setText(JStatusPanel.intestazioneAutore + JStatusPanel.autore);
+//		this.jNameLabel.setText(intestazioneNomeUtente + this.nome + " " + this.cognome);
+//		this.jTypeLabel.setText(intestazioneTipoUtente + this.tipo);
+//		this.jAuthorLabel.setText(intestazioneAutore + autore);
 //	}
 }

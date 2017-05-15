@@ -12,23 +12,22 @@ import utenza.Utente;
 public class JeCommerceFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
-	protected static final String TITOLO = "Java-eCommerce";
+	private static final String TITOLO = "Java-eCommerce";
 	
-	protected static final int ALTEZZA_MENU = 22;
-	protected static final int ALTEZZA_STATUSBAR = 22;	
-	protected static final int ALTEZZA_CONTROL_BAR = 80;
+	private static final int ALTEZZA_MENU = 22;
+	private static final int ALTEZZA_STATUSBAR = 22;
 	
-	protected static final int ALTEZZA_MINIMA_JFRAME = 600;
-	protected static final int LARGHEZZA_MINIMA_JFRAME = 800;
+	private static final int ALTEZZA_MINIMA_JFRAME = 600;
+	private static final int LARGHEZZA_MINIMA_JFRAME = 800;
 	
 	private JMenuBar jMenuBar;
 	private JPanel jContentPanel;
 	private JStatusPanel jStatusPanel;
  
 	public JeCommerceFrame (Utente utente) {
-		super (JeCommerceFrame.TITOLO);
+		super (TITOLO);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setMinimumSize(new Dimension(JeCommerceFrame.LARGHEZZA_MINIMA_JFRAME, JeCommerceFrame.ALTEZZA_MINIMA_JFRAME));
+		this.setMinimumSize(new Dimension(LARGHEZZA_MINIMA_JFRAME, ALTEZZA_MINIMA_JFRAME));
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setLayout(new BorderLayout());
 
@@ -42,8 +41,8 @@ public class JeCommerceFrame extends JFrame {
 		}
 		this.jStatusPanel = new JStatusPanel (utente);
 		
-		this.jMenuBar.setPreferredSize(new Dimension(this.getWidth(), JeCommerceFrame.ALTEZZA_MENU));
-		this.jStatusPanel.setPreferredSize(new Dimension(this.getWidth(), JeCommerceFrame.ALTEZZA_STATUSBAR));
+		this.jMenuBar.setPreferredSize(new Dimension(this.getWidth(), ALTEZZA_MENU));
+		this.jStatusPanel.setPreferredSize(new Dimension(this.getWidth(), ALTEZZA_STATUSBAR));
 
 		this.add(this.jMenuBar, BorderLayout.PAGE_START);
 		this.add(this.jContentPanel, BorderLayout.CENTER);
