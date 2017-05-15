@@ -1,12 +1,4 @@
-import grafica.JeCommerceFrame;		
-import grafica.JUserFrame;			
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-	
-import utenza.Cliente;
-import utenza.Utente;
+import grafica.JUserFrame;
 
 /**
  * La classe Java_eCommerce è la classe principale che contiene il
