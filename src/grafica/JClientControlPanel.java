@@ -2,13 +2,12 @@ package grafica;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
+
 import java.io.File;
 
 import javax.imageio.ImageIO;
+
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -21,8 +20,6 @@ public class JClientControlPanel extends JPanel {
 	private static final long serialVersionUID = -8385562955958262505L;
 
 	private static final int ALTEZZA = 80;
-	private static final int LARGHEZZA_ICONA = 55;
-	private static final int ALTEZZA_ICONA = 60;
 
 	private static final int MARGINE_LABEL = 20;
 	private static final int MARGINE_DESTRO = 20;
@@ -74,7 +71,7 @@ public class JClientControlPanel extends JPanel {
 		this.cartButton = new JButton ();
 		try {
 		    Image img = ImageIO.read(new File (CART_IMAGE_PATH));
-		    this.cartButton.setIcon(new ImageIcon(this.getScaledImage(img, LARGHEZZA_ICONA, ALTEZZA_ICONA)));
+		    this.cartButton.setIcon(new ImageIcon(img));
 		} catch (Exception ex) {
 			this.cartButton.setText(CART_BUTTON_TEXT);
 		}
@@ -85,16 +82,5 @@ public class JClientControlPanel extends JPanel {
 		this.setLayout(new BorderLayout());
 		this.add (leftPanel, BorderLayout.WEST);
 		this.add (rightPanel, BorderLayout.EAST);
-	}
-	
-	private Image getScaledImage(Image srcImg, int w, int h){
-	    BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-	    Graphics2D g2 = resizedImg.createGraphics();
-
-	    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-	    g2.drawImage(srcImg, 0, 0, w, h, null);
-	    g2.dispose();
-
-	    return resizedImg;
 	}
 }
