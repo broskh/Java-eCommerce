@@ -1,4 +1,10 @@
 import grafica.JUserFrame;
+import grafica.JeCommerceFrame;
+import grafica.UserAccessListener;
+
+import negozio.Magazzino;
+
+import utenza.Utente;
 
 /**
  * La classe Java_eCommerce è la classe principale che contiene il
@@ -9,9 +15,16 @@ import grafica.JUserFrame;
  * @version 1.0
  */
 public class Java_eCommerce  {
+	private static final String FILE_MAGAZZINO = "media/saves/magazzino.mag";
 	
 	public static void main(String[] args) {
-		JUserFrame jUserFrame = new JUserFrame();	
-		jUserFrame.setVisible(true);				
+		Utente utente = null;
+		Magazzino magazzino = new Magazzino();
+		JUserFrame jUserFrame = new JUserFrame();
+		JeCommerceFrame jeCommerceFrame = null;
+		UserAccessListener userAccessListener = new UserAccessListener(jUserFrame, jeCommerceFrame, utente, magazzino, FILE_MAGAZZINO);
+		
+		jUserFrame.setVisible(true);
+		jUserFrame.setAccessListener(userAccessListener);
 	}
 }
