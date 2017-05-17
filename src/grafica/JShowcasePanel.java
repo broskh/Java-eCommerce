@@ -25,16 +25,21 @@ public class JShowcasePanel extends JPanel {
 	private static final int LARGHEZZA_MARGINE_SINISTRO_NAVIGAZIONE = 120;
 	private static final int LARGHEZZA_MARGINE_DESTRO = 40;
 	private static final int LARGHEZZA_MARGINE_SINISTRO = 40;
-
 	private static final int DIMENSIONE_FONT_FRECCE = 25;
+	
+	private static final int N_RIGHE = 3;
+	private static final int N_COLONNE = 7;
+	private static final int MARGINE_ARTICOLI = 20;
+	
 	private static final String TESTO_FRECCIA_SINISTRA = "<";
 	private static final String TESTO_FRECCIA_DESTRA = "<";
 	private static final String FONT_FRECCE = "Arial";
+	
 	private static final String LEFT_IMAGE_PATH = "media/img/left.png";
 	private static final String RIGHT_IMAGE_PATH = "media/img/right.png";
 
 	public JShowcasePanel() {
-		JPanel showcasePanel = new JPanel (new GridLayout(3, 7, 20, 20));
+		JPanel showcasePanel = new JPanel (new GridLayout(N_RIGHE, N_COLONNE, MARGINE_ARTICOLI, MARGINE_ARTICOLI));
 		for (int i = 0; i < 21; i++) {
 //			articlePanel.setPreferredSize(new Dimension(250, 300));
 			

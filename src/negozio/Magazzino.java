@@ -71,6 +71,7 @@ public class Magazzino implements GestioneProdotti {
 	 * @param file File dal quale caricare lo stato del magazzino.
 	 * @return "true" se il caricamento è avvenuto con successo, "false" altrimenti.
 	 */
+	@SuppressWarnings("unchecked")
 	public boolean caricaMagazzino (File file) {
 
 		ObjectInputStream objectInputStream;

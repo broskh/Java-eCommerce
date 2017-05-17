@@ -37,13 +37,33 @@ public class JArticlePanel extends JPanel {
 	private JTextField amountTextField;
 	private JButton addToCartButton;
 
-	private static final String ADD_BUTTON_TEXT = "+";	
+	private static final int LARGHEZZA_TEXTFIELD_QUANTITA = 50;
+	private static final int ALTEZZA_TEXTFIELD_QUANTITA = 20;
+	private static final int DIMENSIONE_BOTTONE_AGGIUNTA_CARRELLO = 30;
+	private static final int MARGINE_GENERALE = 15;
+	private static final int ALTEZZA_AREA_INTERAZIONE = 30;
+	private static final int SPAZIO_INTERNO_AREA_INTERAZIONE = 50;
+	
+	private static final int QUANTITA_DEFAULT = 1;
+
+	private static final String TESTO_CODICE = "Codice: ";
+	private static final String TESTO_NOME = "Nome: ";
+	private static final String TESTO_MARCA = "Marca: ";
+	private static final String TESTO_CATEGORIA = "Categoria: ";
+	private static final String TESTO_PREZZO = "Prezzo: ";
+	private static final String SIMBOLO_EURO = " €";
+	private static final String TESTO_DISPONIBILITA = "Disponibilità: ";
+	private static final String TESTO_OFFERTA = "Offerta: ";
+	private static final String TESTO_VALORE_SCONOSCIUTO = "Sconosciuto";
+	
+	private static final String ADD_BUTTON_TEXT = "+";
 	private static final String ADD_IMAGE_PATH = "media/img/add.png";
 
 	public JArticlePanel() {
 		this.imageLabel = new JLabel("", SwingConstants.CENTER);
 		this.imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		try {
+			//cambiare solo altezza e lascia rapporto per larghezza
 			ImageIcon provaIcon = new ImageIcon(this.getScaledImage(ImageIO.read(new File ("media/img/immagine_non_disponibile.jpg")), 120, 120));
 			this.imageLabel.setIcon(provaIcon);
 		} catch (IOException e) {
@@ -52,16 +72,16 @@ public class JArticlePanel extends JPanel {
 		}
 		JPanel imagePanel = new JPanel ();
 		imagePanel.setLayout(new BoxLayout (imagePanel, BoxLayout.Y_AXIS));
-		imagePanel.add(Box.createVerticalStrut(15));
+		imagePanel.add(Box.createVerticalStrut(MARGINE_GENERALE));
 		imagePanel.add(this.imageLabel);
 		
-		this.codeLabel = new JLabel("Codice: 1234567890");
-		this.nameLabel = new JLabel("Nome: Sconosciuto");
-		this.brandLabel = new JLabel("Marca: Sconosciuto");
-		this.categoryLabel = new JLabel("Categoria: Sconosciuta");
-		this.priceLabel = new JLabel("Prezzo: 0,0 €");
-		this.availabilityLabel = new JLabel("Disponibilità: 000");
-		this.offerLabel = new JLabel("Offerta: Non in offerta");
+		this.codeLabel = new JLabel(TESTO_CODICE + TESTO_VALORE_SCONOSCIUTO);
+		this.nameLabel = new JLabel(TESTO_NOME + TESTO_VALORE_SCONOSCIUTO);
+		this.brandLabel = new JLabel(TESTO_MARCA + TESTO_VALORE_SCONOSCIUTO);
+		this.categoryLabel = new JLabel(TESTO_CATEGORIA + TESTO_VALORE_SCONOSCIUTO);
+		this.priceLabel = new JLabel(TESTO_PREZZO + TESTO_VALORE_SCONOSCIUTO + SIMBOLO_EURO);
+		this.availabilityLabel = new JLabel(TESTO_DISPONIBILITA + TESTO_VALORE_SCONOSCIUTO);
+		this.offerLabel = new JLabel(TESTO_OFFERTA + TESTO_VALORE_SCONOSCIUTO);
 		JPanel infoPanel = new JPanel ();
 		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
 		infoPanel.add(this.codeLabel);
@@ -72,8 +92,8 @@ public class JArticlePanel extends JPanel {
 		infoPanel.add(this.availabilityLabel);
 		infoPanel.add(this.offerLabel);
 		
-		this.amountTextField = new JTextField ("1");
-		this.amountTextField.setPreferredSize(new Dimension (50, 20));
+		this.amountTextField = new JTextField (String.valueOf(QUANTITA_DEFAULT));
+		this.amountTextField.setPreferredSize(new Dimension (LARGHEZZA_TEXTFIELD_QUANTITA, ALTEZZA_TEXTFIELD_QUANTITA));
 		this.addToCartButton = new JButton ();
 		try {
 		    Image img = ImageIO.read(new File (ADD_IMAGE_PATH));
@@ -81,22 +101,22 @@ public class JArticlePanel extends JPanel {
 		} catch (Exception ex) {
 			this.addToCartButton.setText(ADD_BUTTON_TEXT);
 		}
-		this.addToCartButton.setPreferredSize(new Dimension (30, 30));
-		JPanel actionPanel = new JPanel ();
-		actionPanel.add(this.amountTextField);
-		actionPanel.add(Box.createRigidArea(new Dimension(50, 30)));
-		actionPanel.add(this.addToCartButton);
+		this.addToCartButton.setPreferredSize(new Dimension (DIMENSIONE_BOTTONE_AGGIUNTA_CARRELLO, DIMENSIONE_BOTTONE_AGGIUNTA_CARRELLO));
+		JPanel interactionPanel = new JPanel ();
+		interactionPanel.add(this.amountTextField);
+		interactionPanel.add(Box.createRigidArea(new Dimension(SPAZIO_INTERNO_AREA_INTERAZIONE, ALTEZZA_AREA_INTERAZIONE)));
+		interactionPanel.add(this.addToCartButton);
 		JPanel bottomPanel = new JPanel(new BorderLayout());
-		bottomPanel.add(Box.createHorizontalStrut(15), BorderLayout.WEST);
-		bottomPanel.add(actionPanel, BorderLayout.CENTER);
-		bottomPanel.add(Box.createHorizontalStrut(15), BorderLayout.EAST);
-		bottomPanel.add(Box.createVerticalStrut(15), BorderLayout.PAGE_END);
+		bottomPanel.add(Box.createHorizontalStrut(MARGINE_GENERALE), BorderLayout.WEST);
+		bottomPanel.add(interactionPanel, BorderLayout.CENTER);
+		bottomPanel.add(Box.createHorizontalStrut(MARGINE_GENERALE), BorderLayout.EAST);
+		bottomPanel.add(Box.createVerticalStrut(MARGINE_GENERALE), BorderLayout.PAGE_END);
 
-		this.setLayout (new BorderLayout(0, 15));
+		this.setLayout (new BorderLayout(0, MARGINE_GENERALE));
 		this.setBorder(new EtchedBorder(EtchedBorder.RAISED));
 		this.add(imagePanel, BorderLayout.PAGE_START);
 		this.add(infoPanel, BorderLayout.CENTER);
-		this.add(Box.createHorizontalStrut(20), BorderLayout.WEST);
+		this.add(Box.createHorizontalStrut(MARGINE_GENERALE), BorderLayout.WEST);
 		this.add(bottomPanel, BorderLayout.PAGE_END);
 	}
 	

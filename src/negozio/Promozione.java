@@ -1,5 +1,7 @@
 package negozio;
 
+import java.io.Serializable;
+
 /**
  * Classe astratta per l'implementazione di una promozione.
  * 
@@ -8,7 +10,9 @@ package negozio;
  * @see ScontoPercentuale
  * @see ScontoTrePerDue
  */
-public abstract class Promozione {
+public abstract class Promozione  implements Serializable{
+	private static final long serialVersionUID = 6507101060017034505L;
+
 	/**
 	 * Calcola il prezzo scontato di una determinata quantita di prodotti dello stesso tipo.
 	 * 

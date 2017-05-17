@@ -1,6 +1,7 @@
 package negozio;
 
 import java.io.File;
+import java.io.Serializable;
 
 /**
  * La classe prodotto gestisce tutte le informazioni relative ad un prodotto.
@@ -8,7 +9,9 @@ import java.io.File;
  * @author Alessio Scheri
  * @version 1.0
  */
-public class Prodotto {
+public class Prodotto  implements Serializable{
+	private static final long serialVersionUID = 7588762583069098992L;
+	
 	private String nome; /**<Nome del prodotto.*/
 	private String marca; /**<Marca del prodotto.*/
 	private String codice; /**<Codice del prodotto.*/
