@@ -2,21 +2,21 @@ package grafica;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import grafica.JUserContentPanel;
 
 public class JUserFrame extends JFrame{
+	private static final long serialVersionUID = 979362510733265067L;
 	
-	private static final long serialVersionUID = 1L;
+	protected JUserContentPanel jContentPanel;
+
 	protected static final String TITOLO = "Login";
 	
 	protected static final int ALTEZZA_MINIMA_FRAME = 200;
 	protected static final int LARGHEZZA_MINIMA_FRAME = 400;
-	
-	private JPanel JContentPanel;
 	
 	public JUserFrame()
 	{
@@ -26,7 +26,11 @@ public class JUserFrame extends JFrame{
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);	//imposto che non si pu� ne allargare ne rimpicciolire
 		this.setLayout(new BorderLayout());
-		this.JContentPanel = new JUserContentPanel();
-		this.add(this.JContentPanel, BorderLayout.CENTER);
+		this.jContentPanel = new JUserContentPanel();
+		this.add(this.jContentPanel, BorderLayout.CENTER);
+	}
+	
+	public void setAccessListener (ActionListener asctionListener) {
+		this.jContentPanel.jOkButton.addActionListener(asctionListener);
 	}
 }
