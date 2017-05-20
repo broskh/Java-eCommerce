@@ -23,6 +23,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
+import negozio.Prodotto;
+import negozio.ScontoPercentuale;
+import negozio.ScontoTrePerDue;
+
 public class JArticlePanel extends JPanel {
 	private static final long serialVersionUID = -2838106312491733874L;
 	
@@ -36,9 +40,13 @@ public class JArticlePanel extends JPanel {
 	private JLabel offerLabel;
 	private JTextField amountTextField;
 	private JButton addToCartButton;
+	private Prodotto prodotto;
 
 	private static final int LARGHEZZA_TEXTFIELD_QUANTITA = 50;
+	protected static final int ALTEZZA_DEFAULT = 210;
+	protected static final int LARGHEZZA_DEFAULT = 150;
 	private static final int ALTEZZA_TEXTFIELD_QUANTITA = 20;
+	private static final int ALTEZZA_IMMAGINE = 120;
 	private static final int DIMENSIONE_BOTTONE_AGGIUNTA_CARRELLO = 30;
 	private static final int MARGINE_GENERALE = 15;
 	private static final int ALTEZZA_AREA_INTERAZIONE = 30;
@@ -52,20 +60,23 @@ public class JArticlePanel extends JPanel {
 	private static final String TESTO_CATEGORIA = "Categoria: ";
 	private static final String TESTO_PREZZO = "Prezzo: ";
 	private static final String SIMBOLO_EURO = " €";
+	private static final String SIMBOLO_PERCENTUALE = " %";
 	private static final String TESTO_DISPONIBILITA = "Disponibilità: ";
 	private static final String TESTO_OFFERTA = "Offerta: ";
-	private static final String TESTO_VALORE_SCONOSCIUTO = "Sconosciuto";
+//	private static final String TESTO_VALORE_SCONOSCIUTO = "Sconosciuto";
 	
 	private static final String ADD_BUTTON_TEXT = "+";
 	private static final String ADD_IMAGE_PATH = "media/img/add.png";
 
-	public JArticlePanel() {
+	public JArticlePanel(Prodotto prodotto) {
+		this.prodotto = prodotto;
 		this.imageLabel = new JLabel("", SwingConstants.CENTER);
 		this.imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		try {
 			//cambiare solo altezza e lascia rapporto per larghezza
-			ImageIcon provaIcon = new ImageIcon(this.getScaledImage(ImageIO.read(new File ("media/img/immagine_non_disponibile.jpg")), 120, 120));
-			this.imageLabel.setIcon(provaIcon);
+			ImageIcon icon = new ImageIcon (this.getScaledImage (ImageIO.read (
+					new File ("media/img/immagine_non_disponibile.jpg")), ALTEZZA_IMMAGINE, ALTEZZA_IMMAGINE));
+			this.imageLabel.setIcon(icon);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -75,13 +86,20 @@ public class JArticlePanel extends JPanel {
 		imagePanel.add(Box.createVerticalStrut(MARGINE_GENERALE));
 		imagePanel.add(this.imageLabel);
 		
-		this.codeLabel = new JLabel(TESTO_CODICE + TESTO_VALORE_SCONOSCIUTO);
-		this.nameLabel = new JLabel(TESTO_NOME + TESTO_VALORE_SCONOSCIUTO);
-		this.brandLabel = new JLabel(TESTO_MARCA + TESTO_VALORE_SCONOSCIUTO);
-		this.categoryLabel = new JLabel(TESTO_CATEGORIA + TESTO_VALORE_SCONOSCIUTO);
-		this.priceLabel = new JLabel(TESTO_PREZZO + TESTO_VALORE_SCONOSCIUTO + SIMBOLO_EURO);
-		this.availabilityLabel = new JLabel(TESTO_DISPONIBILITA + TESTO_VALORE_SCONOSCIUTO);
-		this.offerLabel = new JLabel(TESTO_OFFERTA + TESTO_VALORE_SCONOSCIUTO);
+		this.codeLabel = new JLabel(TESTO_CODICE + this.prodotto.getCodice());
+		this.nameLabel = new JLabel(TESTO_NOME + this.prodotto.getNome());
+		this.brandLabel = new JLabel(TESTO_MARCA + this.prodotto.getMarca());
+		this.categoryLabel = new JLabel(TESTO_CATEGORIA + this.prodotto.getCategoria());
+		this.priceLabel = new JLabel(TESTO_PREZZO + this.prodotto.getPrezzo() + SIMBOLO_EURO);
+		this.availabilityLabel = new JLabel(TESTO_DISPONIBILITA + this.prodotto.getQuantita());
+		String offerta = "";
+		if (this.prodotto.getOfferta().getClass().equals(ScontoTrePerDue.class)) {
+			offerta = "3 x 2";
+		}
+		else if (this.prodotto.getOfferta().getClass().equals(ScontoPercentuale.class)) {
+			offerta = ((ScontoPercentuale)this.prodotto.getOfferta()).getPercentuale() + SIMBOLO_PERCENTUALE;
+		}
+		this.offerLabel = new JLabel(TESTO_OFFERTA + offerta);
 		JPanel infoPanel = new JPanel ();
 		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
 		infoPanel.add(this.codeLabel);

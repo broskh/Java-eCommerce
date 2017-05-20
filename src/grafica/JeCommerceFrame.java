@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
+import negozio.Magazzino;
 import utenza.Utente;
 
 public class JeCommerceFrame extends JFrame {
@@ -24,7 +25,7 @@ public class JeCommerceFrame extends JFrame {
 	private JPanel jContentPanel;
 	private JStatusPanel jStatusPanel;
  
-	public JeCommerceFrame (Utente utente) {
+	public JeCommerceFrame (Utente utente, Magazzino magazzino) {
 		super (TITOLO);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setMinimumSize(new Dimension(LARGHEZZA_MINIMA_JFRAME, ALTEZZA_MINIMA_JFRAME));
@@ -37,7 +38,7 @@ public class JeCommerceFrame extends JFrame {
 		}
 		else {
 			this.jMenuBar = new JClientMenuBar();
-			this.jContentPanel = new JClientContentPanel();
+			this.jContentPanel = new JClientContentPanel(magazzino, this.getWidth());
 		}
 		this.jStatusPanel = new JStatusPanel (utente);
 		

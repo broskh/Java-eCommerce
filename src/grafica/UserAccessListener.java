@@ -37,7 +37,7 @@ public class UserAccessListener implements ActionListener {
 			else {
 				this.utente = new Amministratore(this.userFrame.jContentPanel.jNameTextField.getText(),
 						this.userFrame.jContentPanel.jSurnameTextField.getText());
-				this.eCommerceFrame = new JeCommerceFrame(this.utente);
+				this.eCommerceFrame = new JeCommerceFrame(this.utente, this.magazzino);
 				this.userFrame.setVisible(false);
 				this.eCommerceFrame.setVisible(true);
 			}
@@ -52,7 +52,7 @@ public class UserAccessListener implements ActionListener {
 				this.utente = new Cliente(this.userFrame.jContentPanel.jNameTextField.getText(),
 						this.userFrame.jContentPanel.jSurnameTextField.getText());
 				this.magazzino.caricaMagazzino(this.fileMagazzinoCliente);
-				this.eCommerceFrame = new JeCommerceFrame(this.utente);
+				this.eCommerceFrame = new JeCommerceFrame(this.utente, this.magazzino);
 				this.userFrame.setVisible(false);
 				this.eCommerceFrame.setVisible(true);
 			}

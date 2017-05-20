@@ -14,9 +14,12 @@ import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+
+import negozio.Magazzino;
 public class JShowcasePanel extends JPanel {
 	private static final long serialVersionUID = -3383648558571677903L;
 	
+	private Magazzino magazzino;
 	private JButton leftButton;
 	private JButton rightButton;
 
@@ -38,12 +41,19 @@ public class JShowcasePanel extends JPanel {
 	private static final String LEFT_IMAGE_PATH = "media/img/left.png";
 	private static final String RIGHT_IMAGE_PATH = "media/img/right.png";
 
-	public JShowcasePanel() {
+	public JShowcasePanel(Magazzino magazzino, int larghezza_bacheca, int altezza_bacheca) {
+		this.magazzino = magazzino;
+		this.mostraArticoli(larghezza_bacheca, altezza_bacheca);
+	}
+	
+	private void mostraArticoli (int larghezza_bacheca, int altezza_bacheca) {
+		int nRighe, nColonne;
+		nRighe = altezza_bacheca / JArticlePanel.ALTEZZA_DEFAULT;
+		nColonne = larghezza_bacheca / JArticlePanel.LARGHEZZA_DEFAULT; 
 		JPanel showcasePanel = new JPanel (new GridLayout(N_RIGHE, N_COLONNE, MARGINE_ARTICOLI, MARGINE_ARTICOLI));
-		for (int i = 0; i < 21; i++) {
-//			articlePanel.setPreferredSize(new Dimension(250, 300));
-			
-			showcasePanel.add(new JArticlePanel());
+		for (int i = 0; i < 21; i++) {			
+			JArticlePanel article = new JArticlePanel();
+			showcasePanel.add(article);
 		}
 		
 		JPanel mainPanel = new JPanel (new BorderLayout());
