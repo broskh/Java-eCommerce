@@ -19,7 +19,7 @@ import javax.swing.JTextField;
 public class JClientControlPanel extends JPanel {
 	private static final long serialVersionUID = -8385562955958262505L;
 
-	private static final int ALTEZZA = 80;
+	protected static final int ALTEZZA = 80;
 
 	private static final int MARGINE_LABEL = 20;
 	private static final int MARGINE_DESTRO = 20;

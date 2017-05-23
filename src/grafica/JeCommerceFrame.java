@@ -38,7 +38,7 @@ public class JeCommerceFrame extends JFrame {
 		}
 		else {
 			this.jMenuBar = new JClientMenuBar();
-			this.jContentPanel = new JClientContentPanel(magazzino, this.getWidth());
+			this.jContentPanel = new JClientContentPanel(magazzino, this.getWidth(), this.getHeight() - ALTEZZA_MENU - ALTEZZA_STATUSBAR);
 		}
 		this.jStatusPanel = new JStatusPanel (utente);
 		
