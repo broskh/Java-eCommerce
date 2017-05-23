@@ -40,11 +40,12 @@ public class JArticlePanel extends JPanel {
 	private JLabel offerLabel;
 	private JTextField amountTextField;
 	private JButton addToCartButton;
+	
 	private Prodotto prodotto;
 
 	private static final int LARGHEZZA_TEXTFIELD_QUANTITA = 50;
 	protected static final int ALTEZZA_DEFAULT = 210;
-	protected static final int LARGHEZZA_DEFAULT = 100;
+	protected static final int LARGHEZZA_DEFAULT = 220;
 	private static final int ALTEZZA_TEXTFIELD_QUANTITA = 20;
 	private static final int ALTEZZA_IMMAGINE = 120;
 	private static final int DIMENSIONE_BOTTONE_AGGIUNTA_CARRELLO = 30;
@@ -75,7 +76,7 @@ public class JArticlePanel extends JPanel {
 		try {
 			//cambiare solo altezza e lascia rapporto per larghezza <<<<<<<<<<<<<---------------
 			ImageIcon icon = new ImageIcon (this.getScaledImage (ImageIO.read (
-					new File ("media/img/immagine_non_disponibile.jpg")), ALTEZZA_IMMAGINE, ALTEZZA_IMMAGINE));
+					this.prodotto.getImmagine()), ALTEZZA_IMMAGINE, ALTEZZA_IMMAGINE));
 			this.imageLabel.setIcon(icon);
 		} catch (IOException e) {
 			e.printStackTrace();
