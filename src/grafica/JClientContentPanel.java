@@ -2,6 +2,7 @@ package grafica;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -13,10 +14,13 @@ import javax.swing.border.EtchedBorder;
 import negozio.Magazzino;
 import negozio.Prodotto;
 
+import utenza.Cliente;
+
 public class JClientContentPanel extends JPanel {
 	private static final long serialVersionUID = -3383648558571677903L;
 
 	private Magazzino magazzino;
+	private Cliente cliente;
 	
 	private JClientControlPanel jClientControlPanel;
 	private JPanel mainPanel;
@@ -29,8 +33,9 @@ public class JClientContentPanel extends JPanel {
 	private static final int ALTEZZA_MARGINE_INFERIORE = 40;	
 	private static final int MARGINE_ARTICOLI = 20;
 
-	public JClientContentPanel(Magazzino magazzino, int larghezzaBacheca) {
+	public JClientContentPanel(Magazzino magazzino, Cliente cliente, int larghezzaBacheca) {
 		this.magazzino = magazzino;
+		this.cliente = cliente;
 		
 		this.jClientControlPanel = new JClientControlPanel();
 		this.jClientControlPanel.setBorder(new EtchedBorder ());
@@ -39,7 +44,7 @@ public class JClientContentPanel extends JPanel {
 		this.articoli = new ArrayList <JArticlePanel> ();
 		while(itr.hasNext()) {
 			Prodotto prodotto = itr.next();
-			JArticlePanel article = new JArticlePanel(prodotto);
+			JArticlePanel article = new JArticlePanel(prodotto, this.cliente);
 			this.articoli.add(article);
 		}
 		this.showcasePanel = new JPanel();

@@ -93,6 +93,16 @@ public class Carrello implements GestioneProdotti{
 	}
 
 	@Override
+	public Prodotto getProdotto(String codice) {
+		for (Prodotto articolo : this.articoli) {
+			if (articolo.getCodice() == codice) {
+				return articolo;
+			}
+		}		
+		return null;
+	}
+
+	@Override
 	public String toString() {
 		return "Carrello [articoli=" + articoli + ", totale=" + totale + ", totale_scontato=" + totale_scontato + "]";
 	}

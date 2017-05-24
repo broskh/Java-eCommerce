@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 import java.util.ArrayList;
 
 /**
@@ -243,6 +244,16 @@ public class Magazzino implements GestioneProdotti {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public Prodotto getProdotto(String codice) {
+		for (Prodotto articolo : this.articoli) {
+			if (articolo.getCodice() == codice) {
+				return articolo;
+			}
+		}		
+		return null;
 	}
 
 	@Override

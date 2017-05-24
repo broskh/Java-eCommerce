@@ -10,6 +10,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
 import negozio.Magazzino;
+import utenza.Cliente;
 import utenza.Utente;
 
 public class JeCommerceFrame extends JFrame implements ComponentListener {
@@ -45,7 +46,7 @@ public class JeCommerceFrame extends JFrame implements ComponentListener {
 		}
 		else {
 			this.jMenuBar = new JClientMenuBar();
-			this.jContentPanel = new JClientContentPanel(magazzino, this.getWidth());
+			this.jContentPanel = new JClientContentPanel(magazzino, (Cliente) this.utente, this.getWidth());
 		}
 		this.jStatusPanel = new JStatusPanel (this.utente);
 		

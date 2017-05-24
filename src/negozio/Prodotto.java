@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @author Alessio Scheri
  * @version 1.0
  */
-public class Prodotto  implements Serializable{
+public class Prodotto implements Serializable, Cloneable {
 	private static final long serialVersionUID = 7588762583069098992L;
 	
 	private String nome; /**<Nome del prodotto.*/
@@ -333,5 +333,10 @@ public class Prodotto  implements Serializable{
 		return "Prodotto [nome=" + nome + ", marca=" + marca + ", codice=" + codice + ", categoria=" + categoria
 				+ ", prezzo=" + prezzo + ", immagine=" + immagine + ", quantita=" + quantita + ", offerta=" + offerta
 				+ "]";
+	}
+	
+	@Override
+	public Prodotto clone() throws CloneNotSupportedException {
+		return (Prodotto) super.clone();
 	}
 }

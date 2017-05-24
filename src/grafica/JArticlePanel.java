@@ -1,11 +1,14 @@
 package grafica;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 import java.io.File;
@@ -21,13 +24,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.EtchedBorder;
 
 import negozio.Prodotto;
 import negozio.ScontoPercentuale;
 import negozio.ScontoTrePerDue;
 
-public class JArticlePanel extends JPanel {
+import utenza.Cliente;
+
+public class JArticlePanel extends JPanel implements ActionListener{
 	private static final long serialVersionUID = -2838106312491733874L;
 	
 	private JLabel imageLabel;
@@ -42,12 +46,13 @@ public class JArticlePanel extends JPanel {
 	private JButton addToCartButton;
 	
 	private Prodotto prodotto;
+	private Cliente cliente;
 
 	private static final int LARGHEZZA_TEXTFIELD_QUANTITA = 50;
 	protected static final int ALTEZZA_DEFAULT = 210;
 	protected static final int LARGHEZZA_DEFAULT = 220;
 	private static final int ALTEZZA_TEXTFIELD_QUANTITA = 20;
-	private static final int ALTEZZA_IMMAGINE = 120;
+	private static final int DIMENSIONE_ICONA = 120;
 	private static final int DIMENSIONE_BOTTONE_AGGIUNTA_CARRELLO = 30;
 	private static final int MARGINE_GENERALE = 15;
 	private static final int ALTEZZA_AREA_INTERAZIONE = 30;
@@ -69,17 +74,14 @@ public class JArticlePanel extends JPanel {
 	private static final String ADD_BUTTON_TEXT = "+";
 	private static final String ADD_IMAGE_PATH = "media/img/add.png";
 
-	public JArticlePanel(Prodotto prodotto) {
+	public JArticlePanel(Prodotto prodotto, Cliente cliente) {
 		this.prodotto = prodotto;
+		this.cliente = cliente;
 		this.imageLabel = new JLabel("", SwingConstants.CENTER);
 		this.imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		try {
-			//cambiare solo altezza e lascia rapporto per larghezza <<<<<<<<<<<<<---------------
-			ImageIcon icon = new ImageIcon (this.getScaledImage (ImageIO.read (
-					this.prodotto.getImmagine()), ALTEZZA_IMMAGINE, ALTEZZA_IMMAGINE));
+		ImageIcon icon = new ImageIcon (this.ridimensionaImmagine (this.prodotto.getImmagine()));
+		if (icon != null) {
 			this.imageLabel.setIcon(icon);
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		JPanel imagePanel = new JPanel ();
 		imagePanel.setLayout(new BoxLayout (imagePanel, BoxLayout.Y_AXIS));
@@ -120,6 +122,7 @@ public class JArticlePanel extends JPanel {
 			this.addToCartButton.setText(ADD_BUTTON_TEXT);
 		}
 		this.addToCartButton.setPreferredSize(new Dimension (DIMENSIONE_BOTTONE_AGGIUNTA_CARRELLO, DIMENSIONE_BOTTONE_AGGIUNTA_CARRELLO));
+		this.addToCartButton.addActionListener(this);
 		JPanel interactionPanel = new JPanel ();
 		interactionPanel.add(this.amountTextField);
 		interactionPanel.add(Box.createRigidArea(new Dimension(SPAZIO_INTERNO_AREA_INTERAZIONE, ALTEZZA_AREA_INTERAZIONE)));
@@ -131,21 +134,67 @@ public class JArticlePanel extends JPanel {
 		bottomPanel.add(Box.createVerticalStrut(MARGINE_GENERALE), BorderLayout.PAGE_END);
 
 		this.setLayout (new BorderLayout(0, MARGINE_GENERALE));
-		this.setBorder(new EtchedBorder(EtchedBorder.RAISED));
-		this.add(imagePanel, BorderLayout.PAGE_START);
-		this.add(infoPanel, BorderLayout.CENTER);
-		this.add(Box.createHorizontalStrut(MARGINE_GENERALE), BorderLayout.WEST);
-		this.add(bottomPanel, BorderLayout.PAGE_END);
+		this.setBorder (new RoundedBorder(Color.GRAY,2,16,0));
+		this.add (imagePanel, BorderLayout.PAGE_START);
+		this.add (infoPanel, BorderLayout.CENTER);
+		this.add (Box.createHorizontalStrut(MARGINE_GENERALE), BorderLayout.WEST);
+		this.add (bottomPanel, BorderLayout.PAGE_END);
 	}
 	
-	private Image getScaledImage(Image srcImg, int w, int h){
-	    BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-	    Graphics2D g2 = resizedImg.createGraphics();
+	private Image ridimensionaImmagine (File immagine) {
+		BufferedImage bimg;
+		try {
+			bimg = ImageIO.read(immagine);
+			// Calcolo le giuste dimensioni per l'icona
+			int original_width = bimg.getWidth();
+		    int original_height = bimg.getHeight();
+		    int bound_width = DIMENSIONE_ICONA;
+		    int bound_height = DIMENSIONE_ICONA;
+		    int new_width = original_width;
+		    int new_height = original_height;
+		    if (original_width > bound_width) {
+		        new_width = bound_width;
+		        new_height = (new_width * original_height) / original_width;
+		    }
+		    if (new_height > bound_height) {
+		        new_height = bound_height;
+		        new_width = (new_height * original_width) / original_height;
+		    }
+			
+		    // Ridimensiono l'immagine
+		    BufferedImage resizedImg = new BufferedImage(new_width, new_height, BufferedImage.TYPE_INT_ARGB);
+		    Graphics2D g2 = resizedImg.createGraphics();
+		    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		    g2.drawImage(bimg, 0, 0, new_width, new_height, null);
+		    g2.dispose();
 
-	    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-	    g2.drawImage(srcImg, 0, 0, w, h, null);
-	    g2.dispose();
+		    return resizedImg;
+		} catch (IOException e) {
+			e.printStackTrace();			
+			return null;
+		}		
+	}
 
-	    return resizedImg;
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource().equals(this.addToCartButton)) {
+			try {
+				int quantitaDaAggiungere = Integer.parseInt (this.amountTextField.getText());
+				Prodotto giaInCarrello = this.cliente.getCarrello().getProdotto(this.prodotto.getCodice());
+				if (giaInCarrello != null && giaInCarrello.getQuantita() + quantitaDaAggiungere > this.prodotto.getQuantita()) {
+					;
+				}
+				else {
+					Prodotto nuovoProdotto = this.prodotto.clone ();
+					nuovoProdotto.setQuantita (quantitaDaAggiungere);
+					this.cliente.getCarrello().aggiungiProdotto(nuovoProdotto);
+				}
+			} catch (CloneNotSupportedException e1) {
+				e1.printStackTrace();
+			} catch (NumberFormatException er) {
+				er.printStackTrace();
+			}
+		}
+		System.out.println(this.cliente.getCarrello());
 	}
 }
