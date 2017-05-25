@@ -25,6 +25,6 @@ public class ScontoTrePerDue extends Promozione {
 
 	@Override
 	public String toString() {
-		return "ScontoTrePerDue []";
+		return "3 x 2";
 	}
 }

@@ -37,7 +37,7 @@ public class JClientContentPanel extends JPanel {
 		this.magazzino = magazzino;
 		this.cliente = cliente;
 		
-		this.jClientControlPanel = new JClientControlPanel();
+		this.jClientControlPanel = new JClientControlPanel(this.cliente);
 		this.jClientControlPanel.setBorder(new EtchedBorder ());
 		
 		Iterator <Prodotto> itr = this.magazzino.getArticoli().iterator();	

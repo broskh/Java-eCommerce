@@ -3,7 +3,8 @@ package grafica;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Image;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.imageio.ImageIO;
@@ -16,8 +17,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class JClientControlPanel extends JPanel {
+import utenza.Cliente;
+
+public class JClientControlPanel extends JPanel implements ActionListener{
 	private static final long serialVersionUID = -8385562955958262505L;
+	
+	private JComboBox <String> filterTypeComboBox;
+	private JTextField filterTextField;
+	private JButton filterButton;
+	private JButton cartButton;
+	
+	private Cliente cliente;
 
 	protected static final int ALTEZZA = 80;
 
@@ -32,13 +42,10 @@ public class JClientControlPanel extends JPanel {
 	private static final String CART_BUTTON_TEXT = "Carrello";	
 	protected static final String[] FILTER_TYPE_STRINGS = { "Nome", "Marca", "Codice", "Categoria", "Prezzo", "Quantità" };
 	private static final String CART_IMAGE_PATH = "media/img/cart.png";
-	
-	private JComboBox <String> filterTypeComboBox;
-	private JTextField filterTextField;
-	private JButton filterButton;
-	private JButton cartButton;
 
-	public JClientControlPanel () {
+	public JClientControlPanel (Cliente cliente) {
+		this.cliente = cliente;
+		
 		JPanel leftPanel = new JPanel ();
 		
 		JPanel filterTypePanel = new JPanel ();
@@ -75,6 +82,7 @@ public class JClientControlPanel extends JPanel {
 		} catch (Exception ex) {
 			this.cartButton.setText(CART_BUTTON_TEXT);
 		}
+		this.cartButton.addActionListener(this);
 		
 		rightPanel.add (this.cartButton);
 		rightPanel.add (Box.createRigidArea(new Dimension(MARGINE_DESTRO, ALTEZZA)));
@@ -82,5 +90,13 @@ public class JClientControlPanel extends JPanel {
 		this.setLayout(new BorderLayout());
 		this.add (leftPanel, BorderLayout.WEST);
 		this.add (rightPanel, BorderLayout.EAST);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource().equals(this.cartButton)) {
+			JCartFrame jCartFrame = new JCartFrame(this.cliente.getCarrello ());
+			jCartFrame.setVisible(true);			
+		}
 	}
 }

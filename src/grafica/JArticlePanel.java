@@ -26,8 +26,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import negozio.Prodotto;
-import negozio.ScontoPercentuale;
-import negozio.ScontoTrePerDue;
 
 import utenza.Cliente;
 
@@ -66,10 +64,8 @@ public class JArticlePanel extends JPanel implements ActionListener{
 	private static final String TESTO_CATEGORIA = "Categoria: ";
 	private static final String TESTO_PREZZO = "Prezzo: ";
 	private static final String SIMBOLO_EURO = " €";
-	private static final String SIMBOLO_PERCENTUALE = " %";
 	private static final String TESTO_DISPONIBILITA = "Disponibilità: ";
 	private static final String TESTO_OFFERTA = "Offerta: ";
-//	private static final String TESTO_VALORE_SCONOSCIUTO = "Sconosciuto";
 	
 	private static final String ADD_BUTTON_TEXT = "+";
 	private static final String ADD_IMAGE_PATH = "media/img/add.png";
@@ -94,12 +90,9 @@ public class JArticlePanel extends JPanel implements ActionListener{
 		this.categoryLabel = new JLabel(TESTO_CATEGORIA + this.prodotto.getCategoria());
 		this.priceLabel = new JLabel(TESTO_PREZZO + this.prodotto.getPrezzo() + SIMBOLO_EURO);
 		this.availabilityLabel = new JLabel(TESTO_DISPONIBILITA + this.prodotto.getQuantita());
-		String offerta = "";
-		if (this.prodotto.getOfferta().getClass().equals(ScontoTrePerDue.class)) {
-			offerta = "3 x 2";
-		}
-		else if (this.prodotto.getOfferta().getClass().equals(ScontoPercentuale.class)) {
-			offerta = ((ScontoPercentuale)this.prodotto.getOfferta()).getPercentuale() + SIMBOLO_PERCENTUALE;
+		String offerta = this.prodotto.getOfferta().toString();
+		if (offerta == null) {
+			offerta = "Nessuna";
 		}
 		this.offerLabel = new JLabel(TESTO_OFFERTA + offerta);
 		JPanel infoPanel = new JPanel ();
@@ -195,6 +188,5 @@ public class JArticlePanel extends JPanel implements ActionListener{
 				er.printStackTrace();
 			}
 		}
-		System.out.println(this.cliente.getCarrello());
 	}
 }
