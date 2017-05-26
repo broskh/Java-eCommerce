@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
  
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
 import negozio.Prodotto;
@@ -24,7 +22,8 @@ public class ArticlesTableModel extends AbstractTableModel {
 	
 	private ArrayList <Prodotto> articoli;
 	
-	private static final String [] COLONNE = {"Immagine", "Codice", "Nome", "Marca", "Categoria", "Offerta", "Quantità", "Prezzo cadauno", "Prezzo totale"};
+	private static final String [] COLONNE = {"Immagine", "Codice", "Nome", "Marca", 
+			"Categoria", "Offerta", "Prezzo cadauno", "Prezzo totale", "Quantità", ""};
 	protected static final int DIMENSIONE_ICONA = 100;
 	
 	public ArticlesTableModel (ArrayList <Prodotto> articoli) {
@@ -96,11 +95,13 @@ public class ArticlesTableModel extends AbstractTableModel {
 			case 5:
 				return this.articoli.get(rowIndex).getOfferta().toString();
 			case 6:
-				return this.articoli.get(rowIndex).getQuantita();
-			case 7:
 				return String.format("%.2f", this.articoli.get(rowIndex).prezzoCadaunoScontato());
-			case 8:
+			case 7:
 				return String.format("%.2f", this.articoli.get(rowIndex).prezzoTotaleScontato());
+			case 8:
+				return this.articoli.get(rowIndex).getQuantita();
+			case 9:
+				return "";
 		}
 		return null;
 	}
@@ -112,7 +113,7 @@ public class ArticlesTableModel extends AbstractTableModel {
 
 	@Override
 	public boolean isCellEditable (int row, int column) {
-		if (column == 6) {
+		if (column == 8 || column == 9) {
 			return true;
 		}
 		return false;
@@ -121,25 +122,27 @@ public class ArticlesTableModel extends AbstractTableModel {
 	@Override
 	public Class <?> getColumnClass (int column) {
 		switch (column) {
-		case 0:
-			return ImageIcon.class;
-		case 1:
-			return String.class;
-		case 2:
-			return String.class;
-		case 3:
-			return String.class;
-		case 4:
-			return String.class;
-		case 5:
-			return String.class;
-		case 6:
-			return String.class;
-		case 7:
-			return String.class;
-		case 8:
-			return String.class;
-	}
+			case 0:
+				return ImageIcon.class;
+			case 1:
+				return String.class;
+			case 2:
+				return String.class;
+			case 3:
+				return String.class;
+			case 4:
+				return String.class;
+			case 5:
+				return String.class;
+			case 6:
+				return String.class;
+			case 7:
+				return String.class;
+			case 8:
+				return String.class;
+			case 9:
+				return String.class;
+		}
 		return null;
 	}
 }
