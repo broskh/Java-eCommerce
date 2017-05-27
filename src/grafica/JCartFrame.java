@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -18,6 +19,9 @@ public class JCartFrame extends JFrame {
 	
 	private Carrello carrello;
 
+	private JButton emptyButton;
+	private JButton payButton;
+
 	private static final String TITOLO = "Carrello";
 	
 	private static final int LARGHEZZA_MINIMA = 800;
@@ -25,7 +29,7 @@ public class JCartFrame extends JFrame {
 	private static final int MARGINE_SUPERIORE = 40;
 	private static final int MARGINE_DESTRO = 40;
 	private static final int MARGINE_SINISTRO = 40;
-	private static final int MARGINE_INFERIORE = 40;
+	private static final int MARGINE_INFERIORE = 20;
 	
 	public JCartFrame (Carrello carrello) {
 		super (TITOLO);
@@ -47,6 +51,18 @@ public class JCartFrame extends JFrame {
 		table.getColumn("").setCellEditor(new RemoveColumnEditor());
 		table.setFocusable(false);
 		table.setRowSelectionAllowed(false);
+
+		this.payButton = new JButton("Paga");
+		this.emptyButton = new JButton("Svuota carrello");
+		
+		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.add(this.emptyButton);
+		buttonsPanel.add(Box.createHorizontalStrut(200));
+		buttonsPanel.add(this.payButton);
+		JPanel bottomPanel = new JPanel(new BorderLayout());
+		bottomPanel.add(Box.createVerticalStrut(10), BorderLayout.PAGE_START);
+		bottomPanel.add(buttonsPanel, BorderLayout.CENTER);
+		bottomPanel.add(Box.createVerticalStrut(MARGINE_INFERIORE), BorderLayout.PAGE_END);
 		
 		JScrollPane scrollTable = new JScrollPane(table);
         scrollTable.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -55,7 +71,7 @@ public class JCartFrame extends JFrame {
 		jCartPanel.add(Box.createHorizontalStrut(MARGINE_SINISTRO), BorderLayout.WEST);
 		jCartPanel.add(scrollTable, BorderLayout.CENTER);
 		jCartPanel.add(Box.createHorizontalStrut(MARGINE_DESTRO), BorderLayout.EAST);
-		jCartPanel.add(Box.createVerticalStrut(MARGINE_INFERIORE), BorderLayout.PAGE_END);
+		jCartPanel.add(bottomPanel, BorderLayout.PAGE_END);
 		this.add(jCartPanel);
 		this.setVisible(true);
 	}
