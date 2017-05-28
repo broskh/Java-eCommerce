@@ -16,10 +16,12 @@ class RemoveColumnEditor extends DefaultCellEditor{
 	private JTextField textField;
 	
 	private int lastRowSelected;
+	
+	private static int VALORE_NULLO = -1;
 
     public RemoveColumnEditor () {
     	super (new JTextField());
-    	this.lastRowSelected = -1;
+    	this.lastRowSelected = VALORE_NULLO;
     	this.textField = new JTextField();
     	this.cellPanel = new RemoveCell();        
 		

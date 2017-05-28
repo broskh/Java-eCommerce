@@ -18,18 +18,23 @@ class RoundedBorder extends AbstractBorder {
 	private static final long serialVersionUID = -3657330492427556942L;
 	
 	private Color color;
-    private int thickness = 4;
-    private int radii = 8;
-    private int pointerSize = 7;
+    private int thickness = DEFAULT_THICKNESS;
+    private int radii = DEFAULT_RADII;
+    private int pointerSize = DEFAULT_POINTERSIZE;
     private Insets insets = null;
     private BasicStroke stroke = null;
     private int strokePad;
-    private int pointerPad = 4;
-    RenderingHints hints;
+    private int pointerPad = DEFAULT_POINTERPAD;
+    private RenderingHints hints;
+
+    private static int DEFAULT_THICKNESS = 4;
+    private static int DEFAULT_RADII = 8;
+    private static int DEFAULT_POINTERSIZE = 7;
+    private static int DEFAULT_POINTERPAD = 4;
 
     RoundedBorder(
             Color color) {
-        new RoundedBorder(color, 4, 8, 7);
+        new RoundedBorder(color, DEFAULT_THICKNESS, DEFAULT_RADII, DEFAULT_POINTERSIZE);
     }
 
     RoundedBorder(

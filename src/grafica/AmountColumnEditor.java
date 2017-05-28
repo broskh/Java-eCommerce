@@ -21,11 +21,13 @@ class AmountColumnEditor extends DefaultCellEditor{
 	private int oldValue;
 	private int lastRowSelected;
 	private ArrayList <Prodotto> articoli;
+	
+	private static final int VALORE_NULLO = -1;
 
     public AmountColumnEditor (ArrayList <Prodotto> articoli) {
     	super (new JTextField());
-    	this.lastRowSelected = -1;
-    	this.oldValue = -1;
+    	this.lastRowSelected = VALORE_NULLO;
+    	this.oldValue = VALORE_NULLO;
     	this.articoli = articoli;
     	this.textField = new JTextField();
     	this.cellPanel = new AmountCell(this.textField);        
@@ -55,7 +57,7 @@ class AmountColumnEditor extends DefaultCellEditor{
 
 	@Override
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-		if (this.oldValue == -1) {
+		if (this.oldValue == VALORE_NULLO) {
     		this.oldValue = Integer.parseInt(value.toString());
     	}
     	this.lastRowSelected = row;

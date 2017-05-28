@@ -12,9 +12,12 @@ public class AmountCell extends JPanel {
 	
 	private JTextField textField;
 
+	private static final int LARGHEZZA_TEXTFIELD = 50;
+	private static final int ALTEZZA_TEXTFIELD = 22;
+
 	public AmountCell (JTextField textField) {
 		this.textField = textField;
-		this.textField.setPreferredSize(new Dimension(50, 22));
+		this.textField.setPreferredSize(new Dimension(LARGHEZZA_TEXTFIELD, ALTEZZA_TEXTFIELD));
 		
 		JPanel mainPanel = new JPanel ();
 		mainPanel.add(this.textField);

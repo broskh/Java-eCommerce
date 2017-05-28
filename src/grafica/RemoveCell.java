@@ -18,6 +18,9 @@ class RemoveCell extends JPanel {
 
 	private JButton removeButton;
 
+	private static final int DIMENSIONE_BOTTONE = 28;
+	private static final int MARGINE_SUPERIORE = 31;
+		
 	private static final String REMOVE_BUTTON_TEXT = "Remove";
 	private static final String REMOVE_IMAGE_PATH = "media/img/remove.png";
 	
@@ -29,13 +32,13 @@ class RemoveCell extends JPanel {
 		} catch (Exception ex) {
 			this.removeButton.setText(REMOVE_BUTTON_TEXT);
 		}
-		this.removeButton.setPreferredSize(new Dimension(28, 28));
+		this.removeButton.setPreferredSize(new Dimension(DIMENSIONE_BOTTONE, DIMENSIONE_BOTTONE));
 		
 		JPanel removePanel = new JPanel();
 		removePanel.add(this.removeButton);
 		
 		this.setLayout(new BorderLayout());
-		this.add(Box.createVerticalStrut(31), BorderLayout.PAGE_START);
+		this.add(Box.createVerticalStrut(MARGINE_SUPERIORE), BorderLayout.PAGE_START);
 		this.add(removePanel);
     }
 }

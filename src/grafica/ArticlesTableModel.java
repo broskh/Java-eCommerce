@@ -22,7 +22,9 @@ public class ArticlesTableModel extends AbstractTableModel {
 	
 	private ArrayList <Prodotto> articoli;
 	
-	private static final String [] COLONNE = {"Immagine", "Codice", "Nome", "Marca", 
+	private static final int COLONNA_QUANTITA = 8;
+	private static final int COLONNA_BOTTONE = 9;
+		private static final String [] COLONNE = {"Immagine", "Codice", "Nome", "Marca", 
 			"Categoria", "Offerta", "Prezzo cadauno", "Prezzo totale", "Quantità", ""};
 	protected static final int DIMENSIONE_ICONA = 100;
 	
@@ -113,7 +115,7 @@ public class ArticlesTableModel extends AbstractTableModel {
 
 	@Override
 	public boolean isCellEditable (int row, int column) {
-		if (column == 8 || column == 9) {
+		if (column == COLONNA_QUANTITA || column == COLONNA_BOTTONE) {
 			return true;
 		}
 		return false;
