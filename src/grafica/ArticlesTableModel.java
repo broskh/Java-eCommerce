@@ -21,16 +21,17 @@ public class ArticlesTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = -3450099361845613304L;
 	
 	private ArrayList <Prodotto> articoli;
+	private int dimensioneIcona;
 	
 	private static final int COLONNA_QUANTITA = 8;
 	private static final int COLONNA_BOTTONE = 9;
-		private static final String [] COLONNE = {"Immagine", "Codice", "Nome", "Marca", 
-			"Categoria", "Offerta", "Prezzo cadauno", "Prezzo totale", "Quantità", ""};
-	protected static final int DIMENSIONE_ICONA = 100;
+	private static final String [] COLONNE = {"Immagine", "Codice", "Nome", "Marca", 
+		"Categoria", "Offerta", "Prezzo cadauno", "Prezzo totale", "Quantità", ""};
 	
-	public ArticlesTableModel (ArrayList <Prodotto> articoli) {
+	public ArticlesTableModel (ArrayList <Prodotto> articoli, int dimensioneIcona) {
 		super ();
 		this.articoli = articoli;
+		this.dimensioneIcona = dimensioneIcona;
 	}
 	
 	private Image ridimensionaImmagine (File immagine) {
@@ -40,8 +41,8 @@ public class ArticlesTableModel extends AbstractTableModel {
 			// Calcolo le giuste dimensioni per l'icona
 			int original_width = bimg.getWidth();
 		    int original_height = bimg.getHeight();
-		    int bound_width = DIMENSIONE_ICONA;
-		    int bound_height = DIMENSIONE_ICONA;
+		    int bound_width = this.dimensioneIcona;
+		    int bound_height = this.dimensioneIcona;
 		    int new_width = original_width;
 		    int new_height = original_height;
 		    if (original_width > bound_width) {

@@ -13,17 +13,15 @@ class RemoveColumnEditor extends DefaultCellEditor{
     private static final long serialVersionUID = -5785051616524283761L;
     
 	private RemoveCell cellPanel;
-	private JTextField textField;
 	
 	private int lastRowSelected;
 	
 	private static int VALORE_NULLO = -1;
 
-    public RemoveColumnEditor () {
+    public RemoveColumnEditor (int altezzaRiga) {
     	super (new JTextField());
     	this.lastRowSelected = VALORE_NULLO;
-    	this.textField = new JTextField();
-    	this.cellPanel = new RemoveCell();        
+    	this.cellPanel = new RemoveCell(altezzaRiga);        
 		
         this.setClickCountToStart(1);
         this.editorComponent = this.cellPanel;
@@ -45,7 +43,7 @@ class RemoveColumnEditor extends DefaultCellEditor{
 
 	@Override
 	public Object getCellEditorValue() {
-		return this.textField.getText();
+		return super.getCellEditorValue();
 	}
 
 	@Override

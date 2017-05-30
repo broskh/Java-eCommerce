@@ -24,13 +24,13 @@ class AmountColumnEditor extends DefaultCellEditor{
 	
 	private static final int VALORE_NULLO = -1;
 
-    public AmountColumnEditor (ArrayList <Prodotto> articoli) {
+    public AmountColumnEditor (ArrayList <Prodotto> articoli, int altezzaCella) {
     	super (new JTextField());
     	this.lastRowSelected = VALORE_NULLO;
     	this.oldValue = VALORE_NULLO;
     	this.articoli = articoli;
     	this.textField = new JTextField();
-    	this.cellPanel = new AmountCell(this.textField);        
+    	this.cellPanel = new AmountCell(this.textField, altezzaCella);        
 		
         this.setClickCountToStart(1);
         this.editorComponent = this.cellPanel;
