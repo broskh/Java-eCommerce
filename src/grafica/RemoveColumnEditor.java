@@ -1,7 +1,7 @@
 package grafica;
 
 import java.awt.Component;
-
+import java.util.ArrayList;
 import java.util.EventObject;
 
 import javax.swing.DefaultCellEditor;
@@ -9,22 +9,21 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.CellEditorListener;
 
+import negozio.Prodotto;
+
 class RemoveColumnEditor extends DefaultCellEditor{
     private static final long serialVersionUID = -5785051616524283761L;
     
 	private RemoveCell cellPanel;
-	
-	private int lastRowSelected;
-	
-	private static int VALORE_NULLO = -1;
+	private ArrayList <Prodotto> articoli;
 
-    public RemoveColumnEditor (int altezzaRiga) {
+    public RemoveColumnEditor (ArrayList <Prodotto> articoli, int altezzaRiga) {
     	super (new JTextField());
-    	this.lastRowSelected = VALORE_NULLO;
-    	this.cellPanel = new RemoveCell(altezzaRiga);        
+    	this.articoli = articoli;
+    	this.cellPanel = new RemoveCell(altezzaRiga);
+    	this.cellPanel.setArticoli(this.articoli);
 		
         this.setClickCountToStart(1);
-        this.editorComponent = this.cellPanel;
         
 //		CellEditorListener changeNotification = new CellEditorListener() {
 //	        public void editingCanceled(ChangeEvent e) {
@@ -48,13 +47,13 @@ class RemoveColumnEditor extends DefaultCellEditor{
 
 	@Override
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-		this.lastRowSelected = row;
+		this.cellPanel.setnArticolo(row);
         return this.cellPanel;
 	}
 	
 	@Override
 	public boolean stopCellEditing () {
-		return true;
+		return super.stopCellEditing();
 	}
 
 	@Override

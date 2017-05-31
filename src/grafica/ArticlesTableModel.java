@@ -104,7 +104,7 @@ public class ArticlesTableModel extends AbstractTableModel {
 			case 8:
 				return this.articoli.get(rowIndex).getQuantita();
 			case 9:
-				return "";
+				return new Object ();
 		}
 		return null;
 	}
@@ -142,9 +142,9 @@ public class ArticlesTableModel extends AbstractTableModel {
 			case 7:
 				return String.class;
 			case 8:
-				return String.class;
+				return int.class;
 			case 9:
-				return String.class;
+				return Object.class;
 		}
 		return null;
 	}

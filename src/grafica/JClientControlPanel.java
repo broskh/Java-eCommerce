@@ -13,9 +13,11 @@ import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import utenza.Cliente;
 
@@ -95,8 +97,8 @@ public class JClientControlPanel extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(this.cartButton)) {
-			JCartFrame jCartFrame = new JCartFrame(this.cliente.getCarrello ());
-			jCartFrame.setVisible(true);			
+			JCartDialog cartDialog = new JCartDialog((JFrame) SwingUtilities.getWindowAncestor(this), this.cliente.getCarrello ());
+			cartDialog.setVisible(true);			
 		}
 	}
 }

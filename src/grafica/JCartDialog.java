@@ -5,6 +5,7 @@ import java.awt.Dimension;
 
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -14,7 +15,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import negozio.Carrello;
 
-public class JCartFrame extends JFrame {
+public class JCartDialog extends JDialog {
 	private static final long serialVersionUID = 6774400022574447743L;
 	
 	private Carrello carrello;
@@ -36,12 +37,12 @@ public class JCartFrame extends JFrame {
 	private static final String TESTO_BOTTONE_PAGA = "Paga";
 	private static final String TESTO_BOTTONE_SVUOTA_CARRELLO = "Svuota carrello";
 	
-	public JCartFrame (Carrello carrello) {
-		super (TITOLO);
-		this.setDefaultCloseOperation(HIDE_ON_CLOSE);
+	public JCartDialog (JFrame jframe, Carrello carrello) {
+		super (jframe, TITOLO, JDialog.ModalityType.DOCUMENT_MODAL);
+//		this.setDefaultCloseOperation(HIDE_ON_CLOSE);
 		this.setMinimumSize(new Dimension(LARGHEZZA_MINIMA, ALTEZZA_MINIMA));
 		this.setLocationRelativeTo(null);
-		this.setAlwaysOnTop (true);
+//		this.setAlwaysOnTop (true);
 
 		this.carrello = carrello;
 		this.payButton = new JButton(TESTO_BOTTONE_PAGA);
@@ -92,7 +93,7 @@ public class JCartFrame extends JFrame {
 			this.getColumn(COLONNA_QUANTITA).setCellRenderer(new AmountColumnRender(ALTEZZA_RIGA));
 			this.getColumn(COLONNA_QUANTITA).setCellEditor(new AmountColumnEditor(this.carrello.getArticoli(), ALTEZZA_RIGA));
 			this.getColumn(COLONNA_BOTTONE).setCellRenderer(new RemoveColumnRender(ALTEZZA_RIGA));
-			this.getColumn(COLONNA_BOTTONE).setCellEditor(new RemoveColumnEditor(ALTEZZA_RIGA));
+			this.getColumn(COLONNA_BOTTONE).setCellEditor(new RemoveColumnEditor(this.carrello.getArticoli(), ALTEZZA_RIGA));
 			this.setFocusable(false);
 			this.setRowSelectionAllowed(false);
 		}

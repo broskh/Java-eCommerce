@@ -21,11 +21,13 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
 
 import negozio.Magazzino;
@@ -50,7 +52,7 @@ public class JClientContentPanel extends JPanel {
 	private static final int ALTEZZA_MARGINE_INFERIORE = 40;	
 	private static final int MARGINE_ARTICOLI = 20;
 
-	public JClientContentPanel(Magazzino magazzino, Cliente cliente, int larghezzaBacheca) {
+	public JClientContentPanel(Magazzino magazzino, Cliente cliente) {
 		this.magazzino = magazzino;
 		this.cliente = cliente;
 		
@@ -71,7 +73,6 @@ public class JClientContentPanel extends JPanel {
 		this.mainPanel.add(this.showcasePanel, BorderLayout.CENTER);
 		this.mainPanel.add(Box.createHorizontalStrut(LARGHEZZA_MARGINE_DESTRO), BorderLayout.EAST);
 		this.mainPanel.add(Box.createVerticalStrut(ALTEZZA_MARGINE_INFERIORE), BorderLayout.PAGE_END);
-		this.aggiornaArticoli(larghezzaBacheca);
 		JScrollPane scrollPanel = new JScrollPane(this.mainPanel);
         scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -82,8 +83,8 @@ public class JClientContentPanel extends JPanel {
 		this.add(scrollPanel, BorderLayout.CENTER);
 	}
 	
-	public void aggiornaArticoli (int larghezzaBacheca) {
-		larghezzaBacheca -= LARGHEZZA_MARGINE_DESTRO - LARGHEZZA_MARGINE_SINISTRO;
+	public void aggiornaArticoli () {
+		int larghezzaBacheca = ((JFrame) SwingUtilities.getWindowAncestor(this)).getWidth() - LARGHEZZA_MARGINE_DESTRO - LARGHEZZA_MARGINE_SINISTRO;
 		int nColonne = larghezzaBacheca / (JArticlePanel.LARGHEZZA_DEFAULT + MARGINE_ARTICOLI);
 //		if (larghezzaBacheca % JArticlePanel.LARGHEZZA_DEFAULT != 0) {
 //			nColonne++;

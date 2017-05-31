@@ -9,20 +9,20 @@ import javax.swing.JTextField;
 
 public class AmountCell extends JPanel {
 	private static final long serialVersionUID = 2028713241711826134L;
-	
+
 	private JTextField textField;
 	
-	private int altezzaCella;
-
 	private static final int LARGHEZZA_TEXTFIELD = 50;
 	private static final int ALTEZZA_TEXTFIELD = 22;
 	private static final int MARGINE_LATERALE = 10;
 
-	public AmountCell (JTextField textField, int altezzaCella) {
-		this.altezzaCella = altezzaCella;
-		this.textField = textField;
+	public AmountCell (Integer value, int altezzaCella) {
+		this.textField = new JTextField();
+		if (value != null) {
+			this.textField.setText(value.toString());
+		}
 		this.textField.setPreferredSize(new Dimension(LARGHEZZA_TEXTFIELD, ALTEZZA_TEXTFIELD));
-		int margineSuperiore = (this.altezzaCella - ALTEZZA_TEXTFIELD - 10) / 2;
+		int margineSuperiore = (altezzaCella - ALTEZZA_TEXTFIELD - 10) / 2;
 		
 		JPanel mainPanel = new JPanel ();
 		mainPanel.add(this.textField);
@@ -32,5 +32,17 @@ public class AmountCell extends JPanel {
         this.add(Box.createHorizontalStrut(MARGINE_LATERALE), BorderLayout.WEST);
         this.add(mainPanel, BorderLayout.CENTER);
         this.add(Box.createHorizontalStrut(MARGINE_LATERALE), BorderLayout.EAST);
+	}
+	
+	public AmountCell (int altezzaCella) {
+		this (null, altezzaCella);
+	}
+	
+	public void setValue (Integer value) {
+		this.textField.setText(value.toString());
+	}
+	
+	public int getValue () {
+		return Integer.parseInt(this.textField.getText());
 	}
 }
