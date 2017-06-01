@@ -14,6 +14,7 @@ import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 
 import negozio.Prodotto;
 
@@ -86,5 +87,6 @@ class RemoveCell extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		this.articoli.remove((int)this.nArticolo);
+		((ArticlesTableModel)((JTable)this.getParent()).getModel()).fireTableDataChanged();
 	}
 }

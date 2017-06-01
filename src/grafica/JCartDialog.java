@@ -26,7 +26,7 @@ public class JCartDialog extends JDialog {
 
 	private static final String TITOLO = "Carrello";
 	
-	private static final int LARGHEZZA_MINIMA = 800;
+	private static final int LARGHEZZA_MINIMA = 950;
 	private static final int ALTEZZA_MINIMA = 600;
 	private static final int MARGINE_SUPERIORE = 40;
 	private static final int MARGINE_DESTRO = 40;
