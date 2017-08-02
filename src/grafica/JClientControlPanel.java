@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import negozio.Magazzino;
 import utenza.Cliente;
 
 public class JClientControlPanel extends JPanel implements ActionListener{
@@ -30,6 +31,7 @@ public class JClientControlPanel extends JPanel implements ActionListener{
 	private JButton cartButton;
 	
 	private Cliente cliente;
+	private Magazzino magazzino;
 
 	protected static final int ALTEZZA = 80;
 
@@ -45,8 +47,9 @@ public class JClientControlPanel extends JPanel implements ActionListener{
 	protected static final String[] FILTER_TYPE_STRINGS = { "Nome", "Marca", "Codice", "Categoria", "Prezzo", "Quantità" };
 	private static final String CART_IMAGE_PATH = "media/img/cart.png";
 
-	public JClientControlPanel (Cliente cliente) {
+	public JClientControlPanel (Cliente cliente, Magazzino magazzino) {
 		this.cliente = cliente;
+		this.magazzino = magazzino;
 		
 		JPanel leftPanel = new JPanel ();
 		
@@ -97,7 +100,7 @@ public class JClientControlPanel extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(this.cartButton)) {
-			JCartDialog cartDialog = new JCartDialog((JFrame) SwingUtilities.getWindowAncestor(this), this.cliente.getCarrello ());
+			JCartDialog cartDialog = new JCartDialog((JFrame) SwingUtilities.getWindowAncestor(this), this.cliente.getCarrello (), this.magazzino);
 			cartDialog.setVisible(true);			
 		}
 	}

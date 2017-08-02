@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Carrello implements GestioneProdotti{
 	private ArrayList <Prodotto> articoli; /**<Articoli aggiunti dal cliente nel carrello.*/
 	private float totale; /**<Totale dei costi degli articoli inseriti nel carrello.*/
-	private float totale_scontato; /**<Totale scontato dei costi degli articoli inseriti nel carrello.*/
+	private float totaleScontato; /**<Totale scontato dei costi degli articoli inseriti nel carrello.*/
 	
 	/**
 	 * Crea un Carrello vuoto.
@@ -21,7 +21,7 @@ public class Carrello implements GestioneProdotti{
 	public Carrello () {
 		this.articoli = new ArrayList <Prodotto> ();
 		this.totale = 0;
-		this.totale_scontato = 0;
+		this.totaleScontato = 0;
 	}
 	
 	/**
@@ -41,8 +41,8 @@ public class Carrello implements GestioneProdotti{
 	/**
 	 * @return il totale del costo scontato degli articoli nel carrello.
 	 */
-	public float getTotale_scontato() {
-		return totale_scontato;
+	public float getTotaleScontato() {
+		return totaleScontato;
 	}
 
 
@@ -52,17 +52,17 @@ public class Carrello implements GestioneProdotti{
 	public void svuota() {
 		this.articoli.clear();
 		this.totale = 0;
-		this.totale_scontato = 0;
+		this.totaleScontato = 0;
 	}
 
 	@Override
 	public void aggiungiProdotto(Prodotto prodotto) {
 		for (Prodotto articolo : this.articoli) {
 			if (articolo.getCodice().equals(prodotto.getCodice())) {
-				this.totale_scontato -= articolo.prezzoTotaleScontato();
+				this.totaleScontato -= articolo.prezzoTotaleScontato();
 				this.totale += prodotto.prezzoTotale();
 				articolo.incrementaQuantita(prodotto.getQuantita());
-				this.totale_scontato += articolo.prezzoTotaleScontato();
+				this.totaleScontato += articolo.prezzoTotaleScontato();
 				return;
 			}
 		}
@@ -75,14 +75,14 @@ public class Carrello implements GestioneProdotti{
 			if (articolo.getCodice().equals(codice)) {
 				if (quantita > 0 && quantita >= articolo.getQuantita()) {
 					this.totale -= articolo.prezzoTotale();
-					this.totale_scontato -= articolo.prezzoTotaleScontato();
+					this.totaleScontato -= articolo.prezzoTotaleScontato();
 					articolo.decrementaQuantita(quantita);
 					if (articolo.getQuantita() == 0) {
 						this.articoli.remove(articolo);
 					}
 					else {
 						this.totale += articolo.prezzoTotale();
-						this.totale_scontato += articolo.prezzoTotaleScontato();
+						this.totaleScontato += articolo.prezzoTotaleScontato();
 					}
 					return true;
 				}
@@ -104,6 +104,6 @@ public class Carrello implements GestioneProdotti{
 
 	@Override
 	public String toString() {
-		return "Carrello [articoli=" + articoli + ", totale=" + totale + ", totale_scontato=" + totale_scontato + "]";
+		return "Carrello [articoli=" + articoli + ", totale=" + totale + ", totale_scontato=" + totaleScontato + "]";
 	}
 }

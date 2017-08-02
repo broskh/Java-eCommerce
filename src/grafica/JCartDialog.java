@@ -14,11 +14,13 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import negozio.Carrello;
+import negozio.Magazzino;
 
 public class JCartDialog extends JDialog {
 	private static final long serialVersionUID = 6774400022574447743L;
 	
 	private Carrello carrello;
+	private Magazzino magazzino;
 
 	private JButton emptyButton;
 	private JButton payButton;
@@ -37,7 +39,7 @@ public class JCartDialog extends JDialog {
 	private static final String TESTO_BOTTONE_PAGA = "Paga";
 	private static final String TESTO_BOTTONE_SVUOTA_CARRELLO = "Svuota carrello";
 	
-	public JCartDialog (JFrame jframe, Carrello carrello) {
+	public JCartDialog (JFrame jframe, Carrello carrello, Magazzino magazzino) {
 		super (jframe, TITOLO, JDialog.ModalityType.DOCUMENT_MODAL);
 //		this.setDefaultCloseOperation(HIDE_ON_CLOSE);
 		this.setMinimumSize(new Dimension(LARGHEZZA_MINIMA, ALTEZZA_MINIMA));
@@ -45,10 +47,12 @@ public class JCartDialog extends JDialog {
 //		this.setAlwaysOnTop (true);
 
 		this.carrello = carrello;
+		this.magazzino = magazzino;
 		this.payButton = new JButton(TESTO_BOTTONE_PAGA);
 		this.emptyButton = new JButton(TESTO_BOTTONE_SVUOTA_CARRELLO);
 		this.jCartTable = new JCartTable(this.carrello);
 		this.emptyButton.addActionListener(new EmptyCartListener(this.carrello, this.jCartTable.getModel()));
+		this.payButton.addActionListener(new PaymentInformationListener(jframe, this.carrello, this.magazzino));
 		
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.add(this.emptyButton);
