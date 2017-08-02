@@ -66,6 +66,8 @@ public class Carrello implements GestioneProdotti{
 				return;
 			}
 		}
+		this.totale += prodotto.prezzoTotale();
+		this.totaleScontato += prodotto.prezzoTotaleScontato();
 		this.articoli.add(prodotto);
 	}
 
