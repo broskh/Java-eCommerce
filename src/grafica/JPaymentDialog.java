@@ -29,6 +29,7 @@ public class JPaymentDialog extends JDialog implements ActionListener {
 
 	private JButton cancelButton;
 	private JButton confirmButton;
+	private JeCommerceFrame mainFrame;
 
 	private static final String TITOLO = "Pagamento";
 	
@@ -56,8 +57,8 @@ public class JPaymentDialog extends JDialog implements ActionListener {
 	private static final String TESTO_BOTTONE_CONFERMA = "Conferma";
 	private static final String TESTO_BOTTONE_ANNULLA = "Annulla";
 
-	public JPaymentDialog (JFrame jframe, Carrello carrello, Magazzino magazzino) {
-		super (jframe, TITOLO, JDialog.ModalityType.DOCUMENT_MODAL);
+	public JPaymentDialog (JFrame jFrame, Carrello carrello, Magazzino magazzino) {
+		super (jFrame, TITOLO, JDialog.ModalityType.DOCUMENT_MODAL);
 //		this.setDefaultCloseOperation(HIDE_ON_CLOSE);
 		this.setMinimumSize(new Dimension(LARGHEZZA_MINIMA, ALTEZZA_MINIMA));
 		this.setLocationRelativeTo(null);
@@ -65,6 +66,7 @@ public class JPaymentDialog extends JDialog implements ActionListener {
 
 		this.carrello = carrello;
 		this.magazzino = magazzino;
+		this.mainFrame = (JeCommerceFrame) jFrame;
 		this.confirmButton = new JButton(TESTO_BOTTONE_CONFERMA);
 		this.cancelButton = new JButton(TESTO_BOTTONE_ANNULLA);
 		this.confirmButton.addActionListener(this);
@@ -99,10 +101,10 @@ public class JPaymentDialog extends JDialog implements ActionListener {
 
 		JPanel completePanel = new JPanel();
 		completePanel.setLayout(new BoxLayout(completePanel, BoxLayout.Y_AXIS));
-		JLabel totalLabel = new JLabel(TESTO_TOTALE + this.carrello.getTotale() + SIMBOLO_VALUTA);
+		JLabel totalLabel = new JLabel(TESTO_TOTALE + String.format("%.2f", this.carrello.getTotale()) + SIMBOLO_VALUTA);
 		totalLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		totalLabel.setFont(new Font(totalLabel.getFont().getName(), Font.PLAIN, DIMENSIONE_FONT_TOTALI));
-		JLabel discountedTotalLabel = new JLabel(TESTO_TOTALE_SCONTATO + this.carrello.getTotaleScontato() + SIMBOLO_VALUTA);
+		JLabel discountedTotalLabel = new JLabel(TESTO_TOTALE_SCONTATO + String.format("%.2f", this.carrello.getTotaleScontato()) + SIMBOLO_VALUTA);
 		discountedTotalLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		discountedTotalLabel.setFont(new Font(discountedTotalLabel.getFont().getName(), Font.PLAIN, DIMENSIONE_FONT_TOTALI));
 		completePanel.add(totalLabel);
@@ -132,6 +134,7 @@ public class JPaymentDialog extends JDialog implements ActionListener {
 			}
 			this.carrello.svuota();
 			this.setVisible(false);
+			((JClientContentPanel)this.mainFrame.getJContentPanel()).aggiornaArticoli();
 		}
 	}
 }

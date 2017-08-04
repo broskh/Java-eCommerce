@@ -11,12 +11,14 @@ import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -44,7 +46,6 @@ public class JClientContentPanel extends JPanel {
 	private JClientControlPanel jClientControlPanel;
 	private JPanel mainPanel;
 	private JPanel showcasePanel;
-	private ArrayList <JArticlePanel> articoli;
 	
 	private static final int LARGHEZZA_MARGINE_DESTRO = 40;
 	private static final int LARGHEZZA_MARGINE_SINISTRO = 40;	
@@ -58,14 +59,7 @@ public class JClientContentPanel extends JPanel {
 		
 		this.jClientControlPanel = new JClientControlPanel(this.cliente, this.magazzino);
 		this.jClientControlPanel.setBorder(new EtchedBorder ());
-		
-		Iterator <Prodotto> itr = this.magazzino.getArticoli().iterator();	
-		this.articoli = new ArrayList <JArticlePanel> ();
-		while(itr.hasNext()) {
-			Prodotto prodotto = itr.next();
-			JArticlePanel article = new JArticlePanel(prodotto, this.cliente);
-			this.articoli.add(article);
-		}
+
 		this.showcasePanel = new JPanel();
 		this.mainPanel = new JPanel(new BorderLayout());
 		this.mainPanel.add(Box.createVerticalStrut(ALTEZZA_MARGINE_SUPERIORE), BorderLayout.PAGE_START);
@@ -97,11 +91,12 @@ public class JClientContentPanel extends JPanel {
 
 		this.mainPanel.remove(this.showcasePanel);
 		this.showcasePanel = new JPanel(new GridLayout(nRighe, nColonne, MARGINE_ARTICOLI, MARGINE_ARTICOLI));
-		Iterator <JArticlePanel> itr = this.articoli.iterator();
+		Iterator <Prodotto> itr = this.magazzino.getArticoli().iterator();
 		while (itr.hasNext()) {
-			JArticlePanel jArticlePanel = itr.next();
-			this.showcasePanel.add(jArticlePanel);
+			Prodotto prodotto = itr.next();
+			this.showcasePanel.add(new JArticlePanel(prodotto, this.cliente));
 		}
+		SwingUtilities.updateComponentTreeUI(this);
 		this.mainPanel.add(this.showcasePanel, BorderLayout.CENTER);
 	}
 	

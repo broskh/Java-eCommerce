@@ -8,6 +8,7 @@ import java.awt.event.ComponentListener;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import negozio.Magazzino;
 import utenza.Cliente;
@@ -55,6 +56,10 @@ public class JeCommerceFrame extends JFrame implements ComponentListener {
 		this.add(this.jMenuBar, BorderLayout.PAGE_START);
 		this.add(this.jContentPanel, BorderLayout.CENTER);
 		this.add(this.jStatusPanel, BorderLayout.PAGE_END);
+	}
+	
+	public JPanel getJContentPanel () {
+		return this.jContentPanel;
 	}
 	
 //	public void changeMenu (Utente utente) {
