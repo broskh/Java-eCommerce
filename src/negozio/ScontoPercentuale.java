@@ -9,6 +9,8 @@ package negozio;
  * @see Promozione
  *  */
 public class ScontoPercentuale extends Promozione {
+	private static final long serialVersionUID = 90255911234820305L;
+	
 	private int percentuale; /**<Percentuale di sconto.*/
 	
 	/**
@@ -56,6 +58,6 @@ public class ScontoPercentuale extends Promozione {
 
 	@Override
 	public String toString() {
-		return "ScontoPercentuale [percentuale=" + percentuale + "]";
+		return "Sconto: " + this.percentuale + "%";
 	}
 }

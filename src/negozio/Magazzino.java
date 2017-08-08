@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 import java.util.ArrayList;
 
 /**
@@ -71,6 +72,7 @@ public class Magazzino implements GestioneProdotti {
 	 * @param file File dal quale caricare lo stato del magazzino.
 	 * @return "true" se il caricamento è avvenuto con successo, "false" altrimenti.
 	 */
+	@SuppressWarnings("unchecked")
 	public boolean caricaMagazzino (File file) {
 
 		ObjectInputStream objectInputStream;
@@ -207,7 +209,7 @@ public class Magazzino implements GestioneProdotti {
 	 * 
 	 * @return gli articoli che rispettano il criterio di filtraggio.
 	 */
-	public ArrayList <Prodotto> filtraPerOfferta () {
+	/*public ArrayList <Prodotto> filtraPerOfferta () {
 		ArrayList <Prodotto> articoliFiltrati = new ArrayList <Prodotto> ();
 		for (Prodotto articolo : this.articoli) {
 			if (articolo.inOfferta ()) {
@@ -215,7 +217,7 @@ public class Magazzino implements GestioneProdotti {
 			}
 		}
 		return articoliFiltrati;
-	}
+	}*/
 	
 	@Override
 	public void aggiungiProdotto(Prodotto prodotto) {
@@ -242,6 +244,16 @@ public class Magazzino implements GestioneProdotti {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public Prodotto getProdotto(String codice) {
+		for (Prodotto articolo : this.articoli) {
+			if (articolo.getCodice() == codice) {
+				return articolo;
+			}
+		}		
+		return null;
 	}
 
 	@Override

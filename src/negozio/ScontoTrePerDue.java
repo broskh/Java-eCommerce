@@ -9,7 +9,8 @@ package negozio;
  * @see Promozione
  *  */
 public class ScontoTrePerDue extends Promozione {
-	
+	private static final long serialVersionUID = 6231304518414497931L;
+
 	/**
 	 * Crea un oggetto ScontoTrePerDue vuoto.
 	 */
@@ -24,6 +25,6 @@ public class ScontoTrePerDue extends Promozione {
 
 	@Override
 	public String toString() {
-		return "ScontoTrePerDue []";
+		return "3 x 2";
 	}
 }

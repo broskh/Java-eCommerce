@@ -25,4 +25,13 @@ public interface GestioneProdotti {
 	 * @return "true" se la rimozione è avvenuta con successo, "false" altrimenti.
 	 */
 	public boolean rimuoviProdotto(String codice, int quantita);
+	
+	/**
+	 * Ritorna un prodotto dagli articoli presenti. Il prodotto viene selezionato
+	 * sulla base del codice dell'articolo.
+	 * 
+	 * @param codice Codice del prodotto da ritornare.
+	 * @return il Prodotto con quel codice se è presente, null altrimenti.
+	 */
+	public Prodotto getProdotto(String codice);
 }
