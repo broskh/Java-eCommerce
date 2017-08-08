@@ -16,16 +16,18 @@ class AmountColumnEditor extends DefaultCellEditor{
     private static final long serialVersionUID = 7039137261252411532L;
     
 	private int lastRowSelected;
-	private ArrayList <Prodotto> articoli;
+	private ArrayList <Prodotto> articoliCarrello;
+	private ArrayList <Prodotto> articoliMagazzino;
 	
 	private AmountCell cellPanel;
 	
 	private static final int VALORE_NULLO = -1;
 
-    public AmountColumnEditor (ArrayList <Prodotto> articoli, int altezzaCella) {
+    public AmountColumnEditor (ArrayList <Prodotto> articoliCarrello, ArrayList <Prodotto> articoliMagazzino, int altezzaCella) {
     	super (new JTextField());
     	this.lastRowSelected = VALORE_NULLO;
-    	this.articoli = articoli;
+    	this.articoliCarrello = articoliCarrello;
+    	this.articoliMagazzino = articoliMagazzino;
     	this.cellPanel = new AmountCell(altezzaCella);
 		
         this.setClickCountToStart(1);
@@ -52,15 +54,17 @@ class AmountColumnEditor extends DefaultCellEditor{
 
 	@Override
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-		this.lastRowSelected = row;
+		this.lastRowSelected = row; 
+		Prodotto articoloMagazzino = this.articoliMagazzino.get(this.lastRowSelected);
+		this.cellPanel.setFilter(articoloMagazzino.getQuantita());
 		this.cellPanel.setValue((Integer) value);
         return this.cellPanel;
 	}
 	
 	@Override
 	public boolean stopCellEditing () {
-		Prodotto articolo = this.articoli.get(this.lastRowSelected);    	            
-    	articolo.setQuantita((int)this.getCellEditorValue());
+		Prodotto articoloCarrello = this.articoliCarrello.get(this.lastRowSelected);
+    	articoloCarrello.setQuantita((int)this.getCellEditorValue());
 		return true;
 	}
 

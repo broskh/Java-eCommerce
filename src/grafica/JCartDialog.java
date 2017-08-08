@@ -54,7 +54,7 @@ public class JCartDialog extends JDialog implements ActionListener{
 		this.parentFrame = parentFrame;
 		this.payButton = new JButton(TESTO_BOTTONE_PAGA);
 		this.emptyButton = new JButton(TESTO_BOTTONE_SVUOTA_CARRELLO);
-		this.jCartTable = new JCartTable(this.carrello);
+		this.jCartTable = new JCartTable(this.carrello, this.magazzino);
 		this.emptyButton.addActionListener(new EmptyCartListener(this.carrello, this.jCartTable.getModel()));
 		this.payButton.addActionListener(this);
 		
@@ -84,13 +84,15 @@ public class JCartDialog extends JDialog implements ActionListener{
 		private static final long serialVersionUID = 4734550632778588769L;
 
 		private Carrello carrello;
+		private Magazzino magazzino;
 
 		private static final int ALTEZZA_RIGA = 100;
 		private static final String COLONNA_QUANTITA = "Quantità";
 		private static final String COLONNA_BOTTONE = "";
 		
-		public JCartTable (Carrello carrello) {
+		public JCartTable (Carrello carrello, Magazzino magazzino) {
 			this.carrello = carrello;
+			this.magazzino = magazzino;
 			
 			this.setModel(new ArticlesTableModel(this.carrello.getArticoli(), ALTEZZA_RIGA));
 			this.setRowHeight(ALTEZZA_RIGA);
@@ -99,7 +101,7 @@ public class JCartDialog extends JDialog implements ActionListener{
 			this.setDefaultRenderer(String.class, centerRenderer);
 			this.setBackground(null);
 			this.getColumn(COLONNA_QUANTITA).setCellRenderer(new AmountColumnRender(ALTEZZA_RIGA));
-			this.getColumn(COLONNA_QUANTITA).setCellEditor(new AmountColumnEditor(this.carrello.getArticoli(), ALTEZZA_RIGA));
+			this.getColumn(COLONNA_QUANTITA).setCellEditor(new AmountColumnEditor(this.carrello.getArticoli(), this.magazzino.getArticoli(), ALTEZZA_RIGA));
 			this.getColumn(COLONNA_BOTTONE).setCellRenderer(new RemoveColumnRender(ALTEZZA_RIGA));
 			this.getColumn(COLONNA_BOTTONE).setCellEditor(new RemoveColumnEditor(this.carrello.getArticoli(), ALTEZZA_RIGA));
 			this.setFocusable(false);

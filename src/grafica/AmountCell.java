@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import javax.swing.Box;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.text.PlainDocument;
 
 public class AmountCell extends JPanel {
 	private static final long serialVersionUID = 2028713241711826134L;
@@ -44,5 +45,10 @@ public class AmountCell extends JPanel {
 	
 	public int getValue () {
 		return Integer.parseInt(this.textField.getText());
+	}
+	
+	public void setFilter (int maxValue) {
+		PlainDocument doc = (PlainDocument) this.textField.getDocument();
+		doc.setDocumentFilter(new AmountDocumentFilter(maxValue));	
 	}
 }

@@ -31,6 +31,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
+import javax.swing.text.PlainDocument;
 
 import negozio.Magazzino;
 import negozio.Prodotto;
@@ -178,6 +179,8 @@ public class JClientContentPanel extends JPanel {
 			
 			this.amountTextField = new JTextField (String.valueOf(QUANTITA_DEFAULT));
 			this.amountTextField.setPreferredSize(new Dimension (LARGHEZZA_TEXTFIELD_QUANTITA, ALTEZZA_TEXTFIELD_QUANTITA));
+			PlainDocument doc = (PlainDocument) this.amountTextField.getDocument();
+			doc.setDocumentFilter(new AmountDocumentFilter(this.prodotto.getQuantita()));	
 			this.addToCartButton = new JButton ();
 			try {
 			    Image img = ImageIO.read(new File (ADD_IMAGE_PATH));
