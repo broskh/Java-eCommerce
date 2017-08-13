@@ -17,6 +17,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import negozio.Carrello;
 import negozio.Magazzino;
+import negozio.Prodotto;
 
 public class JCartDialog extends JDialog implements ActionListener{
 	private static final long serialVersionUID = 6774400022574447743L;
@@ -55,7 +56,7 @@ public class JCartDialog extends JDialog implements ActionListener{
 		this.payButton = new JButton(TESTO_BOTTONE_PAGA);
 		this.emptyButton = new JButton(TESTO_BOTTONE_SVUOTA_CARRELLO);
 		this.jCartTable = new JCartTable(this.carrello, this.magazzino);
-		this.emptyButton.addActionListener(new EmptyCartListener(this.carrello, this.jCartTable.getModel()));
+		this.emptyButton.addActionListener(new EmptyCartListener((ArticlesTableModel)this.jCartTable.getModel(), this.carrello));
 		this.payButton.addActionListener(this);
 		
 		JPanel buttonsPanel = new JPanel();
@@ -101,17 +102,20 @@ public class JCartDialog extends JDialog implements ActionListener{
 			this.setDefaultRenderer(String.class, centerRenderer);
 			this.setBackground(null);
 			this.getColumn(COLONNA_QUANTITA).setCellRenderer(new AmountColumnRender(ALTEZZA_RIGA));
-			this.getColumn(COLONNA_QUANTITA).setCellEditor(new AmountColumnEditor(this.carrello.getArticoli(), this.magazzino.getArticoli(), ALTEZZA_RIGA));
+			this.getColumn(COLONNA_QUANTITA).setCellEditor(new AmountColumnEditor((ArticlesTableModel) this.getModel(), this.carrello, this.magazzino, ALTEZZA_RIGA));
 			this.getColumn(COLONNA_BOTTONE).setCellRenderer(new RemoveColumnRender(ALTEZZA_RIGA));
 			this.getColumn(COLONNA_BOTTONE).setCellEditor(new RemoveColumnEditor(this.carrello.getArticoli(), ALTEZZA_RIGA));
 			this.setFocusable(false);
 			this.setRowSelectionAllowed(false);
 		}
+		
+		public Prodotto getProductAtRow (int row) {
+			return this.carrello.getArticoli().get(row);
+		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		this.dispose();
 		JPaymentDialog jPaymentDialog = new JPaymentDialog (this.parentFrame, this.carrello, this.magazzino);
 		jPaymentDialog.setVisible (true);
