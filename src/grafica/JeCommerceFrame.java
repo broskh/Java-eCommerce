@@ -8,7 +8,6 @@ import java.awt.event.ComponentListener;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import negozio.Magazzino;
 import utenza.Cliente;
@@ -25,8 +24,8 @@ public class JeCommerceFrame extends JFrame implements ComponentListener {
 
 	private static final String TITOLO = "Java-eCommerce";
 	
-	private static final int ALTEZZA_MENU = 22;
-	private static final int ALTEZZA_STATUSBAR = 22;
+	public static final int ALTEZZA_MENU = 22;
+	public static final int ALTEZZA_STATUSBAR = 22;
 	
 	private static final int ALTEZZA_MINIMA_JFRAME = 600;
 	private static final int LARGHEZZA_MINIMA_JFRAME = 800;

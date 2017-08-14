@@ -14,7 +14,7 @@ import java.awt.image.BufferedImage;
 
 import java.io.File;
 import java.io.IOException;
-
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
@@ -44,6 +44,7 @@ public class JClientContentPanel extends JPanel {
 
 	private Magazzino magazzino;
 	private Cliente cliente;
+	private ArrayList <Prodotto> articoliVisualizzati;
 	
 	private JClientControlPanel jClientControlPanel;
 	private JPanel mainPanel;
@@ -58,8 +59,9 @@ public class JClientContentPanel extends JPanel {
 	public JClientContentPanel(Magazzino magazzino, Cliente cliente) {
 		this.magazzino = magazzino;
 		this.cliente = cliente;
+		this.articoliVisualizzati = this.magazzino.getArticoli();
 		
-		this.jClientControlPanel = new JClientControlPanel(this.cliente, this.magazzino);
+		this.jClientControlPanel = new JClientControlPanel(this);
 		this.jClientControlPanel.setBorder(new EtchedBorder ());
 
 		this.showcasePanel = new JPanel();
@@ -79,189 +81,225 @@ public class JClientContentPanel extends JPanel {
 		this.add(scrollPanel, BorderLayout.CENTER);
 	}
 	
+	public void setArticoliVisualizzati (ArrayList <Prodotto> articoliVisualizzati) {
+		this.articoliVisualizzati = articoliVisualizzati;
+		this.aggiornaArticoli();
+	}
+	
+	public Magazzino getMagazzino () {
+		return this.magazzino;
+	}
+	
+	public Cliente getCliente () {
+		return this.cliente;
+	}
+	
 	public void aggiornaArticoli () {
-		int larghezzaBacheca = ((JFrame) SwingUtilities.getWindowAncestor(this)).getWidth() - LARGHEZZA_MARGINE_DESTRO - LARGHEZZA_MARGINE_SINISTRO;
+		int larghezzaBacheca = ((JeCommerceFrame) SwingUtilities.getWindowAncestor(this)).getWidth() - LARGHEZZA_MARGINE_DESTRO - LARGHEZZA_MARGINE_SINISTRO;
+		int altezzaBacheca = this.getHeight() - this.jClientControlPanel.getHeight() - ALTEZZA_MARGINE_SUPERIORE - ALTEZZA_MARGINE_INFERIORE - 1;
 		int nColonne = larghezzaBacheca / (JArticlePanel.LARGHEZZA_DEFAULT + MARGINE_ARTICOLI);
-//		if (larghezzaBacheca % JArticlePanel.LARGHEZZA_DEFAULT != 0) {
-//			nColonne++;
-//		}
-		int nRighe = this.magazzino.getArticoli().size() / nColonne;
-		if (this.magazzino.getArticoli().size() % nColonne != 0) {
+		int nRighe = this.articoliVisualizzati.size() / nColonne;
+		if (this.articoliVisualizzati.size() % nColonne != 0) {
 			nRighe++;
 		}
-//		int nRighe = altezzaContentPanel / JArticlePanel.ALTEZZA_DEFAULT;
 
 		this.mainPanel.remove(this.showcasePanel);
 		this.showcasePanel = new JPanel(new GridLayout(nRighe, nColonne, MARGINE_ARTICOLI, MARGINE_ARTICOLI));
-		Iterator <Prodotto> itr = this.magazzino.getArticoli().iterator();
+		Iterator <Prodotto> itr = this.articoliVisualizzati.iterator();
 		while (itr.hasNext()) {
 			Prodotto prodotto = itr.next();
 			this.showcasePanel.add(new JArticlePanel(prodotto, this.cliente));
 		}
+		//aggiungo box vuoti per far si che se ci sono pochi prodotti , abbiano comunque la solita dimensione
+		if (nColonne > this.articoliVisualizzati.size()) {
+			int nBoxVuoti = nColonne - this.articoliVisualizzati.size();
+			for (int i = 0; i < nBoxVuoti; i++) {
+				this.showcasePanel.add(Box.createRigidArea(new Dimension(JArticlePanel.LARGHEZZA_DEFAULT, JArticlePanel.ALTEZZA_DEFAULT)), BorderLayout.CENTER);
+			}
+		}
+		if ((nRighe * JArticlePanel.ALTEZZA_DEFAULT) < altezzaBacheca) {
+			int altezzaVuota = altezzaBacheca - (nRighe * JArticlePanel.height ());
+			this.mainPanel.add(Box.createVerticalStrut(altezzaVuota + ALTEZZA_MARGINE_INFERIORE), BorderLayout.PAGE_END);
+		}
+		//aggiorno
 		SwingUtilities.updateComponentTreeUI(this);
 		this.mainPanel.add(this.showcasePanel, BorderLayout.CENTER);
 	}
+}
+
+class JArticlePanel extends JPanel implements ActionListener{
+	private static final long serialVersionUID = -2838106312491733874L;
 	
-	public class JArticlePanel extends JPanel implements ActionListener{
-		private static final long serialVersionUID = -2838106312491733874L;
-		
-		private JLabel imageLabel;
-		private JLabel codeLabel;
-		private JLabel nameLabel;
-		private JLabel brandLabel;
-		private JLabel categoryLabel;
-		private JLabel priceLabel;
-		private JLabel availabilityLabel;
-		private JLabel offerLabel;
-		private JTextField amountTextField;
-		private JButton addToCartButton;
-		
-		private Prodotto prodotto;
-		private Cliente cliente;
+	private JLabel imageLabel;
+	private JLabel codeLabel;
+	private JLabel nameLabel;
+	private JLabel brandLabel;
+	private JLabel categoryLabel;
+	private JLabel priceLabel;
+	private JLabel availabilityLabel;
+	private JLabel offerLabel;
+	private JTextField amountTextField;
+	private JButton addToCartButton;
+	
+	private Prodotto prodotto;
+	private Cliente cliente;
 
-		private static final int LARGHEZZA_TEXTFIELD_QUANTITA = 50;
-		protected static final int ALTEZZA_DEFAULT = 210;
-		protected static final int LARGHEZZA_DEFAULT = 220;
-		private static final int ALTEZZA_TEXTFIELD_QUANTITA = 20;
-		private static final int DIMENSIONE_ICONA = 120;
-		private static final int DIMENSIONE_BOTTONE_AGGIUNTA_CARRELLO = 30;
-		private static final int MARGINE_GENERALE = 15;
-		private static final int ALTEZZA_AREA_INTERAZIONE = 30;
-		private static final int SPAZIO_INTERNO_AREA_INTERAZIONE = 50;
-		
-		private static final int QUANTITA_DEFAULT = 1;
+	private static final int LARGHEZZA_TEXTFIELD_QUANTITA = 50;
+	protected static final int ALTEZZA_DEFAULT = 210;
+	protected static final int LARGHEZZA_DEFAULT = 220;
+	private static final int ALTEZZA_TEXTFIELD_QUANTITA = 20;
+	private static final int DIMENSIONE_ICONA = 120;
+	private static final int DIMENSIONE_BOTTONE_AGGIUNTA_CARRELLO = 30;
+	private static final int MARGINE_GENERALE = 15;
+	private static final int ALTEZZA_AREA_INTERAZIONE = 30;
+	private static final int SPAZIO_INTERNO_AREA_INTERAZIONE = 50;
+	private static final int SPAZIO_INFORMAZIONI = 6;
+	private static final int DIMENSIONE_BORDO = 3;
+	
+	private static final int QUANTITA_DEFAULT = 1;
 
-		private static final String TESTO_CODICE = "Codice: ";
-		private static final String TESTO_NOME = "Nome: ";
-		private static final String TESTO_MARCA = "Marca: ";
-		private static final String TESTO_CATEGORIA = "Categoria: ";
-		private static final String TESTO_PREZZO = "Prezzo: ";
-		private static final String SIMBOLO_EURO = " €";
-		private static final String TESTO_DISPONIBILITA = "Disponibilità: ";
-		private static final String TESTO_OFFERTA = "Offerta: ";
-		
-		private static final String ADD_BUTTON_TEXT = "+";
-		private static final String ADD_IMAGE_PATH = "media/img/add.png";
+	private static final String TESTO_CODICE = "Codice: ";
+	private static final String TESTO_NOME = "Nome: ";
+	private static final String TESTO_MARCA = "Marca: ";
+	private static final String TESTO_CATEGORIA = "Categoria: ";
+	private static final String TESTO_PREZZO = "Prezzo: ";
+	private static final String SIMBOLO_EURO = " €";
+	private static final String TESTO_DISPONIBILITA = "Disponibilità: ";
+	private static final String TESTO_OFFERTA = "Offerta: ";
+	
+	private static final String ADD_BUTTON_TEXT = "+";
+	private static final String ADD_IMAGE_PATH = "media/img/add.png";
 
-		public JArticlePanel(Prodotto prodotto, Cliente cliente) {
-			this.prodotto = prodotto;
-			this.cliente = cliente;
-			this.imageLabel = new JLabel("", SwingConstants.CENTER);
-			this.imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			ImageIcon icon = new ImageIcon (this.ridimensionaImmagine (this.prodotto.getImmagine()));
-			if (icon != null) {
-				this.imageLabel.setIcon(icon);
-			}
-			JPanel imagePanel = new JPanel ();
-			imagePanel.setLayout(new BoxLayout (imagePanel, BoxLayout.Y_AXIS));
-			imagePanel.add(Box.createVerticalStrut(MARGINE_GENERALE));
-			imagePanel.add(this.imageLabel);
-			
-			this.codeLabel = new JLabel(TESTO_CODICE + this.prodotto.getCodice());
-			this.nameLabel = new JLabel(TESTO_NOME + this.prodotto.getNome());
-			this.brandLabel = new JLabel(TESTO_MARCA + this.prodotto.getMarca());
-			this.categoryLabel = new JLabel(TESTO_CATEGORIA + this.prodotto.getCategoria());
-			this.priceLabel = new JLabel(TESTO_PREZZO + this.prodotto.getPrezzo() + SIMBOLO_EURO);
-			this.availabilityLabel = new JLabel(TESTO_DISPONIBILITA + this.prodotto.getQuantita());
-			String offerta = this.prodotto.getOfferta().toString();
-			if (offerta == null) {
-				offerta = "Nessuna";
-			}
-			this.offerLabel = new JLabel(TESTO_OFFERTA + offerta);
-			JPanel infoPanel = new JPanel ();
-			infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
-			infoPanel.add(this.codeLabel);
-			infoPanel.add(this.nameLabel);
-			infoPanel.add(this.brandLabel);
-			infoPanel.add(this.categoryLabel);
-			infoPanel.add(this.priceLabel);
-			infoPanel.add(this.availabilityLabel);
-			infoPanel.add(this.offerLabel);
-			
-			this.amountTextField = new JTextField (String.valueOf(QUANTITA_DEFAULT));
-			this.amountTextField.setPreferredSize(new Dimension (LARGHEZZA_TEXTFIELD_QUANTITA, ALTEZZA_TEXTFIELD_QUANTITA));
-			PlainDocument doc = (PlainDocument) this.amountTextField.getDocument();
-			doc.setDocumentFilter(new AmountDocumentFilter(this.prodotto.getQuantita()));	
-			this.addToCartButton = new JButton ();
-			try {
-			    Image img = ImageIO.read(new File (ADD_IMAGE_PATH));
-			    this.addToCartButton.setIcon(new ImageIcon(img));
-			} catch (Exception ex) {
-				this.addToCartButton.setText(ADD_BUTTON_TEXT);
-			}
-			this.addToCartButton.setPreferredSize(new Dimension (DIMENSIONE_BOTTONE_AGGIUNTA_CARRELLO, DIMENSIONE_BOTTONE_AGGIUNTA_CARRELLO));
-			this.addToCartButton.addActionListener(this);
-			JPanel interactionPanel = new JPanel ();
-			interactionPanel.add(this.amountTextField);
-			interactionPanel.add(Box.createRigidArea(new Dimension(SPAZIO_INTERNO_AREA_INTERAZIONE, ALTEZZA_AREA_INTERAZIONE)));
-			interactionPanel.add(this.addToCartButton);
-			JPanel bottomPanel = new JPanel(new BorderLayout());
-			bottomPanel.add(Box.createHorizontalStrut(MARGINE_GENERALE), BorderLayout.WEST);
-			bottomPanel.add(interactionPanel, BorderLayout.CENTER);
-			bottomPanel.add(Box.createHorizontalStrut(MARGINE_GENERALE), BorderLayout.EAST);
-			bottomPanel.add(Box.createVerticalStrut(MARGINE_GENERALE), BorderLayout.PAGE_END);
-
-			this.setLayout (new BorderLayout(0, MARGINE_GENERALE));
-			this.setBorder (new RoundedBorder(Color.GRAY,2,16,0));
-			this.add (imagePanel, BorderLayout.PAGE_START);
-			this.add (infoPanel, BorderLayout.CENTER);
-			this.add (Box.createHorizontalStrut(MARGINE_GENERALE), BorderLayout.WEST);
-			this.add (bottomPanel, BorderLayout.PAGE_END);
+	public JArticlePanel(Prodotto prodotto, Cliente cliente) {
+		this.prodotto = prodotto;
+		this.cliente = cliente;
+		this.imageLabel = new JLabel("", SwingConstants.CENTER);
+		this.imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		ImageIcon icon = new ImageIcon (this.ridimensionaImmagine (this.prodotto.getImmagine()));
+		if (icon != null) {
+			this.imageLabel.setIcon(icon);
 		}
+		JPanel imagePanel = new JPanel ();
+		imagePanel.setLayout(new BoxLayout (imagePanel, BoxLayout.Y_AXIS));
+		imagePanel.add(Box.createVerticalStrut(MARGINE_GENERALE));
+		imagePanel.add(this.imageLabel);
 		
-		private Image ridimensionaImmagine (File immagine) {
-			BufferedImage bimg;
-			try {
-				bimg = ImageIO.read(immagine);
-				// Calcolo le giuste dimensioni per l'icona
-				int original_width = bimg.getWidth();
-			    int original_height = bimg.getHeight();
-			    int bound_width = DIMENSIONE_ICONA;
-			    int bound_height = DIMENSIONE_ICONA;
-			    int new_width = original_width;
-			    int new_height = original_height;
-			    if (original_width > bound_width) {
-			        new_width = bound_width;
-			        new_height = (new_width * original_height) / original_width;
-			    }
-			    if (new_height > bound_height) {
-			        new_height = bound_height;
-			        new_width = (new_height * original_width) / original_height;
-			    }
-				
-			    // Ridimensiono l'immagine
-			    BufferedImage resizedImg = new BufferedImage(new_width, new_height, BufferedImage.TYPE_INT_ARGB);
-			    Graphics2D g2 = resizedImg.createGraphics();
-			    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-			    g2.drawImage(bimg, 0, 0, new_width, new_height, null);
-			    g2.dispose();
-
-			    return resizedImg;
-			} catch (IOException e) {
-				e.printStackTrace();			
-				return null;
-			}		
+		this.codeLabel = new JLabel(TESTO_CODICE + this.prodotto.getCodice());
+		this.nameLabel = new JLabel(TESTO_NOME + this.prodotto.getNome());
+		this.brandLabel = new JLabel(TESTO_MARCA + this.prodotto.getMarca());
+		this.categoryLabel = new JLabel(TESTO_CATEGORIA + this.prodotto.getCategoria());
+		this.priceLabel = new JLabel(TESTO_PREZZO + this.prodotto.getPrezzo() + SIMBOLO_EURO);
+		this.availabilityLabel = new JLabel(TESTO_DISPONIBILITA + this.prodotto.getQuantita());
+		String offerta;
+		if (this.prodotto.getOfferta() == null) {
+			offerta = "Nessuna";
 		}
+		else {
+			offerta = this.prodotto.getOfferta().toString();
+		}
+		this.offerLabel = new JLabel(TESTO_OFFERTA + offerta);
+		JPanel infoPanel = new JPanel ();
+		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+		infoPanel.add(this.codeLabel);
+		infoPanel.add(this.nameLabel);
+		infoPanel.add(this.brandLabel);
+		infoPanel.add(this.categoryLabel);
+		infoPanel.add(this.priceLabel);
+		infoPanel.add(this.availabilityLabel);
+		infoPanel.add(this.offerLabel);
+		
+		this.amountTextField = new JTextField (String.valueOf(QUANTITA_DEFAULT));
+		this.amountTextField.setPreferredSize(new Dimension (LARGHEZZA_TEXTFIELD_QUANTITA, ALTEZZA_TEXTFIELD_QUANTITA));
+		PlainDocument doc = (PlainDocument) this.amountTextField.getDocument();
+		doc.setDocumentFilter(new AmountDocumentFilter(this.prodotto.getQuantita()));	
+		this.addToCartButton = new JButton ();
+		try {
+		    Image img = ImageIO.read(new File (ADD_IMAGE_PATH));
+		    this.addToCartButton.setIcon(new ImageIcon(img));
+		} catch (Exception ex) {
+			this.addToCartButton.setText(ADD_BUTTON_TEXT);
+		}
+		this.addToCartButton.setPreferredSize(new Dimension (DIMENSIONE_BOTTONE_AGGIUNTA_CARRELLO, DIMENSIONE_BOTTONE_AGGIUNTA_CARRELLO));
+		this.addToCartButton.addActionListener(this);
+		JPanel interactionPanel = new JPanel ();
+		interactionPanel.add(this.amountTextField);
+		interactionPanel.add(Box.createRigidArea(new Dimension(SPAZIO_INTERNO_AREA_INTERAZIONE, ALTEZZA_AREA_INTERAZIONE)));
+		interactionPanel.add(this.addToCartButton);
+		JPanel bottomPanel = new JPanel(new BorderLayout());
+		bottomPanel.add(Box.createHorizontalStrut(MARGINE_GENERALE), BorderLayout.WEST);
+		bottomPanel.add(interactionPanel, BorderLayout.CENTER);
+		bottomPanel.add(Box.createHorizontalStrut(MARGINE_GENERALE), BorderLayout.EAST);
+		bottomPanel.add(Box.createVerticalStrut(MARGINE_GENERALE), BorderLayout.PAGE_END);
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if (e.getSource().equals(this.addToCartButton)) {
-				try {
-					int quantitaDaAggiungere = Integer.parseInt (this.amountTextField.getText());
-					Prodotto giaInCarrello = this.cliente.getCarrello().getProdotto(this.prodotto.getCodice());
-					if (giaInCarrello != null && giaInCarrello.getQuantita() + quantitaDaAggiungere > this.prodotto.getQuantita()) {
-						;
-					}
-					else {
-						Prodotto nuovoProdotto = this.prodotto.clone ();
-						nuovoProdotto.setQuantita (quantitaDaAggiungere);
-						this.cliente.getCarrello().aggiungiProdotto(nuovoProdotto);
-					}
-				} catch (CloneNotSupportedException e1) {
-					e1.printStackTrace();
-				} catch (NumberFormatException er) {
-					er.printStackTrace();
+		this.setLayout (new BorderLayout(0, MARGINE_GENERALE));
+		this.setBorder (new RoundedBorder(Color.GRAY, DIMENSIONE_BORDO, MARGINE_GENERALE, 0));
+		this.add (imagePanel, BorderLayout.PAGE_START);
+		this.add (infoPanel, BorderLayout.CENTER);
+		this.add (Box.createHorizontalStrut(MARGINE_GENERALE), BorderLayout.WEST);
+		this.add (bottomPanel, BorderLayout.PAGE_END);
+	}
+	
+	public static int height () {
+		return  DIMENSIONE_BORDO + MARGINE_GENERALE + 
+				DIMENSIONE_ICONA + MARGINE_GENERALE + 
+				(new JLabel().getFont().getSize() + 
+				SPAZIO_INFORMAZIONI) * 7 + MARGINE_GENERALE + 
+				ALTEZZA_AREA_INTERAZIONE + MARGINE_GENERALE * 2 + 
+				DIMENSIONE_BORDO;
+	}
+	
+	private Image ridimensionaImmagine (File immagine) {
+		BufferedImage bimg;
+		try {
+			bimg = ImageIO.read(immagine);
+			// Calcolo le giuste dimensioni per l'icona
+			int original_width = bimg.getWidth();
+		    int original_height = bimg.getHeight();
+		    int bound_width = DIMENSIONE_ICONA;
+		    int bound_height = DIMENSIONE_ICONA;
+		    int new_width = original_width;
+		    int new_height = original_height;
+		    if (original_width > bound_width) {
+		        new_width = bound_width;
+		        new_height = (new_width * original_height) / original_width;
+		    }
+		    if (new_height > bound_height) {
+		        new_height = bound_height;
+		        new_width = (new_height * original_width) / original_height;
+		    }
+			
+		    // Ridimensiono l'immagine
+		    BufferedImage resizedImg = new BufferedImage(new_width, new_height, BufferedImage.TYPE_INT_ARGB);
+		    Graphics2D g2 = resizedImg.createGraphics();
+		    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		    g2.drawImage(bimg, 0, 0, new_width, new_height, null);
+		    g2.dispose();
+
+		    return resizedImg;
+		} catch (IOException e) {
+			e.printStackTrace();			
+			return null;
+		}		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource().equals(this.addToCartButton)) {
+			try {
+				int quantitaDaAggiungere = Integer.parseInt (this.amountTextField.getText());
+				Prodotto giaInCarrello = this.cliente.getCarrello().getProdotto(this.prodotto.getCodice());
+				if (giaInCarrello != null && giaInCarrello.getQuantita() + quantitaDaAggiungere > this.prodotto.getQuantita()) {
+					;
 				}
+				else {
+					Prodotto nuovoProdotto = this.prodotto.clone ();
+					nuovoProdotto.setQuantita (quantitaDaAggiungere);
+					this.cliente.getCarrello().aggiungiProdotto(nuovoProdotto);
+				}
+			} catch (CloneNotSupportedException e1) {
+				e1.printStackTrace();
+			} catch (NumberFormatException er) {
+				er.printStackTrace();
 			}
 		}
 	}
@@ -275,8 +313,7 @@ class JClientControlPanel extends JPanel implements ActionListener{
 	private JButton filterButton;
 	private JButton cartButton;
 	
-	private Cliente cliente;
-	private Magazzino magazzino;
+	private JClientContentPanel mainPanel;
 
 	protected static final int ALTEZZA = 80;
 
@@ -289,13 +326,18 @@ class JClientControlPanel extends JPanel implements ActionListener{
 	private static final String FILTER_STRING_LABEL = "Stringa di ricerca:";
 	private static final String FILTER_BUTTON_TEXT = "Filtra";
 	private static final String CART_BUTTON_TEXT = "Carrello";	
-	protected static final String[] FILTER_TYPE_STRINGS = { "Nome", "Marca", "Codice", "Categoria", "Prezzo", "Quantità" };
+	protected static final String[] FILTER_TYPE_STRINGS = {
+			FilterListener.NAME_FILTER_STRING,
+			FilterListener.BRAND_FILTER_STRING,
+			FilterListener.CODE_FILTER_STRING,
+			FilterListener.CATEGORY_FILTER_STRING,
+			FilterListener.COST_FILTER_STRING,
+			FilterListener.AMOUNT_FILTER_STRING
+		};
 	private static final String CART_IMAGE_PATH = "media/img/cart.png";
 
-	public JClientControlPanel (Cliente cliente, Magazzino magazzino) {
-		this.cliente = cliente;
-		this.magazzino = magazzino;
-		
+	public JClientControlPanel (JClientContentPanel mainPanel) {
+		this.mainPanel = mainPanel;
 		JPanel leftPanel = new JPanel ();
 		
 		JPanel filterTypePanel = new JPanel ();
@@ -315,6 +357,7 @@ class JClientControlPanel extends JPanel implements ActionListener{
 		filterStringPanel.add (this.filterTextField, BorderLayout.PAGE_END);
 		
 		this.filterButton = new JButton (FILTER_BUTTON_TEXT);
+		this.filterButton.addActionListener(new FilterListener (this.mainPanel, this.filterTypeComboBox, this.filterTextField));
 	
 		leftPanel.add (Box.createRigidArea(new Dimension(MARGINE_SINISTRO, ALTEZZA)));
 		leftPanel.add (filterTypePanel);
@@ -345,7 +388,7 @@ class JClientControlPanel extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(this.cartButton)) {
-			JCartDialog cartDialog = new JCartDialog((JFrame) SwingUtilities.getWindowAncestor(this), this.cliente.getCarrello (), this.magazzino);
+			JCartDialog cartDialog = new JCartDialog((JFrame) SwingUtilities.getWindowAncestor(this), this.mainPanel.getCliente ().getCarrello (), this.mainPanel.getMagazzino());
 			cartDialog.setVisible(true);			
 		}
 	}
