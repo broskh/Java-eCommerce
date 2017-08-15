@@ -105,6 +105,28 @@ public class Carrello implements GestioneProdotti{
 	}
 
 	@Override
+	public float MaxPrezzo() {
+		float max = 0;
+		for (Prodotto articolo : this.articoli) {
+			if (articolo.getPrezzo() > max) {
+				max = articolo.getPrezzo();
+			}
+		}
+		return max;
+	}
+
+	@Override
+	public int MaxQuantita() {
+		int max = 0;
+		for (Prodotto articolo : this.articoli) {
+			if (articolo.getQuantita() > max) {
+				max = articolo.getQuantita();
+			}
+		}
+		return max;
+	}
+
+	@Override
 	public String toString() {
 		return "Carrello [articoli=" + articoli + ", totale=" + totale + ", totale_scontato=" + totaleScontato + "]";
 	}

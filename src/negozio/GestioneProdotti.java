@@ -34,4 +34,18 @@ public interface GestioneProdotti {
 	 * @return il Prodotto con quel codice se è presente, null altrimenti.
 	 */
 	public Prodotto getProdotto(String codice);
+	
+	/**
+	 * Ritorna il prezzo del prodotto con tale valore maggiore.
+	 * 
+	 * @return Prezzo massimo.
+	 */
+	public float MaxPrezzo ();
+	
+	/**
+	 * Ritorna la quantità del prodotto con tale valore maggiore.
+	 * 
+	 * @return Quantità massima.
+	 */
+	public int MaxQuantita ();
 }
