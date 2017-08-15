@@ -196,19 +196,32 @@ public class Magazzino implements GestioneProdotti {
 	
 	/**
 	 * Filtra gli articoli presenti in magazzino e ritorna quelli il la cui quantità è
-	 * msggiore di quella indicata.
+	 * maggiore di quella indicata.
 	 * 
 	 * @param quantitaMin Valore minimo della quantità.
+	 * @param quantitaMax Valore massimo della quantità.
 	 * @return gli articoli che rispettano il criterio di filtraggio.
 	 */
-	public ArrayList <Prodotto> filtraPerQuantita (int quantitaMin) {
+	public ArrayList <Prodotto> filtraPerQuantita (float quantitaMin, float quantitaMax) {
 		ArrayList <Prodotto> articoliFiltrati = new ArrayList <Prodotto> ();
 		for (Prodotto articolo : this.articoli) {
-			if (articolo.getQuantita() >= quantitaMin) {
+			if (articolo.getQuantita() >= quantitaMin && articolo.getQuantita() <= quantitaMax) {
 				articoliFiltrati.add(articolo);
 			}
 		}
 		return articoliFiltrati;
+	}
+	
+	/**
+	 * Filtra gli articoli presenti in magazzino e ritorna quelli il la cui quantità è
+	 * maggiore di quella indicata.
+	 * 
+	 * @param quantitaMin Valore minimo della quantità.
+	 * @param quantitaMax Valore massimo della quantità.
+	 * @return gli articoli che rispettano il criterio di filtraggio.
+	 */
+	public ArrayList <Prodotto> filtraPerQuantita (int quantitaMin, int quantitaMax) {
+		return this.filtraPerQuantita((float)quantitaMin, (float)quantitaMax);
 	}
 	
 	/**

@@ -399,10 +399,10 @@ class JClientControlPanel extends JPanel implements ActionListener{
 				this.filterPanel.enableStringFilter();
 				break;
 			case Magazzino.STRINGA_FILTRO_PREZZO:
-				this.filterPanel.enableAmountFilter();
+				this.filterPanel.enableCostFilter();
 				break;
 			case Magazzino.STRINGA_FILTRO_QUANTITA:
-				this.filterPanel.enableCostFilter();
+				this.filterPanel.enableAmountFilter();
 				break;
 			}
 		}

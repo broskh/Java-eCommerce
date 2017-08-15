@@ -40,7 +40,7 @@ public class FilterListener implements ActionListener {
 				break;
 			case Magazzino.STRINGA_FILTRO_QUANTITA:
 				EstremiRange estremiQuantita = this.filterPanel.getAmount();
-				this.mainPanel.setArticoliVisualizzati(this.mainPanel.getMagazzino ().filtraPerPrezzo(estremiQuantita.getPrimo(), estremiQuantita.getUltimo()));
+				this.mainPanel.setArticoliVisualizzati(this.mainPanel.getMagazzino ().filtraPerQuantita(estremiQuantita.getPrimo(), estremiQuantita.getUltimo()));
 				break;
 		}		
 	}
