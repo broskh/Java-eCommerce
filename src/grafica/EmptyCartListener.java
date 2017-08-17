@@ -15,6 +15,10 @@ public class EmptyCartListener implements ActionListener {
 		this.articlesTableModel = articlesTableModel;
 	}
 	
+	public EmptyCartListener (Carrello carrello) {
+		this (null, carrello);
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		this.carrello.svuota();

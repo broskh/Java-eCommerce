@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
 
 import java.io.File;
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -32,8 +33,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.text.PlainDocument;
 
 import negozio.Magazzino;
@@ -314,6 +313,7 @@ class JClientControlPanel extends JPanel implements ActionListener{
 	private JFilterPanel filterPanel;
 	private JButton filterButton;
 	private JButton cartButton;
+	private StringBuilder filterTypeString;
 	
 	private JClientContentPanel mainPanel;
 
@@ -359,8 +359,9 @@ class JClientControlPanel extends JPanel implements ActionListener{
 		this.filterPanel = new JFilterPanel(this.mainPanel.getMagazzino().MaxQuantita(), this.mainPanel.getMagazzino().MaxPrezzo());
 		filterStringPanel.add (this.filterPanel, BorderLayout.PAGE_END);
 		
+		this.filterTypeString = new StringBuilder(this.filterTypeComboBox.getSelectedItem().toString());
 		this.filterButton = new JButton (FILTER_BUTTON_TEXT);
-		this.filterButton.addActionListener(new FilterListener (this.mainPanel, this.filterTypeComboBox, this.filterPanel));
+		this.filterButton.addActionListener(new FilterListener (this.mainPanel, this.filterTypeString, this.filterPanel));
 	
 		leftPanel.add (Box.createRigidArea(new Dimension(MARGINE_SINISTRO, ALTEZZA)));
 		leftPanel.add (filterTypePanel);
@@ -390,104 +391,9 @@ class JClientControlPanel extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(this.filterTypeComboBox)) {		
-			switch (this.filterTypeComboBox.getSelectedItem().toString()) {
-			case Magazzino.STRINGA_FILTRO_NOME:
-			case Magazzino.STRINGA_FILTRO_MARCA:
-			case Magazzino.STRINGA_FILTRO_CODICE:
-			case Magazzino.STRINGA_FILTRO_CATEGORIA:
-				this.filterPanel.enableStringFilter();
-				break;
-			case Magazzino.STRINGA_FILTRO_PREZZO:
-				this.filterPanel.enableCostFilter();
-				break;
-			case Magazzino.STRINGA_FILTRO_QUANTITA:
-				this.filterPanel.enableAmountFilter();
-				break;
-			}
+		if (e.getSource().equals(this.filterTypeComboBox)) {
+			this.filterTypeString.replace(0, this.filterTypeString.length(), this.filterTypeComboBox.getSelectedItem().toString());
+			this.filterPanel.enableCorrectFilter (this.filterTypeString.toString());
 		}
-	}
-}
-
-class JFilterPanel extends JPanel implements ChangeListener{
-	private static final long serialVersionUID = 6101085833044744812L;
-	
-	private static final int LARGHEZZA = 300;
-	
-	private JTextField stringFilter;
-	private JRangeSlider amountFilter;
-	private JRangeSlider costFilter;
-	
-    private JLabel lowerValue;
-    private JLabel upperValue;
-	
-	public JFilterPanel (int amountMax, double costMax) {
-		int costMaxInt = (int) Math.ceil(costMax);
-		
-		this.stringFilter = new JTextField ();
-		this.stringFilter.setPreferredSize (new Dimension(LARGHEZZA, this.stringFilter.getPreferredSize().height));
-		
-		this.amountFilter = new JRangeSlider(0, amountMax);
-		this.amountFilter.setPreferredSize (new Dimension(LARGHEZZA, this.amountFilter.getPreferredSize().height));
-		this.amountFilter.setLowerValue  (0);
-		this.amountFilter.setUpperValue (amountMax);
-		this.amountFilter.addChangeListener(this);
-		
-		this.costFilter = new JRangeSlider (0, costMaxInt);
-		this.costFilter.setPreferredSize (new Dimension(LARGHEZZA, this.costFilter.getPreferredSize().height));
-		this.costFilter.setLowerValue (0);
-		this.costFilter.setUpperValue (costMaxInt);
-		this.costFilter.addChangeListener(this);
-		
-		this.lowerValue = new JLabel();
-		this.lowerValue.setHorizontalAlignment(JLabel.LEFT);
-		this.upperValue = new JLabel();
-		this.upperValue.setHorizontalAlignment(JLabel.LEFT);
-
-		this.setLayout(new BorderLayout());
-		this.enableStringFilter();
-	}
-	
-	private void showSlider (JRangeSlider slider) {
-		this.removeAll();
-		this.add(slider, BorderLayout.PAGE_START);
-		this.lowerValue.setText(Integer.toString(slider.getLowerValue()));
-		this.add(this.lowerValue, BorderLayout.WEST);
-		this.upperValue.setText(Integer.toString(slider.getUpperValue()));
-		this.add(this.upperValue, BorderLayout.EAST);
-		this.updateUI();
-	}
-	
-	public String getText () {
-		return this.stringFilter.getText();
-	}
-	
-	public EstremiRange getAmount () {
-		return new EstremiRange(this.amountFilter.getLowerValue(), this.amountFilter.getUpperValue());
-	}
-	
-	public EstremiRange getCost () {
-		return new EstremiRange(this.costFilter.getLowerValue(), this.costFilter.getUpperValue());
-	}
-	
-	public void enableStringFilter () {
-		this.removeAll();
-		this.add(this.stringFilter, BorderLayout.PAGE_START);
-		this.updateUI();
-	}
-	
-	public void enableAmountFilter () {
-		this.showSlider(this.amountFilter);
-	}
-	
-	public void enableCostFilter () {
-		this.showSlider(this.costFilter);
-	}
-
-	@Override
-	public void stateChanged(ChangeEvent e) {
-		JRangeSlider slider = (JRangeSlider) e.getSource();
-        this.lowerValue.setText(String.valueOf(slider.getLowerValue()));
-        this.upperValue.setText(String.valueOf(slider.getUpperValue()));
 	}
 }

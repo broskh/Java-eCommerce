@@ -1,27 +1,32 @@
 package grafica;
 
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JComboBox;
 
 import negozio.Magazzino;
 
 public class FilterListener implements ActionListener {
 
-	private JComboBox <String> filterType;
+	private StringBuilder filterType;
 	private JFilterPanel filterPanel;
 	private JClientContentPanel mainPanel;
+	private Window windowCaller;
 	
-	public FilterListener(JClientContentPanel mainPanel, JComboBox <String> filterType, JFilterPanel filterPanel) {
+	public FilterListener(JClientContentPanel mainPanel, StringBuilder filterType, JFilterPanel filterPanel, Window windowCaller) {
 		this.mainPanel = mainPanel;
 		this.filterType = filterType;
 		this.filterPanel = filterPanel;
+		this.windowCaller = windowCaller;
+	}
+	
+	public FilterListener(JClientContentPanel mainPanel, StringBuilder filterType, JFilterPanel filterPanel) {
+		this(mainPanel, filterType, filterPanel, null);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		switch (this.filterType.getSelectedItem().toString()) {
+		switch (this.filterType.toString()) {
 			case Magazzino.STRINGA_FILTRO_NOME:
 				this.mainPanel.setArticoliVisualizzati(this.mainPanel.getMagazzino ().filtraPerNome(this.filterPanel.getText()));
 				break;
@@ -42,6 +47,9 @@ public class FilterListener implements ActionListener {
 				EstremiRange estremiQuantita = this.filterPanel.getAmount();
 				this.mainPanel.setArticoliVisualizzati(this.mainPanel.getMagazzino ().filtraPerQuantita(estremiQuantita.getPrimo(), estremiQuantita.getUltimo()));
 				break;
-		}		
+		}
+		if (this.windowCaller != null) {
+			this.windowCaller.dispose();
+		}
 	}
 }
