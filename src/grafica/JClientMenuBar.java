@@ -28,6 +28,8 @@ public class JClientMenuBar extends JMenuBar implements ActionListener {
 	private JMenuItem costFilterItem;
 	private JMenuItem amountFilterItem;
 	private JMenuItem showCartItem;
+	private JMenuItem addArticleItem;
+	private JMenuItem removeArticleItem;
 	private JMenuItem emptyCartItem;
 	
 	private static final String FILE_MENU_STRING = "File";
@@ -35,6 +37,8 @@ public class JClientMenuBar extends JMenuBar implements ActionListener {
 	private static final String CART_MENU_STRING = "Carrello";
 	private static final String CLOSE_ITEM_STRING = "Chiudi";
 	private static final String SHOW_CART_ITEM = "Visualizza";
+	private static final String ADD_ARTICLE_ITEM = "Aggiungi articolo";
+	private static final String REMOVE_ARTICLE_ITEM = "Rimuovi articolo";
 	private static final String EMPTY_CART_ITEM = "Svuota";
 	
 	public JClientMenuBar (Magazzino magazzino, Carrello carrello) {
@@ -67,10 +71,16 @@ public class JClientMenuBar extends JMenuBar implements ActionListener {
 		
 		this.cartMenu = new JMenu (CART_MENU_STRING);
 		this.showCartItem = new JMenuItem(SHOW_CART_ITEM);
-		this.showCartItem.addActionListener(new OpenCartDialogListener((JeCommerceFrame) SwingUtilities.getWindowAncestor(this), this.carrello, this.magazzino));
+		this.showCartItem.addActionListener(new OpenCartListener((JeCommerceFrame) SwingUtilities.getWindowAncestor(this), this.carrello, this.magazzino));
+		this.addArticleItem = new JMenuItem(ADD_ARTICLE_ITEM);
+		this.addArticleItem.addActionListener(this);
+		this.removeArticleItem = new JMenuItem(REMOVE_ARTICLE_ITEM);
+		this.removeArticleItem.addActionListener(this);
 		this.emptyCartItem = new JMenuItem(EMPTY_CART_ITEM);
 		this.emptyCartItem.addActionListener(new EmptyCartListener (this.carrello));
 		this.cartMenu.add(this.showCartItem);
+		this.cartMenu.add(this.addArticleItem);
+		this.cartMenu.add(this.removeArticleItem);
 		this.cartMenu.add(this.emptyCartItem);
 		
 		this.add (this.fileMenu);
@@ -89,8 +99,16 @@ public class JClientMenuBar extends JMenuBar implements ActionListener {
 				 e.getSource().equals(this.categoryFilterItem) || 
 				 e.getSource().equals(this.amountFilterItem) || 
 				 e.getSource().equals(this.costFilterItem)) {
-			 JFilterDialog filterDialog = new JFilterDialog(((JeCommerceFrame) SwingUtilities.getWindowAncestor(this)), this.magazzino, ((JMenuItem)e.getSource()).getText());
+			 JFilterDialog filterDialog = new JFilterDialog((JeCommerceFrame) SwingUtilities.getWindowAncestor(this), this.magazzino, ((JMenuItem)e.getSource()).getText());
 			 filterDialog.setVisible(true);
+		}
+		 else if (e.getSource().equals(this.addArticleItem)) {
+			 JAddArticleDialog addArticleDialog = new JAddArticleDialog((JeCommerceFrame) SwingUtilities.getWindowAncestor(this), this.magazzino, this.carrello);
+			 addArticleDialog.setVisible(true);
+		}
+		 else if (e.getSource().equals(this.removeArticleItem)) {
+			 JRemoveArticleDialog removeArticleDialog = new JRemoveArticleDialog((JeCommerceFrame) SwingUtilities.getWindowAncestor(this), this.carrello);
+			 removeArticleDialog.setVisible(true);
 		}
 	}
 }

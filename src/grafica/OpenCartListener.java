@@ -8,12 +8,12 @@ import javax.swing.JFrame;
 import negozio.Carrello;
 import negozio.Magazzino;
 
-public class OpenCartDialogListener implements ActionListener {
+public class OpenCartListener implements ActionListener {
 	private Magazzino magazzino;
 	private Carrello carrello;
 	private JFrame mainFrame;
 	
-	public OpenCartDialogListener(JFrame mainFrame, Carrello carrello, Magazzino magazzino) {
+	public OpenCartListener(JFrame mainFrame, Carrello carrello, Magazzino magazzino) {
 		 this.magazzino = magazzino;
 		 this.carrello = carrello;
 		 this.mainFrame = mainFrame;

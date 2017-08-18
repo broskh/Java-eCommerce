@@ -59,10 +59,9 @@ public class JPaymentDialog extends JDialog implements ActionListener {
 
 	public JPaymentDialog (JFrame jFrame, Carrello carrello, Magazzino magazzino) {
 		super (jFrame, TITOLO, JDialog.ModalityType.DOCUMENT_MODAL);
-//		this.setDefaultCloseOperation(HIDE_ON_CLOSE);
 		this.setMinimumSize(new Dimension(LARGHEZZA_MINIMA, ALTEZZA_MINIMA));
 		this.setLocationRelativeTo(null);
-//		this.setAlwaysOnTop (true);
+		this.setResizable(false);
 
 		this.carrello = carrello;
 		this.magazzino = magazzino;

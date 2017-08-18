@@ -10,34 +10,35 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
+import negozio.Carrello;
 import negozio.Magazzino;
 
-public class JFilterDialog extends JDialog implements ActionListener{
+public class JAddArticleDialog extends JDialog implements ActionListener{
 	private static final long serialVersionUID = -4438831458822655741L;
 
 	private JButton okButton;
 	private JButton cancelButton;
 
-	private static final String TITOLO = "Filtra per ";
-	private static final String OK_STRING = "FILTRA";
+	private static final String TITOLO = "Aggiungi articolo";
+	private static final String OK_STRING = "AGGIUNGI";
 	private static final String CANCEL_STRING = "ANNULLA";
 	private static final int LARGHEZZA_MINIMA = 400;
 	private static final int ALTEZZA_MINIMA = 160;
-	private static final int MARGINE_LATERALE = 50;
+	private static final int MARGINE_LATERALE = 30;
 	private static final int MARGINE_SUPERIORE = 30;
 	private static final int SPAZIO_BOTTONI = 50;
 	private static final int MARGINE_INFERIORE = 30;
 	
-	public JFilterDialog (JeCommerceFrame mainFrame, Magazzino magazzino, String filterType) {
-		super (mainFrame, TITOLO + filterType.toLowerCase(), JDialog.ModalityType.DOCUMENT_MODAL);
+	public JAddArticleDialog (JeCommerceFrame mainFrame, Magazzino magazzino, Carrello carrello) {
+		super (mainFrame, TITOLO, JDialog.ModalityType.DOCUMENT_MODAL);
 		this.setMinimumSize(new Dimension(LARGHEZZA_MINIMA, ALTEZZA_MINIMA));
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		
-		JFilterPanel filterPanel = new JFilterPanel(magazzino.MaxQuantita(), magazzino.MaxPrezzo(), filterType);
+		JModifyArticlePanel articlePanel = new JModifyArticlePanel();
 
 		this.okButton = new JButton(OK_STRING);
-		this.okButton.addActionListener(new FilterListener(((JClientContentPanel)mainFrame.getJContentPanel()), new StringBuilder(filterType), filterPanel, this));
+		this.okButton.addActionListener(new AddArticleToCartListener(this, magazzino, carrello, articlePanel.getCode(), articlePanel.getAmountTextfield()));
 		this.cancelButton = new JButton(CANCEL_STRING);
 		this.cancelButton.addActionListener(this);
 		JPanel buttonsPanel = new JPanel(new BorderLayout());
@@ -54,7 +55,7 @@ public class JFilterDialog extends JDialog implements ActionListener{
 		this.setLayout(new BorderLayout());
 		this.add(Box.createVerticalStrut(MARGINE_SUPERIORE), BorderLayout.PAGE_START);
 		this.add(Box.createHorizontalStrut(MARGINE_LATERALE), BorderLayout.WEST);
-		this.add(filterPanel, BorderLayout.CENTER);
+		this.add(articlePanel, BorderLayout.CENTER);
 		this.add(Box.createHorizontalStrut(MARGINE_LATERALE), BorderLayout.EAST);
 		this.add(bottomPanel, BorderLayout.PAGE_END);
 	}

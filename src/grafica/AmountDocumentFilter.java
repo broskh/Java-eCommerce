@@ -44,7 +44,7 @@ public class AmountDocumentFilter extends DocumentFilter {
 	private String correctValue (String string) {
 		int value = Integer.parseInt(string);
 		
-		if (value > this.maxValue) {
+		if (this.maxValue != -1 && value > this.maxValue) {
 			return Integer.toString(this.maxValue);
 		}
 		return Integer.toString(value);

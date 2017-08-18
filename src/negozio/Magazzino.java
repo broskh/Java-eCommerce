@@ -269,7 +269,7 @@ public class Magazzino implements GestioneProdotti {
 	@Override
 	public Prodotto getProdotto(String codice) {
 		for (Prodotto articolo : this.articoli) {
-			if (articolo.getCodice() == codice) {
+			if (articolo.getCodice().equals(codice)) {
 				return articolo;
 			}
 		}		

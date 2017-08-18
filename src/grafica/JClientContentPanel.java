@@ -109,7 +109,7 @@ public class JClientContentPanel extends JPanel {
 		Iterator <Prodotto> itr = this.articoliVisualizzati.iterator();
 		while (itr.hasNext()) {
 			Prodotto prodotto = itr.next();
-			this.showcasePanel.add(new JArticlePanel(prodotto, this.cliente));
+			this.showcasePanel.add(new JArticlePanel(this.magazzino, prodotto, this.cliente));
 		}
 		//aggiungo box vuoti per far si che se ci sono pochi prodotti , abbiano comunque la solita dimensione
 		if (nColonne > this.articoliVisualizzati.size()) {
@@ -128,7 +128,7 @@ public class JClientContentPanel extends JPanel {
 	}
 }
 
-class JArticlePanel extends JPanel implements ActionListener{
+class JArticlePanel extends JPanel {
 	private static final long serialVersionUID = -2838106312491733874L;
 	
 	private JLabel imageLabel;
@@ -171,7 +171,7 @@ class JArticlePanel extends JPanel implements ActionListener{
 	private static final String ADD_BUTTON_TEXT = "+";
 	private static final String ADD_IMAGE_PATH = "media/img/add.png";
 
-	public JArticlePanel(Prodotto prodotto, Cliente cliente) {
+	public JArticlePanel(Magazzino magazzino, Prodotto prodotto, Cliente cliente) {
 		this.prodotto = prodotto;
 		this.cliente = cliente;
 		this.imageLabel = new JLabel("", SwingConstants.CENTER);
@@ -221,7 +221,7 @@ class JArticlePanel extends JPanel implements ActionListener{
 			this.addToCartButton.setText(ADD_BUTTON_TEXT);
 		}
 		this.addToCartButton.setPreferredSize(new Dimension (DIMENSIONE_BOTTONE_AGGIUNTA_CARRELLO, DIMENSIONE_BOTTONE_AGGIUNTA_CARRELLO));
-		this.addToCartButton.addActionListener(this);
+		this.addToCartButton.addActionListener(new AddArticleToCartListener(magazzino, this.cliente.getCarrello(), new StringBuilder(this.prodotto.getCodice()), this.amountTextField));
 		JPanel interactionPanel = new JPanel ();
 		interactionPanel.add(this.amountTextField);
 		interactionPanel.add(Box.createRigidArea(new Dimension(SPAZIO_INTERNO_AREA_INTERAZIONE, ALTEZZA_AREA_INTERAZIONE)));
@@ -281,28 +281,6 @@ class JArticlePanel extends JPanel implements ActionListener{
 			e.printStackTrace();			
 			return null;
 		}		
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(this.addToCartButton)) {
-			try {
-				int quantitaDaAggiungere = Integer.parseInt (this.amountTextField.getText());
-				Prodotto giaInCarrello = this.cliente.getCarrello().getProdotto(this.prodotto.getCodice());
-				if (giaInCarrello != null && giaInCarrello.getQuantita() + quantitaDaAggiungere > this.prodotto.getQuantita()) {
-					;
-				}
-				else {
-					Prodotto nuovoProdotto = this.prodotto.clone ();
-					nuovoProdotto.setQuantita (quantitaDaAggiungere);
-					this.cliente.getCarrello().aggiungiProdotto(nuovoProdotto);
-				}
-			} catch (CloneNotSupportedException e1) {
-				e1.printStackTrace();
-			} catch (NumberFormatException er) {
-				er.printStackTrace();
-			}
-		}
 	}
 }
 
@@ -379,7 +357,7 @@ class JClientControlPanel extends JPanel implements ActionListener{
 		} catch (Exception ex) {
 			this.cartButton.setText(CART_BUTTON_TEXT);
 		}
-		this.cartButton.addActionListener(new OpenCartDialogListener((JFrame) SwingUtilities.getWindowAncestor(this), this.mainPanel.getCliente ().getCarrello (), this.mainPanel.getMagazzino()));
+		this.cartButton.addActionListener(new OpenCartListener((JFrame) SwingUtilities.getWindowAncestor(this), this.mainPanel.getCliente ().getCarrello (), this.mainPanel.getMagazzino()));
 		
 		rightPanel.add (this.cartButton);
 		rightPanel.add (Box.createRigidArea(new Dimension(MARGINE_DESTRO, ALTEZZA)));
