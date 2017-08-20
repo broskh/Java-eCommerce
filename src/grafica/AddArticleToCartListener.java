@@ -32,8 +32,6 @@ public class AddArticleToCartListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
-		System.out.println(this.codice.toString());
 		Prodotto inMagazzino = this.magazzino.getProdotto(this.codice.toString());
 		if (inMagazzino != null) {
 			Prodotto giaInCarrello = this.carrello.getProdotto(this.codice.toString());
@@ -48,9 +46,7 @@ public class AddArticleToCartListener implements ActionListener {
 			if (giaInCarrello != null) {
 				quantita -= giaInCarrello.getQuantita();
 			}
-			System.out.println("hey1");
 			try {
-				System.out.println("hey2");
 				Prodotto nuovoProdotto = inMagazzino.clone();
 				nuovoProdotto.setQuantita(quantita);
 				this.carrello.aggiungiProdotto(nuovoProdotto);

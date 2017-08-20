@@ -72,7 +72,10 @@ public class JRemoveArticleDialog extends JDialog implements ActionListener{
 			String codice = this.articlePanel.getCode().toString();
 			Prodotto articolo = this.carrello.getProdotto(codice);
 			if (articolo != null) {
-				this.carrello.rimuoviProdotto(codice, this.articlePanel.getAmount());
+				int quantita = this.articlePanel.getAmount();
+				if (quantita > articolo.getQuantita()) {
+					quantita = articolo.getQuantita();
+				}
 				this.dispose();
 			}
 		}

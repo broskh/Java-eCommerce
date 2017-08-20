@@ -75,7 +75,7 @@ public class Carrello implements GestioneProdotti{
 	public boolean rimuoviProdotto(String codice, int quantita) {
 		for (Prodotto articolo : this.articoli) {
 			if (articolo.getCodice().equals(codice)) {
-				if (quantita > 0 && quantita >= articolo.getQuantita()) {
+				if (quantita > 0 && quantita <= articolo.getQuantita()) {
 					this.totale -= articolo.prezzoTotale();
 					this.totaleScontato -= articolo.prezzoTotaleScontato();
 					articolo.decrementaQuantita(quantita);
@@ -97,7 +97,7 @@ public class Carrello implements GestioneProdotti{
 	@Override
 	public Prodotto getProdotto(String codice) {
 		for (Prodotto articolo : this.articoli) {
-			if (articolo.getCodice() == codice) {
+			if (articolo.getCodice().equals(codice)) {
 				return articolo;
 			}
 		}		

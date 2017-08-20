@@ -24,7 +24,6 @@ public class EmptyCartListener implements ActionListener {
 		this.carrello.svuota();
 		if (this.articlesTableModel != null) {
 			this.articlesTableModel.fireTableDataChanged();
-			System.out.println(this.articlesTableModel);
 		}
 	}
 }
