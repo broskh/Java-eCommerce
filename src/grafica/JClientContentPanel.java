@@ -3,13 +3,19 @@ package grafica;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 import java.io.File;
@@ -25,6 +31,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -32,9 +39,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.TransferHandler;
 import javax.swing.border.EtchedBorder;
 import javax.swing.text.PlainDocument;
 
+import negozio.Carrello;
 import negozio.Magazzino;
 import negozio.Prodotto;
 
@@ -222,6 +231,7 @@ class JArticlePanel extends JPanel {
 		}
 		this.addToCartButton.setPreferredSize(new Dimension (DIMENSIONE_BOTTONE_AGGIUNTA_CARRELLO, DIMENSIONE_BOTTONE_AGGIUNTA_CARRELLO));
 		this.addToCartButton.addActionListener(new AddArticleToCartListener(magazzino, this.cliente.getCarrello(), new StringBuilder(this.prodotto.getCodice()), this.amountTextField));
+		this.addToCartButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		JPanel interactionPanel = new JPanel ();
 		interactionPanel.add(this.amountTextField);
 		interactionPanel.add(Box.createRigidArea(new Dimension(SPAZIO_INTERNO_AREA_INTERAZIONE, ALTEZZA_AREA_INTERAZIONE)));
@@ -232,6 +242,21 @@ class JArticlePanel extends JPanel {
 		bottomPanel.add(Box.createHorizontalStrut(MARGINE_GENERALE), BorderLayout.EAST);
 		bottomPanel.add(Box.createVerticalStrut(MARGINE_GENERALE), BorderLayout.PAGE_END);
 
+		this.setTransferHandler(new ValueExportTransferHandler(this.prodotto, this.amountTextField));
+        this.addMouseMotionListener(new MouseAdapter() {
+        	
+            @Override
+            public void mouseMoved(MouseEvent e) {
+            	JArticlePanel.this.setCursor(new Cursor(Cursor.MOVE_CURSOR));
+            }
+        	
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                JPanel panel = (JPanel) e.getSource();
+                TransferHandler handle = panel.getTransferHandler();
+                handle.exportAsDrag(panel, e, TransferHandler.COPY);
+            }
+        });
 		this.setLayout (new BorderLayout(0, MARGINE_GENERALE));
 		this.setBorder (new RoundedBorder(Color.GRAY, DIMENSIONE_BORDO, MARGINE_GENERALE, 0));
 		this.add (imagePanel, BorderLayout.PAGE_START);
@@ -282,6 +307,49 @@ class JArticlePanel extends JPanel {
 			return null;
 		}		
 	}
+
+    public static class ValueExportTransferHandler extends TransferHandler {
+        private static final long serialVersionUID = -3689725432297463459L;
+
+        private Prodotto prodottoMagazzino;
+        private JTextField amountTextfield;
+        
+        public static final DataFlavor SUPPORTED_DATE_FLAVOR = Prodotto.getDataFlavor();
+
+        public ValueExportTransferHandler(Prodotto value, JTextField amountTextfield) {
+        	this.prodottoMagazzino = value;
+            this.amountTextfield = amountTextfield;
+        }
+
+        public Prodotto getValue() {
+        	try {
+				Prodotto prodotto = this.prodottoMagazzino.clone();
+				prodotto.setQuantita(Integer.parseInt(this.amountTextfield.getText()));
+	            return prodotto;
+			} catch (CloneNotSupportedException e) {
+				e.printStackTrace();
+			}
+        	return null;
+        }
+        
+        @Override
+        public int getSourceActions(JComponent c) {
+            return DnDConstants.ACTION_COPY_OR_MOVE;
+        }
+
+        @Override
+        protected Transferable createTransferable(JComponent c) {
+            Transferable t = this.getValue();
+            return t;
+        }
+
+        @Override
+        protected void exportDone(JComponent source, Transferable data, int action) {
+            super.exportDone(source, data, action);
+            // Decide what to do after the drop has been accepted
+        }
+
+    }
 }
 
 class JClientControlPanel extends JPanel implements ActionListener{
@@ -358,6 +426,7 @@ class JClientControlPanel extends JPanel implements ActionListener{
 			this.cartButton.setText(CART_BUTTON_TEXT);
 		}
 		this.cartButton.addActionListener(new OpenCartListener((JFrame) SwingUtilities.getWindowAncestor(this), this.mainPanel.getCliente ().getCarrello (), this.mainPanel.getMagazzino()));
+		this.cartButton.setTransferHandler(new ValueImportTransferHandler(this.mainPanel.getCliente().getCarrello()));
 		
 		rightPanel.add (this.cartButton);
 		rightPanel.add (Box.createRigidArea(new Dimension(MARGINE_DESTRO, ALTEZZA)));
@@ -374,4 +443,42 @@ class JClientControlPanel extends JPanel implements ActionListener{
 			this.filterPanel.enableCorrectFilter (this.filterTypeString.toString());
 		}
 	}
+	
+	public static class ValueImportTransferHandler extends TransferHandler {
+		private static final long serialVersionUID = 7407303027786470664L;
+
+		private Carrello carrello;
+		
+        public static final DataFlavor SUPPORTED_DATE_FLAVOR = Prodotto.getDataFlavor();
+
+        public ValueImportTransferHandler(Carrello carrello) {
+        	this.carrello = carrello;
+        }
+
+        @Override
+        public boolean canImport(TransferHandler.TransferSupport support) {
+            return support.isDataFlavorSupported(SUPPORTED_DATE_FLAVOR);
+        }
+
+        @Override
+        public boolean importData(TransferHandler.TransferSupport support) {
+            boolean accept = false;
+            if (canImport(support)) {
+                try {
+                    Transferable t = support.getTransferable();
+                    Object value = t.getTransferData(SUPPORTED_DATE_FLAVOR);
+                    if (value instanceof Prodotto) {
+                        Component component = support.getComponent();
+                        if (component instanceof JButton) {
+                            this.carrello.aggiungiProdotto((Prodotto)value);
+                            accept = true;
+                        }
+                    }
+                } catch (Exception exp) {
+                    exp.printStackTrace();
+                }
+            }
+            return accept;
+        }
+    }
 }

@@ -1,6 +1,10 @@
 package negozio;
 
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 
 /**
@@ -9,7 +13,7 @@ import java.io.Serializable;
  * @author Alessio Scheri
  * @version 1.0
  */
-public class Prodotto implements Serializable, Cloneable {
+public class Prodotto implements Serializable, Cloneable, Transferable {
 	private static final long serialVersionUID = 7588762583069098992L;
 	
 	private String nome; /**<Nome del prodotto.*/
@@ -21,8 +25,8 @@ public class Prodotto implements Serializable, Cloneable {
 	private int quantita; /**<Quantità del prodotto presente.*/
 	private Promozione offerta; /**<Promozione attiva sul prodotto.*/
 	
-	private static final File immagineDefault = new File ("media/img/immagine_non_disponibile.jpg"); /**<Immagine di default.*/ 
-
+	private static final File immagineDefault = new File ("media/img/immagine_non_disponibile.jpg"); /**<Immagine di default.*/
+	
 	/**
 	 * Crea un Prodotto in offerta, completo di tutte le informazioni.
 	 * 
@@ -327,6 +331,7 @@ public class Prodotto implements Serializable, Cloneable {
 	public float prezzoTotaleScontato () {
 		return this.offerta.calcolaSconto(this.prezzo, this.quantita);
 	}
+	
 
 	@Override
 	public String toString() {
@@ -335,8 +340,39 @@ public class Prodotto implements Serializable, Cloneable {
 				+ "]";
 	}
 	
+	public static final DataFlavor getDataFlavor () {
+		try {
+			return new DataFlavor (DataFlavor.javaJVMLocalObjectMimeType + ";class=\""+Prodotto.class.getName() + "\"");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	@Override
 	public Prodotto clone() throws CloneNotSupportedException {
 		return (Prodotto) super.clone();
+	}
+
+	@Override
+	public DataFlavor[] getTransferDataFlavors() {
+		DataFlavor[] supportedFlavors = { Prodotto.getDataFlavor() };
+		return supportedFlavors;
+	}
+
+	@Override
+	public boolean isDataFlavorSupported(DataFlavor flavor) {
+		if (flavor.equals(Prodotto.getDataFlavor())) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+		if (flavor.equals(Prodotto.getDataFlavor())) {
+			return this;
+		}
+		return null;
 	}
 }
