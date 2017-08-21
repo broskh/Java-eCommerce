@@ -33,8 +33,8 @@ public class JeCommerceFrame extends JFrame implements ComponentListener {
 	public JeCommerceFrame (Utente utente, Magazzino magazzino) {
 		super (TITOLO);
 		this.utente = utente;
-		this.setMinimumSize(new Dimension(LARGHEZZA_MINIMA_JFRAME, ALTEZZA_MINIMA_JFRAME));
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		this.setMinimumSize(new Dimension(LARGHEZZA_MINIMA_JFRAME, ALTEZZA_MINIMA_JFRAME));
 		this.addComponentListener(this);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 

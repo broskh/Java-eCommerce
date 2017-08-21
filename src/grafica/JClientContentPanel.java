@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -106,30 +107,27 @@ public class JClientContentPanel extends JPanel {
 	
 	public void aggiornaArticoli () {
 		int larghezzaBacheca = ((JeCommerceFrame) SwingUtilities.getWindowAncestor(this)).getWidth() - LARGHEZZA_MARGINE_DESTRO - LARGHEZZA_MARGINE_SINISTRO;
-		int altezzaBacheca = this.getHeight() - this.jClientControlPanel.getHeight() - ALTEZZA_MARGINE_SUPERIORE - ALTEZZA_MARGINE_INFERIORE - 1;
+//		int altezzaBacheca = this.getHeight() - this.jClientControlPanel.getHeight() - ALTEZZA_MARGINE_SUPERIORE - ALTEZZA_MARGINE_INFERIORE - 1;
 		int nColonne = larghezzaBacheca / (JArticlePanel.LARGHEZZA_DEFAULT + MARGINE_ARTICOLI);
-		int nRighe = this.articoliVisualizzati.size() / nColonne;
+		int nRigheNecessarie = this.articoliVisualizzati.size() / nColonne;
 		if (this.articoliVisualizzati.size() % nColonne != 0) {
-			nRighe++;
+			nRigheNecessarie++;
 		}
 
 		this.mainPanel.remove(this.showcasePanel);
-		this.showcasePanel = new JPanel(new GridLayout(nRighe, nColonne, MARGINE_ARTICOLI, MARGINE_ARTICOLI));
+		this.showcasePanel = new JPanel(new GridLayout(nRigheNecessarie, nColonne, MARGINE_ARTICOLI, MARGINE_ARTICOLI));
 		Iterator <Prodotto> itr = this.articoliVisualizzati.iterator();
 		while (itr.hasNext()) {
 			Prodotto prodotto = itr.next();
 			this.showcasePanel.add(new JArticlePanel(this.magazzino, prodotto, this.cliente));
 		}
-		//aggiungo box vuoti per far si che se ci sono pochi prodotti , abbiano comunque la solita dimensione
-		if (nColonne > this.articoliVisualizzati.size()) {
-			int nBoxVuoti = nColonne - this.articoliVisualizzati.size();
-			for (int i = 0; i < nBoxVuoti; i++) {
-				this.showcasePanel.add(Box.createRigidArea(new Dimension(JArticlePanel.LARGHEZZA_DEFAULT, JArticlePanel.ALTEZZA_DEFAULT)), BorderLayout.CENTER);
+		//aggiungo box vuoti per far si che abbiano comunque la solita dimensione
+		if (this.articoliVisualizzati.size() % nColonne != 0) {
+			int boxDaAggiungere = nColonne - (this.articoliVisualizzati.size() % nColonne);
+			System.out.println("NBA1: " + boxDaAggiungere);
+			for (int i = 0; i < boxDaAggiungere; i++) {
+				this.showcasePanel.add(Box.createRigidArea(new Dimension(JArticlePanel.LARGHEZZA_DEFAULT, JArticlePanel.height())), BorderLayout.CENTER);
 			}
-		}
-		if ((nRighe * JArticlePanel.ALTEZZA_DEFAULT) < altezzaBacheca) {
-			int altezzaVuota = altezzaBacheca - (nRighe * JArticlePanel.height ());
-			this.mainPanel.add(Box.createVerticalStrut(altezzaVuota + ALTEZZA_MARGINE_INFERIORE), BorderLayout.PAGE_END);
 		}
 		//aggiorno
 		SwingUtilities.updateComponentTreeUI(this);
@@ -155,7 +153,6 @@ class JArticlePanel extends JPanel {
 	private Cliente cliente;
 
 	private static final int LARGHEZZA_TEXTFIELD_QUANTITA = 50;
-	protected static final int ALTEZZA_DEFAULT = 210;
 	protected static final int LARGHEZZA_DEFAULT = 220;
 	private static final int ALTEZZA_TEXTFIELD_QUANTITA = 20;
 	private static final int DIMENSIONE_ICONA = 120;
@@ -257,12 +254,19 @@ class JArticlePanel extends JPanel {
                 handle.exportAsDrag(panel, e, TransferHandler.COPY);
             }
         });
-		this.setLayout (new BorderLayout(0, MARGINE_GENERALE));
-		this.setBorder (new RoundedBorder(Color.GRAY, DIMENSIONE_BORDO, MARGINE_GENERALE, 0));
-		this.add (imagePanel, BorderLayout.PAGE_START);
-		this.add (infoPanel, BorderLayout.CENTER);
-		this.add (Box.createHorizontalStrut(MARGINE_GENERALE), BorderLayout.WEST);
-		this.add (bottomPanel, BorderLayout.PAGE_END);
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setLayout (new BorderLayout(0, MARGINE_GENERALE));
+        panel.setBorder (new RoundedBorder(Color.GRAY, DIMENSIONE_BORDO, MARGINE_GENERALE, 0));
+        panel.setPreferredSize(new Dimension(LARGHEZZA_DEFAULT, JArticlePanel.height()));
+        panel.add (imagePanel, BorderLayout.PAGE_START);
+        panel.add (infoPanel, BorderLayout.CENTER);
+        panel.add (Box.createHorizontalStrut(MARGINE_GENERALE), BorderLayout.WEST);
+        panel.add (bottomPanel, BorderLayout.PAGE_END);
+//        JPanel panelLV2 = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+//        panelLV2.add(panelLV1);
+//        panelLV2.setBackground(Color.YELLOW);
+        this.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        this.add (panel, BorderLayout.PAGE_START);
 	}
 	
 	public static int height () {
