@@ -2,6 +2,8 @@ package grafica;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
@@ -33,7 +35,10 @@ public class JeCommerceFrame extends JFrame implements ComponentListener {
 	public JeCommerceFrame (Utente utente, Magazzino magazzino) {
 		super (TITOLO);
 		this.utente = utente;
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		Rectangle bounds = env.getMaximumWindowBounds();
+		this.setSize(bounds.width, bounds.height);
+//		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setMinimumSize(new Dimension(LARGHEZZA_MINIMA_JFRAME, ALTEZZA_MINIMA_JFRAME));
 		this.addComponentListener(this);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
