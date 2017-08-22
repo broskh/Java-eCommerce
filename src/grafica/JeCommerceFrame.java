@@ -27,7 +27,7 @@ public class JeCommerceFrame extends JFrame implements ComponentListener {
 	public static final int ALTEZZA_MENU = 22;
 	public static final int ALTEZZA_STATUSBAR = 22;
 	
-	private static final int ALTEZZA_MINIMA_JFRAME = 600;
+	private static final int ALTEZZA_MINIMA_JFRAME = 650;
 	private static final int LARGHEZZA_MINIMA_JFRAME = 800;
  
 	public JeCommerceFrame (Utente utente, Magazzino magazzino) {
@@ -60,17 +60,6 @@ public class JeCommerceFrame extends JFrame implements ComponentListener {
 	public JPanel getJContentPanel () {
 		return this.jContentPanel;
 	}
-	
-//	public void changeMenu (Utente utente) {
-//		if (utente.isAmministratore()) {
-//			this.jMenuBar = new JAdminMenuBar ();
-//		}
-//		else {
-//			this.jMenuBar = new JClientMenuBar ();
-//		}
-//		this.remove(this.jMenuBar);
-//		this.add(this.jMenuBar, BorderLayout.PAGE_START);
-//	}
 
 	@Override
 	public void componentHidden(ComponentEvent e) {
@@ -85,6 +74,7 @@ public class JeCommerceFrame extends JFrame implements ComponentListener {
 	@Override
 	public void componentResized(ComponentEvent e) {
 		if (!this.utente.isAmministratore()) {
+			((JClientContentPanel) this.jContentPanel).resetPagina();;
 			((JClientContentPanel) this.jContentPanel).aggiornaArticoli ();
 		}		
 	}

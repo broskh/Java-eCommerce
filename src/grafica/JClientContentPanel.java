@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.IOException;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 
@@ -36,7 +35,6 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -50,30 +48,70 @@ import negozio.Prodotto;
 
 import utenza.Cliente;
 
-public class JClientContentPanel extends JPanel {
+public class JClientContentPanel extends JPanel implements ActionListener{
 	private static final long serialVersionUID = -3383648558571677903L;
 
 	private Magazzino magazzino;
 	private Cliente cliente;
 	private ArrayList <Prodotto> articoliVisualizzati;
+	private int nPagina;
+	private int pagineMax;
 	
 	private JClientControlPanel jClientControlPanel;
 	private JPanel mainPanel;
 	private JPanel showcasePanel;
+	private JButton backButton;
+	private JButton forwardButton;
 	
 	private static final int LARGHEZZA_MARGINE_DESTRO = 40;
 	private static final int LARGHEZZA_MARGINE_SINISTRO = 40;	
-	private static final int ALTEZZA_MARGINE_SUPERIORE = 40;	
-	private static final int ALTEZZA_MARGINE_INFERIORE = 40;	
-	private static final int MARGINE_ARTICOLI = 20;
+	private static final int ALTEZZA_MARGINE_SUPERIORE = 15;	
+	private static final int ALTEZZA_MARGINE_INFERIORE = 15;	
+	private static final int ALTEZZA_MARGINE_BOTTONI_SUPERIORE = 10;	
+	private static final int MARGINE_ARTICOLI = 10;
+	private static final int SPAZIO_BOTTONI = 450;
+	
+	private static final String BACK_IMAGE_PATH = "media/img/back_icon.png";
+	private static final String FORWARD_IMAGE_PATH = "media/img/forward_icon.png";
+
+	
+	private static final String BACK_BUTTON_TEXT = "<";
+	private static final String FORWARD_BUTTON_TEXT = ">";
 
 	public JClientContentPanel(Magazzino magazzino, Cliente cliente) {
 		this.magazzino = magazzino;
 		this.cliente = cliente;
 		this.articoliVisualizzati = this.magazzino.getArticoli();
+		this.nPagina = 0;
+		this.pagineMax = 0;
 		
 		this.jClientControlPanel = new JClientControlPanel(this);
 		this.jClientControlPanel.setBorder(new EtchedBorder ());
+		
+		JPanel buttonsPanelLV2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		this.backButton = new JButton();
+		this.backButton.addActionListener(this);
+		try {
+		    Image img = ImageIO.read(new File (BACK_IMAGE_PATH));
+		    this.backButton.setIcon(new ImageIcon(img));
+		} catch (Exception ex) {
+			this.backButton.setText(BACK_BUTTON_TEXT);
+		}
+		this.forwardButton = new JButton();
+		this.forwardButton.addActionListener(this);
+		try {
+		    Image img = ImageIO.read(new File (FORWARD_IMAGE_PATH));
+		    this.forwardButton.setIcon(new ImageIcon(img));
+		} catch (Exception ex) {
+			this.forwardButton.setText(FORWARD_BUTTON_TEXT);
+		}
+		buttonsPanelLV2.add(this.backButton);
+		buttonsPanelLV2.add(Box.createHorizontalStrut(SPAZIO_BOTTONI));
+		buttonsPanelLV2.add(this.forwardButton);
+		JPanel buttonsPanelLV1 = new JPanel(new BorderLayout());
+		buttonsPanelLV1.add(Box.createVerticalStrut(ALTEZZA_MARGINE_BOTTONI_SUPERIORE), BorderLayout.PAGE_START);
+		buttonsPanelLV1.add(buttonsPanelLV2, BorderLayout.CENTER);
+		buttonsPanelLV1.add(Box.createVerticalStrut(ALTEZZA_MARGINE_INFERIORE), BorderLayout.PAGE_END);
 
 		this.showcasePanel = new JPanel();
 		this.mainPanel = new JPanel(new BorderLayout());
@@ -81,15 +119,11 @@ public class JClientContentPanel extends JPanel {
 		this.mainPanel.add(Box.createHorizontalStrut(LARGHEZZA_MARGINE_SINISTRO), BorderLayout.WEST);
 		this.mainPanel.add(this.showcasePanel, BorderLayout.CENTER);
 		this.mainPanel.add(Box.createHorizontalStrut(LARGHEZZA_MARGINE_DESTRO), BorderLayout.EAST);
-		this.mainPanel.add(Box.createVerticalStrut(ALTEZZA_MARGINE_INFERIORE), BorderLayout.PAGE_END);
-		JScrollPane scrollPanel = new JScrollPane(this.mainPanel);
-        scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPanel.setBorder(null);
+		this.mainPanel.add(buttonsPanelLV1, BorderLayout.PAGE_END);
 		
 		this.setLayout(new BorderLayout());
 		this.add(this.jClientControlPanel, BorderLayout.PAGE_START);
-		this.add(scrollPanel, BorderLayout.CENTER);
+		this.add(this.mainPanel, BorderLayout.CENTER);
 	}
 	
 	public void setArticoliVisualizzati (ArrayList <Prodotto> articoliVisualizzati) {
@@ -107,31 +141,52 @@ public class JClientContentPanel extends JPanel {
 	
 	public void aggiornaArticoli () {
 		int larghezzaBacheca = ((JeCommerceFrame) SwingUtilities.getWindowAncestor(this)).getWidth() - LARGHEZZA_MARGINE_DESTRO - LARGHEZZA_MARGINE_SINISTRO;
-//		int altezzaBacheca = this.getHeight() - this.jClientControlPanel.getHeight() - ALTEZZA_MARGINE_SUPERIORE - ALTEZZA_MARGINE_INFERIORE - 1;
+		int altezzaBacheca = this.getHeight() - this.jClientControlPanel.getHeight() - ALTEZZA_MARGINE_SUPERIORE - ALTEZZA_MARGINE_INFERIORE - ALTEZZA_MARGINE_BOTTONI_SUPERIORE - this.backButton.getHeight() - 1;
 		int nColonne = larghezzaBacheca / (JArticlePanel.LARGHEZZA_DEFAULT + MARGINE_ARTICOLI);
-		int nRigheNecessarie = this.articoliVisualizzati.size() / nColonne;
-		if (this.articoliVisualizzati.size() % nColonne != 0) {
-			nRigheNecessarie++;
+		int nRighe = altezzaBacheca / (JArticlePanel.height() + MARGINE_ARTICOLI);
+		int nVisualizzabili = nRighe * nColonne;
+		this.pagineMax = this.articoliVisualizzati.size() / nVisualizzabili;
+		if (this.articoliVisualizzati.size() % nVisualizzabili == 0) {
+			this.pagineMax--;
 		}
 
 		this.mainPanel.remove(this.showcasePanel);
-		this.showcasePanel = new JPanel(new GridLayout(nRigheNecessarie, nColonne, MARGINE_ARTICOLI, MARGINE_ARTICOLI));
-		Iterator <Prodotto> itr = this.articoliVisualizzati.iterator();
-		while (itr.hasNext()) {
-			Prodotto prodotto = itr.next();
-			this.showcasePanel.add(new JArticlePanel(this.magazzino, prodotto, this.cliente));
+		this.showcasePanel = new JPanel(new GridLayout(nRighe, nColonne, MARGINE_ARTICOLI, MARGINE_ARTICOLI));
+		for (int i = 0; i < nVisualizzabili && (i + nVisualizzabili * this.nPagina) < this.articoliVisualizzati.size(); i++) {
+			this.showcasePanel.add(new JArticlePanel(this.magazzino, this.articoliVisualizzati.get(i + nVisualizzabili * this.nPagina), this.cliente));
 		}
-		//aggiungo box vuoti per far si che abbiano comunque la solita dimensione
-		if (this.articoliVisualizzati.size() % nColonne != 0) {
-			int boxDaAggiungere = nColonne - (this.articoliVisualizzati.size() % nColonne);
-			System.out.println("NBA1: " + boxDaAggiungere);
-			for (int i = 0; i < boxDaAggiungere; i++) {
-				this.showcasePanel.add(Box.createRigidArea(new Dimension(JArticlePanel.LARGHEZZA_DEFAULT, JArticlePanel.height())), BorderLayout.CENTER);
+		if (this.nPagina == this.pagineMax && this.articoliVisualizzati.size() / nVisualizzabili != 0) {
+			int box = nVisualizzabili - (this.articoliVisualizzati.size() % nVisualizzabili);
+			for (int i = 0; i < box; i++) {
+				this.showcasePanel.add(Box.createRigidArea(new Dimension(JArticlePanel.LARGHEZZA_DEFAULT, JArticlePanel.height())));
 			}
 		}
 		//aggiorno
-		SwingUtilities.updateComponentTreeUI(this);
+		this.mainPanel.updateUI();
 		this.mainPanel.add(this.showcasePanel, BorderLayout.CENTER);
+	}
+	
+	public void resetPagina () {
+		this.nPagina = 0;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		System.out.println(this.nPagina);
+		if (e.getSource().equals(this.backButton)) {
+			this.nPagina--;
+			if (this.nPagina < 0) {
+				this.nPagina = 0;
+			}
+			this.aggiornaArticoli();
+		}
+		else if (e.getSource().equals(this.forwardButton)) {
+			this.nPagina++;
+			if (this.nPagina > this.pagineMax) {
+				this.nPagina = this.pagineMax;
+			}
+			this.aggiornaArticoli();
+		}
 	}
 }
 
@@ -262,9 +317,6 @@ class JArticlePanel extends JPanel {
         panel.add (infoPanel, BorderLayout.CENTER);
         panel.add (Box.createHorizontalStrut(MARGINE_GENERALE), BorderLayout.WEST);
         panel.add (bottomPanel, BorderLayout.PAGE_END);
-//        JPanel panelLV2 = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-//        panelLV2.add(panelLV1);
-//        panelLV2.setBackground(Color.YELLOW);
         this.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
         this.add (panel, BorderLayout.PAGE_START);
 	}
@@ -372,7 +424,7 @@ class JClientControlPanel extends JPanel implements ActionListener{
 	private static final int MARGINE_LABEL = 20;
 	private static final int MARGINE_DESTRO = 20;
 	private static final int MARGINE_SINISTRO = 20;
-	private static final int MARGINE_ORIZZONTALE_LAYOUT = 80;
+	private static final int MARGINE_ORIZZONTALE_LAYOUT = 50;
 
 	private static final String FILTER_TYPE_LABEL = "Filtra per:";
 	private static final String FILTER_STRING_LABEL = "Criterio di ricerca:";
