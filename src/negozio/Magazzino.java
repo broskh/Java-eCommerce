@@ -20,6 +20,13 @@ import java.util.ArrayList;
  */
 public class Magazzino implements GestioneProdotti {
 	private ArrayList <Prodotto> articoli; /**<Articoli presenti in magazzino.*/
+
+	public static final String STRINGA_FILTRO_NOME = "Nome";
+	public static final String STRINGA_FILTRO_MARCA = "Marca";
+	public static final String STRINGA_FILTRO_CODICE = "Codice";
+	public static final String STRINGA_FILTRO_CATEGORIA = "Categoria";
+	public static final String STRINGA_FILTRO_PREZZO = "Prezzo";
+	public static final String STRINGA_FILTRO_QUANTITA = "Quantità";
 	
 	/**
 	 * Crea un Magazzino vuoto.
@@ -189,19 +196,32 @@ public class Magazzino implements GestioneProdotti {
 	
 	/**
 	 * Filtra gli articoli presenti in magazzino e ritorna quelli il la cui quantità è
-	 * msggiore di quella indicata.
+	 * maggiore di quella indicata.
 	 * 
 	 * @param quantitaMin Valore minimo della quantità.
+	 * @param quantitaMax Valore massimo della quantità.
 	 * @return gli articoli che rispettano il criterio di filtraggio.
 	 */
-	public ArrayList <Prodotto> filtraPerQuantita (int quantitaMin) {
+	public ArrayList <Prodotto> filtraPerQuantita (float quantitaMin, float quantitaMax) {
 		ArrayList <Prodotto> articoliFiltrati = new ArrayList <Prodotto> ();
 		for (Prodotto articolo : this.articoli) {
-			if (articolo.getQuantita() >= quantitaMin) {
+			if (articolo.getQuantita() >= quantitaMin && articolo.getQuantita() <= quantitaMax) {
 				articoliFiltrati.add(articolo);
 			}
 		}
 		return articoliFiltrati;
+	}
+	
+	/**
+	 * Filtra gli articoli presenti in magazzino e ritorna quelli il la cui quantità è
+	 * maggiore di quella indicata.
+	 * 
+	 * @param quantitaMin Valore minimo della quantità.
+	 * @param quantitaMax Valore massimo della quantità.
+	 * @return gli articoli che rispettano il criterio di filtraggio.
+	 */
+	public ArrayList <Prodotto> filtraPerQuantita (int quantitaMin, int quantitaMax) {
+		return this.filtraPerQuantita((float)quantitaMin, (float)quantitaMax);
 	}
 	
 	/**
@@ -249,11 +269,33 @@ public class Magazzino implements GestioneProdotti {
 	@Override
 	public Prodotto getProdotto(String codice) {
 		for (Prodotto articolo : this.articoli) {
-			if (articolo.getCodice() == codice) {
+			if (articolo.getCodice().equals(codice)) {
 				return articolo;
 			}
 		}		
 		return null;
+	}
+
+	@Override
+	public float MaxPrezzo() {
+		float max = 0;
+		for (Prodotto articolo : this.articoli) {
+			if (articolo.getPrezzo() > max) {
+				max = articolo.getPrezzo();
+			}
+		}
+		return max;
+	}
+
+	@Override
+	public int MaxQuantita() {
+		int max = 0;
+		for (Prodotto articolo : this.articoli) {
+			if (articolo.getQuantita() > max) {
+				max = articolo.getQuantita();
+			}
+		}
+		return max;
 	}
 
 	@Override

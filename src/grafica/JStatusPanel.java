@@ -1,6 +1,5 @@
 package grafica;
 
-import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.JLabel;
@@ -25,7 +24,7 @@ public class JStatusPanel extends JPanel{
 	private static final String stringaTipoAmministratore = "Amministratore";
 	private static final String stringaTipoCliente = "Cliente";
 	private static final String autore = "Alessio Scheri";
-	private static final int altezza = 22;
+//	privtae static final int altezza = 22;
 	
 	public JStatusPanel (Utente utente) {
 //		//inizializzo gli attributi contenenti i valori da utilizzare
@@ -33,7 +32,7 @@ public class JStatusPanel extends JPanel{
 //		this.cognome = cognome;
 //		this.tipo = tipo;
 		//setto la grafica del panel
-		this.setPreferredSize(new Dimension(this.getWidth(), altezza));
+//		this.setPreferredSize(new Dimension(this.getWidth(), altezza));
 		this.setLayout(new GridLayout(1,3));
 		//setto i vari componenti
 		this.jNameLabel = new JLabel(intestazioneNomeUtente + utente.getNome() + " " + utente.getCognome());
