@@ -260,4 +260,7 @@ public class Magazzino implements GestioneProdotti {
 	public String toString() {
 		return "Magazzino [articoli=" + articoli + "]";
 	}
+	
+	
+
 }

@@ -24,7 +24,50 @@ public class Java_eCommerce  {
 		JeCommerceFrame jeCommerceFrame = null;
 		UserAccessListener userAccessListener = new UserAccessListener(jUserFrame, jeCommerceFrame, utente, magazzino, FILE_MAGAZZINO);
 		
+		
+		
+		magazzino.caricaMagazzino("media/saves/save21.mag");   /* scheri */
+		
+		
+		
 		jUserFrame.setVisible(true);
 		jUserFrame.setAccessListener(userAccessListener);
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

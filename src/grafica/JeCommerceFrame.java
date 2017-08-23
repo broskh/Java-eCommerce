@@ -1,6 +1,7 @@
 package grafica;
 
 import java.awt.BorderLayout;
+
 import java.awt.Dimension;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -21,6 +22,7 @@ public class JeCommerceFrame extends JFrame implements ComponentListener {
 	private JStatusPanel jStatusPanel;
 	
 	private Utente utente;
+	private Magazzino magazzino;
 
 	private static final String TITOLO = "Java-eCommerce";
 	
@@ -42,7 +44,7 @@ public class JeCommerceFrame extends JFrame implements ComponentListener {
 
 		if (this.utente.isAmministratore()) {
 			this.jMenuBar = new JAdminMenuBar();
-			this.jContentPanel = new JAdminContentPanel();
+			this.jContentPanel = new JAdminContentPanel(magazzino);
 		}
 		else {
 			this.jMenuBar = new JClientMenuBar();

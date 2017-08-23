@@ -1,6 +1,7 @@
 package grafica;
 
 import grafica.JAddProductFrame;
+import grafica.JModifyProductFrame;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -14,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 
 import grafica.JUserFrame;
+import negozio.Magazzino;
 
 public class JAdminControlPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -6258711606843235850L;
@@ -30,7 +32,6 @@ public class JAdminControlPanel extends JPanel implements ActionListener {
 	private static final String testoEliminaButton = "Elimina";
 	
 	
-
 	
 	private JButton jSalvaButton;
 	private JButton jCaricaButton;
@@ -83,6 +84,7 @@ public class JAdminControlPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e)
 	{
 		
+		
 		if(e.getActionCommand().equals("Salva"))
 		{
 			this.jSalvaButton.setText("save");
@@ -95,14 +97,20 @@ public class JAdminControlPanel extends JPanel implements ActionListener {
 		{
 			JAddProductFrame jAddProductFrame = new JAddProductFrame();
 			jAddProductFrame.setVisible(true);
+			
 		}
 		if(e.getActionCommand().equals("Modifica"))
 		{
-			this.jModificaButton.setText("modify");
+			
+			/*JModifyProductFrame jModifyProductFrame = new JModifyProductFrame();
+			jModifyProductFrame.setVisible(true);*/
+			JSearchProductFrame jSearchProductFrame = new JSearchProductFrame();
+			jSearchProductFrame.setVisible(true);
 		}
 		if(e.getActionCommand().equals("Elimina"))
 		{
-			this.jEliminaButton.setText("delete");
+			JSearchProductFrame jSearchProductFrame = new JSearchProductFrame();
+			jSearchProductFrame.setVisible(true);
 		}
 	}
 }

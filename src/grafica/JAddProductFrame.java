@@ -13,8 +13,8 @@ public class JAddProductFrame extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	protected static final String TITOLO = "Aggiungi prodotto";
-	protected static final int ALTEZZA_MINIMA_FRAME = 200;
-	protected static final int LARGHEZZA_MINIMA_FRAME = 400;
+	protected static final int ALTEZZA_MINIMA_FRAME = 280; //200
+	protected static final int LARGHEZZA_MINIMA_FRAME = 300; //400
 	
 	private JAddProductPanel jAddProductPanel;
 	
