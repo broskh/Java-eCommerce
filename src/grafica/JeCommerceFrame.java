@@ -43,7 +43,7 @@ public class JeCommerceFrame extends JFrame implements ComponentListener {
 		this.setLayout(new BorderLayout());
 
 		if (this.utente.isAmministratore()) {
-			this.jMenuBar = new JAdminMenuBar();
+			this.jMenuBar = new JAdminMenuBar(magazzino);
 			this.jContentPanel = new JAdminContentPanel(magazzino);
 		}
 		else {

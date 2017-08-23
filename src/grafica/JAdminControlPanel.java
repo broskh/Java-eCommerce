@@ -31,7 +31,7 @@ public class JAdminControlPanel extends JPanel implements ActionListener {
 	private static final String testoModifcaButton = "Modifica";
 	private static final String testoEliminaButton = "Elimina";
 	
-	
+	private Magazzino magazzino;
 	
 	private JButton jSalvaButton;
 	private JButton jCaricaButton;
@@ -39,8 +39,10 @@ public class JAdminControlPanel extends JPanel implements ActionListener {
 	private JButton jModificaButton;
 	private JButton jEliminaButton;
 	
-	public JAdminControlPanel()
+	public JAdminControlPanel(Magazzino magazzino)
 	{
+		
+		this.magazzino = magazzino;
 		this.setLayout(new FlowLayout(FlowLayout.LEADING,this.MARGINE_ORIZZONTALE_LAYOUT,this.MARGINE_VERTICALE_LAYOUT));
 		
 		this.jSalvaButton = new JButton(this.testoSalvaButton);
@@ -104,14 +106,16 @@ public class JAdminControlPanel extends JPanel implements ActionListener {
 			
 			/*JModifyProductFrame jModifyProductFrame = new JModifyProductFrame();
 			jModifyProductFrame.setVisible(true);*/
-			JSearchProductFrame jSearchProductFrame = new JSearchProductFrame();
+			JSearchProductFrame jSearchProductFrame = new JSearchProductFrame(magazzino);
 			jSearchProductFrame.setVisible(true);
 		}
 		if(e.getActionCommand().equals("Elimina"))
 		{
-			JSearchProductFrame jSearchProductFrame = new JSearchProductFrame();
+			JSearchProductFrame jSearchProductFrame = new JSearchProductFrame(magazzino);
 			jSearchProductFrame.setVisible(true);
 		}
 	}
+
+	
 }
 

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -38,19 +39,30 @@ public class JSearchProductPanel extends JPanel implements ActionListener {
 	private static final String TESTO_STRINGA_LABEL = "Selezionare il codice del prodotto";
 	private static final String TESTO_CERCA_BUTTON = "Cerca";
 	
-	protected static final String[] STRINGA_CODICI = {"123676373873","456","789"};
-	
 	
 	
 	public JSearchProductPanel(Magazzino magazzino)
 	{
-		
+		ArrayList <String> s = new <String> ArrayList();
+		ArrayList <Prodotto> l = new <Prodotto> ArrayList();
 		this.magazzino = magazzino;
-	
+		l = magazzino.getArticoli();
+		for(int i = 0;i<l.size();i++)
+		{
+			s.add(i, l.get(i).getCodice());
+		}
+		
+		
+		
+		
+		String[] STRINGA_CODICI = s.toArray(new String[s.size()]);
+		this.jCodiciComboBox = new JComboBox(STRINGA_CODICI);
+		
+		
 		
 		this.jStringaLabel = new JLabel(this.TESTO_STRINGA_LABEL);
 		
-		this.jCodiciComboBox = new JComboBox <String> (STRINGA_CODICI);
+		
 	
 
 		
@@ -62,6 +74,7 @@ public class JSearchProductPanel extends JPanel implements ActionListener {
 		JPanel pannello = new JPanel();//(new GridLayout(3,1));
 		pannello.add(Box.createRigidArea(new Dimension(3,3)));
 		pannello.add(this.jStringaLabel);
+		pannello.add(Box.createHorizontalStrut(500));
 		pannello.add(this.jCodiciComboBox);
 		pannello.add(Box.createHorizontalStrut(500));
 		pannello.add(Box.createVerticalStrut(100));
@@ -81,9 +94,10 @@ public class JSearchProductPanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		File f = null;
-		prodotto = new Prodotto("nome","marca","codice","categoria",20.0f,"ciao",10);
-		//prodotto = magazzino.getProdotto("quella della combo box");  //cercare la stringa della combo box
+		String codice = (String) this.jCodiciComboBox.getSelectedItem();
+		prodotto = magazzino.getProdotto(codice);
+		
+		
 		this.modifyProductFrame = new JModifyProductFrame(prodotto);
 		this.modifyProductFrame.setVisible(true);
 		

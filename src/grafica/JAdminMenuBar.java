@@ -8,6 +8,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import negozio.Magazzino;
+
 public class JAdminMenuBar extends JMenuBar implements ActionListener {
 	private static final long serialVersionUID = 8251356911457819974L;
 	private JMenu fileMenu;
@@ -18,9 +20,12 @@ public class JAdminMenuBar extends JMenuBar implements ActionListener {
 	private JMenuItem aggiungiMenuItem;
 	private JMenuItem modificaMenuItem;
 	private JMenuItem eliminaMenuItem;
+	
+	private Magazzino magazzino;
 
-	public JAdminMenuBar()
+	public JAdminMenuBar(Magazzino magazzino)
 	{
+		this.magazzino = magazzino;
 		this.fileMenu = new JMenu("File");
 		this.gestioneMenu = new JMenu("Gestione");
 		this.closeMenuItem = new JMenuItem("Chiudi");
@@ -64,12 +69,12 @@ public class JAdminMenuBar extends JMenuBar implements ActionListener {
 		}
 		if (e.getActionCommand().equals("modifica"))
 		{
-			JSearchProductFrame jSearchProductFrame = new JSearchProductFrame();
+			JSearchProductFrame jSearchProductFrame = new JSearchProductFrame(magazzino);
 			jSearchProductFrame.setVisible(true);
 		}
 		if (e.getActionCommand().equals("elimina"))
 		{
-			JSearchProductFrame jSearchProductFrame = new JSearchProductFrame();
+			JSearchProductFrame jSearchProductFrame = new JSearchProductFrame(magazzino);
 			jSearchProductFrame.setVisible(true);
 		}
 		

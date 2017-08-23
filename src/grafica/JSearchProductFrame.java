@@ -22,7 +22,7 @@ public class JSearchProductFrame extends JFrame{
 	
 	private JSearchProductPanel jSearchProductPanel;
 	
-	public JSearchProductFrame()
+	public JSearchProductFrame(Magazzino magazzino)
 	{
 		super(JSearchProductFrame.TITOLO);
 		this.magazzino = magazzino;

@@ -44,8 +44,9 @@ public class JAdminContentPanel extends JPanel {
 	public JAdminContentPanel(Magazzino magazzino)
 	{
 		this.magazzino = magazzino;   /**/
+		
 		this.setLayout(new BorderLayout());
-		this.jAdminControlPanel = new JAdminControlPanel();
+		this.jAdminControlPanel = new JAdminControlPanel(magazzino);
 		this.jAdminControlPanel.setBorder(new EtchedBorder());
 		this.add(this.jAdminControlPanel, BorderLayout.PAGE_START);
 		
