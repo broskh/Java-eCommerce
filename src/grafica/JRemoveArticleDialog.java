@@ -15,30 +15,32 @@ import negozio.Prodotto;
 
 public class JRemoveArticleDialog extends JDialog implements ActionListener{
 	private static final long serialVersionUID = -4438831458822655741L;
+	
+	private Carrello cart;
 
 	private JButton okButton;
 	private JButton cancelButton;
 	private JModifyArticlePanel articlePanel;
-	private Carrello carrello;
+	
+	private static final int WIDTH = 400;
+	private static final int HEIGHT = 160;
+	private static final int SIDE_MARGIN = 30;
+	private static final int TOP_MARGIN = 30;
+	private static final int BUTTONS_SPACE = 50;
+	private static final int BOTTOM_MARGIN = 30;
 
-	private static final String TITOLO = "Rimuovi articolo";
 	private static final String OK_STRING = "RIMUOVI";
 	private static final String CANCEL_STRING = "ANNULLA";
-	private static final int LARGHEZZA_MINIMA = 400;
-	private static final int ALTEZZA_MINIMA = 160;
-	private static final int MARGINE_LATERALE = 30;
-	private static final int MARGINE_SUPERIORE = 30;
-	private static final int SPAZIO_BOTTONI = 50;
-	private static final int MARGINE_INFERIORE = 30;
+	private static final String TITLE = "Rimuovi articolo";
 	
-	public JRemoveArticleDialog (JeCommerceFrame mainFrame, Carrello carrello) {
-		super (mainFrame, TITOLO, JDialog.ModalityType.DOCUMENT_MODAL);
-		this.setMinimumSize(new Dimension(LARGHEZZA_MINIMA, ALTEZZA_MINIMA));
+	public JRemoveArticleDialog (JeCommerceFrame mainFrame, Carrello cart) {
+		super (mainFrame, TITLE, JDialog.ModalityType.DOCUMENT_MODAL);
+		this.setMinimumSize(new Dimension(WIDTH, HEIGHT));
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		
 		this.articlePanel = new JModifyArticlePanel();
-		this.carrello = carrello;
+		this.cart = cart;
 
 		this.okButton = new JButton(OK_STRING);
 		this.okButton.addActionListener(this);
@@ -46,20 +48,20 @@ public class JRemoveArticleDialog extends JDialog implements ActionListener{
 		this.cancelButton.addActionListener(this);
 		JPanel buttonsPanel = new JPanel(new BorderLayout());
 		buttonsPanel.add(cancelButton, BorderLayout.WEST);
-		buttonsPanel.add(Box.createHorizontalStrut(SPAZIO_BOTTONI), BorderLayout.CENTER);
+		buttonsPanel.add(Box.createHorizontalStrut(BUTTONS_SPACE), BorderLayout.CENTER);
 		buttonsPanel.add(okButton, BorderLayout.EAST);
 		
 		JPanel bottomPanel = new JPanel(new BorderLayout());
-		bottomPanel.add(Box.createHorizontalStrut(MARGINE_LATERALE), BorderLayout.WEST);
+		bottomPanel.add(Box.createHorizontalStrut(SIDE_MARGIN), BorderLayout.WEST);
 		bottomPanel.add(buttonsPanel, BorderLayout.CENTER);
-		bottomPanel.add(Box.createHorizontalStrut(MARGINE_LATERALE), BorderLayout.EAST);
-		bottomPanel.add(Box.createVerticalStrut(MARGINE_INFERIORE), BorderLayout.PAGE_END);
+		bottomPanel.add(Box.createHorizontalStrut(SIDE_MARGIN), BorderLayout.EAST);
+		bottomPanel.add(Box.createVerticalStrut(BOTTOM_MARGIN), BorderLayout.PAGE_END);
 
 		this.setLayout(new BorderLayout());
-		this.add(Box.createVerticalStrut(MARGINE_SUPERIORE), BorderLayout.PAGE_START);
-		this.add(Box.createHorizontalStrut(MARGINE_LATERALE), BorderLayout.WEST);
+		this.add(Box.createVerticalStrut(TOP_MARGIN), BorderLayout.PAGE_START);
+		this.add(Box.createHorizontalStrut(SIDE_MARGIN), BorderLayout.WEST);
 		this.add(articlePanel, BorderLayout.CENTER);
-		this.add(Box.createHorizontalStrut(MARGINE_LATERALE), BorderLayout.EAST);
+		this.add(Box.createHorizontalStrut(SIDE_MARGIN), BorderLayout.EAST);
 		this.add(bottomPanel, BorderLayout.PAGE_END);
 	}
 
@@ -69,12 +71,12 @@ public class JRemoveArticleDialog extends JDialog implements ActionListener{
 			this.dispose();
 		}
 		else if (e.getSource().equals(this.okButton)) {
-			String codice = this.articlePanel.getCode().toString();
-			Prodotto articolo = this.carrello.getProdotto(codice);
-			if (articolo != null) {
-				int quantita = this.articlePanel.getAmount();
-				if (quantita > articolo.getQuantita()) {
-					quantita = articolo.getQuantita();
+			String code = this.articlePanel.getCode().toString();
+			Prodotto article = this.cart.getProdotto(code);
+			if (article != null) {
+				int amount = this.articlePanel.getAmount();
+				if (amount > article.getQuantita()) {
+					amount = article.getQuantita();
 				}
 				this.dispose();
 			}

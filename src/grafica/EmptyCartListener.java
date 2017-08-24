@@ -7,21 +7,21 @@ import negozio.Carrello;
 
 public class EmptyCartListener implements ActionListener {
 
-	private Carrello carrello;
+	private Carrello cart;
 	private ArticlesTableModel articlesTableModel;
 	
-	public EmptyCartListener (ArticlesTableModel articlesTableModel, Carrello carrello) {
-		this.carrello = carrello;
+	public EmptyCartListener (ArticlesTableModel articlesTableModel, Carrello cart) {
+		this.cart = cart;
 		this.articlesTableModel = articlesTableModel;
 	}
 	
-	public EmptyCartListener (Carrello carrello) {
-		this (null, carrello);
+	public EmptyCartListener (Carrello cart) {
+		this (null, cart);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		this.carrello.svuota();
+		this.cart.svuota();
 		if (this.articlesTableModel != null) {
 			this.articlesTableModel.fireTableDataChanged();
 		}

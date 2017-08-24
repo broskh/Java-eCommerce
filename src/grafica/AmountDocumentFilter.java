@@ -16,10 +16,36 @@ public class AmountDocumentFilter extends DocumentFilter {
 	public AmountDocumentFilter() {
 		this (-1);
 	}
+
+	private boolean testInteger (String text) {
+		try {
+			Integer.parseInt(text);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+	
+	private String correctValue (String value) {
+		int intValue = Integer.parseInt(value);
+		
+		if (this.maxValue != -1 && intValue > this.maxValue) {
+			return Integer.toString(this.maxValue);
+		}
+		return Integer.toString(intValue);
+	}
+	
+	public void setMaxValue (int maxValue) {
+		this.maxValue = maxValue;
+	}
+	
+	public int getMaxValue () {
+		return this.maxValue;
+	}
 	
 	@Override
-	public void insertString (FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-
+	public void insertString (FilterBypass fb, int offset, String string, 
+			AttributeSet attr) throws BadLocationException {
 		Document doc = fb.getDocument();
 		StringBuilder sb = new StringBuilder();
 		sb.append(doc.getText(0, doc.getLength()));
@@ -32,26 +58,9 @@ public class AmountDocumentFilter extends DocumentFilter {
 		}
 	}
 
-	private boolean testInteger (String text) {
-		try {
-			Integer.parseInt(text);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
-	
-	private String correctValue (String string) {
-		int value = Integer.parseInt(string);
-		
-		if (this.maxValue != -1 && value > this.maxValue) {
-			return Integer.toString(this.maxValue);
-		}
-		return Integer.toString(value);
-	}
-
 	@Override
-	public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+	public void replace(FilterBypass fb, int offset, int length, String text, 
+			AttributeSet attrs) throws BadLocationException {
 
 		Document doc = fb.getDocument();
 		StringBuilder sb = new StringBuilder();
@@ -59,15 +68,16 @@ public class AmountDocumentFilter extends DocumentFilter {
 		sb.replace(offset, offset + length, text);
 
 		if (this.testInteger (sb.toString())) {
-			super.replace(fb, 0, doc.getLength(), this.correctValue(sb.toString()), attrs);
+			super.replace(fb, 0, doc.getLength(), 
+					this.correctValue(sb.toString()), attrs);
 		} else {
          // 	warn the user and don't allow the insert
 		}
-
 	}
 	
 	@Override
-	public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {
+	public void remove(FilterBypass fb, int offset, int length) 
+			throws BadLocationException {
 		Document doc = fb.getDocument();
 		StringBuilder sb = new StringBuilder();
 		sb.append(doc.getText(0, doc.getLength()));
@@ -79,6 +89,5 @@ public class AmountDocumentFilter extends DocumentFilter {
 			this.replace(fb, offset, length, "0", null);
 			// warn the user and don't allow the insert
 		}
-
 	}
 }

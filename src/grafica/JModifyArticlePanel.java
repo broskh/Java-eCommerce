@@ -18,18 +18,19 @@ public class JModifyArticlePanel extends JPanel{
 	
 	private StringBuilder code;
 	
-	private static int SPAZIO_FRA_TEXTFIELD = 20;
-	private static int LARGHEZZA_TEXTFIELD_CODICE = 150;
-	private static int COLONNE_TEXTFIELD_QUANTITA = 3;
-	private static int QUANTITA_DEFAULT = 1;
-	private static String STRINGA_CODICE = "Codice: ";
-	private static String STRINGA_QUANTITA = "Qnt: ";
+	private static int TEXTFIELDS_SPACE = 20;
+	private static int CODE_TEXTFIELD_WIDTH = 150;
+	private static int AMOUNT_TEXTFIELD_COLUMNS = 3;
+	private static int DEFAULT_AMOUNT = 1;
+	private static String CODE_TEXT = "Codice: ";
+	private static String AMOUNT_TEXT = "Qnt: ";
 	
 	public JModifyArticlePanel () {
 		this.code = new StringBuilder();
 		
 		this.codeTextfield = new JTextField();
-		this.codeTextfield.setPreferredSize(new Dimension(LARGHEZZA_TEXTFIELD_CODICE, this.codeTextfield.getPreferredSize().height));
+		this.codeTextfield.setPreferredSize(new Dimension(CODE_TEXTFIELD_WIDTH, 
+				this.codeTextfield.getPreferredSize().height));
 		this.codeTextfield.getDocument().addDocumentListener(new DocumentListener() {
 			
 			@Override
@@ -48,27 +49,33 @@ public class JModifyArticlePanel extends JPanel{
 			}
 
 			private void changeCode() {
-				JModifyArticlePanel.this.code.replace(0, JModifyArticlePanel.this.code.length(), JModifyArticlePanel.this.codeTextfield.getText());
+				JModifyArticlePanel.this.code.replace(0, JModifyArticlePanel.this.code.length(), 
+						JModifyArticlePanel.this.codeTextfield.getText());
 			}
 		});
 		
-		this.amountTextfield = new JTextField(String.valueOf(QUANTITA_DEFAULT), COLONNE_TEXTFIELD_QUANTITA);
+		this.amountTextfield = new JTextField(String.valueOf(DEFAULT_AMOUNT), 
+				AMOUNT_TEXTFIELD_COLUMNS);
 		PlainDocument doc = (PlainDocument) this.amountTextfield.getDocument();
 		doc.setDocumentFilter(new AmountDocumentFilter());
 
-		this.add(new JLabel(STRINGA_CODICE));
+		this.add(new JLabel(CODE_TEXT));
 		this.add(this.codeTextfield);
-		this.add(Box.createHorizontalStrut(SPAZIO_FRA_TEXTFIELD));
-		this.add(new JLabel(STRINGA_QUANTITA));
+		this.add(Box.createHorizontalStrut(TEXTFIELDS_SPACE));
+		this.add(new JLabel(AMOUNT_TEXT));
 		this.add(this.amountTextfield);
 	}
 	
-	public StringBuilder getCode () {
-		return this.code;
+	public void setAmount (int amount) {
+		this.amountTextfield.setText(Integer.toString(amount));
 	}
 	
 	public int getAmount () {
 		return Integer.parseInt(this.amountTextfield.getText());
+	}
+	
+	public StringBuilder getCode () {
+		return this.code;
 	}
 	
 	public JTextField getAmountTextfield () {

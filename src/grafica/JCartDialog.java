@@ -21,102 +21,106 @@ import negozio.Prodotto;
 
 public class JCartDialog extends JDialog implements ActionListener{
 	private static final long serialVersionUID = 6774400022574447743L;
-	
-	private Carrello carrello;
-	private Magazzino magazzino;
 
-	private JButton emptyButton;
-	private JButton payButton;
-	private JCartTable jCartTable;
+	private Magazzino store;
+	private Carrello cart;
+	
 	private JFrame parentFrame;
-
-	private static final String TITOLO = "Carrello";
+	private JButton payButton;
 	
-	private static final int LARGHEZZA_MINIMA = 950;
-	private static final int ALTEZZA_MINIMA = 600;
-	private static final int MARGINE_SUPERIORE = 40;
-	private static final int MARGINE_DESTRO = 40;
-	private static final int MARGINE_SINISTRO = 40;
-	private static final int MARGINE_INFERIORE = 20;
-	private static final int SPAZIO_BOTTONI = 200;
-	private static final int MARGINE_SUPERIORE_BOTTOMPANEL = 10;
-	private static final String TESTO_BOTTONE_PAGA = "Paga";
-	private static final String TESTO_BOTTONE_SVUOTA_CARRELLO = "Svuota carrello";
+	private static final int MINIMUM_WIDTH = 950;
+	private static final int MINIMUM_HEIGHT = 600;
+	private static final int TOP_MARGIN = 40;
+	private static final int RIGHT_MARGIN = 40;
+	private static final int LEFT_MARGIN = 40;
+	private static final int BOTTOM_MARGIN = 20;
+	private static final int BUTTONS_SPACE = 200;
+	private static final int TOP_MARGIN_BOTTOMPANEL = 10;
 	
-	public JCartDialog (JFrame mainFrame, Carrello carrello, Magazzino magazzino) {
-		super (mainFrame, TITOLO, JDialog.ModalityType.DOCUMENT_MODAL);
+	private static final String TITLE = "Carrello";
+	private static final String PAY_BUTTON_TEXT = "Paga";
+	private static final String EMPTY_CART_BUTTON_TEXT = "Svuota carrello";
+	
+	public JCartDialog (JFrame parentFrame, Carrello cart, Magazzino store) {
+		super (parentFrame, TITLE, JDialog.ModalityType.DOCUMENT_MODAL);
 //		this.setDefaultCloseOperation(HIDE_ON_CLOSE);
-		this.setMinimumSize(new Dimension(LARGHEZZA_MINIMA, ALTEZZA_MINIMA));
+		this.setMinimumSize(new Dimension(MINIMUM_WIDTH, MINIMUM_HEIGHT));
 		this.setLocationRelativeTo(null);
 
-		this.carrello = carrello;
-		this.magazzino = magazzino;
-		this.parentFrame = mainFrame;
-		this.payButton = new JButton(TESTO_BOTTONE_PAGA);
-		this.emptyButton = new JButton(TESTO_BOTTONE_SVUOTA_CARRELLO);
-		this.jCartTable = new JCartTable(this.carrello, this.magazzino);
-		this.emptyButton.addActionListener(new EmptyCartListener((ArticlesTableModel)this.jCartTable.getModel(), this.carrello));
+		this.parentFrame = parentFrame;
+		this.cart = cart;
+		this.store = store;
+
+		this.payButton = new JButton(PAY_BUTTON_TEXT);
+		JButton emptyButton = new JButton(EMPTY_CART_BUTTON_TEXT);
+		JCartTable jCartTable = new JCartTable(cart, store);
+		emptyButton.addActionListener(new EmptyCartListener(
+				(ArticlesTableModel) jCartTable.getModel(), cart));
 		this.payButton.addActionListener(this);
 		
 		JPanel buttonsPanel = new JPanel();
-		buttonsPanel.add(this.emptyButton);
-		buttonsPanel.add(Box.createHorizontalStrut(SPAZIO_BOTTONI));
+		buttonsPanel.add(emptyButton);
+		buttonsPanel.add(Box.createHorizontalStrut(BUTTONS_SPACE));
 		buttonsPanel.add(this.payButton);
 		JPanel bottomPanel = new JPanel(new BorderLayout());
-		bottomPanel.add(Box.createVerticalStrut(MARGINE_SUPERIORE_BOTTOMPANEL), BorderLayout.PAGE_START);
+		bottomPanel.add(Box.createVerticalStrut(TOP_MARGIN_BOTTOMPANEL), BorderLayout.PAGE_START);
 		bottomPanel.add(buttonsPanel, BorderLayout.CENTER);
-		bottomPanel.add(Box.createVerticalStrut(MARGINE_INFERIORE), BorderLayout.PAGE_END);
+		bottomPanel.add(Box.createVerticalStrut(BOTTOM_MARGIN), BorderLayout.PAGE_END);
 		
-		JScrollPane scrollTable = new JScrollPane(this.jCartTable);
+		JScrollPane scrollTable = new JScrollPane(jCartTable);
         scrollTable.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollTable.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		
 		JPanel jCartPanel = new JPanel (new BorderLayout());
-		jCartPanel.add(Box.createVerticalStrut(MARGINE_SUPERIORE), BorderLayout.PAGE_START);
-		jCartPanel.add(Box.createHorizontalStrut(MARGINE_SINISTRO), BorderLayout.WEST);
+		jCartPanel.add(Box.createVerticalStrut(TOP_MARGIN), BorderLayout.PAGE_START);
+		jCartPanel.add(Box.createHorizontalStrut(LEFT_MARGIN), BorderLayout.WEST);
 		jCartPanel.add(scrollTable, BorderLayout.CENTER);
-		jCartPanel.add(Box.createHorizontalStrut(MARGINE_DESTRO), BorderLayout.EAST);
+		jCartPanel.add(Box.createHorizontalStrut(RIGHT_MARGIN), BorderLayout.EAST);
 		jCartPanel.add(bottomPanel, BorderLayout.PAGE_END);
 		this.add(jCartPanel);
 	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource().equals(this.payButton)) {
+			this.dispose();
+			JPaymentDialog jPaymentDialog = new JPaymentDialog (this.parentFrame, this.cart, 
+					this.store);
+			jPaymentDialog.setVisible (true);
+		}
+	}
 	
-	public class JCartTable extends JTable {
+	class JCartTable extends JTable {
 		private static final long serialVersionUID = 4734550632778588769L;
 
-		private Carrello carrello;
-		private Magazzino magazzino;
+		private Carrello cart;
 
-		private static final int ALTEZZA_RIGA = 100;
-		private static final String COLONNA_QUANTITA = "Quantità";
-		private static final String COLONNA_BOTTONE = "";
+		private static final int ROW_HEIGHT = 100;
 		
-		public JCartTable (Carrello carrello, Magazzino magazzino) {
-			this.carrello = carrello;
-			this.magazzino = magazzino;
+		private static final String AMOUNT_COLUMN = "Quantità";
+		private static final String BUTTON_COLUMN = "";
+		
+		public JCartTable (Carrello cart, Magazzino store) {
+			this.cart = cart;
 			
-			this.setModel(new ArticlesTableModel(this.carrello.getArticoli(), ALTEZZA_RIGA));
-			this.setRowHeight(ALTEZZA_RIGA);
+			this.setModel(new ArticlesTableModel(this.cart.getArticoli(), ROW_HEIGHT));
+			this.setRowHeight(ROW_HEIGHT);
 			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-			centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );
+			centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 			this.setDefaultRenderer(String.class, centerRenderer);
 			this.setBackground(null);
-			this.getColumn(COLONNA_QUANTITA).setCellRenderer(new AmountColumnRender(ALTEZZA_RIGA));
-			this.getColumn(COLONNA_QUANTITA).setCellEditor(new AmountColumnEditor((ArticlesTableModel) this.getModel(), this.carrello, this.magazzino, ALTEZZA_RIGA));
-			this.getColumn(COLONNA_BOTTONE).setCellRenderer(new RemoveColumnRender(ALTEZZA_RIGA));
-			this.getColumn(COLONNA_BOTTONE).setCellEditor(new RemoveColumnEditor(this.carrello.getArticoli(), ALTEZZA_RIGA));
+			this.getColumn(AMOUNT_COLUMN).setCellRenderer(new AmountColumnRender(ROW_HEIGHT));
+			this.getColumn(AMOUNT_COLUMN).setCellEditor(new AmountColumnEditor(
+					(ArticlesTableModel) this.getModel(), this.cart, store, ROW_HEIGHT));
+			this.getColumn(BUTTON_COLUMN).setCellRenderer(new RemoveColumnRender(ROW_HEIGHT));
+			this.getColumn(BUTTON_COLUMN).setCellEditor(new RemoveColumnEditor(
+					this.cart.getArticoli(), ROW_HEIGHT));
 			this.setFocusable(false);
 			this.setRowSelectionAllowed(false);
 		}
 		
 		public Prodotto getProductAtRow (int row) {
-			return this.carrello.getArticoli().get(row);
+			return this.cart.getArticoli().get(row);
 		}
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		this.dispose();
-		JPaymentDialog jPaymentDialog = new JPaymentDialog (this.parentFrame, this.carrello, this.magazzino);
-		jPaymentDialog.setVisible (true);
 	}
 }

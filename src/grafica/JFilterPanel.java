@@ -13,8 +13,6 @@ import negozio.Magazzino;
 
 public class JFilterPanel extends JPanel implements ChangeListener{
 	private static final long serialVersionUID = 6101085833044744812L;
-
-	private static final int LARGHEZZA = 300;
 	
 	private JTextField stringFilter;
 	private JRangeSlider amountFilter;
@@ -22,21 +20,26 @@ public class JFilterPanel extends JPanel implements ChangeListener{
 	
     private JLabel lowerValue;
     private JLabel upperValue;
+
+	private static final int WIDTH = 300;
 	
 	public JFilterPanel (int amountMax, double costMax, String filterType) {
 		int costMaxInt = (int) Math.ceil(costMax);
 		
 		this.stringFilter = new JTextField ();
-		this.stringFilter.setPreferredSize (new Dimension(LARGHEZZA, this.stringFilter.getPreferredSize().height));
+		this.stringFilter.setPreferredSize (new Dimension(WIDTH, 
+				this.stringFilter.getPreferredSize().height));
 		
 		this.amountFilter = new JRangeSlider(0, amountMax);
-		this.amountFilter.setPreferredSize (new Dimension(LARGHEZZA, this.amountFilter.getPreferredSize().height));
+		this.amountFilter.setPreferredSize (new Dimension(WIDTH, 
+				this.amountFilter.getPreferredSize().height));
 		this.amountFilter.setLowerValue  (0);
 		this.amountFilter.setUpperValue (amountMax);
 		this.amountFilter.addChangeListener(this);
 		
 		this.costFilter = new JRangeSlider (0, costMaxInt);
-		this.costFilter.setPreferredSize (new Dimension(LARGHEZZA, this.costFilter.getPreferredSize().height));
+		this.costFilter.setPreferredSize (new Dimension(WIDTH, 
+				this.costFilter.getPreferredSize().height));
 		this.costFilter.setLowerValue (0);
 		this.costFilter.setUpperValue (costMaxInt);
 		this.costFilter.addChangeListener(this);
