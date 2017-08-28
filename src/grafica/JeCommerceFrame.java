@@ -48,8 +48,8 @@ public class JeCommerceFrame extends JFrame implements ComponentListener {
 			this.contentPanel = new JAdminContentPanel();
 		}
 		else {
-			this.menuBar = new JClientMenuBar(store, ((Cliente) this.user).getCarrello());
-			this.contentPanel = new JClientContentPanel(store, (Cliente) this.user);
+			this.menuBar = new JClientMenuBar(this, store, ((Cliente) this.user).getCarrello());
+			this.contentPanel = new JClientContentPanel(this, store, (Cliente) this.user);
 		}
 		this.statusPanel = new JStatusPanel (this.user);
 		

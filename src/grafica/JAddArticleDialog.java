@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import negozio.Carrello;
@@ -29,7 +30,7 @@ public class JAddArticleDialog extends JDialog implements ActionListener{
 	private static final int BUTTONS_SPACE = 50;
 	private static final int BOTTOM_MARGIN = 30;
 	
-	public JAddArticleDialog (JeCommerceFrame mainFrame, Magazzino store, Carrello cart) {
+	public JAddArticleDialog (JFrame mainFrame, Magazzino store, Carrello cart) {
 		super (mainFrame, TITLE, JDialog.ModalityType.DOCUMENT_MODAL);
 		this.setMinimumSize(new Dimension(MINIMUM_WIDTH, MINIMUM_HEIGHT));
 		this.setLocationRelativeTo(null);

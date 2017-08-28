@@ -74,14 +74,14 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	private static final String BACK_BUTTON_TEXT = "<";
 	private static final String FORWARD_BUTTON_TEXT = ">";
 
-	public JClientContentPanel(Magazzino store, Cliente client) {
+	public JClientContentPanel(JFrame mainFrame, Magazzino store, Cliente client) {
 		this.store = store;
 		this.client = client;
 		this.viewedArticles = this.store.getArticoli();
 		this.nPage = 0;
 		this.maxPage = 0;
 		
-		this.jClientControlPanel = new JClientControlPanel(this);
+		this.jClientControlPanel = new JClientControlPanel(mainFrame, this);
 		this.jClientControlPanel.setBorder(new EtchedBorder ());
 		
 		JPanel buttonsPanelLV2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -233,7 +233,7 @@ class JClientControlPanel extends JPanel implements ActionListener{
 	
 	protected static final int HEIGHT = 80;
 
-	public JClientControlPanel (JClientContentPanel parentPanel) {
+	public JClientControlPanel (JFrame mainFrame, JClientContentPanel parentPanel) {
 		JPanel leftPanel = new JPanel ();
 		
 		JPanel filterTypePanel = new JPanel ();
@@ -276,7 +276,7 @@ class JClientControlPanel extends JPanel implements ActionListener{
 		} catch (Exception ex) {
 			cartButton.setText(CART_BUTTON_TEXT);
 		}
-		cartButton.addActionListener(new OpenCartListener((JFrame) SwingUtilities.getWindowAncestor(this), 
+		cartButton.addActionListener(new OpenCartListener(mainFrame, 
 				parentPanel.getClient ().getCarrello (), parentPanel.getStore()));
 		cartButton.setTransferHandler(new ValueImportTransferHandler(
 				parentPanel.getClient().getCarrello()));

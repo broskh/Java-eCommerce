@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import negozio.Magazzino;
@@ -29,18 +30,19 @@ public class JFilterDialog extends JDialog implements ActionListener{
 	private static final String OK_STRING = "FILTRA";
 	private static final String CANCEL_STRING = "ANNULLA";
 	
-	public JFilterDialog (JeCommerceFrame mainFrame, Magazzino store, String filterType) {
+	public JFilterDialog (JFrame mainFrame, Magazzino store, String filterType) {
 		super (mainFrame, TITLE + filterType.toLowerCase(), JDialog.ModalityType.DOCUMENT_MODAL);
 		this.setMinimumSize(new Dimension(MINIMUM_WIDTH, MINIMUM_HEIGHT));
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
+		JeCommerceFrame JEMainFrame = (JeCommerceFrame) mainFrame;
 		
 		JFilterPanel filterPanel = new JFilterPanel(store.MaxQuantita(), store.MaxPrezzo(), 
 				filterType);
 
 		this.okButton = new JButton(OK_STRING);
 		this.okButton.addActionListener(new FilterListener(this, 
-				((JClientContentPanel)mainFrame.getJContentPanel()), 
+				((JClientContentPanel)JEMainFrame.getJContentPanel()), 
 				new StringBuilder(filterType), filterPanel));
 		this.cancelButton = new JButton(CANCEL_STRING);
 		this.cancelButton.addActionListener(this);

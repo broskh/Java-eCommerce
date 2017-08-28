@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import negozio.Carrello;
@@ -33,7 +34,7 @@ public class JRemoveArticleDialog extends JDialog implements ActionListener{
 	private static final String CANCEL_STRING = "ANNULLA";
 	private static final String TITLE = "Rimuovi articolo";
 	
-	public JRemoveArticleDialog (JeCommerceFrame mainFrame, Carrello cart) {
+	public JRemoveArticleDialog (JFrame mainFrame, Carrello cart) {
 		super (mainFrame, TITLE, JDialog.ModalityType.DOCUMENT_MODAL);
 		this.setMinimumSize(new Dimension(WIDTH, HEIGHT));
 		this.setLocationRelativeTo(null);

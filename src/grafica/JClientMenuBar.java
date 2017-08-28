@@ -3,10 +3,10 @@ package grafica;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.SwingUtilities;
 
 import negozio.Carrello;
 import negozio.Magazzino;
@@ -31,6 +31,7 @@ public class JClientMenuBar extends JMenuBar implements ActionListener {
 	private JMenuItem addArticleItem;
 	private JMenuItem removeArticleItem;
 	private JMenuItem emptyCartItem;
+	private JFrame mainFrame;
 	
 	private static final String FILE_MENU_STRING = "File";
 	private static final String FILTER_MENU_STRING = "Filtra";
@@ -41,7 +42,8 @@ public class JClientMenuBar extends JMenuBar implements ActionListener {
 	private static final String REMOVE_ARTICLE_ITEM = "Rimuovi articolo";
 	private static final String EMPTY_CART_ITEM = "Svuota";
 	
-	public JClientMenuBar (Magazzino store, Carrello cart) {
+	public JClientMenuBar (JFrame mainFrame, Magazzino store, Carrello cart) {
+		this.mainFrame = mainFrame;
 		this.store = store;
 		this.cart = cart;
 		this.fileMenu = new JMenu (FILE_MENU_STRING);
@@ -71,7 +73,7 @@ public class JClientMenuBar extends JMenuBar implements ActionListener {
 		
 		this.cartMenu = new JMenu (CART_MENU_STRING);
 		this.showCartItem = new JMenuItem(SHOW_CART_ITEM);
-		this.showCartItem.addActionListener(new OpenCartListener((JeCommerceFrame) SwingUtilities.getWindowAncestor(this), this.cart, this.store));
+		this.showCartItem.addActionListener(new OpenCartListener(this.mainFrame, this.cart, this.store));
 		this.addArticleItem = new JMenuItem(ADD_ARTICLE_ITEM);
 		this.addArticleItem.addActionListener(this);
 		this.removeArticleItem = new JMenuItem(REMOVE_ARTICLE_ITEM);
@@ -91,7 +93,7 @@ public class JClientMenuBar extends JMenuBar implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		 if (e.getSource().equals(this.closeItem)) {
-			 SwingUtilities.getWindowAncestor(this).dispose();
+			 this.mainFrame.dispose();
 		 }
 		 else if (e.getSource().equals(this.nameFilterItem) || 
 				 e.getSource().equals(this.brandFilterItem) ||
@@ -99,15 +101,15 @@ public class JClientMenuBar extends JMenuBar implements ActionListener {
 				 e.getSource().equals(this.categoryFilterItem) || 
 				 e.getSource().equals(this.amountFilterItem) || 
 				 e.getSource().equals(this.costFilterItem)) {
-			 JFilterDialog filterDialog = new JFilterDialog((JeCommerceFrame) SwingUtilities.getWindowAncestor(this), this.store, ((JMenuItem)e.getSource()).getText());
+			 JFilterDialog filterDialog = new JFilterDialog(this.mainFrame, this.store, ((JMenuItem)e.getSource()).getText());
 			 filterDialog.setVisible(true);
 		}
 		 else if (e.getSource().equals(this.addArticleItem)) {
-			 JAddArticleDialog addArticleDialog = new JAddArticleDialog((JeCommerceFrame) SwingUtilities.getWindowAncestor(this), this.store, this.cart);
+			 JAddArticleDialog addArticleDialog = new JAddArticleDialog(this.mainFrame, this.store, this.cart);
 			 addArticleDialog.setVisible(true);
 		}
 		 else if (e.getSource().equals(this.removeArticleItem)) {
-			 JRemoveArticleDialog removeArticleDialog = new JRemoveArticleDialog((JeCommerceFrame) SwingUtilities.getWindowAncestor(this), this.cart);
+			 JRemoveArticleDialog removeArticleDialog = new JRemoveArticleDialog(this.mainFrame, this.cart);
 			 removeArticleDialog.setVisible(true);
 		}
 	}
