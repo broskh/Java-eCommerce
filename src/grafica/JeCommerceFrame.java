@@ -19,55 +19,52 @@ import utenza.Utente;
 public class JeCommerceFrame extends JFrame implements ComponentListener {
 	private static final long serialVersionUID = 611728494453017801L;
 	
+	private JMenuBar menuBar;
+	private JPanel contentPanel;
+	private JStatusPanel statusPanel;
 	
-	private JMenuBar jMenuBar;
-	private JPanel jContentPanel;
-	private JStatusPanel jStatusPanel;
+	private Utente user;
 	
-	private Utente utente;
-	private Magazzino magazzino;
+	public static final int MENU_HEIGHT = 22;
+	public static final int STATUSBAR_HEIGHT = 22;
+	
+	private static final int MINIMUM_JFRAME_HEIGHT = 650;
+	private static final int MINIMUM_JFRAME_WIDTH = 800;
 
-	private static final String TITOLO = "Java-eCommerce";
-	
-	public static final int ALTEZZA_MENU = 22;
-	public static final int ALTEZZA_STATUSBAR = 22;
-	
-	private static final int ALTEZZA_MINIMA_JFRAME = 650;
-	private static final int LARGHEZZA_MINIMA_JFRAME = 800;
+	private static final String TITLE = "Java-eCommerce";
  
-	public JeCommerceFrame (Utente utente, Magazzino magazzino) {
-		super (TITOLO);
-		this.utente = utente;
-		
+	public JeCommerceFrame (Utente user, Magazzino store) {
+		super (TITLE);
+		this.user = user;
 		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		Rectangle bounds = env.getMaximumWindowBounds();
 		this.setSize(bounds.width, bounds.height);
 //		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		this.setMinimumSize(new Dimension(LARGHEZZA_MINIMA_JFRAME, ALTEZZA_MINIMA_JFRAME));
+		this.setMinimumSize(new Dimension(MINIMUM_JFRAME_WIDTH, MINIMUM_JFRAME_HEIGHT));
 		this.addComponentListener(this);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		if (this.utente.isAmministratore()) {
-			this.jMenuBar = new JAdminMenuBar(magazzino);
-			this.jContentPanel = new JAdminContentPanel(magazzino);
+		if (this.user.isAmministratore()) {
+			this.menuBar = new JAdminMenuBar(store);
+			this.contentPanel = new JAdminContentPanel(store);
 		}
 		else {
-			this.jMenuBar = new JClientMenuBar(magazzino, ((Cliente) this.utente).getCarrello());
-			this.jContentPanel = new JClientContentPanel(magazzino, (Cliente) this.utente);
+			this.menuBar = new JClientMenuBar(this, store, ((Cliente) this.user).getCarrello());
+			this.contentPanel = new JClientContentPanel(this, store, (Cliente) this.user);
 		}
-		this.jStatusPanel = new JStatusPanel (this.utente);
+		this.statusPanel = new JStatusPanel (this.user);
 		
-		this.jMenuBar.setPreferredSize(new Dimension(this.getWidth(), ALTEZZA_MENU));
-		this.jStatusPanel.setPreferredSize(new Dimension(this.getWidth(), ALTEZZA_STATUSBAR));
+		this.menuBar.setPreferredSize(new Dimension(this.getWidth(), MENU_HEIGHT));
+		this.statusPanel.setPreferredSize(new Dimension(this.getWidth(), STATUSBAR_HEIGHT));
 
 		this.setLayout(new BorderLayout());
-		this.add(this.jMenuBar, BorderLayout.PAGE_START);
-		this.add(this.jContentPanel, BorderLayout.CENTER);
-		this.add(this.jStatusPanel, BorderLayout.PAGE_END);
+		this.add(this.menuBar, BorderLayout.PAGE_START);
+		this.add(this.contentPanel, BorderLayout.CENTER);
+		this.add(this.statusPanel, BorderLayout.PAGE_END);
 	}
 	
 	public JPanel getJContentPanel () {
-		return this.jContentPanel;
+		return this.contentPanel;
 	}
 
 	@Override
@@ -82,9 +79,9 @@ public class JeCommerceFrame extends JFrame implements ComponentListener {
 
 	@Override
 	public void componentResized(ComponentEvent e) {
-		if (!this.utente.isAmministratore()) {
-			((JClientContentPanel) this.jContentPanel).resetPagina();;
-			((JClientContentPanel) this.jContentPanel).aggiornaArticoli ();
+		if (!this.user.isAmministratore()) {
+			((JClientContentPanel) this.contentPanel).resetPagina();;
+			((JClientContentPanel) this.contentPanel).updateArticles ();
 		}		
 	}
 

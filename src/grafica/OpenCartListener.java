@@ -9,20 +9,21 @@ import negozio.Carrello;
 import negozio.Magazzino;
 
 public class OpenCartListener implements ActionListener {
-	private Magazzino magazzino;
-	private Carrello carrello;
+	private Magazzino store;
+	private Carrello cart;
+	
 	private JFrame mainFrame;
 	
-	public OpenCartListener(JFrame mainFrame, Carrello carrello,Magazzino magazzino) {
-		 this.magazzino = magazzino;
-		 this.carrello = carrello;
+	public OpenCartListener(JFrame mainFrame, Carrello cart, Magazzino store) {
+		 this.store = store;
+		 this.cart = cart;
 		 this.mainFrame = mainFrame;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JCartDialog cartDialog = new JCartDialog(this.mainFrame, this.carrello, this.magazzino);
+		JCartDialog cartDialog = new JCartDialog(this.mainFrame, this.cart, 
+				this.store);
 		cartDialog.setVisible(true);
 	}
-
 }

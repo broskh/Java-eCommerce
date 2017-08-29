@@ -12,44 +12,46 @@ import negozio.Prodotto;
 
 public class AddArticleToCartListener implements ActionListener {
 	
-	private Carrello carrello;
-	private Magazzino magazzino;
-	private StringBuilder codice;
-	private JTextField quantita;
+	private Carrello cart;
+	private Magazzino store;
+	private StringBuilder code;
+	private JTextField amount;
 	private Window windowCaller;
 	
-	public AddArticleToCartListener (Window windowCaller, Magazzino magazzino, Carrello carrello, StringBuilder codice, JTextField quantita) {
-		this.magazzino = magazzino;
-		this.carrello = carrello;
-		this.codice = codice;
-		this.quantita = quantita;
+	public AddArticleToCartListener (Window windowCaller, Magazzino store, 
+			Carrello cart, StringBuilder code, JTextField amount) {
+		this.store = store;
+		this.cart = cart;
+		this.code = code;
+		this.amount = amount;
 		this.windowCaller = windowCaller;
 	}
 	
-	public AddArticleToCartListener (Magazzino magazzino, Carrello carrello, StringBuilder codice, JTextField quantita) {
-		this (null, magazzino, carrello, codice, quantita);
+	public AddArticleToCartListener (Magazzino store, Carrello cart, 
+			StringBuilder code, JTextField amount) {
+		this (null, store, cart, code, amount);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Prodotto inMagazzino = this.magazzino.getProdotto(this.codice.toString());
-		if (inMagazzino != null) {
-			Prodotto giaInCarrello = this.carrello.getProdotto(this.codice.toString());
-			int quantita = Integer.parseInt(this.quantita.getText());
+		Prodotto inStore = this.store.getProdotto(this.code.toString());
+		if (inStore != null) {
+			Prodotto inCart = this.cart.getProdotto(this.code.toString());
+			int newAmount = Integer.parseInt(this.amount.getText());
 //			controllo di poter inserire questa quantità
-			if (giaInCarrello != null) {
-				quantita += giaInCarrello.getQuantita();
+			if (inCart != null) {
+				newAmount += inCart.getQuantita();
 			}			
-			if (quantita > inMagazzino.getQuantita()) {
-				quantita = inMagazzino.getQuantita();
+			if (newAmount > inStore.getQuantita()) {
+				newAmount = inStore.getQuantita();
 			}
-			if (giaInCarrello != null) {
-				quantita -= giaInCarrello.getQuantita();
+			if (inCart != null) {
+				newAmount -= inCart.getQuantita();
 			}
 			try {
-				Prodotto nuovoProdotto = inMagazzino.clone();
-				nuovoProdotto.setQuantita(quantita);
-				this.carrello.aggiungiProdotto(nuovoProdotto);
+				Prodotto newArticle = inStore.clone();
+				newArticle.setQuantita(newAmount);
+				this.cart.aggiungiProdotto(newArticle);
 				if (this.windowCaller != null) {
 					this.windowCaller.dispose();
 				}
