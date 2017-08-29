@@ -13,7 +13,7 @@ public class OpenCartListener implements ActionListener {
 	private Carrello carrello;
 	private JFrame mainFrame;
 	
-	public OpenCartListener(JFrame mainFrame, Carrello carrello, Magazzino magazzino) {
+	public OpenCartListener(JFrame mainFrame, Carrello carrello,Magazzino magazzino) {
 		 this.magazzino = magazzino;
 		 this.carrello = carrello;
 		 this.mainFrame = mainFrame;

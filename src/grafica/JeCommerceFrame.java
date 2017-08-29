@@ -19,6 +19,7 @@ import utenza.Utente;
 public class JeCommerceFrame extends JFrame implements ComponentListener {
 	private static final long serialVersionUID = 611728494453017801L;
 	
+	
 	private JMenuBar jMenuBar;
 	private JPanel jContentPanel;
 	private JStatusPanel jStatusPanel;
@@ -37,6 +38,7 @@ public class JeCommerceFrame extends JFrame implements ComponentListener {
 	public JeCommerceFrame (Utente utente, Magazzino magazzino) {
 		super (TITOLO);
 		this.utente = utente;
+		
 		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		Rectangle bounds = env.getMaximumWindowBounds();
 		this.setSize(bounds.width, bounds.height);

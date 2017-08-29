@@ -31,7 +31,7 @@ public class JSearchProductFrame extends JFrame{
 		this.setResizable(false);
 		this.setLayout(new BorderLayout());	
 		
-		jSearchProductPanel = new JSearchProductPanel(magazzino);
+		jSearchProductPanel = new JSearchProductPanel(magazzino,this);
 		this.add(this.jSearchProductPanel, BorderLayout.CENTER);
 	}
 	

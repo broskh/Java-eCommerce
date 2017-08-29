@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 
@@ -30,6 +31,8 @@ public class JAdminControlPanel extends JPanel implements ActionListener {
 	private static final String testoAggiungiButton = "Aggiungi";
 	private static final String testoModifcaButton = "Modifica";
 	private static final String testoEliminaButton = "Elimina";
+	
+	private static final String FILE_SAVE_STRING = "media/saves/save21.mag";
 	
 	private Magazzino magazzino;
 	
@@ -87,32 +90,42 @@ public class JAdminControlPanel extends JPanel implements ActionListener {
 	{
 		
 		
-		if(e.getActionCommand().equals("Salva"))
+		if(e.getActionCommand().equals("salva"))
 		{
-			this.jSalvaButton.setText("save");
+			magazzino.salvaMagazzino(FILE_SAVE_STRING);
 		}
 		if(e.getActionCommand().equals("Carica"))
 		{
-			this.jCaricaButton.setText("upload");
+			
+			/*JFileChooser fc = new JFileChooser();
+			
+			int returnVal = fc.showOpenDialog(this);
+			magazzino.caricaMagazzino(fc.getSelectedFile());
+			this.validate();
+	        this.repaint();*/
+	        
+			
+			
+			
+			
+			//this.jCaricaButton.setText("upload");
 		}
 		if(e.getActionCommand().equals("Aggiungi"))
 		{
-			JAddProductFrame jAddProductFrame = new JAddProductFrame();
+			/* FUNZIONANTE */
+			JAddProductFrame jAddProductFrame = new JAddProductFrame(magazzino);
 			jAddProductFrame.setVisible(true);
-			
+			/* FINE FUNZIONANTE */
 		}
 		if(e.getActionCommand().equals("Modifica"))
 		{
-			
-			/*JModifyProductFrame jModifyProductFrame = new JModifyProductFrame();
-			jModifyProductFrame.setVisible(true);*/
 			JSearchProductFrame jSearchProductFrame = new JSearchProductFrame(magazzino);
 			jSearchProductFrame.setVisible(true);
 		}
 		if(e.getActionCommand().equals("Elimina"))
 		{
-			JSearchProductFrame jSearchProductFrame = new JSearchProductFrame(magazzino);
-			jSearchProductFrame.setVisible(true);
+			JDeleteProductFrame jDeleteProductFrame = new JDeleteProductFrame(magazzino);
+			jDeleteProductFrame.setVisible(true);
 		}
 	}
 

@@ -28,6 +28,7 @@ public class JSearchProductPanel extends JPanel implements ActionListener {
 	
 	private Magazzino magazzino;
 	private Prodotto prodotto;
+	private JSearchProductFrame jSearchProductFrame;
 	
 	
 	private JLabel jStringaLabel;
@@ -41,11 +42,13 @@ public class JSearchProductPanel extends JPanel implements ActionListener {
 	
 	
 	
-	public JSearchProductPanel(Magazzino magazzino)
+	public JSearchProductPanel(Magazzino magazzino, JSearchProductFrame jSearchProductFrame)
 	{
+		this.magazzino = magazzino;
+		this.jSearchProductFrame = jSearchProductFrame;
+		
 		ArrayList <String> s = new <String> ArrayList();
 		ArrayList <Prodotto> l = new <Prodotto> ArrayList();
-		this.magazzino = magazzino;
 		l = magazzino.getArticoli();
 		for(int i = 0;i<l.size();i++)
 		{
@@ -63,8 +66,8 @@ public class JSearchProductPanel extends JPanel implements ActionListener {
 		this.jStringaLabel = new JLabel(this.TESTO_STRINGA_LABEL);
 		
 		
-	
-
+		
+		
 		
 		
 		this.jCercaButton = new JButton(this.TESTO_CERCA_BUTTON);
@@ -98,7 +101,7 @@ public class JSearchProductPanel extends JPanel implements ActionListener {
 		prodotto = magazzino.getProdotto(codice);
 		
 		
-		this.modifyProductFrame = new JModifyProductFrame(prodotto);
+		this.modifyProductFrame = new JModifyProductFrame(prodotto,magazzino,jSearchProductFrame);
 		this.modifyProductFrame.setVisible(true);
 		
 	}

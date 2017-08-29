@@ -15,18 +15,21 @@ import utenza.Utente;
  * @version 1.0
  */
 public class Java_eCommerce  {
-	private static final String FILE_MAGAZZINO = "media/saves/magazzino.mag";
+	private static final String FILE_MAGAZZINO = "media/saves/save21.mag";
 	
 	public static void main(String[] args) {
+		
 		Utente utente = null;
 		Magazzino magazzino = new Magazzino();
+		magazzino.caricaMagazzino("media/saves/save21.mag");   /* scheri */
 		JUserFrame jUserFrame = new JUserFrame();
 		JeCommerceFrame jeCommerceFrame = null;
 		UserAccessListener userAccessListener = new UserAccessListener(jUserFrame, jeCommerceFrame, utente, magazzino, FILE_MAGAZZINO);
 		
 		
 		
-		magazzino.caricaMagazzino("media/saves/save21.mag");   /* scheri */
+		
+		
 		
 		
 		

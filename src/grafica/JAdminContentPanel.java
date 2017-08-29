@@ -2,6 +2,7 @@ package grafica;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -13,17 +14,21 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 
+
+import negozio.Carrello;
 import negozio.Magazzino;  /**/
+import negozio.Prodotto;
 
 public class JAdminContentPanel extends JPanel {
 	private static final long serialVersionUID = -3936116522061776556L;
 	private JAdminControlPanel jAdminControlPanel;
 	
+	
 	private Magazzino magazzino;  /**/
+	private Carrello carrello;
 	
-	/*private JButton emptyButton;
-	private JButton payButton;*/
 	
+	private JCartTable jCartTable;
 	
 	
 	//private static final int LARGHEZZA_MINIMA = 800;
@@ -35,7 +40,7 @@ public class JAdminContentPanel extends JPanel {
 	//private static final int SPAZIO_BOTTONI = 200;
 	//private static final int MARGINE_SUPERIORE_BOTTOMPANEL = 10;
 
-	private static final String COLONNA_QUANTITA = "Quantità";
+	private static final String COLONNA_QUANTITA = "Quantit�";
 	private static final String COLONNA_BOTTONE = "";
 	/*private static final String TESTO_BOTTONE_PAGA = "Paga";
 	private static final String TESTO_BOTTONE_SVUOTA_CARRELLO = "Svuota carrello";*/
@@ -44,51 +49,73 @@ public class JAdminContentPanel extends JPanel {
 	public JAdminContentPanel(Magazzino magazzino)
 	{
 		this.magazzino = magazzino;   /**/
-		
 		this.setLayout(new BorderLayout());
 		this.jAdminControlPanel = new JAdminControlPanel(magazzino);
 		this.jAdminControlPanel.setBorder(new EtchedBorder());
 		this.add(this.jAdminControlPanel, BorderLayout.PAGE_START);
 		
+		this.carrello = new Carrello();
+		ArrayList <Prodotto> articoli = new <Prodotto> ArrayList();
+		articoli = magazzino.getArticoli();
+		for(int i = 0;i<articoli.size();i++)
+		{
+			carrello.aggiungiProdotto(articoli.get(i));
+		}
+		//System.out.println(carrello);
 		
 		
-		JPanel jTablePanel = new JPanel (new BorderLayout());
-		JTable table = new JTable(new ArticlesTableModel(this.magazzino.getArticoli()));
-		table.setRowHeight(ArticlesTableModel.DIMENSIONE_ICONA);
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );
-		table.setDefaultRenderer(String.class, centerRenderer);
-		table.setBackground(null);
-		table.getColumn(COLONNA_QUANTITA).setCellRenderer(new AmountColumnRender());
-		table.getColumn(COLONNA_QUANTITA).setCellEditor(new AmountColumnEditor(this.magazzino.getArticoli()));
-		table.getColumn(COLONNA_BOTTONE).setCellRenderer(new RemoveColumnRender());
-		table.getColumn(COLONNA_BOTTONE).setCellEditor(new RemoveColumnEditor());
-		table.setFocusable(false);
-		table.setRowSelectionAllowed(false);
-
-		/*this.payButton = new JButton(TESTO_BOTTONE_PAGA);
-		this.emptyButton = new JButton(TESTO_BOTTONE_SVUOTA_CARRELLO);*/
+		this.jCartTable = new JCartTable(this.carrello,this.magazzino);
 		
-		/*JPanel buttonsPanel = new JPanel();
-		buttonsPanel.add(this.emptyButton);
-		buttonsPanel.add(Box.createHorizontalStrut(SPAZIO_BOTTONI));
-		buttonsPanel.add(this.payButton);
-		JPanel bottomPanel = new JPanel(new BorderLayout());
-		bottomPanel.add(Box.createVerticalStrut(MARGINE_SUPERIORE_BOTTOMPANEL), BorderLayout.PAGE_START);
-		bottomPanel.add(buttonsPanel, BorderLayout.CENTER);
-		bottomPanel.add(Box.createVerticalStrut(MARGINE_INFERIORE), BorderLayout.PAGE_END);*/
-		
-		JScrollPane scrollTable = new JScrollPane(table);
+		JScrollPane scrollTable = new JScrollPane(this.jCartTable);
         scrollTable.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollTable.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		jTablePanel.add(Box.createVerticalStrut(MARGINE_SUPERIORE), BorderLayout.PAGE_START);
-		jTablePanel.add(Box.createHorizontalStrut(MARGINE_SINISTRO), BorderLayout.WEST);
-		jTablePanel.add(scrollTable, BorderLayout.CENTER);
-		jTablePanel.add(Box.createHorizontalStrut(MARGINE_DESTRO), BorderLayout.EAST);
-		//jCartPanel.add(bottomPanel, BorderLayout.PAGE_END);
-		this.add(jTablePanel);
-		this.setVisible(true);
 		
+        JPanel jCartPanel = new JPanel (new BorderLayout());
+		jCartPanel.add(Box.createVerticalStrut(MARGINE_SUPERIORE), BorderLayout.PAGE_START);
+		jCartPanel.add(Box.createHorizontalStrut(MARGINE_SINISTRO), BorderLayout.WEST);
+		jCartPanel.add(scrollTable, BorderLayout.CENTER);
+		jCartPanel.add(Box.createHorizontalStrut(MARGINE_DESTRO), BorderLayout.EAST);
+		//jCartPanel.add(bottomPanel, BorderLayout.PAGE_END);
+		this.add(jCartPanel);
+	
 	}
+	
+	public class JCartTable extends JTable
+	{
+		private static final long serialVersionUID = 4734550632778588769L;
+		
+		private Carrello carrello;
+		private Magazzino magazzino;
+		
+		private static final int ALTEZZA_RIGA = 100;
+		private static final String COLONNA_QUANTITA = "Quantità";
+		private static final String COLONNA_BOTTONE = "";
+		
+		public JCartTable(Carrello carrello, Magazzino magazzino)
+		{
+			this.carrello = carrello;
+			this.magazzino = magazzino;
+			
+			this.setModel(new ArticlesTableModel(this.carrello.getArticoli(), ALTEZZA_RIGA));
+			this.setRowHeight(ALTEZZA_RIGA);
+			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+			centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );
+			this.setDefaultRenderer(String.class, centerRenderer);
+			this.setBackground(null);
+			this.getColumn(COLONNA_QUANTITA).setCellRenderer(new AmountColumnRender(ALTEZZA_RIGA));
+			this.getColumn(COLONNA_QUANTITA).setCellEditor(new AmountColumnEditor((ArticlesTableModel) this.getModel(), this.carrello, this.magazzino, ALTEZZA_RIGA));
+			this.getColumn(COLONNA_BOTTONE).setCellRenderer(new RemoveColumnRender(ALTEZZA_RIGA));
+			this.getColumn(COLONNA_BOTTONE).setCellEditor(new RemoveColumnEditor(this.carrello.getArticoli(), ALTEZZA_RIGA));
+			this.setFocusable(false);
+			this.setRowSelectionAllowed(false);
 
+		}
+	}
+	
+	public Prodotto getProductAtRow (int row) {
+		return this.carrello.getArticoli().get(row);
+	}
+		
+	
 }
+

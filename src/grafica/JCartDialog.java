@@ -43,7 +43,7 @@ public class JCartDialog extends JDialog implements ActionListener{
 	private static final String TESTO_BOTTONE_PAGA = "Paga";
 	private static final String TESTO_BOTTONE_SVUOTA_CARRELLO = "Svuota carrello";
 	
-	public JCartDialog (JFrame mainFrame, Carrello carrello, Magazzino magazzino) {
+	public JCartDialog (JFrame mainFrame ,Carrello carrello, Magazzino magazzino) {
 		super (mainFrame, TITOLO, JDialog.ModalityType.DOCUMENT_MODAL);
 //		this.setDefaultCloseOperation(HIDE_ON_CLOSE);
 		this.setMinimumSize(new Dimension(LARGHEZZA_MINIMA, ALTEZZA_MINIMA));
