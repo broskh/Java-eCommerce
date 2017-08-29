@@ -77,7 +77,10 @@ public class ArticlesTableModel extends AbstractTableModel {
 			case 4:
 				return this.products.get(rowIndex).getCategoria();
 			case 5:
-				return this.products.get(rowIndex).getOfferta().toString();
+				if (this.products.get(rowIndex).getOfferta() != null) {
+					return this.products.get(rowIndex).getOfferta().toString();
+				}
+				return null;
 			case 6:
 				return String.format("%.2f", this.products.get(
 						rowIndex).prezzoCadaunoScontato());

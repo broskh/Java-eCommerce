@@ -277,7 +277,7 @@ private static final long serialVersionUID = 1L;
 			int returnVal = fc.showOpenDialog(this);
 			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			fc.setMultiSelectionEnabled(false);
-			ImageIcon newIcon = new ImageIcon(new ResizableIcon(fc.getSelectedFile()).resizeIcon(DIMENSIONE_ICONA, DIMENSIONE_ICONA));
+			ImageIcon newIcon = new ImageIcon(new ResizableIcon(fc.getSelectedFile()).resizeIcon(DIMENSIONE_ICONA, DIMENSIONE_ICONA), fc.getSelectedFile().toString());
 			if(newIcon!=null)
 			{
 				this.jImmagineLabel.setIcon(newIcon);

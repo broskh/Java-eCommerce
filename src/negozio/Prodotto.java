@@ -311,7 +311,10 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	 * @return il prezzo scontato cadauno.
 	 */
 	public float prezzoCadaunoScontato () {
-		return this.offerta.calcolaSconto(this.prezzo, 1);
+		if (this.offerta != null) {
+			return this.offerta.calcolaSconto(this.prezzo, 1);
+		}
+		return this.getPrezzo();
 	}
 	
 	/**
@@ -329,7 +332,10 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	 * @return il prezzo scontato di tutte le unità del prodotto.
 	 */
 	public float prezzoTotaleScontato () {
-		return this.offerta.calcolaSconto(this.prezzo, this.quantita);
+		if (this.offerta != null) {
+			return this.offerta.calcolaSconto(this.prezzo, this.quantita);
+		}
+		return this.prezzoTotale();
 	}
 	
 

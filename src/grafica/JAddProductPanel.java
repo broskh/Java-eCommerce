@@ -44,9 +44,7 @@ import negozio.ScontoTrePerDue;
 
 
 public class JAddProductPanel extends JPanel implements ActionListener{
-
-	private static final long serialVersionUID = 1L;
-	
+	private static final long serialVersionUID = -6881271668480137290L;
 	
 	protected Prodotto prodotto;
 	private Magazzino magazzino;
@@ -119,7 +117,8 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 		/* ROBA PER IMMAGINE */
 		this.prodotto = new Prodotto("","","","",0,"media/img/immagine_non_disponibile.jpg",0,null);
 		this.jImmagineLabel = new JLabel("",SwingConstants.CENTER);
-		ImageIcon icon = new ImageIcon(this.ridimensionaImmagine(this.prodotto.getImmagine()),this.prodotto.getImmagine().toString());
+		ImageIcon icon = new ImageIcon(this.ridimensionaImmagine(
+				this.prodotto.getImmagine()),this.prodotto.getImmagine().toString());
 		if(icon!=null)
 		{
 			this.jImmagineLabel.setIcon(icon);

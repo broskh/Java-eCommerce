@@ -36,7 +36,9 @@ public class Java_eCommerce  {
 		
 		jUserFrame.setVisible(true);
 		jUserFrame.setAccessListener(userAccessListener);
-//		
+		
+		
+//		Magazzino magazzino = new Magazzino();
 //		Prodotto prodotto1 = new Prodotto("nome1", "marca1", "codice1", "categoria1", 
 //				(float)1.0, "media/img/immagine_non_disponibile.jpg", 10, new ScontoTrePerDue());
 //		Prodotto prodotto2 = new Prodotto("nome2", "marca2", "codice2", "categoria2", 
