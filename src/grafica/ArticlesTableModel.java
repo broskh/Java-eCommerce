@@ -216,7 +216,7 @@ class AmountColumnRender implements TableCellRenderer {
 	public Component getTableCellRendererComponent(JTable table, 
 			Object value, boolean isSelected, boolean hasFocus,
 			int row, int column) {
-		return new AmountCell(this.rowHeight, ((JCartTable) table).getProductAtRow(row));
+		return new AmountCell(this.rowHeight, ((JProductTable) table).getProductAtRow(row));
 	}
 }
 

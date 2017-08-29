@@ -83,7 +83,7 @@ private static final long serialVersionUID = 1L;
 	private static final String TESTO_MARCA_LABEL = "Marca:";
 	private static final String TESTO_CATEGORIA_LABEL = "Categoria:";
 	private static final String TESTO_PREZZO_LABEL = "Prezzo:";
-	private static final String TESTO_QUANTITA_LABEL = "Quantità:";
+	private static final String TESTO_QUANTITA_LABEL = "Quantitï¿½:";
 	private static final String TESTO_OFFERTA_LABEL = "Offerta:";
 	private static final String TESTO_OFFERTA_NO_RADIO_BUTTON = "No";
 	private static final String TESTO_OFFERTA_PERCENTUALE_RADIO_BUTTON = "Percentuale";
@@ -277,7 +277,7 @@ private static final long serialVersionUID = 1L;
 			int returnVal = fc.showOpenDialog(this);
 			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			fc.setMultiSelectionEnabled(false);
-			ImageIcon newIcon = new ImageIcon(this.ridimensionaImmagine(fc.getSelectedFile()),fc.getSelectedFile().toString());
+			ImageIcon newIcon = new ImageIcon(new ResizableIcon(fc.getSelectedFile()).resizeIcon(DIMENSIONE_ICONA, DIMENSIONE_ICONA));
 			if(newIcon!=null)
 			{
 				this.jImmagineLabel.setIcon(newIcon);

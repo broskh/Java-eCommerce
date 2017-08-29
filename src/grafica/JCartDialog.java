@@ -90,7 +90,7 @@ public class JCartDialog extends JDialog implements ActionListener{
 		}
 	}
 	
-	class JCartTable extends JTable {
+	class JCartTable extends JTable implements JProductTable {
 		private static final long serialVersionUID = 4734550632778588769L;
 
 		private Carrello cart;

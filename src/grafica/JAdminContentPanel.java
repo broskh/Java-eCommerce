@@ -28,7 +28,7 @@ public class JAdminContentPanel extends JPanel {
 	private Carrello carrello;
 	
 	
-	private JCartTable jCartTable;
+	private JStoreTable jCartTable;
 	
 	
 	//private static final int LARGHEZZA_MINIMA = 800;
@@ -40,7 +40,7 @@ public class JAdminContentPanel extends JPanel {
 	//private static final int SPAZIO_BOTTONI = 200;
 	//private static final int MARGINE_SUPERIORE_BOTTOMPANEL = 10;
 
-	private static final String COLONNA_QUANTITA = "Quantità";
+	private static final String COLONNA_QUANTITA = "Quantitï¿½";
 	private static final String COLONNA_BOTTONE = "";
 	/*private static final String TESTO_BOTTONE_PAGA = "Paga";
 	private static final String TESTO_BOTTONE_SVUOTA_CARRELLO = "Svuota carrello";*/
@@ -64,7 +64,7 @@ public class JAdminContentPanel extends JPanel {
 		//System.out.println(carrello);
 		
 		
-		this.jCartTable = new JCartTable(this.carrello,this.magazzino);
+		this.jCartTable = new JStoreTable(this.magazzino);
 		
 		JScrollPane scrollTable = new JScrollPane(this.jCartTable);
         scrollTable.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -80,7 +80,7 @@ public class JAdminContentPanel extends JPanel {
 	
 	}
 	
-	public class JCartTable extends JTable
+	public class JStoreTable extends JTable implements JProductTable
 	{
 		private static final long serialVersionUID = 4734550632778588769L;
 		
@@ -91,31 +91,30 @@ public class JAdminContentPanel extends JPanel {
 		private static final String COLONNA_QUANTITA = "QuantitÃ ";
 		private static final String COLONNA_BOTTONE = "";
 		
-		public JCartTable(Carrello carrello, Magazzino magazzino)
+		public JStoreTable(Magazzino magazzino)
 		{
 			this.carrello = carrello;
 			this.magazzino = magazzino;
 			
-			this.setModel(new ArticlesTableModel(this.carrello.getArticoli(), ALTEZZA_RIGA));
+			this.setModel(new ArticlesTableModel(this.magazzino.getArticoli(), ALTEZZA_RIGA));
 			this.setRowHeight(ALTEZZA_RIGA);
 			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 			centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );
 			this.setDefaultRenderer(String.class, centerRenderer);
 			this.setBackground(null);
-			this.getColumn(COLONNA_QUANTITA).setCellRenderer(new AmountColumnRender(ALTEZZA_RIGA));
-			this.getColumn(COLONNA_QUANTITA).setCellEditor(new AmountColumnEditor((ArticlesTableModel) this.getModel(), this.carrello, this.magazzino, ALTEZZA_RIGA));
+//			this.getColumn(COLONNA_QUANTITA).setCellRenderer(new AmountColumnRender(ALTEZZA_RIGA));
+//			this.getColumn(COLONNA_QUANTITA).setCellEditor(new AmountColumnEditor((ArticlesTableModel) this.getModel(), this.carrello, this.magazzino, ALTEZZA_RIGA));
 			this.getColumn(COLONNA_BOTTONE).setCellRenderer(new RemoveColumnRender(ALTEZZA_RIGA));
-			this.getColumn(COLONNA_BOTTONE).setCellEditor(new RemoveColumnEditor(this.carrello.getArticoli(), ALTEZZA_RIGA));
+			this.getColumn(COLONNA_BOTTONE).setCellEditor(new RemoveColumnEditor(this.magazzino.getArticoli(), ALTEZZA_RIGA));
 			this.setFocusable(false);
 			this.setRowSelectionAllowed(false);
 
 		}
+
+		@Override
+		public Prodotto getProductAtRow(int row) {
+			return this.magazzino.getArticoli().get(row);
+		}
 	}
-	
-	public Prodotto getProductAtRow (int row) {
-		return this.carrello.getArticoli().get(row);
-	}
-		
-	
 }
 
