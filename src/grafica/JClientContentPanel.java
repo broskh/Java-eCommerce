@@ -169,7 +169,8 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 			this.showcasePanel.add(new JArticlePanel(this.store, 
 					this.viewedArticles.get(i + nVisibleArticles * this.nPage), this.client));
 		}
-		if (this.nPage == this.maxPage && this.viewedArticles.size() / nVisibleArticles != 0) {
+//		if (this.nPage == this.maxPage && this.viewedArticles.size() / nVisibleArticles != 0) {
+		if ((this.viewedArticles.size() - (this.nPage * nVisibleArticles)) < nVisibleArticles) {
 			int box = nVisibleArticles - (this.viewedArticles.size() % nVisibleArticles);
 			for (int i = 0; i < box; i++) {
 				this.showcasePanel.add(Box.createRigidArea(new Dimension(
@@ -183,24 +184,32 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	
 	public void resetPagina () {
 		this.nPage = 0;
+		this.updateArticles();
+	}
+	
+	private void nextPage () {
+		this.nPage++;
+		if (this.nPage > this.maxPage) {
+			this.nPage = this.maxPage;
+		}
+		this.updateArticles();		
+	}
+	
+	private void previousPage () {
+		this.nPage--;
+		if (this.nPage < 0) {
+			this.nPage = 0;
+		}
+		this.updateArticles();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println(this.nPage);
 		if (e.getSource().equals(this.backButton)) {
-			this.nPage--;
-			if (this.nPage < 0) {
-				this.nPage = 0;
-			}
-			this.updateArticles();
+			this.previousPage();
 		}
 		else if (e.getSource().equals(this.forwardButton)) {
-			this.nPage++;
-			if (this.nPage > this.maxPage) {
-				this.nPage = this.maxPage;
-			}
-			this.updateArticles();
+			this.nextPage();
 		}
 	}
 }
@@ -377,7 +386,9 @@ class JArticlePanel extends JPanel {
 		JPanel imagePanel = new JPanel ();
 		imagePanel.setLayout(new BoxLayout (imagePanel, BoxLayout.Y_AXIS));
 		imagePanel.add(Box.createVerticalStrut(GENERIC_MARGIN));
+		imagePanel.add(Box.createVerticalStrut((ICON_SIZE - icon.getIconHeight()) / 2));
 		imagePanel.add(imageLabel);
+		imagePanel.add(Box.createVerticalStrut((ICON_SIZE - icon.getIconHeight()) / 2));
 		
 		JLabel codeLabel = new JLabel(CODE_TEXT + article.getCodice());
 		JLabel nameLabel = new JLabel(NAME_TEXT + article.getNome());

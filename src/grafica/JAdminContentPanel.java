@@ -60,7 +60,7 @@ public class JAdminContentPanel extends JPanel {
 		{
 			this.magazzino = magazzino;
 			
-			this.setModel(new ArticlesTableModel(this.magazzino.getArticoli(), LINE_HEIGHT));
+			this.setModel(new ArticlesTableModel(this.magazzino.getArticoli(), LINE_HEIGHT,ArticlesTableModel.STORE_MODE));
 			this.setRowHeight(LINE_HEIGHT);
 			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 			centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );

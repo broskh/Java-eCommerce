@@ -28,11 +28,7 @@ public class Java_eCommerce  {
 		UserAccessListener userAccessListener = new UserAccessListener(jUserFrame, jeCommerceFrame, utente, magazzino, FILE_MAGAZZINO);
 		
 		
-		
-		
-		
-		
-		
+		System.out.println(magazzino);
 		
 		jUserFrame.setVisible(true);
 		jUserFrame.setAccessListener(userAccessListener);
@@ -105,40 +101,3 @@ public class Java_eCommerce  {
 //		magazzino.salvaMagazzino("media/saves/save21.mag");
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

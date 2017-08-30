@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.EventObject;
 
 import javax.imageio.ImageIO;
+
 import javax.swing.Box;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
@@ -27,8 +28,6 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.text.PlainDocument;
 
-import grafica.JCartDialog.JCartTable;
-
 import negozio.Carrello;
 import negozio.Magazzino;
 import negozio.Prodotto;
@@ -38,18 +37,33 @@ public class ArticlesTableModel extends AbstractTableModel {
 	
 	private ArrayList <Prodotto> products;
 	private int iconSize;
+	private int mode;
 	
 	private static final int AMOUNT_COLUMN = 8;
 	private static final int BUTTON_COLUMN = 9;
-	private static final String [] COLUMNS = {
-		"Immagine", "Codice", "Nome", "Marca", 
-		"Categoria", "Offerta", "Prezzo cadauno", 
-		"Prezzo totale", "Quantità", ""};
+	private static final String [] CART_COLUMNS = {
+			"Immagine", "Codice", "Nome", "Marca", 
+			"Categoria", "Offerta", "Prezzo cadauno", 
+			"Prezzo totale", "Quantità", ""};
+	private static final String [] STORE_COLUMNS = {
+			"Immagine", "Codice", "Nome", "Marca", 
+			"Categoria", "Offerta", "Prezzo cadauno", 
+			"Prezzo cadauno scontato", "Quantità", ""};
+	private static final String NONE_OFFER_TEXT = "Nessuna";
+
+	public static final int CART_MODE = 1;
+	public static final int STORE_MODE = 2;
 	
-	public ArticlesTableModel (ArrayList <Prodotto> products, int iconSize) {
+	public ArticlesTableModel (ArrayList <Prodotto> products, int iconSize, int mode) {
 		super ();
 		this.products = products;
 		this.iconSize = iconSize;
+		if (mode == ArticlesTableModel.CART_MODE || mode == ArticlesTableModel.STORE_MODE) {
+			this.mode = mode;
+		}
+		else {
+			this.mode = CART_MODE;
+		}
 	}
 
 	@Override
@@ -59,7 +73,13 @@ public class ArticlesTableModel extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		return COLUMNS.length;
+		if (this.mode == ArticlesTableModel.CART_MODE) {
+			return ArticlesTableModel.CART_COLUMNS.length;
+		}
+		else if (this.mode == ArticlesTableModel.CART_MODE) {
+			return ArticlesTableModel.STORE_COLUMNS.length;
+		}
+		return 0;
 	}
 
 	@Override
@@ -80,15 +100,29 @@ public class ArticlesTableModel extends AbstractTableModel {
 				if (this.products.get(rowIndex).getOfferta() != null) {
 					return this.products.get(rowIndex).getOfferta().toString();
 				}
-				return null;
+				return NONE_OFFER_TEXT;
 			case 6:
-				return String.format("%.2f", this.products.get(
-						rowIndex).prezzoCadaunoScontato());
+				if (this.mode == ArticlesTableModel.CART_MODE) {
+					return String.format("%.2f", this.products.get(
+							rowIndex).prezzoCadaunoScontato());
+				}
+				else if (this.mode == ArticlesTableModel.STORE_MODE) {
+					return String.format("%.2f", this.products.get(
+							rowIndex).getPrezzo());
+				}
+				break;
 			case 7:
-				return String.format("%.2f", this.products.get(
-						rowIndex).prezzoTotaleScontato());
+				if (this.mode == ArticlesTableModel.CART_MODE) {
+					return String.format("%.2f", this.products.get(
+							rowIndex).prezzoTotaleScontato());
+				}
+				else if (this.mode == ArticlesTableModel.STORE_MODE) {
+					return String.format("%.2f", this.products.get(
+							rowIndex).prezzoCadaunoScontato());
+				}
+				break;
 			case 8:
-				return this.products.get(rowIndex).getQuantita();
+				return Integer.toString(this.products.get(rowIndex).getQuantita());
 			case 9:
 				return new Object ();
 		}
@@ -97,7 +131,13 @@ public class ArticlesTableModel extends AbstractTableModel {
 
 	@Override
 	public String getColumnName (int column) {
-		return COLUMNS [column];
+		if (this.mode == ArticlesTableModel.CART_MODE) {
+			return ArticlesTableModel.CART_COLUMNS [column];
+		}
+		else if (this.mode == ArticlesTableModel.STORE_MODE) {
+			return ArticlesTableModel.STORE_COLUMNS [column];
+		}
+		return null;
 	}
 
 	@Override
@@ -128,7 +168,7 @@ public class ArticlesTableModel extends AbstractTableModel {
 			case 7:
 				return String.class;
 			case 8:
-				return int.class;
+				return String.class;
 			case 9:
 				return Object.class;
 		}
