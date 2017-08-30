@@ -40,8 +40,8 @@ public class JRemoveArticleDialog extends JDialog implements ActionListener{
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		
-		this.articlePanel = new JModifyArticlePanel();
 		this.cart = cart;
+		this.articlePanel = new JModifyArticlePanel(this.cart.getArticoli());
 
 		this.okButton = new JButton(OK_STRING);
 		this.okButton.addActionListener(this);
@@ -79,6 +79,7 @@ public class JRemoveArticleDialog extends JDialog implements ActionListener{
 				if (amount > article.getQuantita()) {
 					amount = article.getQuantita();
 				}
+				this.cart.rimuoviProdotto(code, amount);
 				this.dispose();
 			}
 		}

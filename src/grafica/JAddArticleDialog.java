@@ -36,7 +36,7 @@ public class JAddArticleDialog extends JDialog implements ActionListener{
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		
-		JModifyArticlePanel articlePanel = new JModifyArticlePanel();
+		JModifyArticlePanel articlePanel = new JModifyArticlePanel(store.getArticoli());
 
 		this.okButton = new JButton(OK_STRING);
 		this.okButton.addActionListener(new AddArticleToCartListener(
