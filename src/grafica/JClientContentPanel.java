@@ -187,7 +187,6 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println(this.nPage);
 		if (e.getSource().equals(this.backButton)) {
 			this.nPage--;
 			if (this.nPage < 0) {

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.EventObject;
 
 import javax.imageio.ImageIO;
+
 import javax.swing.Box;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
@@ -26,8 +27,6 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.text.PlainDocument;
-
-import grafica.JCartDialog.JCartTable;
 
 import negozio.Carrello;
 import negozio.Magazzino;
@@ -45,6 +44,7 @@ public class ArticlesTableModel extends AbstractTableModel {
 		"Immagine", "Codice", "Nome", "Marca", 
 		"Categoria", "Offerta", "Prezzo cadauno", 
 		"Prezzo totale", "Quantità", ""};
+	private static final String NONE_OFFER_TEXT = "Nessuna";
 	
 	public ArticlesTableModel (ArrayList <Prodotto> products, int iconSize) {
 		super ();
@@ -80,7 +80,7 @@ public class ArticlesTableModel extends AbstractTableModel {
 				if (this.products.get(rowIndex).getOfferta() != null) {
 					return this.products.get(rowIndex).getOfferta().toString();
 				}
-				return null;
+				return NONE_OFFER_TEXT;
 			case 6:
 				return String.format("%.2f", this.products.get(
 						rowIndex).prezzoCadaunoScontato());

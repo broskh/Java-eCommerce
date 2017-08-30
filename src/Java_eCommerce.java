@@ -30,10 +30,6 @@ public class Java_eCommerce  {
 		
 		
 		
-		
-		
-		
-		
 		jUserFrame.setVisible(true);
 		jUserFrame.setAccessListener(userAccessListener);
 		
@@ -105,40 +101,3 @@ public class Java_eCommerce  {
 //		magazzino.salvaMagazzino("media/saves/save21.mag");
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
