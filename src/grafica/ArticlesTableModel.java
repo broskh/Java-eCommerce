@@ -52,7 +52,7 @@ public class ArticlesTableModel extends AbstractTableModel {
 	private static final String NONE_OFFER_TEXT = "Nessuna";
 
 	public static final int CART_MODE = 1;
-	public static final int STORE_MODE = 1;
+	public static final int STORE_MODE = 2;
 	
 	public ArticlesTableModel (ArrayList <Prodotto> products, int iconSize, int mode) {
 		super ();
