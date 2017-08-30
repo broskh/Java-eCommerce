@@ -58,11 +58,9 @@ public class ArticlesTableModel extends AbstractTableModel {
 		super ();
 		this.products = products;
 		this.iconSize = iconSize;
+		this.mode = CART_MODE;
 		if (mode == ArticlesTableModel.CART_MODE || mode == ArticlesTableModel.STORE_MODE) {
 			this.mode = mode;
-		}
-		else {
-			this.mode = CART_MODE;
 		}
 	}
 
@@ -76,7 +74,7 @@ public class ArticlesTableModel extends AbstractTableModel {
 		if (this.mode == ArticlesTableModel.CART_MODE) {
 			return ArticlesTableModel.CART_COLUMNS.length;
 		}
-		else if (this.mode == ArticlesTableModel.CART_MODE) {
+		else if (this.mode == ArticlesTableModel.STORE_MODE) {
 			return ArticlesTableModel.STORE_COLUMNS.length;
 		}
 		return 0;
