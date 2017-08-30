@@ -1,6 +1,5 @@
 package grafica;
 
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -10,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.Box;
@@ -25,7 +25,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.text.PlainDocument;
-
 import negozio.Magazzino;
 import negozio.Prodotto;
 import negozio.Promozione;
@@ -36,34 +35,34 @@ public class JModifyProductPanel extends JPanel implements ActionListener {
 
 private static final long serialVersionUID = 1L;
 	
-	
+	private JModifyProductDialog jModifyProductDialog;
+
 	private Magazzino magazzino;
 	private Prodotto p;
 	private Promozione promo;
 
-
-	private JLabel jCodiceLabel;
-	protected JTextField jCodiceTextField;
-	private JLabel jNomeLabel;
-	protected JTextField jNomeTextField;
-	private JLabel jMarcaLabel;
-	protected JTextField jMarcaTextField;
-	private JLabel jCategoriaLabel;
-	protected JTextField jCategoriaTextField;
-	private JLabel jPrezzoLabel;
-	protected JTextField jPrezzoTextField;
-	private JLabel jQuantitaLabel;
-	protected JTextField jQuantitaTextField;
-	private JLabel jOffertaLabel;
-	protected JRadioButton jOffertaNoRadioButton;
-	protected JRadioButton jOffertaPercentualeRadioButton;
-	protected JRadioButton jOffertaTrePerDueRadioButton;
-	protected JTextField jPercentualeTextField;
-	protected JButton jModificaButton;
+	private JLabel jCodeLabel;
+	protected JTextField jCodeTextField;
+	private JLabel jNameLabel;
+	protected JTextField jNameTextField;
+	private JLabel jBrandLabel;
+	protected JTextField jBrandTextField;
+	private JLabel jCategoryLabel;
+	protected JTextField jCategoryTextField;
+	private JLabel jPriceLabel;
+	protected JTextField jPriceTextField;
+	private JLabel jAmountLabel;
+	protected JTextField jAmountTextField;
+	private JLabel jOfferLabel;
+	protected JRadioButton jNoOfferRadioButton;
+	protected JRadioButton jPercentOfferRadioButton;
+	protected JRadioButton jThreePerTwoOfferRadioButton;
+	protected JTextField jPercentTextField;
+	protected JButton jModifyButton;
 	
 	
-	private JLabel jImmagineLabel;
-	protected JButton jImmagineButton;
+	private JLabel jImageLabel;
+	protected JButton jImageButton;
 	
 	private JLabel jEmptyLabel1;
 	private JLabel jEmptyLabel2;
@@ -73,121 +72,123 @@ private static final long serialVersionUID = 1L;
 	
 	
 	
-	private static final int LARGHEZZA_TEXTBOX = 10;
-	private static final int N_RIGHE_PANNELLO_MODIFICA = 6;
-	private static final int N_COLONNE_PANNELLO_MODIFICA = 2;
-	private static final int DIMENSIONE_ICONA = 120; //
+	private static final int WIDTH_TEXTBOX = 10;
+	private static final int N_LINES_MODIFY_PANEL = 6;
+	private static final int N_COLUMNS_MODIFY_PANEL = 2;
+	private static final int ICON_DIMENSION = 120;
+	private static final int DIMENSION_VERTICAL_STRUT = 10;
+	private static final int DIMENSION_HORIZIONTAL_STRUT = 20;
+	private static final int N_LINES_OFFER_PANEL = 4;
+	private static final int N_COLUMNS_OFFER_PANEL = 2;
 	
-	private static final String TESTO_CODICE_LABEL = "Codice:";
-	private static final String TESTO_NOME_LABEL = "Nome:";
-	private static final String TESTO_MARCA_LABEL = "Marca:";
-	private static final String TESTO_CATEGORIA_LABEL = "Categoria:";
-	private static final String TESTO_PREZZO_LABEL = "Prezzo:";
-	private static final String TESTO_QUANTITA_LABEL = "Quantitï¿½:";
-	private static final String TESTO_OFFERTA_LABEL = "Offerta:";
-	private static final String TESTO_OFFERTA_NO_RADIO_BUTTON = "No";
-	private static final String TESTO_OFFERTA_PERCENTUALE_RADIO_BUTTON = "Percentuale";
-	private static final String TESTO_OFFERTA_TRE_PER_DUE_RADIO_BUTTON = "3x2";
-	private static final String TESTO_MODIFICA_BUTTON = "Modifica";
-	private static final String TESTO_IMMAGINE_BUTTON = "Cambia";
+	private static final String CODE_LABEL_TEXT = "Codice:";
+	private static final String NAME_LABEL_TEXT = "Nome:";
+	private static final String BRAND_LABEL_TEXT = "Marca:";
+	private static final String CATEGORY_LABEL_TEXT = "Categoria:";
+	private static final String PRICE_LABEL_TEXT = "Prezzo:";
+	private static final String AMOUNT_LABEL_TEXT = "Quantitï¿½:";
+	private static final String OFFER_LABEL_TEXT = "Offerta:";
+	private static final String NO_OFFER_RADIO_BUTTON_TEXT = "No";
+	private static final String PERCENT_OFFER_RADIO_BUTTON_TEXT = "Percentuale";
+	private static final String THREE_PER_TWO_OFFER_RADIO_BUTTON_TEXT = "3x2";
+	private static final String MODIFY_BUTTON_TEXT = "Modifica";
+	private static final String IMAGE_BUTTON_TEXT = "Cambia";
 	
+	private static final String IMAGE_BUTTON_ACTION_COMMAND_TEXT = "cambia";
+	private static final String MODIFY_BUTTON_ACTION_COMMAND_TEXT = "modifica";
+	private static final String NO_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT = "nessuna";
+	private static final String PERCENT_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT = "percentuale";
+	private static final String THREE_PER_TWO_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT = "3x2";
 	
-	private static final String TESTO_EMPTY_LABEL = "";
+	private static final String EMPTY_LABEL_TEXT = "";
 	
-	
-	
-	
-	public JModifyProductPanel(Prodotto p, Magazzino magazzino)
+	public JModifyProductPanel(JModifyProductDialog jModifyProductDialog,Prodotto p, Magazzino magazzino)
 	{
-		
-		
-		//p.setImmagine(new File("media/img/immagine_non_disponibile.jpg"));
+		this.jModifyProductDialog = jModifyProductDialog;
 		this.p = p;
 		this.magazzino = magazzino;
-		
 		/* ROBA PER IMMAGINE */
-		
-		this.jImmagineLabel = new JLabel("",SwingConstants.CENTER);
-		ImageIcon icon = new ImageIcon(this.ridimensionaImmagine(this.p.getImmagine()),this.p.getImmagine().toString());
+
+		this.jImageLabel = new JLabel("",SwingConstants.CENTER);
+		ImageIcon icon = new ImageIcon(new ResizableIcon(this.p.getImmagine()).
+				resizeIcon(ICON_DIMENSION, ICON_DIMENSION),this.p.getImmagine().toString());
+
 		if(icon != null)
 		{
-			this.jImmagineLabel.setIcon(icon);
+			this.jImageLabel.setIcon(icon);
 		}
 		JPanel imagePanel = new JPanel();
-		this.jImmagineButton = new JButton(this.TESTO_IMMAGINE_BUTTON);
+		this.jImageButton = new JButton(JModifyProductPanel.IMAGE_BUTTON_TEXT);
 		imagePanel.setLayout(new BoxLayout(imagePanel,BoxLayout.X_AXIS));
-		imagePanel.add(Box.createVerticalStrut(10));
-		imagePanel.add(this.jImmagineLabel);
-		imagePanel.add(Box.createHorizontalStrut(20));
-		imagePanel.add(jImmagineButton);
-		this.jImmagineButton.setActionCommand("cambia");
-		this.jImmagineButton.addActionListener(this);
-		imagePanel.add(Box.createVerticalStrut(10));
+		imagePanel.add(Box.createVerticalStrut(DIMENSION_VERTICAL_STRUT));
+		imagePanel.add(this.jImageLabel);
+		imagePanel.add(Box.createHorizontalStrut(DIMENSION_HORIZIONTAL_STRUT));
+		imagePanel.add(jImageButton);
+		this.jImageButton.setActionCommand(IMAGE_BUTTON_ACTION_COMMAND_TEXT);
+		this.jImageButton.addActionListener(this);
+		imagePanel.add(Box.createVerticalStrut(DIMENSION_VERTICAL_STRUT));
 		
 		/* FINE ROBA PER IMMAGINE */
 		
-		this.jCodiceLabel = new JLabel(this.TESTO_CODICE_LABEL);
-		this.jCodiceTextField = new JTextField(this.LARGHEZZA_TEXTBOX);
-		jCodiceTextField.setText(p.getCodice());
-		this.jNomeLabel = new JLabel(this.TESTO_NOME_LABEL);
-		this.jNomeTextField = new JTextField(this.LARGHEZZA_TEXTBOX);
-		jNomeTextField.setText(p.getNome());
-		this.jMarcaLabel = new JLabel(this.TESTO_MARCA_LABEL);
-		this.jMarcaTextField = new JTextField(this.LARGHEZZA_TEXTBOX);
-		jMarcaTextField.setText(p.getMarca());
-		this.jCategoriaLabel = new JLabel(this.TESTO_CATEGORIA_LABEL);
-		this.jCategoriaTextField = new JTextField(this.LARGHEZZA_TEXTBOX);
-		jCategoriaTextField.setText(p.getCategoria());
-		this.jPrezzoLabel = new JLabel(this.TESTO_PREZZO_LABEL);
-		this.jPrezzoTextField = new JTextField(this.LARGHEZZA_TEXTBOX);
-		jPrezzoTextField.setText(Float.toString(p.getPrezzo()));
+		this.jCodeLabel = new JLabel(JModifyProductPanel.CODE_LABEL_TEXT);
+		this.jCodeTextField = new JTextField(JModifyProductPanel.WIDTH_TEXTBOX);
+		jCodeTextField.setText(p.getCodice());
+		this.jNameLabel = new JLabel(JModifyProductPanel.NAME_LABEL_TEXT);
+		this.jNameTextField = new JTextField(JModifyProductPanel.WIDTH_TEXTBOX);
+		jNameTextField.setText(p.getNome());
+		this.jBrandLabel = new JLabel(JModifyProductPanel.BRAND_LABEL_TEXT);
+		this.jBrandTextField = new JTextField(JModifyProductPanel.WIDTH_TEXTBOX);
+		jBrandTextField.setText(p.getMarca());
+		this.jCategoryLabel = new JLabel(JModifyProductPanel.CATEGORY_LABEL_TEXT);
+		this.jCategoryTextField = new JTextField(JModifyProductPanel.WIDTH_TEXTBOX);
+		jCategoryTextField.setText(p.getCategoria());
+		this.jPriceLabel = new JLabel(JModifyProductPanel.PRICE_LABEL_TEXT);
+		this.jPriceTextField = new JTextField(JModifyProductPanel.WIDTH_TEXTBOX);
+		jPriceTextField.setText(Float.toString(p.getPrezzo()));
 		/* CONTROLLO TEXT FIELD PREZZO */
-		/*PlainDocument docP = (PlainDocument)this.jPrezzoTextField.getDocument();
-		docP.setDocumentFilter(new PriceDocumentFilter());*/
+		PlainDocument docP = (PlainDocument)this.jPriceTextField.getDocument();
+		docP.setDocumentFilter(new PriceDocumentFilter());
 		
-		this.jQuantitaLabel = new JLabel(this.TESTO_QUANTITA_LABEL);
-		this.jQuantitaTextField = new JTextField(this.LARGHEZZA_TEXTBOX);
-		jQuantitaTextField.setText(Integer.toString(p.getQuantita()));
+		this.jAmountLabel = new JLabel(JModifyProductPanel.AMOUNT_LABEL_TEXT);
+		this.jAmountTextField = new JTextField(JModifyProductPanel.WIDTH_TEXTBOX);
+		jAmountTextField.setText(Integer.toString(p.getQuantita()));
 		/* CONTROLLO TEXT FIELD QUANTITA */
-		PlainDocument docQ = (PlainDocument)this.jQuantitaTextField.getDocument();
+		PlainDocument docQ = (PlainDocument)this.jAmountTextField.getDocument();
 		docQ.setDocumentFilter(new AmountDocumentFilter());
 		
-		this.jOffertaLabel = new JLabel(this.TESTO_OFFERTA_LABEL);
-		this.jPercentualeTextField = new JTextField(this.LARGHEZZA_TEXTBOX);
-		this.jOffertaNoRadioButton = new JRadioButton(this.TESTO_OFFERTA_NO_RADIO_BUTTON);
-		this.jOffertaPercentualeRadioButton = new JRadioButton(this.TESTO_OFFERTA_PERCENTUALE_RADIO_BUTTON);
-		this.jOffertaTrePerDueRadioButton = new JRadioButton(this.TESTO_OFFERTA_TRE_PER_DUE_RADIO_BUTTON);
+		this.jOfferLabel = new JLabel(JModifyProductPanel.OFFER_LABEL_TEXT);
+		this.jPercentTextField = new JTextField(JModifyProductPanel.WIDTH_TEXTBOX);
+		this.jNoOfferRadioButton = new JRadioButton(JModifyProductPanel.NO_OFFER_RADIO_BUTTON_TEXT);
+		this.jPercentOfferRadioButton = new JRadioButton(JModifyProductPanel.
+				PERCENT_OFFER_RADIO_BUTTON_TEXT);
+		
+		this.jThreePerTwoOfferRadioButton = new JRadioButton(JModifyProductPanel.
+				THREE_PER_TWO_OFFER_RADIO_BUTTON_TEXT);
+		
 		ButtonGroup buttonGroup = new ButtonGroup();
-		buttonGroup.add(this.jOffertaNoRadioButton);
-		buttonGroup.add(this.jOffertaPercentualeRadioButton);
-		buttonGroup.add(this.jOffertaTrePerDueRadioButton);
-		this.jModificaButton = new JButton(this.TESTO_MODIFICA_BUTTON);
-		this.jModificaButton.addActionListener(this);
-	
-
+		buttonGroup.add(this.jNoOfferRadioButton);
+		buttonGroup.add(this.jPercentOfferRadioButton);
+		buttonGroup.add(this.jThreePerTwoOfferRadioButton);
+		this.jModifyButton = new JButton(JModifyProductPanel.MODIFY_BUTTON_TEXT);
 		
-		
-		this.jEmptyLabel1 = new JLabel(this.TESTO_EMPTY_LABEL);
-		this.jEmptyLabel2 = new JLabel(this.TESTO_EMPTY_LABEL);
-
-		
+		this.jEmptyLabel1 = new JLabel(JModifyProductPanel.EMPTY_LABEL_TEXT);
+		this.jEmptyLabel2 = new JLabel(JModifyProductPanel.EMPTY_LABEL_TEXT);
 		
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
-		
-		JPanel pannelloModifica = new JPanel(new GridLayout(N_RIGHE_PANNELLO_MODIFICA,N_COLONNE_PANNELLO_MODIFICA));
-		pannelloModifica.add(this.jCodiceLabel);
-		pannelloModifica.add(this.jCodiceTextField);
-		pannelloModifica.add(this.jNomeLabel);
-		pannelloModifica.add(this.jNomeTextField);
-		pannelloModifica.add(this.jMarcaLabel);
-		pannelloModifica.add(this.jMarcaTextField);
-		pannelloModifica.add(this.jCategoriaLabel);
-		pannelloModifica.add(this.jCategoriaTextField);
-		pannelloModifica.add(this.jPrezzoLabel);
-		pannelloModifica.add(this.jPrezzoTextField);
-		pannelloModifica.add(this.jQuantitaLabel);
-		pannelloModifica.add(this.jQuantitaTextField);
+		JPanel modifyPanel = new JPanel(new GridLayout(N_LINES_MODIFY_PANEL,N_COLUMNS_MODIFY_PANEL));
+		modifyPanel.add(this.jCodeLabel);
+		modifyPanel.add(this.jCodeTextField);
+		modifyPanel.add(this.jNameLabel);
+		modifyPanel.add(this.jNameTextField);
+		modifyPanel.add(this.jBrandLabel);
+		modifyPanel.add(this.jBrandTextField);
+		modifyPanel.add(this.jCategoryLabel);
+		modifyPanel.add(this.jCategoryTextField);
+		modifyPanel.add(this.jPriceLabel);
+		modifyPanel.add(this.jPriceTextField);
+		modifyPanel.add(this.jAmountLabel);
+		modifyPanel.add(this.jAmountTextField);
 		
 
 		/* Preselezione radio button in base al tipo di offerta presente sul prodotto */
@@ -195,198 +196,287 @@ private static final long serialVersionUID = 1L;
 		
 		if(promo == null)
 		{
-			this.jOffertaNoRadioButton.setSelected(true);
+			this.jNoOfferRadioButton.setSelected(true);
+			this.jPercentTextField.setEditable(false);
 		}
 		else if(promo.toString().equals("3 x 2"))
 		{
-			this.jOffertaTrePerDueRadioButton.setSelected(true);
+			this.jThreePerTwoOfferRadioButton.setSelected(true);
+			this.jPercentTextField.setEditable(false);
 		}
 		else
 		{
 			ScontoPercentuale sp = (ScontoPercentuale) p.getOfferta();
-			this.jOffertaPercentualeRadioButton.setSelected(true);
-			this.jPercentualeTextField.setText(Integer.toString(sp.getPercentuale()));
-			/* CONTROLLO TEXT FIELD QUANTITA */
+			this.jPercentOfferRadioButton.setSelected(true);
+			this.jPercentTextField.setText(Integer.toString(sp.getPercentuale()));
+			/* CONTROLLO TEXT FIELD PERCENTUALE */
 			
 		}
-		PlainDocument docPC = (PlainDocument)this.jPercentualeTextField.getDocument();
+		PlainDocument docPC = (PlainDocument)this.jPercentTextField.getDocument();
 		docPC.setDocumentFilter(new AmountDocumentFilter());
 		
+	
 		
 		
-		JPanel pannelloOfferta = new JPanel(new GridLayout(4,2));
-		pannelloOfferta.add(this.jOffertaLabel);
-		pannelloOfferta.add(this.jEmptyLabel1);
-		pannelloOfferta.add(this.jOffertaNoRadioButton);
-		pannelloOfferta.add(this.jEmptyLabel2);
-		pannelloOfferta.add(this.jOffertaPercentualeRadioButton);
-		pannelloOfferta.add(this.jPercentualeTextField);
-		pannelloOfferta.add(this.jOffertaTrePerDueRadioButton);
+		JPanel offerPanel = new JPanel(new GridLayout(N_LINES_OFFER_PANEL,N_COLUMNS_OFFER_PANEL));
+		offerPanel.add(this.jOfferLabel);
+		offerPanel.add(this.jEmptyLabel1);
+		offerPanel.add(this.jNoOfferRadioButton);
+		offerPanel.add(this.jEmptyLabel2);
+		offerPanel.add(this.jPercentOfferRadioButton);
+		offerPanel.add(this.jPercentTextField);
+		offerPanel.add(this.jThreePerTwoOfferRadioButton);
 		
 		this.add(imagePanel);
-		this.add(pannelloModifica);
-		this.add(pannelloOfferta);
-		this.add(this.jModificaButton);
-		this.jModificaButton.setActionCommand("modifica");
-		this.jModificaButton.addActionListener(this);
+		this.add(modifyPanel);
+		this.add(offerPanel);
+		this.add(this.jModifyButton);
+		this.jModifyButton.setActionCommand(MODIFY_BUTTON_ACTION_COMMAND_TEXT);
+		this.jModifyButton.addActionListener(this);
+		
+		
+		/* ACTION COMMAND RADIO BUTTON */
+		this.jPercentOfferRadioButton.addActionListener(this);
+		this.jPercentOfferRadioButton.setActionCommand(PERCENT_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT);
+		this.jNoOfferRadioButton.addActionListener(this);
+		this.jNoOfferRadioButton.setActionCommand(NO_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT);
+		this.jThreePerTwoOfferRadioButton.addActionListener(this);
+		this.jThreePerTwoOfferRadioButton.setActionCommand(THREE_PER_TWO_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT);
 	}
-
-
-	
-	private Image ridimensionaImmagine (File immagine) {
-		BufferedImage bimg;
-		try {
-			bimg = ImageIO.read(immagine);
-			// Calcolo le giuste dimensioni per l'icona
-			int original_width = bimg.getWidth();
-		    int original_height = bimg.getHeight();
-		    int bound_width = DIMENSIONE_ICONA;
-		    int bound_height = DIMENSIONE_ICONA;
-		    int new_width = original_width;
-		    int new_height = original_height;
-		    if (original_width > bound_width) {
-		        new_width = bound_width;
-		        new_height = (new_width * original_height) / original_width;
-		    }
-		    if (new_height > bound_height) {
-		        new_height = bound_height;
-		        new_width = (new_height * original_width) / original_height;
-		    }
-			
-		    // Ridimensiono l'immagine
-		    BufferedImage resizedImg = new BufferedImage(new_width, new_height, BufferedImage.TYPE_INT_ARGB);
-		    Graphics2D g2 = resizedImg.createGraphics();
-		    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		    g2.drawImage(bimg, 0, 0, new_width, new_height, null);
-		    g2.dispose();
-
-		    return resizedImg;
-		} catch (IOException e) {
-			e.printStackTrace();			
-			return null;
-		}		
-	}
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand().equals("cambia"))
+		if(e.getActionCommand().equals(PERCENT_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT))
 		{
-			//FileSystemView fsv = new DirectoryRestrictedFileSystemView(new File("C:\\Users\\alessio\\ecommerce\\Java-eCommerce\\media\\img"));
+			this.jPercentTextField.setEditable(true);
+			this.jPercentTextField.setText("0");
+		}
+		else if(e.getActionCommand().equals(NO_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT))
+		{
+			this.jPercentTextField.setEditable(false);
+		}
+		else if(e.getActionCommand().equals(THREE_PER_TWO_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT))
+		{
+			this.jPercentTextField.setEditable(false);
+		}
+		else if(e.getActionCommand().equals(IMAGE_BUTTON_ACTION_COMMAND_TEXT))
+		{
+			ImageIcon newIcon;
 			JFileChooser fc = new JFileChooser();
 			int returnVal = fc.showOpenDialog(this);
 			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			fc.setMultiSelectionEnabled(false);
-			ImageIcon newIcon = new ImageIcon(new ResizableIcon(fc.getSelectedFile()).resizeIcon(DIMENSIONE_ICONA, DIMENSIONE_ICONA), fc.getSelectedFile().toString());
+			if(returnVal == 0)
+			{
+				newIcon = new ImageIcon(new ResizableIcon(fc.getSelectedFile()).
+						resizeIcon(ICON_DIMENSION, ICON_DIMENSION), fc.getSelectedFile().toString());
+			}
+			else
+			{
+				newIcon = new ImageIcon(new ResizableIcon(this.p.getImmagine()).
+						resizeIcon(ICON_DIMENSION, ICON_DIMENSION),this.p.getImmagine().toString());
+			}
+	
 			if(newIcon!=null)
 			{
-				this.jImmagineLabel.setIcon(newIcon);
+				this.jImageLabel.setIcon(newIcon);
 			}
 			
 		}
-		else if(e.getActionCommand().equals("modifica"))
+		else if(e.getActionCommand().equals(MODIFY_BUTTON_ACTION_COMMAND_TEXT))
 		{
 			Prodotto prod = magazzino.getProdotto(p.getCodice());
 			Promozione promozione;
-			if(this.jOffertaNoRadioButton.isSelected())
+			ArrayList <Prodotto> articles = new ArrayList <Prodotto>();
+			int check = 0;
+			articles = magazzino.getArticoli();			
+			if(this.jCodeTextField.getText().equals(p.getCodice()))
 			{
-				if(this.jCodiceTextField.getText().equals("") || this.jNomeTextField.getText().equals("") || this.jMarcaTextField.getText().equals("") || this.jCategoriaTextField.getText().equals("") ||this.jPrezzoTextField.getText().equals("") || this.jQuantitaTextField.getText().equals(""))
+				check = 0;
+			}
+			else
+			{
+				for(int i = 0;i<articles.size();i++)
 				{
-					JOptionPane.showMessageDialog(this, "Inserire tutti i dati correttamente","Attenzione!",JOptionPane.INFORMATION_MESSAGE);
-				}
-				else
-				{
-					//Prodotto prod = magazzino.getProdotto(p.getCodice());
-					ImageIcon imgicon = (ImageIcon) this.jImmagineLabel.getIcon();
-					
-					prod.setCategoria(this.jCategoriaTextField.getText());
-					prod.setCodice(this.jCodiceTextField.getText());
-					prod.setMarca(this.jMarcaTextField.getText());
-					prod.setNome(this.jNomeTextField.getText());
-					prod.setOfferta(null);
-					prod.setImmagine(imgicon.getDescription()); //settare immagine con descriptor
-					prod.setPrezzo(Float.valueOf(this.jPrezzoTextField.getText()));
-					prod.setQuantita(Integer.valueOf(this.jQuantitaTextField.getText()));
-					magazzino.salvaMagazzino("media/saves/save21.mag");
-					if(p.getCategoria().equals(prod.getCategoria()) && p.getCodice().equals(prod.getCodice()) && p.getMarca().equals(prod.getMarca()) && p.getNome().equals(prod.getNome()) && p.getPrezzo() == prod.getPrezzo() && p.getQuantita() == prod.getQuantita())
+					if(articles.get(i).getCodice().equals(this.jCodeTextField.getText()))
 					{
-						JOptionPane.showMessageDialog(this, "Modifica effettuata con successo","Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+						check = 1;
 					}
 				}
 			}
-			else if(this.jOffertaPercentualeRadioButton.isSelected())
+			
+			if(check == 0)
 			{
-				if(this.jCodiceTextField.getText().equals("") || this.jNomeTextField.getText().equals("") || this.jMarcaTextField.getText().equals("") || this.jCategoriaTextField.getText().equals("") ||this.jPrezzoTextField.getText().equals("") || this.jQuantitaTextField.getText().equals(""))
+				if(this.jNoOfferRadioButton.isSelected())
 				{
-					JOptionPane.showMessageDialog(this, "Inserire tutti i dati correttamente","Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+					if(this.jCodeTextField.getText().equals("") ||
+							this.jNameTextField.getText().equals("") ||
+							this.jBrandTextField.getText().equals("") ||
+							this.jCategoryTextField.getText().equals("") ||
+							this.jPriceTextField.getText().equals("") ||
+							this.jAmountTextField.getText().equals(""))
+					{
+						JOptionPane.showMessageDialog(this, "Inserire tutti i dati correttamente",
+								"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+					}
+					else
+					{	
+						Float checkPrice = Float.valueOf(this.jPriceTextField.getText());
+						ImageIcon imgicon = (ImageIcon) this.jImageLabel.getIcon();
+						
+						prod.setCategoria(this.jCategoryTextField.getText());
+						prod.setCodice(this.jCodeTextField.getText());
+						prod.setMarca(this.jBrandTextField.getText());
+						prod.setNome(this.jNameTextField.getText());
+						prod.setOfferta(null);
+						prod.setImmagine(imgicon.getDescription());
+						prod.setPrezzo(Float.valueOf(this.jPriceTextField.getText()));
+						prod.setQuantita(Integer.valueOf(this.jAmountTextField.getText()));
+						if(checkPrice == 0)
+						{
+							JOptionPane.showMessageDialog(this, "Inserire un prezzo diverso da 0 per il prodotto",
+									"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+						}
+						else
+						{
+							magazzino.salvaMagazzino("media/saves/save21.mag");
+							if(p.getCategoria().equals(prod.getCategoria()) &&
+									p.getCodice().equals(prod.getCodice()) &&
+									p.getMarca().equals(prod.getMarca()) &&
+									p.getNome().equals(prod.getNome()) &&
+									p.getPrezzo() == prod.getPrezzo() &&
+									p.getQuantita() == prod.getQuantita())
+							{
+								JOptionPane.showMessageDialog(this, "Modifica effettuata con successo",
+										"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+								this.jModifyProductDialog.setVisible(false);
+							}
+						}
+					}
 				}
-				else if(this.jPercentualeTextField.getText().equals(""))
+				else if(this.jPercentOfferRadioButton.isSelected())
 				{
-					JOptionPane.showMessageDialog(this, "Inserire il valore della percentuale da scontare","Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+					int checkPercent = Integer.valueOf(this.jPercentTextField.getText());
+					if(this.jCodeTextField.getText().equals("") ||
+							this.jNameTextField.getText().equals("") ||
+							this.jBrandTextField.getText().equals("") ||
+							this.jCategoryTextField.getText().equals("") ||
+							this.jPriceTextField.getText().equals("") ||
+							this.jAmountTextField.getText().equals(""))
+					{
+						JOptionPane.showMessageDialog(this, "Inserire tutti i dati correttamente",
+								"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+					}
+					else if(this.jPercentTextField.getText().equals(""))
+					{
+						JOptionPane.showMessageDialog(this,
+								"Inserire il valore della percentuale da scontare",
+								"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+					}
+					else if(checkPercent == 0)
+					{
+						JOptionPane.showMessageDialog(this,
+								"Inserire un valore della percentuale da scontare diverso da 0",
+								"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+					}
+					else
+					{
+						Float checkPrice = Float.valueOf(this.jPriceTextField.getText());
+						promozione = new ScontoPercentuale(Integer.parseInt(this.
+								jPercentTextField.getText()));
+						
+						ImageIcon imgicon = (ImageIcon) this.jImageLabel.getIcon();
+						
+						prod.setCategoria(this.jCategoryTextField.getText());
+						prod.setCodice(this.jCodeTextField.getText());
+						prod.setMarca(this.jBrandTextField.getText());
+						prod.setNome(this.jNameTextField.getText());
+						prod.setOfferta(promozione);
+						prod.setImmagine(imgicon.getDescription());
+						prod.setPrezzo(Float.valueOf(this.jPriceTextField.getText()));
+						prod.setQuantita(Integer.valueOf(this.jAmountTextField.getText()));
+						if(checkPrice == 0)
+						{
+							JOptionPane.showMessageDialog(this, "Inserire un prezzo diverso da 0 per il prodotto",
+									"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+						}
+						else
+						{
+							magazzino.salvaMagazzino("media/saves/save21.mag");
+							if(p.getCategoria().equals(prod.getCategoria()) &&
+									p.getCodice().equals(prod.getCodice()) &&
+									p.getMarca().equals(prod.getMarca()) &&
+									p.getNome().equals(prod.getNome()) &&
+									p.getPrezzo() == prod.getPrezzo() &&
+									p.getQuantita() == prod.getQuantita())
+							{
+								JOptionPane.showMessageDialog(this, "Modifica effettuata con successo",
+										"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+								this.jModifyProductDialog.setVisible(false);
+							}
+						}	
+					}
+				}
+				else if(this.jThreePerTwoOfferRadioButton.isSelected())
+				{
+					if(this.jCodeTextField.getText().equals("") ||
+							this.jNameTextField.getText().equals("") ||
+							this.jBrandTextField.getText().equals("") ||
+							this.jCategoryTextField.getText().equals("") ||
+							this.jPriceTextField.getText().equals("") ||
+							this.jAmountTextField.getText().equals(""))
+					{
+						JOptionPane.showMessageDialog(this, "Inserire tutti i dati correttamente",
+								"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+					}
+					else
+					{
+						Float checkPrice = Float.valueOf(this.jPriceTextField.getText());
+						promozione = new ScontoTrePerDue();
+						ImageIcon imgicon = (ImageIcon) this.jImageLabel.getIcon();
+						
+						prod.setCategoria(this.jCategoryTextField.getText());
+						prod.setCodice(this.jCodeTextField.getText());
+						prod.setMarca(this.jBrandTextField.getText());
+						prod.setNome(this.jNameTextField.getText());
+						prod.setOfferta(promozione);
+						prod.setImmagine(imgicon.getDescription());
+						prod.setPrezzo(Float.valueOf(this.jPriceTextField.getText()));
+						prod.setQuantita(Integer.valueOf(this.jAmountTextField.getText()));
+						if(checkPrice == 0)
+						{
+							JOptionPane.showMessageDialog(this, "Inserire un prezzo diverso da 0 per il prodotto",
+									"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+						}
+						else
+						{
+							magazzino.salvaMagazzino("media/saves/save21.mag");
+							if(p.getCategoria().equals(prod.getCategoria()) &&
+									p.getCodice().equals(prod.getCodice()) &&
+									p.getMarca().equals(prod.getMarca()) &&
+									p.getNome().equals(prod.getNome()) &&
+									p.getPrezzo() == prod.getPrezzo() &&
+									p.getQuantita() == prod.getQuantita())
+							{
+								JOptionPane.showMessageDialog(this, "Modifica effettuata con successo",
+										"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+								this.jModifyProductDialog.setVisible(false);
+							}
+						}
+					}
 				}
 				else
 				{
-					promozione = new ScontoPercentuale(Integer.parseInt(this.jPercentualeTextField.getText()));
-					//Prodotto prod = magazzino.getProdotto(p.getCodice());
-					
-					ImageIcon imgicon = (ImageIcon) this.jImmagineLabel.getIcon();
-					
-					prod.setCategoria(this.jCategoriaTextField.getText());
-					prod.setCodice(this.jCodiceTextField.getText());
-					prod.setMarca(this.jMarcaTextField.getText());
-					prod.setNome(this.jNomeTextField.getText());
-					prod.setOfferta(promozione);
-					prod.setImmagine(imgicon.getDescription());
-					prod.setPrezzo(Float.valueOf(this.jPrezzoTextField.getText()));
-					prod.setQuantita(Integer.valueOf(this.jQuantitaTextField.getText()));
-					magazzino.salvaMagazzino("media/saves/save21.mag");
-					if(p.getCategoria().equals(prod.getCategoria()) && p.getCodice().equals(prod.getCodice()) && p.getMarca().equals(prod.getMarca()) && p.getNome().equals(prod.getNome()) && p.getPrezzo() == prod.getPrezzo() && p.getQuantita() == prod.getQuantita())
-					{
-						JOptionPane.showMessageDialog(this, "Modifica effettuata con successo","Attenzione!",JOptionPane.INFORMATION_MESSAGE);
-					}
-				}
-			}
-			else if(this.jOffertaTrePerDueRadioButton.isSelected())
-			{
-				if(this.jCodiceTextField.getText().equals("") || this.jNomeTextField.getText().equals("") || this.jMarcaTextField.getText().equals("") || this.jCategoriaTextField.getText().equals("") ||this.jPrezzoTextField.getText().equals("") || this.jQuantitaTextField.getText().equals(""))
-				{
-					JOptionPane.showMessageDialog(this, "Inserire tutti i dati correttamente","Attenzione!",JOptionPane.INFORMATION_MESSAGE);
-				}
-				else
-				{
-					promozione = new ScontoTrePerDue();
-					//Prodotto prod = magazzino.getProdotto(p.getCodice());
-					
-					ImageIcon imgicon = (ImageIcon) this.jImmagineLabel.getIcon();
-					
-					prod.setCategoria(this.jCategoriaTextField.getText());
-					prod.setCodice(this.jCodiceTextField.getText());
-					prod.setMarca(this.jMarcaTextField.getText());
-					prod.setNome(this.jNomeTextField.getText());
-					prod.setOfferta(promozione);
-					prod.setImmagine(imgicon.getDescription());
-					prod.setPrezzo(Float.valueOf(this.jPrezzoTextField.getText()));
-					prod.setQuantita(Integer.valueOf(this.jQuantitaTextField.getText()));
-					magazzino.salvaMagazzino("media/saves/save21.mag");
-					if(p.getCategoria().equals(prod.getCategoria()) && p.getCodice().equals(prod.getCodice()) && p.getMarca().equals(prod.getMarca()) && p.getNome().equals(prod.getNome()) && p.getPrezzo() == prod.getPrezzo() && p.getQuantita() == prod.getQuantita())
-					{
-						JOptionPane.showMessageDialog(this, "Modifica effettuata con successo","Attenzione!",JOptionPane.INFORMATION_MESSAGE);
-					}
+					JOptionPane.showMessageDialog(this, "Selezionare un'offerta per il prodotto",
+							"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 			else
 			{
-				JOptionPane.showMessageDialog(this, "Selezionare un'offerta per il prodotto","Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(this,
+						"Il codice inserito è gia presente nel magazzino per un altro prodotto",
+						"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
 			}
-		}
-		
-
-		
-		
-		
-		
-		
-		
-		
+		}	
 	}
 }

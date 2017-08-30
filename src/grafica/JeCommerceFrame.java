@@ -45,8 +45,8 @@ public class JeCommerceFrame extends JFrame implements ComponentListener {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		if (this.user.isAmministratore()) {
-			this.menuBar = new JAdminMenuBar(store);
-			this.contentPanel = new JAdminContentPanel(store);
+			this.menuBar = new JAdminMenuBar(store,this);
+			this.contentPanel = new JAdminContentPanel(this,store);
 		}
 		else {
 			this.menuBar = new JClientMenuBar(this, store, ((Cliente) this.user).getCarrello());

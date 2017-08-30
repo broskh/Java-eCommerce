@@ -20,8 +20,37 @@ public class PriceDocumentFilter extends DocumentFilter{
 		this(-1);
 	}
 	
+	private boolean testFloat (String text) {
+		try {
+			Float.parseFloat(text);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+	
+	private String correctValue(String value)
+	{
+		Float floatValue = Float.parseFloat(value);
+		if(this.maxValue != -1 && floatValue > this.maxValue)
+		{
+			return Float.toString(this.maxValue);
+		}
+		return Float.toString(floatValue);
+	}
+	
+	public void  setMaxValue(Float maxValue)
+	{
+		this.maxValue = maxValue;
+	}
+	
+	public Float getMaxValue()
+	{
+		return this.maxValue;
+	}
+	
 	@Override
-	public void insertString(FilterBypass fb,int offset,String string,AttributeSet attr) throws BadLocationException
+	public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException
 	{
 		Document doc = fb.getDocument();
 		StringBuilder sb = new StringBuilder();
@@ -34,41 +63,31 @@ public class PriceDocumentFilter extends DocumentFilter{
 		}
 		else
 		{
-			
+			// warn the user and don't allow the insert
 		}
 	}
 	
-	private boolean testFloat(String text)
+	@Override
+	public void replace(FilterBypass fb,int offset,int length,String text,AttributeSet attrs) throws BadLocationException
 	{
-		try
-		{
-			Float.parseFloat(text);
-			return true;
-		} 
-		catch(NumberFormatException e)
-		{
-			return false;
-		}
-	}
-	
-	/*@Override
-	public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-
 		Document doc = fb.getDocument();
 		StringBuilder sb = new StringBuilder();
 		sb.append(doc.getText(0, doc.getLength()));
 		sb.replace(offset, offset + length, text);
-
-		if (this.testFloat (sb.toString())) {
+		
+		if(this.testFloat(sb.toString()))
+		{
 			super.replace(fb, 0, doc.getLength(), this.correctValue(sb.toString()), attrs);
-		} else {
-         // 	warn the user and don't allow the insert
 		}
-
-	}*/
+		else
+		{
+			// warn the user and don't allow the insert
+		}
+	}
 	
 	@Override
-	public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {
+	public void remove(FilterBypass fb, int offset, int length) 
+			throws BadLocationException {
 		Document doc = fb.getDocument();
 		StringBuilder sb = new StringBuilder();
 		sb.append(doc.getText(0, doc.getLength()));
@@ -80,6 +99,6 @@ public class PriceDocumentFilter extends DocumentFilter{
 			this.replace(fb, offset, length, "0", null);
 			// warn the user and don't allow the insert
 		}
-
 	}
+
 }
