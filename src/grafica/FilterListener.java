@@ -32,30 +32,36 @@ public class FilterListener implements ActionListener {
 			case Magazzino.STRINGA_FILTRO_NOME:
 				this.mainPanel.setViewedArticles(
 						this.mainPanel.getStore ().filtraPerNome(this.filterPanel.getText()));
+				this.mainPanel.resetPagina();
 				break;
 			case Magazzino.STRINGA_FILTRO_MARCA:
 				this.mainPanel.setViewedArticles(
 						this.mainPanel.getStore ().filtraPerMarca(this.filterPanel.getText()));
+				this.mainPanel.resetPagina();
 				break;
 			case Magazzino.STRINGA_FILTRO_CODICE:
 				this.mainPanel.setViewedArticles(
 						this.mainPanel.getStore ().filtraPerCodice(this.filterPanel.getText()));
+				this.mainPanel.resetPagina();
 				break;
 			case Magazzino.STRINGA_FILTRO_CATEGORIA:
 				this.mainPanel.setViewedArticles(
 						this.mainPanel.getStore ().filtraPerCategoria(this.filterPanel.getText()));
+				this.mainPanel.resetPagina();
 				break;
 			case Magazzino.STRINGA_FILTRO_PREZZO:
 				EstremiRange estremiPrezzo = this.filterPanel.getCost();
 				this.mainPanel.setViewedArticles(
 						this.mainPanel.getStore ().filtraPerPrezzo(
 								estremiPrezzo.getPrimo(), estremiPrezzo.getUltimo()));
+				this.mainPanel.resetPagina();
 				break;
 			case Magazzino.STRINGA_FILTRO_QUANTITA:
 				EstremiRange estremiQuantita = this.filterPanel.getAmount();
 				this.mainPanel.setViewedArticles(
 						this.mainPanel.getStore ().filtraPerQuantita(
 								estremiQuantita.getPrimo(), estremiQuantita.getUltimo()));
+				this.mainPanel.resetPagina();
 				break;
 		}
 		if (this.windowCaller != null) {

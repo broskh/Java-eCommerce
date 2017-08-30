@@ -183,6 +183,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	
 	public void resetPagina () {
 		this.nPage = 0;
+		this.updateArticles();
 	}
 
 	@Override
