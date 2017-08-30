@@ -172,7 +172,6 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 //		if (this.nPage == this.maxPage && this.viewedArticles.size() / nVisibleArticles != 0) {
 		if ((this.viewedArticles.size() - (this.nPage * nVisibleArticles)) < nVisibleArticles) {
 			int box = nVisibleArticles - (this.viewedArticles.size() % nVisibleArticles);
-			System.out.println ("B: " + box);
 			for (int i = 0; i < box; i++) {
 				this.showcasePanel.add(Box.createRigidArea(new Dimension(
 						JArticlePanel.WIDTH, JArticlePanel.height())));
