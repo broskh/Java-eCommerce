@@ -143,7 +143,7 @@ public class JAdminControlPanel extends JPanel implements ActionListener {
 				magazzino.salvaMagazzino(fc.getSelectedFile());
 				BufferedWriter output = null;
 		        try {
-		            File file = new File("media/saves/config");
+		            File file = new File("media/saves/last");
 		            output = new BufferedWriter(new FileWriter(file));
 		            String fileName = getFileName(fc.getSelectedFile().toString());
 		            output.write(fileName);

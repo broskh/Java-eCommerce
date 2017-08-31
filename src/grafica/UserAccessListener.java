@@ -16,14 +16,12 @@ public class UserAccessListener implements ActionListener {
 	private JUserFrame userFrame;
 	private JeCommerceFrame eCommerceFrame;
 	private Magazzino magazzino;
-	private String fileMagazzinoCliente;
 	
-	public UserAccessListener(JUserFrame userFrame, JeCommerceFrame eCommerceFrame, Utente utente, Magazzino magazzino, String fileMagazzinoCliente) {
+	public UserAccessListener(JUserFrame userFrame, JeCommerceFrame eCommerceFrame, Utente utente, Magazzino magazzino) {
 		this.utente = utente;
 		this.userFrame = userFrame;
 		this.eCommerceFrame = eCommerceFrame;
 		this.magazzino = magazzino;
-		this.fileMagazzinoCliente = fileMagazzinoCliente;
 	}
 	
 	@Override
@@ -51,7 +49,6 @@ public class UserAccessListener implements ActionListener {
 			else {
 				this.utente = new Cliente(this.userFrame.jContentPanel.jNameTextField.getText(),
 						this.userFrame.jContentPanel.jSurnameTextField.getText());
-				this.magazzino.caricaMagazzino(this.fileMagazzinoCliente);
 				this.eCommerceFrame = new JeCommerceFrame(this.utente, this.magazzino);
 				this.userFrame.setVisible(false);
 				this.eCommerceFrame.setVisible(true);

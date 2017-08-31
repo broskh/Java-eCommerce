@@ -1,3 +1,11 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import grafica.JUserFrame;
 import grafica.JeCommerceFrame;
 import grafica.UserAccessListener;
@@ -16,22 +24,30 @@ import utenza.Utente;
  * @version 1.0
  */
 public class Java_eCommerce  {
-	private static final String FILE_MAGAZZINO = "media/saves/save21.mag";
 	
 	public static void main(String[] args) {
 		
 		Utente utente = null;
 		Magazzino magazzino = new Magazzino();
-		magazzino.caricaMagazzino("media/saves/save21.mag");   /* scheri */
-		JUserFrame jUserFrame = new JUserFrame();
-		JeCommerceFrame jeCommerceFrame = null;
-		UserAccessListener userAccessListener = new UserAccessListener(jUserFrame, jeCommerceFrame, utente, magazzino, FILE_MAGAZZINO);
-		
-		
-		
-		jUserFrame.setVisible(true);
-		jUserFrame.setAccessListener(userAccessListener);
-		
+        File lastStoreFile = new File("media/saves/last");
+		BufferedReader lastStore;
+		try {
+			lastStore = new BufferedReader(new FileReader(lastStoreFile));
+			magazzino.caricaMagazzino(lastStore.readLine());   /* scheri */
+			JUserFrame jUserFrame = new JUserFrame();
+			JeCommerceFrame jeCommerceFrame = null;
+			UserAccessListener userAccessListener = new UserAccessListener(jUserFrame, jeCommerceFrame, utente, magazzino);
+			
+			jUserFrame.setVisible(true);
+			jUserFrame.setAccessListener(userAccessListener);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+				
 		
 		
 //		Magazzino magazzino = new Magazzino();
