@@ -5,17 +5,29 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
+import javax.swing.filechooser.FileFilter;
+
+import grafica.JAdminContentPanel.JStoreTable;
 import negozio.Magazzino;
 
 public class JAdminControlPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -6258711606843235850L;
 	
 	private JFrame mainFrame;
-	
+	private JStoreTable jStoreTable;
+
+
+	private static final int LINE_HEIGHT = 100;
 	protected static final int BUTTON_HEIGHT = 80; //20
 	protected static final int BUTTON_WIDTH = 80;
 	protected static final int HORIZONTAL_MARGIN_LAYOUT = 0;
@@ -32,10 +44,7 @@ public class JAdminControlPanel extends JPanel implements ActionListener {
 	private static final String ADD_BUTTON_ACTION_COMMAND_TEXT = "aggiungi";
 	private static final String MODIFY_BUTTON_ACTION_COMMAND_TEXT = "modifica";
 	private static final String DELETE_BUTTON_ACTION_COMMAND_TEXT = "elimina";
-	
-	
-	
-	private static final String FILE_SAVE_STRING = "media/saves/save21.mag";
+
 	
 	private Magazzino magazzino;
 	
@@ -45,10 +54,10 @@ public class JAdminControlPanel extends JPanel implements ActionListener {
 	private JButton jModifyButton;
 	private JButton jDeleteButton;
 	
-	public JAdminControlPanel(Magazzino magazzino,JFrame mainFrame)
+	public JAdminControlPanel(Magazzino magazzino,JFrame mainFrame,JStoreTable jStoreTable)
 	{
-		
 		this.magazzino = magazzino;
+		this.jStoreTable = jStoreTable;
 		this.setLayout(new FlowLayout(FlowLayout.LEADING,JAdminControlPanel.HORIZONTAL_MARGIN_LAYOUT,
 				JAdminControlPanel.VERTICAL_MARGIN_LAYOUT));
 		
@@ -100,29 +109,91 @@ public class JAdminControlPanel extends JPanel implements ActionListener {
 		this.add(this.jDeleteButton);
 	}
 	
+	
+	
+	public String getFileName(String string)
+	{
+		String fileName = string.substring(string.indexOf("media")); //questo per media/..
+		return fileName;
+	}
+	
+	
 	public void actionPerformed(ActionEvent e)
 	{
-		
-		
 		if(e.getActionCommand().equals(SAVE_BUTTON_ACTION_COMMAND_TEXT))
 		{
-			magazzino.salvaMagazzino(FILE_SAVE_STRING);
-		}
+			JFileChooser fc = new JFileChooser(new File("media/saves"));
+			/* IMPOSTO LA VISUALIZZAZIONE SOLO DI FILE .MAG */
+			fc.setFileFilter(new FileFilter() {
+		        public boolean accept(File f) {
+		            if (f.isDirectory()) {
+		                return true;
+		            }
+		            final String name = f.getName();
+		            return name.endsWith(".mag");
+		        }
+		        @Override
+		        public String getDescription() {
+		            return "*.mag";
+		        }
+		    });
+			int returnVal = fc.showOpenDialog(this);
+			if(returnVal == 0)
+			{
+				magazzino.salvaMagazzino(fc.getSelectedFile());
+				BufferedWriter output = null;
+		        try {
+		            File file = new File("media/saves/config");
+		            output = new BufferedWriter(new FileWriter(file));
+		            String fileName = getFileName(fc.getSelectedFile().toString());
+		            output.write(fileName);
+		        } catch ( IOException g ) {
+		            g.printStackTrace();
+		        } 
+		        try {
+					output.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+      
+	    }
 		if(e.getActionCommand().equals(LOAD_BUTTON_ACTION_COMMAND_TEXT))
 		{
 			
-			/*JFileChooser fc = new JFileChooser();
-			
+			JFileChooser fc = new JFileChooser(new File("media/saves"));
+			/* IMPOSTO LA VISUALIZZAZIONE SOLO DI FILE .MAG */
+			fc.setFileFilter(new FileFilter() {
+		        public boolean accept(File f) {
+		            if (f.isDirectory()) {
+		                return true;
+		            }
+		            final String name = f.getName();
+		            return name.endsWith(".mag");
+		        }
+		        @Override
+		        public String getDescription() {
+		            return "*.mag";
+		        }
+		    });
 			int returnVal = fc.showOpenDialog(this);
-			magazzino.caricaMagazzino(fc.getSelectedFile());
-			this.validate();
-	        this.repaint();*/
-	        
+			if(returnVal == 0)
+			{
+				magazzino.caricaMagazzino(fc.getSelectedFile());
+				System.out.println(fc.getSelectedFile().toString());
+				jStoreTable.setModel(new ArticlesTableModel(this.magazzino.getArticoli(), LINE_HEIGHT,ArticlesTableModel.STORE_MODE));
+			}			
+			System.out.println(magazzino);
+			
+
 			
 			
 			
 			
-			//this.jLoadButton.setText("upload");
+			
+			
+
 		}
 		if(e.getActionCommand().equals(ADD_BUTTON_ACTION_COMMAND_TEXT))
 		{

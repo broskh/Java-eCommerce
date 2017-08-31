@@ -33,6 +33,30 @@ public class Java_eCommerce  {
 		jUserFrame.setAccessListener(userAccessListener);
 		
 		
+		
+//		Magazzino magazzino = new Magazzino();
+//		Prodotto prodotto1 = new Prodotto("nome1", "marca1", "codice1", "categoria1", 
+//				(float)1.0, "media/img/immagine_non_disponibile.jpg", 10, new ScontoTrePerDue());
+//		Prodotto prodotto2 = new Prodotto("nome2", "marca2", "codice2", "categoria2", 
+//				(float)2.0, "media/img/immagine_non_disponibile.jpg", 20, new ScontoTrePerDue());
+//		Prodotto prodotto3 = new Prodotto("nome3", "marca3", "codice3", "categoria3", 
+//				(float)3.0, "media/img/immagine_non_disponibile.jpg", 30, new ScontoTrePerDue());
+//		Prodotto prodotto4 = new Prodotto("nome4", "marca4", "codice4", "categoria4", 
+//				(float)4.0, "media/img/immagine_non_disponibile.jpg", 40, new ScontoTrePerDue());
+//		Prodotto prodotto5 = new Prodotto("nome5", "marca5", "codice5", "categoria5", 
+//				(float)5.0, "media/img/immagine_non_disponibile.jpg", 50, new ScontoTrePerDue());
+//		magazzino.aggiungiProdotto(prodotto1);
+//		magazzino.aggiungiProdotto(prodotto2);
+//		magazzino.aggiungiProdotto(prodotto3);
+//		magazzino.aggiungiProdotto(prodotto4);
+//		magazzino.aggiungiProdotto(prodotto5);
+//		magazzino.salvaMagazzino("media/saves/magazzino.mag");
+		
+		
+		
+		
+		
+		
 //		Magazzino magazzino = new Magazzino();
 //		Prodotto prodotto1 = new Prodotto("nome1", "marca1", "codice1", "categoria1", 
 //				(float)1.0, "media/img/immagine_non_disponibile.jpg", 10, new ScontoTrePerDue());

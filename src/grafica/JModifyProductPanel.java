@@ -243,6 +243,61 @@ private static final long serialVersionUID = 1L;
 		this.jThreePerTwoOfferRadioButton.addActionListener(this);
 		this.jThreePerTwoOfferRadioButton.setActionCommand(THREE_PER_TWO_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT);
 	}
+	
+	
+	
+	public String getFileName(String string)
+	{
+
+		int lengthString = string.length();
+//		System.out.println(lengthString);
+		char last = string.charAt(lengthString - 1);
+//		System.out.println(last);
+//		System.out.println("indice inzizio: "+string.lastIndexOf("\\"));
+//		System.out.println("indice fine: "+ string.indexOf((last)+1));
+		String fileName = string.substring(string.lastIndexOf("\\"));
+		
+//		System.out.println(lengthString);
+//		System.out.println(fileName);
+		fileName = fileName.substring(fileName.lastIndexOf("\\")+1);
+//		System.out.println(fileName);
+		return fileName;
+		/* fine roba nuova */
+	}
+	
+	public String copyImage(Image image,String fileName)
+	{
+		int check = 0;
+		BufferedImage buffered = (BufferedImage) image;
+		try {
+		    // save to file
+		    File outputfile = new File("media/img/products/"+fileName);
+		    do
+		    {
+		    	if(outputfile.exists())
+			    {
+			    	String name = fileName.substring(0, fileName.lastIndexOf("."));
+			    	String extension = fileName.substring(fileName.lastIndexOf("."));
+//			    	System.out.println(name);
+//			    	System.out.println(extension);
+			    	fileName = name + "1" + extension;
+//			    	System.out.println(fileName);
+			    	outputfile = new File("media/img/products/"+fileName);
+			    }
+		    	else
+		    	{
+		    		check = 1;
+		    	}
+		    } while(check != 1);
+		    
+		    ImageIO.write(buffered, "png", outputfile);
+		} catch (IOException f) {
+		    f.printStackTrace();
+		}
+		return ("media\\img\\products\\" + fileName);
+	}
+	
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -324,12 +379,25 @@ private static final long serialVersionUID = 1L;
 						Float checkPrice = Float.valueOf(this.jPriceTextField.getText());
 						ImageIcon imgicon = (ImageIcon) this.jImageLabel.getIcon();
 						
+						/* gestione immagine */
+						File file = new File(prod.getImmagine().toString());
+						if (file.exists()) {
+						    file.delete();
+						}
+						
+						/* SALVATAGGIO IMMAGINE */
+						String string = imgicon.getDescription();
+						String fileName = this.getFileName(string);							
+						Image image = imgicon.getImage();
+						String imagePath = this.copyImage(image, fileName);
+						prod.setImmagine(imagePath);
+						/*fine gestione immagine */
+						
 						prod.setCategoria(this.jCategoryTextField.getText());
 						prod.setCodice(this.jCodeTextField.getText());
 						prod.setMarca(this.jBrandTextField.getText());
 						prod.setNome(this.jNameTextField.getText());
 						prod.setOfferta(null);
-						prod.setImmagine(imgicon.getDescription());
 						prod.setPrezzo(Float.valueOf(this.jPriceTextField.getText()));
 						prod.setQuantita(Integer.valueOf(this.jAmountTextField.getText()));
 						if(checkPrice == 0)
@@ -339,7 +407,6 @@ private static final long serialVersionUID = 1L;
 						}
 						else
 						{
-							magazzino.salvaMagazzino("media/saves/save21.mag");
 							if(p.getCategoria().equals(prod.getCategoria()) &&
 									p.getCodice().equals(prod.getCodice()) &&
 									p.getMarca().equals(prod.getMarca()) &&
@@ -387,12 +454,26 @@ private static final long serialVersionUID = 1L;
 						
 						ImageIcon imgicon = (ImageIcon) this.jImageLabel.getIcon();
 						
+						/* gestione immagine */
+						File file = new File(prod.getImmagine().toString());
+						if (file.exists()) {
+						    file.delete();
+						}
+						
+						/* SALVATAGGIO IMMAGINE */
+						String string = imgicon.getDescription();
+						String fileName = this.getFileName(string);							
+						Image image = imgicon.getImage();
+						String imagePath = this.copyImage(image, fileName);
+						prod.setImmagine(imagePath);
+						/*fine gestione immagine */
+						
 						prod.setCategoria(this.jCategoryTextField.getText());
 						prod.setCodice(this.jCodeTextField.getText());
 						prod.setMarca(this.jBrandTextField.getText());
 						prod.setNome(this.jNameTextField.getText());
 						prod.setOfferta(promozione);
-						prod.setImmagine(imgicon.getDescription());
+						//prod.setImmagine(imgicon.getDescription());
 						prod.setPrezzo(Float.valueOf(this.jPriceTextField.getText()));
 						prod.setQuantita(Integer.valueOf(this.jAmountTextField.getText()));
 						if(checkPrice == 0)
@@ -402,7 +483,6 @@ private static final long serialVersionUID = 1L;
 						}
 						else
 						{
-							magazzino.salvaMagazzino("media/saves/save21.mag");
 							if(p.getCategoria().equals(prod.getCategoria()) &&
 									p.getCodice().equals(prod.getCodice()) &&
 									p.getMarca().equals(prod.getMarca()) &&
@@ -435,12 +515,26 @@ private static final long serialVersionUID = 1L;
 						promozione = new ScontoTrePerDue();
 						ImageIcon imgicon = (ImageIcon) this.jImageLabel.getIcon();
 						
+						/* gestione immagine */
+						File file = new File(prod.getImmagine().toString());
+						if (file.exists()) {
+						    file.delete();
+						}
+						
+						/* SALVATAGGIO IMMAGINE */
+						String string = imgicon.getDescription();
+						String fileName = this.getFileName(string);							
+						Image image = imgicon.getImage();
+						String imagePath = this.copyImage(image, fileName);
+						prod.setImmagine(imagePath);
+						/*fine gestione immagine */
+						
 						prod.setCategoria(this.jCategoryTextField.getText());
 						prod.setCodice(this.jCodeTextField.getText());
 						prod.setMarca(this.jBrandTextField.getText());
 						prod.setNome(this.jNameTextField.getText());
 						prod.setOfferta(promozione);
-						prod.setImmagine(imgicon.getDescription());
+						//prod.setImmagine(imgicon.getDescription());
 						prod.setPrezzo(Float.valueOf(this.jPriceTextField.getText()));
 						prod.setQuantita(Integer.valueOf(this.jAmountTextField.getText()));
 						if(checkPrice == 0)
@@ -450,7 +544,6 @@ private static final long serialVersionUID = 1L;
 						}
 						else
 						{
-							magazzino.salvaMagazzino("media/saves/save21.mag");
 							if(p.getCategoria().equals(prod.getCategoria()) &&
 									p.getCodice().equals(prod.getCodice()) &&
 									p.getMarca().equals(prod.getMarca()) &&

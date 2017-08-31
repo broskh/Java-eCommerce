@@ -18,6 +18,7 @@ public class JAdminContentPanel extends JPanel {
 
 	private Magazzino magazzino;  
 	private JStoreTable jStoreTable;
+	private ArticlesTableModel articlesTableModel;
 
 	private static final int TOP_MARGIN = 40;
 	private static final int RIGHT_MARGIN = 40;
@@ -27,11 +28,12 @@ public class JAdminContentPanel extends JPanel {
 	{
 		this.magazzino = magazzino;  
 		this.setLayout(new BorderLayout());
-		this.jAdminControlPanel = new JAdminControlPanel(magazzino,mainFrame);
+		this.jStoreTable = new JStoreTable(this.magazzino);
+		this.jAdminControlPanel = new JAdminControlPanel(magazzino,mainFrame,jStoreTable);
 		this.jAdminControlPanel.setBorder(new EtchedBorder());
 		this.add(this.jAdminControlPanel, BorderLayout.PAGE_START);
 
-		this.jStoreTable = new JStoreTable(this.magazzino);
+//		this.jStoreTable = new JStoreTable(this.magazzino);
 		
 		JScrollPane scrollTable = new JScrollPane(this.jStoreTable);
         scrollTable.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

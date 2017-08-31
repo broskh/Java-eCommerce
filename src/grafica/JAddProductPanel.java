@@ -2,9 +2,16 @@ package grafica;
 
 
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
+
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -18,6 +25,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.text.PlainDocument;
+
+
 
 import negozio.Magazzino;
 import negozio.Prodotto;
@@ -93,7 +102,7 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 	private static final String PERCENT_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT = "percentuale";
 	private static final String THREE_PER_TWO_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT = "3x2";
 	
-	private static final String DEFAULT_IMAGE = "media/img/immagine_non_disponibile.jpg";
+	private static final String DEFAULT_IMAGE = "media/img/products/immagine_non_disponibile.jpg";
 
 	
 	
@@ -221,6 +230,57 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 		this.jThreePerTwoOfferRadioButton.setActionCommand(THREE_PER_TWO_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT);
 	
 	}
+	
+	public String getFileName(String string)
+	{
+
+		int lengthString = string.length();
+//		System.out.println(lengthString);
+		char last = string.charAt(lengthString - 1);
+//		System.out.println(last);
+//		System.out.println("indice inzizio: "+string.lastIndexOf("\\"));
+//		System.out.println("indice fine: "+ string.indexOf((last)+1));
+		String fileName = string.substring(string.lastIndexOf("\\"));
+		
+//		System.out.println(lengthString);
+//		System.out.println(fileName);
+		fileName = fileName.substring(fileName.lastIndexOf("\\")+1);
+//		System.out.println(fileName);
+		return fileName;
+		/* fine roba nuova */
+	}
+	
+	public String copyImage(Image image,String fileName)
+	{
+		int check = 0;
+		BufferedImage buffered = (BufferedImage) image;
+		try {
+		    // save to file
+		    File outputfile = new File("media/img/products/"+fileName);
+		    do
+		    {
+		    	if(outputfile.exists())
+			    {
+			    	String name = fileName.substring(0, fileName.lastIndexOf("."));
+			    	String extension = fileName.substring(fileName.lastIndexOf("."));
+//			    	System.out.println(name);
+//			    	System.out.println(extension);
+			    	fileName = name + "1" + extension;
+//			    	System.out.println(fileName);
+			    	outputfile = new File("media/img/products/"+fileName);
+			    }
+		    	else
+		    	{
+		    		check = 1;
+		    	}
+		    } while(check != 1);
+		    
+		    ImageIO.write(buffered, "png", outputfile);
+		} catch (IOException f) {
+		    f.printStackTrace();
+		}
+		return ("media\\img\\products\\" + fileName);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -311,17 +371,27 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 						}
 						else
 						{
-							System.out.println(Integer.parseInt(amount));
-							System.out.println(Float.parseFloat(price + "\n"));
 							this.prodotto = new Prodotto(this.jNameTextField.getText(),
 									this.jBrandTextField.getText(),this.jCodeTextField.getText(),
 									this.jCategoryTextField.getText(),Float.parseFloat(price),
 									imgicon.getDescription(),Integer.parseInt(amount));
-
+							
+							/* SALVATAGGIO IMMAGINE */
+							String string = imgicon.getDescription();
+							String fileName = this.getFileName(string);							
+							Image image = imgicon.getImage();
+							String imagePath = this.copyImage(image, fileName);
+							prodotto.setImmagine(imagePath);
+							
+							
+							
 							magazzino.aggiungiProdotto(prodotto);
-							magazzino.salvaMagazzino("media/saves/save21.mag");
 							JOptionPane.showMessageDialog(this, "Podotto inserito correttamente",
 									"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+							
+							
+
+							
 							this.jAddProductDialog.setVisible(false);
 						}
 					}
@@ -369,10 +439,18 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 									this.jBrandTextField.getText(),this.jCodeTextField.getText(),
 									this.jCategoryTextField.getText(),Float.parseFloat(price),
 									imgicon.getDescription(),Integer.parseInt(amount),promo);
+							
+							/* SALVATAGGIO IMMAGINE */
+							String string = imgicon.getDescription();
+							String fileName = this.getFileName(string);							
+							Image image = imgicon.getImage();
+							String imagePath = this.copyImage(image, fileName);
+							prodotto.setImmagine(imagePath);
+							
 							magazzino.aggiungiProdotto(prodotto);
-							magazzino.salvaMagazzino("media/saves/save21.mag");
 							JOptionPane.showMessageDialog(this, "Podotto inserito correttamente",
 									"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+							
 							this.jAddProductDialog.setVisible(false);
 						}
 						
@@ -409,10 +487,18 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 									this.jBrandTextField.getText(),this.jCodeTextField.getText(),
 									this.jCategoryTextField.getText(),Float.parseFloat(price),
 									imgicon.getDescription(),Integer.parseInt(amount),promo);
+							
+							/* SALVATAGGIO IMMAGINE */
+							String string = imgicon.getDescription();
+							String fileName = this.getFileName(string);							
+							Image image = imgicon.getImage();
+							String imagePath = this.copyImage(image, fileName);
+							prodotto.setImmagine(imagePath);
+							
 							magazzino.aggiungiProdotto(prodotto);
-							magazzino.salvaMagazzino("media/saves/save21.mag");
 							JOptionPane.showMessageDialog(this, "Podotto inserito correttamente",
 									"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+									
 							this.jAddProductDialog.setVisible(false);
 						}
 						
@@ -424,26 +510,6 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 							"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
-
-			/*this.jCodeTextField.setText("");
-			this.jNameTextField.setText("");
-			this.jBrandTextField.setText("");
-			this.jCategoryTextField.setText("");
-			this.jPriceTextField.setText("0.00");
-			this.jAmountTextField.setText("0");
-			this.jPercentTextField.setText("0");
-			this.jNoOfferRadioButton.setSelected(true);
-			this.jPercentOfferRadioButton.setSelected(false);
-			this.jThreePerTwoOfferRadioButton.setSelected(false);
-			Prodotto p = new Prodotto("","","","",0,"media/img/immagine_non_disponibile.jpg",0,null);
-			
-			ImageIcon icon = new ImageIcon(new ResizableIcon(p.getImmagine()).
-					resizeIcon(ICON_DIMENSION, ICON_DIMENSION),p.getImmagine().toString());
-			if(icon!=null)
-			{
-				this.jImageLabel.setIcon(icon);
-			}*/
-
 		}
 	}
 	

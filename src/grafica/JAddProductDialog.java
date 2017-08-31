@@ -29,7 +29,6 @@ public class JAddProductDialog extends JDialog {
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		this.setLayout(new BorderLayout());	
-		
 		jAddProductPanel = new JAddProductPanel(magazzino,this);
 		this.add(this.jAddProductPanel, BorderLayout.CENTER);
 	}

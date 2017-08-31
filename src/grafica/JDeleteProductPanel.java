@@ -3,6 +3,7 @@ package grafica;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -33,7 +34,6 @@ public class JDeleteProductPanel extends JPanel implements ActionListener {
 	private static final String J_OPTION_PANE_STRING = "Prodotto eliminato correttamente";
 	private static final String J_OPTION_PANE_ALERT = "Attenzione!";
 	
-	private static final String SAVE_STRING = "media/saves/save21.mag";
 	
 	private static final int HEIGHT_RIGID_AREA = 3;
 	private static final int WIDTH_RIGID_AREA = 3;
@@ -86,10 +86,14 @@ public class JDeleteProductPanel extends JPanel implements ActionListener {
 		String code = (String) this.jCodeComboBox.getSelectedItem();
 		prodotto = magazzino.getProdotto(code);
 		magazzino.rimuoviProdotto(prodotto.getCodice(), prodotto.getQuantita());
-		magazzino.salvaMagazzino(SAVE_STRING);
 		JOptionPane.showMessageDialog(this, J_OPTION_PANE_STRING,J_OPTION_PANE_ALERT,
 				JOptionPane.INFORMATION_MESSAGE);
 		
+		
+		File file = new File(prodotto.getImmagine().toString());
+		if (file.exists()) {
+		    file.delete();
+		}
 		this.jDeleteProductDialog.setVisible(false);
 	    
 	}
