@@ -86,7 +86,7 @@ private static final long serialVersionUID = 1L;
 	private static final String BRAND_LABEL_TEXT = "Marca:";
 	private static final String CATEGORY_LABEL_TEXT = "Categoria:";
 	private static final String PRICE_LABEL_TEXT = "Prezzo:";
-	private static final String AMOUNT_LABEL_TEXT = "Quantit�:";
+	private static final String AMOUNT_LABEL_TEXT = "Quantità:";
 	private static final String OFFER_LABEL_TEXT = "Offerta:";
 	private static final String NO_OFFER_RADIO_BUTTON_TEXT = "No";
 	private static final String PERCENT_OFFER_RADIO_BUTTON_TEXT = "Percentuale";
@@ -255,11 +255,11 @@ private static final long serialVersionUID = 1L;
 //		System.out.println(last);
 //		System.out.println("indice inzizio: "+string.lastIndexOf("\\"));
 //		System.out.println("indice fine: "+ string.indexOf((last)+1));
-		String fileName = string.substring(string.lastIndexOf("\\"));
+		String fileName = string.substring(string.lastIndexOf(File.separator));
 		
 //		System.out.println(lengthString);
 //		System.out.println(fileName);
-		fileName = fileName.substring(fileName.lastIndexOf("\\")+1);
+		fileName = fileName.substring(fileName.lastIndexOf(File.separator)+1);
 //		System.out.println(fileName);
 		return fileName;
 		/* fine roba nuova */
@@ -567,7 +567,7 @@ private static final long serialVersionUID = 1L;
 			else
 			{
 				JOptionPane.showMessageDialog(this,
-						"Il codice inserito � gia presente nel magazzino per un altro prodotto",
+						"Il codice inserito è gia presente nel magazzino per un altro prodotto",
 						"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
 			}
 		}	

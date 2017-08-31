@@ -58,6 +58,6 @@ public class ScontoPercentuale extends Promozione {
 
 	@Override
 	public String toString() {
-		return "Sconto: " + this.percentuale + "%";
+		return "Sconto " + this.percentuale + "%";
 	}
 }

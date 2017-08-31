@@ -24,7 +24,7 @@ public class JUserFrame extends JFrame{
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setSize(new Dimension(JUserFrame.LARGHEZZA_MINIMA_FRAME, JUserFrame.ALTEZZA_MINIMA_FRAME));
 		this.setLocationRelativeTo(null);
-		this.setResizable(false);	//imposto che non si pu� ne allargare ne rimpicciolire
+		this.setResizable(false);	//imposto che non si può ne allargare ne rimpicciolire
 		this.setLayout(new BorderLayout());
 		this.jContentPanel = new JUserContentPanel();
 		this.add(this.jContentPanel, BorderLayout.CENTER);

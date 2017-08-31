@@ -183,6 +183,9 @@ public class JAdminControlPanel extends JPanel implements ActionListener {
 				magazzino.caricaMagazzino(fc.getSelectedFile());
 				System.out.println(fc.getSelectedFile().toString());
 				jStoreTable.setModel(new ArticlesTableModel(this.magazzino.getArticoli(), LINE_HEIGHT,ArticlesTableModel.STORE_MODE));
+				jStoreTable.getColumn("").setCellRenderer(new RemoveColumnRender(LINE_HEIGHT));
+				jStoreTable.getColumn("").setCellEditor(new RemoveColumnEditor(
+				this.magazzino.getArticoli(), LINE_HEIGHT));
 			}			
 			System.out.println(magazzino);
 			

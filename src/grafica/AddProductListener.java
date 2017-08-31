@@ -64,7 +64,7 @@ public class AddProductListener implements ActionListener{
 			{
 				if(articoli.get(i).getCodice().equals(this.jAddProductPanel.jCodiceTextField.getText()))
 				{
-					JOptionPane.showMessageDialog(this.jAddProductPanel, "Il prodotto che si vuole inserire è gia presente in magazzino","Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(this.jAddProductPanel, "Il prodotto che si vuole inserire Ã¨ gia presente in magazzino","Attenzione!",JOptionPane.INFORMATION_MESSAGE);
 					controllo = 1;
 				}
 			}

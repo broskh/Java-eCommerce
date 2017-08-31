@@ -30,7 +30,6 @@ public class JModifyArticlePanel extends JPanel implements ActionListener {
 	private static final String AMOUNT_TEXT = "Qnt: ";
 	
 	public JModifyArticlePanel (ArrayList <Prodotto> articoli) {
-		this.code = new StringBuilder();
 		
 		ArrayList <String> codici = new ArrayList <> ();
 		for (Prodotto articolo : articoli) {
@@ -40,6 +39,7 @@ public class JModifyArticlePanel extends JPanel implements ActionListener {
 		this.codeComboBox.setPreferredSize(new Dimension(CODE_TEXTFIELD_WIDTH, 
 				this.codeComboBox.getPreferredSize().height));
 		this.codeComboBox.addActionListener(this);
+		this.code = new StringBuilder(this.codeComboBox.getItemAt(0).toString());
 		
 		this.amountTextfield = new JTextField(String.valueOf(DEFAULT_AMOUNT), 
 				AMOUNT_TEXTFIELD_COLUMNS);
