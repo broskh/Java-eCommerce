@@ -66,6 +66,10 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	private static final int BUTTONS_TOP_MARGIN = 10;	
 	private static final int ARTICLES_MARGIN = 10;
 	private static final int BUTTONS_SPACE = 450;
+	private static final int BACK_IMAGE_SIZE = 30;
+	private static final int FORWARD_IMAGE_SIZE = 30;
+	private static final int BACK_BUTTON_SIZE = BACK_IMAGE_SIZE + 15;
+	private static final int FORWARD_BUTTON_SIZE = FORWARD_IMAGE_SIZE + 15;
 	
 	private static final String BACK_IMAGE_PATH = "media/img/back_icon.png";
 	private static final String FORWARD_IMAGE_PATH = "media/img/forward_icon.png";
@@ -87,17 +91,19 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		JPanel buttonsPanelLV2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		this.backButton = new JButton();
 		this.backButton.addActionListener(this);
+		this.backButton.setPreferredSize(new Dimension(BACK_BUTTON_SIZE, BACK_BUTTON_SIZE));
 		try {
-		    Image img = ImageIO.read(new File (BACK_IMAGE_PATH));
-		    this.backButton.setIcon(new ImageIcon(img));
+		    this.backButton.setIcon(new ImageIcon(new ResizableIcon(
+		    		new File (BACK_IMAGE_PATH)).resizeIcon(BACK_IMAGE_SIZE, BACK_IMAGE_SIZE)));
 		} catch (Exception ex) {
 			this.backButton.setText(BACK_BUTTON_TEXT);
 		}
 		this.forwardButton = new JButton();
 		this.forwardButton.addActionListener(this);
+		this.forwardButton.setPreferredSize(new Dimension(FORWARD_BUTTON_SIZE, FORWARD_BUTTON_SIZE));
 		try {
-		    Image img = ImageIO.read(new File (FORWARD_IMAGE_PATH));
-		    this.forwardButton.setIcon(new ImageIcon(img));
+		    this.forwardButton.setIcon(new ImageIcon(new ResizableIcon(
+		    		new File (FORWARD_IMAGE_PATH)).resizeIcon(FORWARD_IMAGE_SIZE, FORWARD_IMAGE_SIZE)));
 		} catch (Exception ex) {
 			this.forwardButton.setText(FORWARD_BUTTON_TEXT);
 		}
@@ -350,13 +356,14 @@ class JArticlePanel extends JPanel {
 	private static final long serialVersionUID = -2838106312491733874L;
 	
 	private static final int AMOUNT_TEXTFIELD_WIDTH = 50;
-	private static final int AMOUNT_TEXTFIELD_HEIGHT = 20;
+	private static final int AMOUNT_TEXTFIELD_HEIGHT = 25;
 	private static final int ICON_SIZE = 120;
-	private static final int BUTTON_SIZE = 30;
+	private static final int BUTTON_SIZE = 32;
+	private static final int ADD_IMAGE_SIZE = BUTTON_SIZE + 6;
 	private static final int GENERIC_MARGIN = 15;
-	private static final int INTERACTION_HEIGHT = 30;
+	private static final int INTERACTION_HEIGHT = 35;
 	private static final int INTERACTION_HORIZONTAL_SPACE = 50;
-	private static final int INFORMATION_SPACE = 6;
+	private static final int INFORMATION_SPACE = 7;
 	private static final int MARGIN_SIZE = 3;
 	
 	private static final int DEFAULT_AMOUNT = 1;
@@ -421,11 +428,11 @@ class JArticlePanel extends JPanel {
 		doc.setDocumentFilter(new AmountDocumentFilter(article.getQuantita()));	
 		JButton addToCartButton = new JButton ();
 		try {
-		    Image img = ImageIO.read(new File (ADD_IMAGE_PATH));
-		    addToCartButton.setIcon(new ImageIcon(img));
-		} catch (Exception ex) {
+		    addToCartButton.setIcon(new ImageIcon(new ResizableIcon(new File(ADD_IMAGE_PATH)).resizeIcon(ADD_IMAGE_SIZE, ADD_IMAGE_SIZE)));
+		} catch (Exception e) {
 			addToCartButton.setText(ADD_BUTTON_TEXT);
 		}
+		addToCartButton.setBorder(new RoundedBorder(new Color (52, 158, 66), 1, 50, 0));
 		addToCartButton.setPreferredSize(new Dimension (BUTTON_SIZE, BUTTON_SIZE));
 		addToCartButton.addActionListener(new AddArticleToCartListener(store, 
 				client.getCarrello(), new StringBuilder(article.getCodice()), 

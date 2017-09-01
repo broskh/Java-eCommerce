@@ -136,10 +136,10 @@ class JRangeSliderUI extends BasicSliderUI {
     /** Color of selected range. */
     private Color rangeColor = Color.ORANGE;
 
-    private Color lowerColor = Color.GRAY;
-    private Color lowerBorderColor = Color.BLACK;
-    private Color upperColor = Color.GRAY;
-    private Color upperBorderColor = Color.BLACK;
+    private Color lowerColor = new Color(98, 98, 98);
+    private Color lowerBorderColor = new Color(176, 176, 176);
+    private Color upperColor = new Color(98, 98, 98);
+    private Color upperBorderColor = new Color(176, 176, 176);
     
     /** Location and size of thumb for upper value. */
     private Rectangle upperThumbRect;

@@ -2,9 +2,13 @@ package grafica;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.util.Map.Entry;
 
 import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.plaf.FontUIResource;
 
 import grafica.JUserContentPanel;
 

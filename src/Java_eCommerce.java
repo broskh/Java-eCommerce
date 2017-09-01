@@ -1,18 +1,19 @@
+import java.awt.Font;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Enumeration;
+
+import javax.swing.UIManager;
+import javax.swing.plaf.FontUIResource;
 
 import grafica.JUserFrame;
 import grafica.JeCommerceFrame;
 import grafica.UserAccessListener;
 
 import negozio.Magazzino;
-import negozio.Prodotto;
-import negozio.ScontoTrePerDue;
 import utenza.Utente;
 
 /**
@@ -26,7 +27,19 @@ import utenza.Utente;
 public class Java_eCommerce  {
 	
 	public static void main(String[] args) {
-		
+		Enumeration <Object> keys = UIManager.getDefaults().keys();
+	    while (keys.hasMoreElements()) {
+	    	Object key = keys.nextElement();
+	    	Object value = UIManager.get (key);
+	    	if (value != null && value instanceof FontUIResource) {
+	    		UIManager.put (key, new FontUIResource("Inconsolata", Font.PLAIN, 13));
+	    	}
+	    }
+	    try {
+	    	UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
 		Utente utente = null;
 		Magazzino magazzino = new Magazzino();
         File lastStoreFile = new File("media/saves/last");
