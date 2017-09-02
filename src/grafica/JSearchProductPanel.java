@@ -11,6 +11,8 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import grafica.JAdminContentPanel.JStoreTable;
 import negozio.Magazzino;
 import negozio.Prodotto;
 
@@ -18,6 +20,7 @@ public class JSearchProductPanel extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	
+	private JStoreTable jStoreTable;
 	private JModifyProductDialog modifyProductDialog;
 	private JFrame mainFrame;
 	private Magazzino magazzino;
@@ -39,10 +42,11 @@ public class JSearchProductPanel extends JPanel implements ActionListener {
 	
 	
 	
-	public JSearchProductPanel(JFrame mainFrame,Magazzino magazzino, JSearchProductDialog jSearchProductDialog)
+	public JSearchProductPanel(JFrame mainFrame,Magazzino magazzino, JSearchProductDialog jSearchProductDialog,JStoreTable jStoreTable)
 	{
 		this.magazzino = magazzino;
 		this.jSearchProductDialog = jSearchProductDialog;
+		this.jStoreTable = jStoreTable;
 		
 		ArrayList <String> str = new ArrayList<String>();
 		ArrayList <Prodotto> p = new ArrayList<Prodotto>();
@@ -79,7 +83,7 @@ public class JSearchProductPanel extends JPanel implements ActionListener {
 		String code = (String) this.jCodeComboBox.getSelectedItem();
 		prodotto = magazzino.getProdotto(code);	
 		this.modifyProductDialog = new JModifyProductDialog(mainFrame,prodotto,magazzino,
-				jSearchProductDialog);
+				jSearchProductDialog,jStoreTable);
 		
 		this.modifyProductDialog.setVisible(true);
 		

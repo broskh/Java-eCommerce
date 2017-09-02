@@ -24,6 +24,11 @@ public class JAdminContentPanel extends JPanel {
 	private static final int RIGHT_MARGIN = 40;
 	private static final int LEFT_MARGIN = 40;
 
+	
+	public JAdminContentPanel()
+	{
+		
+	}
 	public JAdminContentPanel(JFrame mainFrame,Magazzino magazzino)
 	{
 		this.magazzino = magazzino;  
@@ -62,7 +67,8 @@ public class JAdminContentPanel extends JPanel {
 		{
 			this.magazzino = magazzino;
 			
-			this.setModel(new ArticlesTableModel(this.magazzino.getArticoli(), LINE_HEIGHT,ArticlesTableModel.STORE_MODE));
+			this.setModel(new ArticlesTableModel(this.magazzino.getArticoli(),
+					LINE_HEIGHT,ArticlesTableModel.STORE_MODE));
 			this.setRowHeight(LINE_HEIGHT);
 			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 			centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );
@@ -82,6 +88,11 @@ public class JAdminContentPanel extends JPanel {
 		@Override
 		public Prodotto getProductAtRow(int row) {
 			return this.magazzino.getArticoli().get(row);
+		}
+		
+		public JStoreTable getTable()
+		{
+			return jStoreTable;
 		}
 	}
 }
