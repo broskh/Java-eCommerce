@@ -25,6 +25,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.text.PlainDocument;
+
+import grafica.JAdminContentPanel.JStoreTable;
 import negozio.Magazzino;
 import negozio.Prodotto;
 import negozio.Promozione;
@@ -36,7 +38,9 @@ public class JModifyProductPanel extends JPanel implements ActionListener {
 private static final long serialVersionUID = 1L;
 	
 	private JModifyProductDialog jModifyProductDialog;
-
+	//private JAdminControlPanel adminControlPanel;
+	
+	private JStoreTable jStoreTable;
 	private Magazzino magazzino;
 	private Prodotto p;
 	private Promozione promo;
@@ -66,12 +70,7 @@ private static final long serialVersionUID = 1L;
 	
 	private JLabel jEmptyLabel1;
 	private JLabel jEmptyLabel2;
-	
-	
-	
-	
-	
-	
+
 	private static final int WIDTH_TEXTBOX = 10;
 	private static final int N_LINES_MODIFY_PANEL = 6;
 	private static final int N_COLUMNS_MODIFY_PANEL = 2;
@@ -100,13 +99,28 @@ private static final long serialVersionUID = 1L;
 	private static final String PERCENT_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT = "percentuale";
 	private static final String THREE_PER_TWO_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT = "3x2";
 	
+	private static final String THREE_PER_TWO_TO_STRING = "3 x 2";
+	private static final String ALERT_STRING = "Attenzione!";
+	private static final String ALL_DATA_STRING = "Inserire tutti i dati correttamente";
+	private static final String PRICE_NOT_ZERO_STRING = 
+			"Inserire un prezzo diverso da 0 per il prodotto";
+	private static final String CORRECT_MODIFY = "Modifica effettuata con successo";
+	private static final String PERCENT_REQUEST_STRING = 
+			"Inserire il valore della percentuale da scontare";
+	private static final String PERCENT_VALUE_NOT_ZERO_STRING = 
+			"Inserire un valore della percentuale da scontare diverso da 0";
+	private static final String SELECT_OFFER_STRING = "Selezionare un'offerta per il prodotto";
+	private static final String CODE_ALREADY_PRESENT = "Il codice inserito è gia presente nel magazzino per un altro prodotto";
+	
 	private static final String EMPTY_LABEL_TEXT = "";
 	
-	public JModifyProductPanel(JModifyProductDialog jModifyProductDialog,Prodotto p, Magazzino magazzino)
+	public JModifyProductPanel(JModifyProductDialog jModifyProductDialog,Prodotto p,
+			Magazzino magazzino,JStoreTable jStoreTable)
 	{
 		this.jModifyProductDialog = jModifyProductDialog;
 		this.p = p;
 		this.magazzino = magazzino;
+		this.jStoreTable = jStoreTable;
 		/* ROBA PER IMMAGINE */
 
 		this.jImageLabel = new JLabel("",SwingConstants.CENTER);
@@ -199,7 +213,7 @@ private static final long serialVersionUID = 1L;
 			this.jNoOfferRadioButton.setSelected(true);
 			this.jPercentTextField.setEditable(false);
 		}
-		else if(promo.toString().equals("3 x 2"))
+		else if(promo.toString().equals(THREE_PER_TWO_TO_STRING))
 		{
 			this.jThreePerTwoOfferRadioButton.setSelected(true);
 			this.jPercentTextField.setEditable(false);
@@ -243,64 +257,11 @@ private static final long serialVersionUID = 1L;
 		this.jThreePerTwoOfferRadioButton.addActionListener(this);
 		this.jThreePerTwoOfferRadioButton.setActionCommand(THREE_PER_TWO_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT);
 	}
-	
-	
-	
-	public String getFileName(String string)
-	{
 
-		int lengthString = string.length();
-//		System.out.println(lengthString);
-		char last = string.charAt(lengthString - 1);
-//		System.out.println(last);
-//		System.out.println("indice inzizio: "+string.lastIndexOf("\\"));
-//		System.out.println("indice fine: "+ string.indexOf((last)+1));
-		String fileName = string.substring(string.lastIndexOf(File.separator));
-		
-//		System.out.println(lengthString);
-//		System.out.println(fileName);
-		fileName = fileName.substring(fileName.lastIndexOf(File.separator)+1);
-//		System.out.println(fileName);
-		return fileName;
-		/* fine roba nuova */
-	}
 	
-	public String copyImage(Image image,String fileName)
-	{
-		int check = 0;
-		BufferedImage buffered = (BufferedImage) image;
-		try {
-		    // save to file
-		    File outputfile = new File("media/img/products/"+fileName);
-		    do
-		    {
-		    	if(outputfile.exists())
-			    {
-			    	String name = fileName.substring(0, fileName.lastIndexOf("."));
-			    	String extension = fileName.substring(fileName.lastIndexOf("."));
-//			    	System.out.println(name);
-//			    	System.out.println(extension);
-			    	fileName = name + "1" + extension;
-//			    	System.out.println(fileName);
-			    	outputfile = new File("media/img/products/"+fileName);
-			    }
-		    	else
-		    	{
-		    		check = 1;
-		    	}
-		    } while(check != 1);
-		    
-		    ImageIO.write(buffered, "png", outputfile);
-		} catch (IOException f) {
-		    f.printStackTrace();
-		}
-		return ("media\\img\\products\\" + fileName);
-	}
-	
-	
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		JAdminControlPanel adminControlPanel = new JAdminControlPanel();
 		if(e.getActionCommand().equals(PERCENT_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT))
 		{
 			this.jPercentTextField.setEditable(true);
@@ -371,39 +332,33 @@ private static final long serialVersionUID = 1L;
 							this.jPriceTextField.getText().equals("") ||
 							this.jAmountTextField.getText().equals(""))
 					{
-						JOptionPane.showMessageDialog(this, "Inserire tutti i dati correttamente",
-								"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(this, ALL_DATA_STRING,
+								ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
 					}
 					else
 					{	
 						Float checkPrice = Float.valueOf(this.jPriceTextField.getText());
 						ImageIcon imgicon = (ImageIcon) this.jImageLabel.getIcon();
 						
-						/* gestione immagine */
-						File file = new File(prod.getImmagine().toString());
-						if (file.exists()) {
-						    file.delete();
-						}
-						
-						/* SALVATAGGIO IMMAGINE */
-						String string = imgicon.getDescription();
-						String fileName = this.getFileName(string);							
-						Image image = imgicon.getImage();
-						String imagePath = this.copyImage(image, fileName);
-						prod.setImmagine(imagePath);
-						/*fine gestione immagine */
+
+						adminControlPanel.addToDeleteListMod(prod.getImmagine());
 						
 						prod.setCategoria(this.jCategoryTextField.getText());
 						prod.setCodice(this.jCodeTextField.getText());
 						prod.setMarca(this.jBrandTextField.getText());
 						prod.setNome(this.jNameTextField.getText());
 						prod.setOfferta(null);
+						prod.setImmagine(imgicon.getDescription());
 						prod.setPrezzo(Float.valueOf(this.jPriceTextField.getText()));
 						prod.setQuantita(Integer.valueOf(this.jAmountTextField.getText()));
+						/*save*/
+						adminControlPanel.addToSaveListMod(prod);
+						adminControlPanel.getImageFromMod(imgicon.getImage());
+						/**/
 						if(checkPrice == 0)
 						{
-							JOptionPane.showMessageDialog(this, "Inserire un prezzo diverso da 0 per il prodotto",
-									"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(this, PRICE_NOT_ZERO_STRING,
+									ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
 						}
 						else
 						{
@@ -414,9 +369,11 @@ private static final long serialVersionUID = 1L;
 									p.getPrezzo() == prod.getPrezzo() &&
 									p.getQuantita() == prod.getQuantita())
 							{
-								JOptionPane.showMessageDialog(this, "Modifica effettuata con successo",
-										"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+								JOptionPane.showMessageDialog(this, CORRECT_MODIFY,
+										ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
 								this.jModifyProductDialog.setVisible(false);
+								
+								((ArticlesTableModel)jStoreTable.getModel()).fireTableDataChanged();
 							}
 						}
 					}
@@ -431,20 +388,20 @@ private static final long serialVersionUID = 1L;
 							this.jPriceTextField.getText().equals("") ||
 							this.jAmountTextField.getText().equals(""))
 					{
-						JOptionPane.showMessageDialog(this, "Inserire tutti i dati correttamente",
-								"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(this, ALL_DATA_STRING,
+								ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
 					}
 					else if(this.jPercentTextField.getText().equals(""))
 					{
 						JOptionPane.showMessageDialog(this,
-								"Inserire il valore della percentuale da scontare",
-								"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+								PERCENT_REQUEST_STRING,
+								ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
 					}
 					else if(checkPercent == 0)
 					{
 						JOptionPane.showMessageDialog(this,
-								"Inserire un valore della percentuale da scontare diverso da 0",
-								"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+								PERCENT_VALUE_NOT_ZERO_STRING,
+								ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
 					}
 					else
 					{
@@ -454,32 +411,24 @@ private static final long serialVersionUID = 1L;
 						
 						ImageIcon imgicon = (ImageIcon) this.jImageLabel.getIcon();
 						
-						/* gestione immagine */
-						File file = new File(prod.getImmagine().toString());
-						if (file.exists()) {
-						    file.delete();
-						}
-						
-						/* SALVATAGGIO IMMAGINE */
-						String string = imgicon.getDescription();
-						String fileName = this.getFileName(string);							
-						Image image = imgicon.getImage();
-						String imagePath = this.copyImage(image, fileName);
-						prod.setImmagine(imagePath);
-						/*fine gestione immagine */
+						adminControlPanel.addToDeleteListMod(prod.getImmagine());
 						
 						prod.setCategoria(this.jCategoryTextField.getText());
 						prod.setCodice(this.jCodeTextField.getText());
 						prod.setMarca(this.jBrandTextField.getText());
 						prod.setNome(this.jNameTextField.getText());
 						prod.setOfferta(promozione);
-						//prod.setImmagine(imgicon.getDescription());
+						prod.setImmagine(imgicon.getDescription());
 						prod.setPrezzo(Float.valueOf(this.jPriceTextField.getText()));
 						prod.setQuantita(Integer.valueOf(this.jAmountTextField.getText()));
+						/*save*/
+						adminControlPanel.addToSaveListMod(prod);
+						adminControlPanel.getImageFromMod(imgicon.getImage());
+						/**/
 						if(checkPrice == 0)
 						{
-							JOptionPane.showMessageDialog(this, "Inserire un prezzo diverso da 0 per il prodotto",
-									"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(this, PRICE_NOT_ZERO_STRING,
+									ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
 						}
 						else
 						{
@@ -490,9 +439,11 @@ private static final long serialVersionUID = 1L;
 									p.getPrezzo() == prod.getPrezzo() &&
 									p.getQuantita() == prod.getQuantita())
 							{
-								JOptionPane.showMessageDialog(this, "Modifica effettuata con successo",
-										"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+								JOptionPane.showMessageDialog(this, CORRECT_MODIFY,
+										ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
 								this.jModifyProductDialog.setVisible(false);
+								
+								((ArticlesTableModel)jStoreTable.getModel()).fireTableDataChanged();
 							}
 						}	
 					}
@@ -506,8 +457,8 @@ private static final long serialVersionUID = 1L;
 							this.jPriceTextField.getText().equals("") ||
 							this.jAmountTextField.getText().equals(""))
 					{
-						JOptionPane.showMessageDialog(this, "Inserire tutti i dati correttamente",
-								"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(this, ALL_DATA_STRING,
+								ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
 					}
 					else
 					{
@@ -515,32 +466,24 @@ private static final long serialVersionUID = 1L;
 						promozione = new ScontoTrePerDue();
 						ImageIcon imgicon = (ImageIcon) this.jImageLabel.getIcon();
 						
-						/* gestione immagine */
-						File file = new File(prod.getImmagine().toString());
-						if (file.exists()) {
-						    file.delete();
-						}
-						
-						/* SALVATAGGIO IMMAGINE */
-						String string = imgicon.getDescription();
-						String fileName = this.getFileName(string);							
-						Image image = imgicon.getImage();
-						String imagePath = this.copyImage(image, fileName);
-						prod.setImmagine(imagePath);
-						/*fine gestione immagine */
-						
+						adminControlPanel.addToDeleteListMod(prod.getImmagine());
+
 						prod.setCategoria(this.jCategoryTextField.getText());
 						prod.setCodice(this.jCodeTextField.getText());
 						prod.setMarca(this.jBrandTextField.getText());
 						prod.setNome(this.jNameTextField.getText());
 						prod.setOfferta(promozione);
-						//prod.setImmagine(imgicon.getDescription());
+						prod.setImmagine(imgicon.getDescription());
 						prod.setPrezzo(Float.valueOf(this.jPriceTextField.getText()));
 						prod.setQuantita(Integer.valueOf(this.jAmountTextField.getText()));
+						/*save*/
+						adminControlPanel.addToSaveListMod(prod);
+						adminControlPanel.getImageFromMod(imgicon.getImage());
+						/**/
 						if(checkPrice == 0)
 						{
-							JOptionPane.showMessageDialog(this, "Inserire un prezzo diverso da 0 per il prodotto",
-									"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(this, PRICE_NOT_ZERO_STRING,
+									ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
 						}
 						else
 						{
@@ -551,24 +494,26 @@ private static final long serialVersionUID = 1L;
 									p.getPrezzo() == prod.getPrezzo() &&
 									p.getQuantita() == prod.getQuantita())
 							{
-								JOptionPane.showMessageDialog(this, "Modifica effettuata con successo",
-										"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+								JOptionPane.showMessageDialog(this, CORRECT_MODIFY,
+										ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
 								this.jModifyProductDialog.setVisible(false);
+								
+								((ArticlesTableModel)jStoreTable.getModel()).fireTableDataChanged();
 							}
 						}
 					}
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(this, "Selezionare un'offerta per il prodotto",
-							"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(this, SELECT_OFFER_STRING,
+							ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 			else
 			{
 				JOptionPane.showMessageDialog(this,
-						"Il codice inserito è gia presente nel magazzino per un altro prodotto",
-						"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+						CODE_ALREADY_PRESENT,
+						ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
 			}
 		}	
 	}

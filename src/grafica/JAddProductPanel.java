@@ -26,8 +26,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.text.PlainDocument;
 
-
-
+import grafica.JAdminContentPanel.JStoreTable;
 import negozio.Magazzino;
 import negozio.Prodotto;
 import negozio.Promozione;
@@ -39,6 +38,7 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 	private static final long serialVersionUID = -6881271668480137290L;
 	
 	private JAddProductDialog jAddProductDialog;
+	private JStoreTable jStoreTable;
 	
 	protected Prodotto prodotto;
 	private Magazzino magazzino;
@@ -72,8 +72,9 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 		
 	private JLabel jEmptyLabel1;
 	private JLabel jEmptyLabel2;
-	
 
+	
+	
 	private static final int WIDTH_TEXTBOX = 10;
 	private static final int N_LINES_ADD_PANEL = 6;
 	private static final int N_COLUMNS_ADD_PANEL = 2;
@@ -82,6 +83,7 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 	private static final int DIMENSION_HORIZONTAL_STRUT = 20;
 	private static final int N_LINES_OFFER_PANEL = 4;
 	private static final int N_COLUMNS_OFFER_PANEL = 2;
+	private static final int LINE_HEIGHT = 100;
 	
 	private static final String CODE_LABEL_TEXT = "Codice:";
 	private static final String NAME_LABEL_TEXT = "Nome:";
@@ -101,15 +103,33 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 	private static final String NO_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT = "nessuna";
 	private static final String PERCENT_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT = "percentuale";
 	private static final String THREE_PER_TWO_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT = "3x2";
+	private static final String PRICE_TEXT_BOX_VALUE_DEFAULT = "0.00";
+	private static final String AMOUNT_TEXT_BOX_VALUE_DEFAULT = "0";
+	private static final String NEW_IMAGE_PATH = "media/img/products/";
+	private static final String RETURN_NEW_IMAGE_PATH = "media\\img\\products\\";
+	private static final String PRODUCT_ALREADY_EXIST_STRING = 
+			"Il prodotto che si vuole inserire è gia presente in magazzino";
+	private static final String ALERT_STRING = "Attenzione!";
+	private static final String ALL_DATA_STRING = "Inserire tutti i dati correttamente";
+	private static final String PRICE_NOT_ZERO_STRING = 
+			"Inserire un prezzo diverso da 0 per il prodotto";
+	private static final String RIGHT_INSERT_STRING = "Podotto inserito correttamente";
+	private static final String PERCENT_REQUEST_STRING = 
+			"Inserire il valore della percentuale da scontare";
+	private static final String PERCENT_VALUE_NOT_ZERO_STRING = 
+			"Inserire un valore della percentuale da scontare diverso da 0";
+	private static final String SELECT_OFFER_STRING = "Selezionare un'offerta per il prodotto";
 	
-	private static final String DEFAULT_IMAGE = "media/img/products/immagine_non_disponibile.jpg";
 
+	private static final String DEFAULT_IMAGE = "media/img/products/immagine_non_disponibile.jpg";
 	
 	
-	public JAddProductPanel(Magazzino magazzino, JAddProductDialog jAddProductDialog)
+	public JAddProductPanel(Magazzino magazzino, JAddProductDialog jAddProductDialog,JStoreTable jStoreTable)
 	{
 		this.magazzino = magazzino;
 		this.jAddProductDialog = jAddProductDialog;
+		this.jStoreTable = jStoreTable;
+		
 		/* ROBA PER IMMAGINE */
 		this.prodotto = new Prodotto("","","","",0,DEFAULT_IMAGE,0,null);
 		this.jImageLabel = new JLabel("",SwingConstants.CENTER);
@@ -142,13 +162,13 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 		this.jCategoryLabel = new JLabel(JAddProductPanel.CATEGORY_LABEL_TEXT);
 		this.jCategoryTextField = new JTextField(JAddProductPanel.WIDTH_TEXTBOX);
 		this.jPriceLabel = new JLabel(JAddProductPanel.PRICE_LABEL_TEXT);
-		this.jPriceTextField = new JTextField("0.00",JAddProductPanel.WIDTH_TEXTBOX);
+		this.jPriceTextField = new JTextField(PRICE_TEXT_BOX_VALUE_DEFAULT,JAddProductPanel.WIDTH_TEXTBOX);
 		/* check TEXT FIELD price */
 		PlainDocument docP = (PlainDocument)this.jPriceTextField.getDocument();
 		docP.setDocumentFilter(new PriceDocumentFilter());
 		
 		this.jAmountLabel = new JLabel(JAddProductPanel.AMOUNT_LABEL_TEXT);
-		this.jAmountTextField = new JTextField("0",JAddProductPanel.WIDTH_TEXTBOX);
+		this.jAmountTextField = new JTextField(AMOUNT_TEXT_BOX_VALUE_DEFAULT,JAddProductPanel.WIDTH_TEXTBOX);
 		/* check TEXT FIELD amount */
 		PlainDocument docQ = (PlainDocument)this.jAmountTextField.getDocument();
 		docQ.setDocumentFilter(new AmountDocumentFilter());
@@ -229,62 +249,13 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 		this.jThreePerTwoOfferRadioButton.addActionListener(this);
 		this.jThreePerTwoOfferRadioButton.setActionCommand(THREE_PER_TWO_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT);
 	
-	}
-	
-	public String getFileName(String string)
-	{
-
-		int lengthString = string.length();
-//		System.out.println(lengthString);
-		char last = string.charAt(lengthString - 1);
-//		System.out.println(last);
-//		System.out.println("indice inzizio: "+string.lastIndexOf("\\"));
-//		System.out.println("indice fine: "+ string.indexOf((last)+1));
-		System.out.println(string);
-		String fileName = string.substring(string.lastIndexOf(File.separator));
 		
-//		System.out.println(lengthString);
-//		System.out.println(fileName);
-		fileName = fileName.substring(fileName.lastIndexOf(File.separator)+1);
-//		System.out.println(fileName);
-		return fileName;
-		/* fine roba nuova */
-	}
+	}	
 	
-	public String copyImage(Image image,String fileName)
-	{
-		int check = 0;
-		BufferedImage buffered = (BufferedImage) image;
-		try {
-		    // save to file
-		    File outputfile = new File("media/img/products/"+fileName);
-		    do
-		    {
-		    	if(outputfile.exists())
-			    {
-			    	String name = fileName.substring(0, fileName.lastIndexOf("."));
-			    	String extension = fileName.substring(fileName.lastIndexOf("."));
-//			    	System.out.println(name);
-//			    	System.out.println(extension);
-			    	fileName = name + "1" + extension;
-//			    	System.out.println(fileName);
-			    	outputfile = new File("media/img/products/"+fileName);
-			    }
-		    	else
-		    	{
-		    		check = 1;
-		    	}
-		    } while(check != 1);
-		    
-		    ImageIO.write(buffered, "png", outputfile);
-		} catch (IOException f) {
-		    f.printStackTrace();
-		}
-		return ("media\\img\\products\\" + fileName);
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		JAdminControlPanel adminControlPanel = new JAdminControlPanel();
 		if(e.getActionCommand().equals(PERCENT_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT))
 		{
 			this.jPercentTextField.setEditable(true);
@@ -338,8 +309,8 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 				if(articles.get(i).getCodice().equals(this.jCodeTextField.getText()))
 				{
 					JOptionPane.showMessageDialog(this,
-							"Il prodotto che si vuole inserire è gia presente in magazzino",
-							"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+							PRODUCT_ALREADY_EXIST_STRING,
+							ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
 					check = 1;
 				}
 			}
@@ -355,8 +326,8 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 							this.jPriceTextField.getText().equals("") ||
 							this.jAmountTextField.getText().equals(""))
 					{
-						JOptionPane.showMessageDialog(this, "Inserire tutti i dati correttamente",
-								"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(this, ALL_DATA_STRING,
+								ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
 					}
 					else
 					{
@@ -367,8 +338,8 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 						amount = this.jAmountTextField.getText();
 						if(checkPrice == 0)
 						{
-							JOptionPane.showMessageDialog(this, "Inserire un prezzo diverso da 0 per il prodotto",
-									"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(this, PRICE_NOT_ZERO_STRING,
+									ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
 						}
 						else
 						{
@@ -377,23 +348,21 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 									this.jCategoryTextField.getText(),Float.parseFloat(price),
 									imgicon.getDescription(),Integer.parseInt(amount));
 							
-							/* SALVATAGGIO IMMAGINE */
-							String string = imgicon.getDescription();
-							String fileName = this.getFileName(string);							
-							Image image = imgicon.getImage();
-							String imagePath = this.copyImage(image, fileName);
-							prodotto.setImmagine(imagePath);
-							
-							
+							/* SALVATAGGIO IMMAGINE */		
+							adminControlPanel.addToSaveList(prodotto);
+							adminControlPanel.getImage(imgicon.getImage());
 							
 							magazzino.aggiungiProdotto(prodotto);
-							JOptionPane.showMessageDialog(this, "Podotto inserito correttamente",
-									"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
-							
-							
-
-							
+							JOptionPane.showMessageDialog(this, RIGHT_INSERT_STRING,
+									ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
+	
 							this.jAddProductDialog.setVisible(false);
+							
+							jStoreTable.setModel(new ArticlesTableModel(this.magazzino.getArticoli(),
+									LINE_HEIGHT,ArticlesTableModel.STORE_MODE));
+							jStoreTable.getColumn("").setCellRenderer(new RemoveColumnRender(LINE_HEIGHT));
+							jStoreTable.getColumn("").setCellEditor(new RemoveColumnEditor(
+							this.magazzino.getArticoli(), LINE_HEIGHT));
 						}
 					}
 				}
@@ -407,19 +376,19 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 							this.jPriceTextField.getText().equals("") ||
 							this.jAmountTextField.getText().equals(""))
 					{
-						JOptionPane.showMessageDialog(this, "Inserire tutti i dati correttamente",
-								"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(this, ALL_DATA_STRING,
+								ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
 					}
 					else if(this.jPercentTextField.getText().equals(""))
 					{
-						JOptionPane.showMessageDialog(this, "Inserire il valore della percentuale da scontare",
-								"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(this, PERCENT_REQUEST_STRING,
+								ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
 					}
 					else if(checkPercent == 0)
 					{
 						JOptionPane.showMessageDialog(this,
-								"Inserire un valore della percentuale da scontare diverso da 0",
-								"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+								PERCENT_VALUE_NOT_ZERO_STRING,
+								ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
 					}
 					else
 					{
@@ -431,8 +400,8 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 						amount = this.jAmountTextField.getText();
 						if(checkPrice == 0)
 						{
-							JOptionPane.showMessageDialog(this, "Inserire un prezzo diverso da 0 per il prodotto",
-									"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(this, PRICE_NOT_ZERO_STRING,
+									ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
 						}
 						else
 						{
@@ -441,16 +410,19 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 									this.jCategoryTextField.getText(),Float.parseFloat(price),
 									imgicon.getDescription(),Integer.parseInt(amount),promo);
 							
-							/* SALVATAGGIO IMMAGINE */
-							String string = imgicon.getDescription();
-							String fileName = this.getFileName(string);							
-							Image image = imgicon.getImage();
-							String imagePath = this.copyImage(image, fileName);
-							prodotto.setImmagine(imagePath);
-							
+							/* SALVATAGGIO IMMAGINE */		
+							adminControlPanel.addToSaveList(prodotto);
+							adminControlPanel.getImage(imgicon.getImage());
+
 							magazzino.aggiungiProdotto(prodotto);
-							JOptionPane.showMessageDialog(this, "Podotto inserito correttamente",
-									"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(this, RIGHT_INSERT_STRING,
+									ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
+							
+							jStoreTable.setModel(new ArticlesTableModel(this.magazzino.getArticoli(),
+									LINE_HEIGHT,ArticlesTableModel.STORE_MODE));
+							jStoreTable.getColumn("").setCellRenderer(new RemoveColumnRender(LINE_HEIGHT));
+							jStoreTable.getColumn("").setCellEditor(new RemoveColumnEditor(
+							this.magazzino.getArticoli(), LINE_HEIGHT));
 							
 							this.jAddProductDialog.setVisible(false);
 						}
@@ -466,8 +438,8 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 							this.jPriceTextField.getText().equals("") ||
 							this.jAmountTextField.getText().equals(""))
 					{
-						JOptionPane.showMessageDialog(this, "Inserire tutti i dati correttamente",
-								"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(this, ALL_DATA_STRING,
+								ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
 					}
 					else
 					{
@@ -479,8 +451,8 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 						amount = this.jAmountTextField.getText();
 						if(checkPrice == 0)
 						{
-							JOptionPane.showMessageDialog(this, "Inserire un prezzo diverso da 0 per il prodotto",
-									"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(this, PRICE_NOT_ZERO_STRING,
+									ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
 						}
 						else
 						{
@@ -489,16 +461,19 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 									this.jCategoryTextField.getText(),Float.parseFloat(price),
 									imgicon.getDescription(),Integer.parseInt(amount),promo);
 							
-							/* SALVATAGGIO IMMAGINE */
-							String string = imgicon.getDescription();
-							String fileName = this.getFileName(string);							
-							Image image = imgicon.getImage();
-							String imagePath = this.copyImage(image, fileName);
-							prodotto.setImmagine(imagePath);
-							
+							/* SALVATAGGIO IMMAGINE */		
+							adminControlPanel.addToSaveList(prodotto);
+							adminControlPanel.getImage(imgicon.getImage());
+		
 							magazzino.aggiungiProdotto(prodotto);
-							JOptionPane.showMessageDialog(this, "Podotto inserito correttamente",
-									"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(this, RIGHT_INSERT_STRING,
+									ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
+							
+							jStoreTable.setModel(new ArticlesTableModel(this.magazzino.getArticoli(),
+									LINE_HEIGHT,ArticlesTableModel.STORE_MODE));
+							jStoreTable.getColumn("").setCellRenderer(new RemoveColumnRender(LINE_HEIGHT));
+							jStoreTable.getColumn("").setCellEditor(new RemoveColumnEditor(
+							this.magazzino.getArticoli(), LINE_HEIGHT));
 									
 							this.jAddProductDialog.setVisible(false);
 						}
@@ -507,8 +482,8 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(this, "Selezionare un'offerta per il prodotto",
-							"Attenzione!",JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(this, SELECT_OFFER_STRING,
+							ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		}

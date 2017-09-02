@@ -5,6 +5,8 @@ import java.awt.Dimension;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+
+import grafica.JAdminContentPanel.JStoreTable;
 import negozio.Magazzino;
 import negozio.Prodotto;
 
@@ -12,7 +14,7 @@ public class JModifyProductDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	
-	
+	private JStoreTable jStoreTable;
 	private JSearchProductDialog jSearchProductDialog;
 	private Prodotto prodotto;
 	private Magazzino magazzino;
@@ -25,7 +27,7 @@ public class JModifyProductDialog extends JDialog {
 	
 	
 	public JModifyProductDialog(JFrame mainFrame,Prodotto prodotto, Magazzino magazzino,
-			JSearchProductDialog jSearchProductDialog)
+			JSearchProductDialog jSearchProductDialog,JStoreTable jStoreTable)
 	{
 		super(mainFrame,TITLE,JDialog.ModalityType.DOCUMENT_MODAL);
 		this.setModal(true);
@@ -41,7 +43,7 @@ public class JModifyProductDialog extends JDialog {
 		this.setResizable(false);
 		this.setLayout(new BorderLayout());	
 		
-		jModifyProductPanel = new JModifyProductPanel(this,prodotto,magazzino);
+		jModifyProductPanel = new JModifyProductPanel(this,prodotto,magazzino,jStoreTable);
 		this.add(this.jModifyProductPanel, BorderLayout.CENTER);
 	}
 }

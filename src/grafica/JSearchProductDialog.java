@@ -5,12 +5,15 @@ import java.awt.Dimension;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+
+import grafica.JAdminContentPanel.JStoreTable;
 import negozio.Magazzino;
 
 public class JSearchProductDialog extends JDialog{
 
 	private static final long serialVersionUID = 2972527475553839904L;
 	
+	private JStoreTable jStoreTable;
 	private Magazzino magazzino;
 	
 	protected static final String TITLE = "Ricerca prodotto";
@@ -19,7 +22,7 @@ public class JSearchProductDialog extends JDialog{
 	
 	private JSearchProductPanel jSearchProductPanel;
 	
-	public JSearchProductDialog(JFrame mainFrame,Magazzino magazzino)
+	public JSearchProductDialog(JFrame mainFrame,Magazzino magazzino,JStoreTable jStoreTable)
 	{
 		super(mainFrame, TITLE,JDialog.ModalityType.DOCUMENT_MODAL);
 		this.setModal(true);
@@ -30,7 +33,7 @@ public class JSearchProductDialog extends JDialog{
 		this.setResizable(false);
 		this.setLayout(new BorderLayout());	
 		
-		jSearchProductPanel = new JSearchProductPanel(mainFrame,magazzino,this);
+		jSearchProductPanel = new JSearchProductPanel(mainFrame,magazzino,this,jStoreTable);
 		this.add(this.jSearchProductPanel, BorderLayout.CENTER);
 	}
 }

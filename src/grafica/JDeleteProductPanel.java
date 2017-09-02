@@ -12,6 +12,8 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import grafica.JAdminContentPanel.JStoreTable;
 import negozio.Magazzino;
 import negozio.Prodotto;
 
@@ -19,6 +21,7 @@ public class JDeleteProductPanel extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	
+	private JStoreTable jStoreTable;
 	private JDeleteProductDialog jDeleteProductDialog;
 	private Magazzino magazzino;
 	private Prodotto prodotto;
@@ -44,12 +47,13 @@ public class JDeleteProductPanel extends JPanel implements ActionListener {
 	
 	
 	
-	public JDeleteProductPanel(Magazzino magazzino, JDeleteProductDialog jDeleteProductDialog)
+	public JDeleteProductPanel(Magazzino magazzino, JDeleteProductDialog jDeleteProductDialog,JStoreTable jStoreTable)
 	{
 		ArrayList <String> str = new ArrayList<String>();
 		ArrayList <Prodotto> p = new ArrayList<Prodotto>();
 		this.magazzino = magazzino;
 		this.jDeleteProductDialog = jDeleteProductDialog;
+		this.jStoreTable = jStoreTable;
 		
 		p = magazzino.getArticoli();
 		for(int i = 0;i<p.size();i++)
@@ -83,17 +87,23 @@ public class JDeleteProductPanel extends JPanel implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		JAdminControlPanel adminControlPanel = new JAdminControlPanel();
 		String code = (String) this.jCodeComboBox.getSelectedItem();
 		prodotto = magazzino.getProdotto(code);
+		
+		/**/
+		adminControlPanel.addToDeleteList(prodotto.getImmagine());
+		/**/
 		magazzino.rimuoviProdotto(prodotto.getCodice(), prodotto.getQuantita());
 		JOptionPane.showMessageDialog(this, J_OPTION_PANE_STRING,J_OPTION_PANE_ALERT,
 				JOptionPane.INFORMATION_MESSAGE);
 		
+		((ArticlesTableModel)jStoreTable.getModel()).fireTableDataChanged();
 		
-		File file = new File(prodotto.getImmagine().toString());
+		/*File file = new File(prodotto.getImmagine().toString());
 		if (file.exists()) {
 		    file.delete();
-		}
+		}*/
 		this.jDeleteProductDialog.setVisible(false);
 	    
 	}
