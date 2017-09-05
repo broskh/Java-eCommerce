@@ -40,12 +40,12 @@ public interface GestioneProdotti {
 	 * 
 	 * @return Prezzo massimo.
 	 */
-	public float MaxPrezzo ();
+	public float maxPrezzo ();
 	
 	/**
 	 * Ritorna la quantità del prodotto con tale valore maggiore.
 	 * 
 	 * @return Quantità massima.
 	 */
-	public int MaxQuantita ();
+	public int maxQuantita ();
 }

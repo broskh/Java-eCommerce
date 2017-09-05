@@ -8,13 +8,16 @@ import javax.swing.text.DocumentFilter;
 public class AmountDocumentFilter extends DocumentFilter {
 	
 	private int maxValue;
+
+	private final static int NULL_VALUE = -1;
+	private final static String EMPTY_FIELD_VALUE = "0";
 	
 	public AmountDocumentFilter (int maxValue) {
 		this.maxValue = maxValue;
 	}
 	
 	public AmountDocumentFilter() {
-		this (-1);
+		this (NULL_VALUE);
 	}
 
 	private boolean testInteger (String text) {
@@ -29,7 +32,7 @@ public class AmountDocumentFilter extends DocumentFilter {
 	private String correctValue (String value) {
 		int intValue = Integer.parseInt(value);
 		
-		if (this.maxValue != -1 && intValue > this.maxValue) {
+		if (this.maxValue != NULL_VALUE && intValue > this.maxValue) {
 			return Integer.toString(this.maxValue);
 		}
 		return Integer.toString(intValue);
@@ -53,8 +56,6 @@ public class AmountDocumentFilter extends DocumentFilter {
 
 		if (this.testInteger(sb.toString())) {
 			super.insertString(fb, offset, string, attr);
-		} else {
-			// warn the user and don't allow the insert
 		}
 	}
 
@@ -70,8 +71,6 @@ public class AmountDocumentFilter extends DocumentFilter {
 		if (this.testInteger (sb.toString())) {
 			super.replace(fb, 0, doc.getLength(), 
 					this.correctValue(sb.toString()), attrs);
-		} else {
-         // 	warn the user and don't allow the insert
 		}
 	}
 	
@@ -86,8 +85,7 @@ public class AmountDocumentFilter extends DocumentFilter {
 		if (this.testInteger (sb.toString())) {
 			super.remove(fb, offset, length);
 		} else {
-			this.replace(fb, offset, length, "0", null);
-			// warn the user and don't allow the insert
+			this.replace(fb, offset, length, EMPTY_FIELD_VALUE, null);
 		}
 	}
 }

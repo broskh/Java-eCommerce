@@ -96,7 +96,7 @@ public class Carrello implements GestioneProdotti{
 	}
 
 	@Override
-	public float MaxPrezzo() {
+	public float maxPrezzo() {
 		float max = 0;
 		for (Prodotto articolo : this.articoli) {
 			if (articolo.getPrezzo() > max) {
@@ -107,7 +107,7 @@ public class Carrello implements GestioneProdotti{
 	}
 
 	@Override
-	public int MaxQuantita() {
+	public int maxQuantita() {
 		int max = 0;
 		for (Prodotto articolo : this.articoli) {
 			if (articolo.getQuantita() > max) {

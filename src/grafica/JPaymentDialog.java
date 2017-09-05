@@ -12,11 +12,11 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import negozio.Carrello;
 import negozio.Magazzino;
@@ -30,7 +30,7 @@ public class JPaymentDialog extends JDialog implements ActionListener {
 
 	private JButton cancelButton;
 	private JButton okButton;
-	private JeCommerceFrame mainFrame;
+	private JClientContentPanel clientContenPanel;
 	
 	private static final int WIDTH = 640;
 	private static final int HEIGHT = 325;
@@ -64,15 +64,15 @@ public class JPaymentDialog extends JDialog implements ActionListener {
 
 	private static final String TITLE = "Pagamento";
 
-	public JPaymentDialog (JFrame mainFrame, Carrello cart, Magazzino store) {
-		super (mainFrame, TITLE, JDialog.ModalityType.DOCUMENT_MODAL);
+	public JPaymentDialog (JClientContentPanel clientContentPanel, Carrello cart, Magazzino store) {
+		super (SwingUtilities.getWindowAncestor(clientContentPanel), TITLE, JDialog.ModalityType.DOCUMENT_MODAL);
 		this.setMinimumSize(new Dimension(WIDTH, HEIGHT));
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 
 		this.cart = cart;
 		this.store = store;
-		this.mainFrame = (JeCommerceFrame) mainFrame;
+		this.clientContenPanel = clientContentPanel;
 		this.okButton = new JButton(OK_BUTTON_STRING);
 		this.cancelButton = new JButton(CANCEL_BUTTON_STRING);
 		this.okButton.addActionListener(this);
@@ -154,7 +154,7 @@ public class JPaymentDialog extends JDialog implements ActionListener {
 			}
 			this.cart.svuota();
 			this.setVisible(false);
-			((JClientContentPanel)this.mainFrame.getJContentPanel()).updateArticles();
+			this.clientContenPanel.updateArticles();
 		}
 	}
 }

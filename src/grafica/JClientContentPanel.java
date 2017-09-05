@@ -8,9 +8,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -27,9 +24,11 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -49,46 +48,149 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 
 	private Magazzino store;
 	private Cliente client;
+	private Carrello cart;
 	private ArrayList <Prodotto> viewedArticles;
 	private int nPage;
 	private int maxPage;
+	private StringBuilder filterTypeString;
+
+	private JFrame mainFrame;
 	
-	private JClientControlPanel jClientControlPanel;
-	private JPanel mainPanel;
+	private JPanel mainContentPanel;
 	private JPanel showcasePanel;
+	
+	private JFilterPanel filterPanel;
+	
 	private JButton backButton;
 	private JButton forwardButton;
 	
-	private static final int RIGHT_MARGIN = 40;
-	private static final int LEFT_MARGIN = 40;	
-	private static final int TOP_MARGIN = 15;	
-	private static final int BOTTOM_MARGIN = 15;	
-	private static final int BUTTONS_TOP_MARGIN = 10;	
-	private static final int ARTICLES_MARGIN = 10;
-	private static final int BUTTONS_SPACE = 450;
-	private static final int BACK_IMAGE_SIZE = 30;
-	private static final int FORWARD_IMAGE_SIZE = 30;
-	private static final int BACK_BUTTON_SIZE = BACK_IMAGE_SIZE + 15;
-	private static final int FORWARD_BUTTON_SIZE = FORWARD_IMAGE_SIZE + 15;
+	private JComboBox <String> filterTypeComboBox;
 	
-	private static final String BACK_IMAGE_PATH = "media/img/back_icon.png";
-	private static final String FORWARD_IMAGE_PATH = "media/img/forward_icon.png";
+	private JMenuItem closeItem;
+	private JMenuItem nameFilterItem;
+	private JMenuItem brandFilterItem;
+	private JMenuItem codeFilterItem;
+	private JMenuItem categoryFilterItem;
+	private JMenuItem costFilterItem;
+	private JMenuItem amountFilterItem;
+	private JMenuItem showCartItem;
+	private JMenuItem addArticleItem;
+	private JMenuItem removeArticleItem;
+	private JMenuItem emptyCartItem;
 
+	private static final int DEFAULT_GENERIC_MARGIN = 15;
+	private static final int FRAME_RIGHT_MARGIN = 40;
+	private static final int FRAME_LEFT_MARGIN = 40;	
+	private static final int CONTENTPANEL_TOP_MARGIN = 15;	
+	private static final int CONTENTPANEL_BOTTOM_MARGIN = 15;	
+	private static final int BOTTOMBUTTONS_TOP_MARGIN = 10;
+	private static final int BOTTOM_BUTTONS_SPACE = 450;
+	private static final int CONTROLPANEL_LABEL_MARGIN = 20;
+	private static final int CONTROLPANEL_RIGHT_MARGIN = 20;
+	private static final int CONTROLPANEL_LEFT_MARGIN = 20;
+	private static final int CONTROLPANEL_HORIZONTAL_SPACE = 50;
+	private static final int ARTICLES_MARGIN = 10;
+
+	private static final int MENUBAR_HEIGHT = 22;
+	private static final int CONTROLPANEL_HEIGHT = 80;
+	private static final int BACK_IMAGE_SIZE = 30;
+	private static final int BACK_BUTTON_SIZE = BACK_IMAGE_SIZE + 15;
+	private static final int FORWARD_IMAGE_SIZE = 30;
+	private static final int FORWARD_BUTTON_SIZE = FORWARD_IMAGE_SIZE + 15;
+	private static final int ARTICLE_AMOUNT_WIDTH = 50;
+	private static final int ARTICLE_AMOUNT_HEIGHT = 25;
+	private static final int ARTICLE_ICON_SIZE = 120;
+	private static final int ARTICLE_ADD_BUTTON_SIZE = 32;
+	private static final int ARTICLE_ADD_IMAGE_SIZE = ARTICLE_ADD_BUTTON_SIZE + 6;	
+	private static final int ARTICLE_INTERACTION_HEIGHT = 35;
+	private static final int ARTICLE_INTERACTION_HORIZONTAL_SPACE = 50;
+	private static final int ARTICLE_INFORMATION_SPACE = 7;	
+	private static final int ARTICLE_BORDER_SIZE = 3;
+	private static final int ARTICLE_BORDER_RADII = 15;
+	private static final int WIDTH = 220;
 	
+	private static final int DEFAULT_AMOUNT = 1;
+
 	private static final String BACK_BUTTON_TEXT = "<";
 	private static final String FORWARD_BUTTON_TEXT = ">";
-
+	private static final String FILTER_BUTTON_TEXT = "Filtra";
+	private static final String CART_BUTTON_TEXT = "Carrello";	
+	private static final String ADD_BUTTON_TEXT = "+";
+	
+	private static final String FILTER_TYPE_LABEL = "Filtra per:";
+	private static final String FILTER_STRING_LABEL = "Criterio di ricerca:";
+	private static final String CODE_LABEL = "Codice: ";
+	private static final String NAME_LABEL = "Nome: ";
+	private static final String BRAND_LABEL = "Marca: ";
+	private static final String CATEGORY_LABEL = "Categoria: ";
+	private static final String COST_LABEL = "Prezzo: ";
+	private static final String AVAILABILITY_LABEL = "Disponibilità: ";
+	private static final String OFFER_LABEL = "Offerta: ";
+	
+	private static final String FILE_MENU_STRING = "File";
+	private static final String FILTER_MENU_STRING = "Filtra";
+	private static final String CART_MENU_STRING = "Carrello";
+	private static final String CLOSE_ITEM_STRING = "Chiudi";
+	private static final String SHOW_CART_ITEM = "Visualizza";
+	private static final String ADD_ARTICLE_ITEM = "Aggiungi articolo";
+	private static final String REMOVE_ARTICLE_ITEM = "Rimuovi articolo";
+	private static final String EMPTY_CART_ITEM = "Svuota";
+	
+	private static final String[] FILTER_TYPE_STRINGS = {
+			Magazzino.STRINGA_FILTRO_NOME,
+			Magazzino.STRINGA_FILTRO_MARCA,
+			Magazzino.STRINGA_FILTRO_CODICE,
+			Magazzino.STRINGA_FILTRO_CATEGORIA,
+			Magazzino.STRINGA_FILTRO_PREZZO,
+			Magazzino.STRINGA_FILTRO_QUANTITA
+		};
+	private static final String CURRENCY_SYMBOL = " €";
+	private static final String NONE_OFFER_TEXT = "Nessuna";
+	
+	private static final String ADD_IMAGE_PATH = "media/img/add.png";
+	private static final String CART_IMAGE_PATH = "media/img/cart.png";
+	private static final String BACK_IMAGE_PATH = "media/img/back_icon.png";
+	private static final String FORWARD_IMAGE_PATH = "media/img/forward_icon.png";
+	
 	public JClientContentPanel(JFrame mainFrame, Magazzino store, Cliente client) {
+		this.mainFrame = mainFrame;
 		this.store = store;
 		this.client = client;
+		this.cart = this.client.getCarrello();
 		this.viewedArticles = this.store.getArticoli();
 		this.nPage = 0;
 		this.maxPage = 0;
 		
-		this.jClientControlPanel = new JClientControlPanel(mainFrame, this);
-		this.jClientControlPanel.setBorder(new EtchedBorder ());
+		this.setLayout(new BorderLayout());
+		this.add(this.menuBar(), BorderLayout.PAGE_START);
+		this.add(this.contentPanel(), BorderLayout.CENTER);		
+	}
+	
+	public void setViewedArticles (ArrayList <Prodotto> viewedArticles) {
+		this.viewedArticles = viewedArticles;
+		this.updateArticles();
+	}
+
+	private JPanel contentPanel () {
+		this.showcasePanel = new JPanel();
 		
-		JPanel buttonsPanelLV2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		this.mainContentPanel = new JPanel(new BorderLayout());
+		this.mainContentPanel.add(Box.createVerticalStrut(
+				JClientContentPanel.CONTENTPANEL_TOP_MARGIN), BorderLayout.PAGE_START);
+		this.mainContentPanel.add(Box.createHorizontalStrut(
+				JClientContentPanel.FRAME_LEFT_MARGIN), BorderLayout.WEST);
+		this.mainContentPanel.add(this.showcasePanel, BorderLayout.CENTER);
+		this.mainContentPanel.add(Box.createHorizontalStrut(
+				JClientContentPanel.FRAME_RIGHT_MARGIN), BorderLayout.EAST);
+		this.mainContentPanel.add(this.bottomButtonsPanel(), BorderLayout.PAGE_END);
+		
+		JPanel contentPanel = new JPanel(new BorderLayout());
+		contentPanel.add(this.controlPanel(), BorderLayout.PAGE_START);
+		contentPanel.add(this.mainContentPanel, BorderLayout.CENTER);
+		return contentPanel;
+	}
+	
+	private JPanel bottomButtonsPanel () {
 		this.backButton = new JButton();
 		this.backButton.addActionListener(this);
 		this.backButton.setPreferredSize(new Dimension(BACK_BUTTON_SIZE, BACK_BUTTON_SIZE));
@@ -98,6 +200,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		} catch (Exception ex) {
 			this.backButton.setText(BACK_BUTTON_TEXT);
 		}
+		
 		this.forwardButton = new JButton();
 		this.forwardButton.addActionListener(this);
 		this.forwardButton.setPreferredSize(new Dimension(FORWARD_BUTTON_SIZE, FORWARD_BUTTON_SIZE));
@@ -107,85 +210,257 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		} catch (Exception ex) {
 			this.forwardButton.setText(FORWARD_BUTTON_TEXT);
 		}
-		buttonsPanelLV2.add(this.backButton);
-		buttonsPanelLV2.add(Box.createHorizontalStrut(BUTTONS_SPACE));
-		buttonsPanelLV2.add(this.forwardButton);
-		JPanel buttonsPanelLV1 = new JPanel(new BorderLayout());
-		buttonsPanelLV1.add(Box.createVerticalStrut(BUTTONS_TOP_MARGIN), 
-				BorderLayout.PAGE_START);
-		buttonsPanelLV1.add(buttonsPanelLV2, BorderLayout.CENTER);
-		buttonsPanelLV1.add(Box.createVerticalStrut(BOTTOM_MARGIN), BorderLayout.PAGE_END);
-
-		this.showcasePanel = new JPanel();
-		this.mainPanel = new JPanel(new BorderLayout());
-		this.mainPanel.add(Box.createVerticalStrut(TOP_MARGIN), BorderLayout.PAGE_START);
-		this.mainPanel.add(Box.createHorizontalStrut(LEFT_MARGIN), BorderLayout.WEST);
-		this.mainPanel.add(this.showcasePanel, BorderLayout.CENTER);
-		this.mainPanel.add(Box.createHorizontalStrut(RIGHT_MARGIN), BorderLayout.EAST);
-		this.mainPanel.add(buttonsPanelLV1, BorderLayout.PAGE_END);
 		
-		this.setLayout(new BorderLayout());
-		this.add(this.jClientControlPanel, BorderLayout.PAGE_START);
-		this.add(this.mainPanel, BorderLayout.CENTER);
+		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		buttonsPanel.add(this.backButton);
+		buttonsPanel.add(Box.createHorizontalStrut(BOTTOM_BUTTONS_SPACE));
+		buttonsPanel.add(this.forwardButton);
+
+		JPanel bottomPanel = new JPanel(new BorderLayout());
+		bottomPanel.add(Box.createVerticalStrut(BOTTOMBUTTONS_TOP_MARGIN), 
+				BorderLayout.PAGE_START);
+		bottomPanel.add(buttonsPanel, BorderLayout.CENTER);
+		bottomPanel.add(Box.createVerticalStrut(CONTENTPANEL_BOTTOM_MARGIN), BorderLayout.PAGE_END);
+		return bottomPanel;
 	}
 	
-	public void setViewedArticles (ArrayList <Prodotto> viewedArticles) {
-		this.viewedArticles = viewedArticles;
-		this.updateArticles();
+	private JMenuBar menuBar () {
+		this.closeItem = new JMenuItem (CLOSE_ITEM_STRING);
+		this.closeItem.addActionListener(this);
+		JMenu fileMenu = new JMenu (FILE_MENU_STRING);
+		fileMenu.add (this.closeItem);
+		
+		this.nameFilterItem = new JMenuItem (Magazzino.STRINGA_FILTRO_NOME);
+		this.nameFilterItem.addActionListener(this);
+		this.brandFilterItem = new JMenuItem (Magazzino.STRINGA_FILTRO_MARCA);
+		this.brandFilterItem.addActionListener(this);
+		this.codeFilterItem = new JMenuItem (Magazzino.STRINGA_FILTRO_CODICE);
+		this.codeFilterItem.addActionListener(this);
+		this.categoryFilterItem = new JMenuItem (Magazzino.STRINGA_FILTRO_CATEGORIA);
+		this.categoryFilterItem.addActionListener(this);
+		this.costFilterItem = new JMenuItem (Magazzino.STRINGA_FILTRO_PREZZO);
+		this.costFilterItem.addActionListener(this);
+		this.amountFilterItem = new JMenuItem (Magazzino.STRINGA_FILTRO_QUANTITA);
+		this.amountFilterItem.addActionListener(this);
+		JMenu filterMenu = new JMenu (FILTER_MENU_STRING);
+		filterMenu.add (this.nameFilterItem);
+		filterMenu.add (this.brandFilterItem);
+		filterMenu.add (this.codeFilterItem);
+		filterMenu.add (this.categoryFilterItem);
+		filterMenu.add (this.costFilterItem);
+		filterMenu.add (this.amountFilterItem);
+		
+		this.showCartItem = new JMenuItem(SHOW_CART_ITEM);
+		this.showCartItem.addActionListener(new OpenCartListener(
+				this, this.cart, this.store));
+		this.addArticleItem = new JMenuItem(ADD_ARTICLE_ITEM);
+		this.addArticleItem.addActionListener(this);
+		this.removeArticleItem = new JMenuItem(REMOVE_ARTICLE_ITEM);
+		this.removeArticleItem.addActionListener(this);
+		this.emptyCartItem = new JMenuItem(EMPTY_CART_ITEM);
+		this.emptyCartItem.addActionListener(new EmptyCartListener (this.cart));
+		JMenu cartMenu = new JMenu (CART_MENU_STRING);
+		cartMenu.add(this.showCartItem);
+		cartMenu.add(this.addArticleItem);
+		cartMenu.add(this.removeArticleItem);
+		cartMenu.add(this.emptyCartItem);
+		
+		JMenuBar clientMenubar = new JMenuBar();
+		clientMenubar.setPreferredSize(new Dimension(this.getWidth(), MENUBAR_HEIGHT));
+		clientMenubar.add (fileMenu);
+		clientMenubar.add (filterMenu);
+		clientMenubar.add (cartMenu);
+		return clientMenubar;
 	}
 	
-	public ArrayList <Prodotto> getViewedArticles () {
-		return this.viewedArticles;
+	private JPanel controlPanel () {		
+		JLabel filterTypeLabel = new JLabel (FILTER_TYPE_LABEL);
+		this.filterTypeComboBox = new JComboBox <String> (FILTER_TYPE_STRINGS);
+		this.filterTypeComboBox.addActionListener(this);
+		JPanel filterTypePanel = new JPanel ();
+		filterTypePanel.setLayout (new BorderLayout ());
+		filterTypePanel.add (filterTypeLabel, BorderLayout.PAGE_START);
+		filterTypePanel.add (Box.createVerticalStrut (CONTROLPANEL_LABEL_MARGIN));
+		filterTypePanel.add (this.filterTypeComboBox, BorderLayout.PAGE_END);
+
+		JLabel filterStringLabel = new JLabel (FILTER_STRING_LABEL);
+		this.filterPanel = new JFilterPanel(this.store.maxQuantita(), 
+				this.store.maxPrezzo());
+		JPanel filterStringPanel = new JPanel ();
+		filterStringPanel.setLayout(new BorderLayout ());
+		filterStringPanel.add (filterStringLabel, BorderLayout.PAGE_START);
+		filterStringPanel.add (Box.createVerticalStrut (CONTROLPANEL_LABEL_MARGIN));
+		filterStringPanel.add (this.filterPanel, BorderLayout.PAGE_END);
+		
+		this.filterTypeString = new StringBuilder(
+				this.filterTypeComboBox.getSelectedItem().toString());
+		JButton filterButton = new JButton (FILTER_BUTTON_TEXT);
+		filterButton.addActionListener(new FilterListener (this, 
+				this.filterTypeString, this.filterPanel, this.store));
+
+		JPanel leftPanel = new JPanel ();
+		leftPanel.add (Box.createRigidArea(new Dimension(
+				CONTROLPANEL_LEFT_MARGIN, CONTROLPANEL_HEIGHT)));
+		leftPanel.add (filterTypePanel);
+		leftPanel.add (Box.createHorizontalStrut(CONTROLPANEL_HORIZONTAL_SPACE));
+		leftPanel.add (filterStringPanel);
+		leftPanel.add (Box.createHorizontalStrut(CONTROLPANEL_HORIZONTAL_SPACE));
+		leftPanel.add (filterButton);
+		
+		
+		JButton cartButton = new JButton ();
+		try {
+		    Image img = ImageIO.read(new File (CART_IMAGE_PATH));
+		    cartButton.setIcon(new ImageIcon(img));
+		} catch (Exception ex) {
+			cartButton.setText(CART_BUTTON_TEXT);
+		}
+		cartButton.addActionListener(new OpenCartListener(this, 
+				this.cart, this.store));
+		cartButton.setTransferHandler(new ProdottoImportTransferHandler(
+				this.cart));
+		JPanel rightPanel = new JPanel ();
+		rightPanel.add (cartButton);
+		rightPanel.add (Box.createRigidArea(new Dimension(
+				CONTROLPANEL_RIGHT_MARGIN, CONTROLPANEL_HEIGHT)));
+
+		JPanel controlPanel = new JPanel();
+		controlPanel.setBorder(new EtchedBorder ());
+		controlPanel.setLayout(new BorderLayout());
+		controlPanel.add (leftPanel, BorderLayout.WEST);
+		controlPanel.add (rightPanel, BorderLayout.EAST);
+		return controlPanel;
 	}
 	
-	public void setStore (Magazzino store) {
-		this.store = store;
+	private JPanel articlePanel (Prodotto article) {        
+		JLabel imageLabel = new JLabel("", SwingConstants.CENTER);
+		imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		ImageIcon icon = new ImageIcon(new ResizableIcon(article.getImmagine())
+				.resizeIcon(ARTICLE_ICON_SIZE, ARTICLE_ICON_SIZE));
+		if (icon != null) {
+			imageLabel.setIcon(icon);
+		}
+		JPanel imagePanel = new JPanel ();
+		imagePanel.setLayout(new BoxLayout (imagePanel, BoxLayout.Y_AXIS));
+		imagePanel.add(Box.createVerticalStrut(DEFAULT_GENERIC_MARGIN));
+		imagePanel.add(Box.createVerticalStrut((ARTICLE_ICON_SIZE - icon.getIconHeight()) / 2));
+		imagePanel.add(imageLabel);
+		imagePanel.add(Box.createVerticalStrut((ARTICLE_ICON_SIZE - icon.getIconHeight()) / 2));
+		
+		JLabel codeLabel = new JLabel(CODE_LABEL + article.getCodice());
+		JLabel nameLabel = new JLabel(NAME_LABEL + article.getNome());
+		JLabel brandLabel = new JLabel(BRAND_LABEL + article.getMarca());
+		JLabel categoryLabel = new JLabel(CATEGORY_LABEL + article.getCategoria());
+		JLabel priceLabel = new JLabel(COST_LABEL + article.getPrezzo() + CURRENCY_SYMBOL);
+		JLabel availabilityLabel = new JLabel(AVAILABILITY_LABEL + article.getQuantita());
+		String offer;
+		if (article.getOfferta() == null) {
+			offer = NONE_OFFER_TEXT;
+		}
+		else {
+			offer = article.getOfferta().toString();
+		}
+		JLabel offerLabel = new JLabel(OFFER_LABEL + offer);
+		JPanel informationPanel = new JPanel ();
+		informationPanel.setLayout(new BoxLayout(informationPanel, BoxLayout.Y_AXIS));
+		informationPanel.add(codeLabel);
+		informationPanel.add(nameLabel);
+		informationPanel.add(brandLabel);
+		informationPanel.add(categoryLabel);
+		informationPanel.add(priceLabel);
+		informationPanel.add(availabilityLabel);
+		informationPanel.add(offerLabel);
+		
+		JTextField amountTextField = new JTextField (String.valueOf(DEFAULT_AMOUNT));
+		amountTextField.setPreferredSize(new Dimension (ARTICLE_AMOUNT_WIDTH, 
+				ARTICLE_AMOUNT_HEIGHT));
+		PlainDocument doc = (PlainDocument) amountTextField.getDocument();
+		doc.setDocumentFilter(new AmountDocumentFilter(article.getQuantita()));	
+		JButton addToCartButton = new JButton ();
+		try {
+		    addToCartButton.setIcon(new ImageIcon(new ResizableIcon(new File(ADD_IMAGE_PATH))
+		    		.resizeIcon(ARTICLE_ADD_IMAGE_SIZE, ARTICLE_ADD_IMAGE_SIZE)));
+		} catch (Exception e) {
+			addToCartButton.setText(ADD_BUTTON_TEXT);
+		}
+		addToCartButton.setBorder(new RoundedBorder(new Color (52, 158, 66), 1, 50, 0));
+		addToCartButton.setPreferredSize(new Dimension (
+				ARTICLE_ADD_BUTTON_SIZE, ARTICLE_ADD_BUTTON_SIZE));
+		addToCartButton.addActionListener(new AddArticleToCartListener(this.store, 
+				this.cart, new StringBuilder(article.getCodice()), 
+				amountTextField));
+		addToCartButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+		JPanel interactionPanel = new JPanel ();
+		interactionPanel.add(amountTextField);
+		interactionPanel.add(Box.createRigidArea(new Dimension(
+				ARTICLE_INTERACTION_HORIZONTAL_SPACE, ARTICLE_INTERACTION_HEIGHT)));
+		interactionPanel.add(addToCartButton);
+		
+		JPanel bottomPanel = new JPanel(new BorderLayout());
+		bottomPanel.add(Box.createHorizontalStrut(DEFAULT_GENERIC_MARGIN), BorderLayout.WEST);
+		bottomPanel.add(interactionPanel, BorderLayout.CENTER);
+		bottomPanel.add(Box.createHorizontalStrut(DEFAULT_GENERIC_MARGIN), BorderLayout.EAST);
+		bottomPanel.add(Box.createVerticalStrut(DEFAULT_GENERIC_MARGIN), BorderLayout.PAGE_END);
+        
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setLayout (new BorderLayout(0, DEFAULT_GENERIC_MARGIN));
+        mainPanel.setBorder (new RoundedBorder(
+        		Color.GRAY, ARTICLE_BORDER_SIZE, ARTICLE_BORDER_RADII, 0));
+        mainPanel.setPreferredSize(new Dimension(WIDTH, JClientContentPanel.articlePanelHeight()));
+        mainPanel.add (imagePanel, BorderLayout.PAGE_START);
+        mainPanel.add (informationPanel, BorderLayout.CENTER);
+        mainPanel.add (Box.createHorizontalStrut(DEFAULT_GENERIC_MARGIN), BorderLayout.WEST);
+        mainPanel.add (bottomPanel, BorderLayout.PAGE_END);
+
+        JPanel articlePanel = new JPanel();
+        articlePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        articlePanel.setTransferHandler(new ProdottoExportTransferHandler(article, amountTextField));
+		articlePanel.addMouseMotionListener(new ArticleMouseAdapter(articlePanel));
+        articlePanel.add (mainPanel, BorderLayout.PAGE_START);
+        return articlePanel;
 	}
 	
-	public Magazzino getStore () {
-		return this.store;
-	}
-	
-	public void setClient (Cliente client) {
-		this.client = client;
-	}
-	
-	public Cliente getClient () {
-		return this.client;
+	public static int articlePanelHeight () {
+		return  ARTICLE_BORDER_SIZE + DEFAULT_GENERIC_MARGIN + 
+				ARTICLE_ICON_SIZE + DEFAULT_GENERIC_MARGIN + 
+				(new JLabel().getFont().getSize() + 
+				ARTICLE_INFORMATION_SPACE) * 7 + DEFAULT_GENERIC_MARGIN + 
+				ARTICLE_INTERACTION_HEIGHT + DEFAULT_GENERIC_MARGIN * 2 + 
+				ARTICLE_BORDER_SIZE;
 	}
 	
 	public void updateArticles () {
 		int showcaseWidth = ((JeCommerceFrame) SwingUtilities.getWindowAncestor(this)).getWidth() - 
-				RIGHT_MARGIN - LEFT_MARGIN;
-		int showcaseHeight = this.getHeight() - this.jClientControlPanel.getHeight() - 
-				TOP_MARGIN - BOTTOM_MARGIN - BUTTONS_TOP_MARGIN - this.backButton.getHeight() - 1;
-		int nColumns = showcaseWidth / (JArticlePanel.WIDTH + ARTICLES_MARGIN);
-		int nRows = showcaseHeight / (JArticlePanel.height() + ARTICLES_MARGIN);
+				FRAME_RIGHT_MARGIN - FRAME_LEFT_MARGIN;
+		int showcaseHeight = this.getHeight() - CONTROLPANEL_HEIGHT - 
+				CONTENTPANEL_TOP_MARGIN - CONTENTPANEL_BOTTOM_MARGIN - 
+				BOTTOMBUTTONS_TOP_MARGIN - this.backButton.getHeight() - 1;
+		int nColumns = showcaseWidth / (JClientContentPanel.WIDTH + ARTICLES_MARGIN);
+		int nRows = showcaseHeight / (JClientContentPanel.articlePanelHeight() + ARTICLES_MARGIN);
 		int nVisibleArticles = nRows * nColumns;
 		this.maxPage = this.viewedArticles.size() / nVisibleArticles;
-		if (this.viewedArticles.size() % nVisibleArticles == 0) {
+		if (this.maxPage != 0 && this.viewedArticles.size() % nVisibleArticles == 0) {
 			this.maxPage--;
 		}
 
-		this.mainPanel.remove(this.showcasePanel);
+		this.mainContentPanel.remove(this.showcasePanel);
 		this.showcasePanel = new JPanel(new GridLayout(nRows, nColumns, 
 				ARTICLES_MARGIN, ARTICLES_MARGIN));
 		for (int i = 0; i < nVisibleArticles && 
 				(i + nVisibleArticles * this.nPage) < this.viewedArticles.size(); i++) {
-			this.showcasePanel.add(new JArticlePanel(this.store, 
-					this.viewedArticles.get(i + nVisibleArticles * this.nPage), this.client));
+			this.showcasePanel.add(this.articlePanel(
+					this.viewedArticles.get(i + nVisibleArticles * this.nPage)));
 		}
-//		if (this.nPage == this.maxPage && this.viewedArticles.size() / nVisibleArticles != 0) {
 		if ((this.viewedArticles.size() - (this.nPage * nVisibleArticles)) < nVisibleArticles) {
 			int box = nVisibleArticles - (this.viewedArticles.size() % nVisibleArticles);
 			for (int i = 0; i < box; i++) {
 				this.showcasePanel.add(Box.createRigidArea(new Dimension(
-						JArticlePanel.WIDTH, JArticlePanel.height())));
+						JClientContentPanel.WIDTH, JClientContentPanel.articlePanelHeight())));
 			}
 		}
 		//aggiorno
-		this.mainPanel.updateUI();
-		this.mainPanel.add(this.showcasePanel, BorderLayout.CENTER);
+		this.mainContentPanel.updateUI();
+		this.mainContentPanel.add(this.showcasePanel, BorderLayout.CENTER);
 	}
 	
 	public void resetPagina () {
@@ -211,319 +486,59 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(this.backButton)) {
+		if (e.getSource().equals(this.closeItem)) {
+			 this.mainFrame.dispose();
+		 }
+		 else if (e.getSource().equals(this.nameFilterItem) || 
+				 e.getSource().equals(this.brandFilterItem) ||
+				 e.getSource().equals(this.codeFilterItem) || 
+				 e.getSource().equals(this.categoryFilterItem) || 
+				 e.getSource().equals(this.amountFilterItem) || 
+				 e.getSource().equals(this.costFilterItem)) {
+			 JFilterDialog filterDialog = new JFilterDialog(
+					 this, this.store, ((JMenuItem)e.getSource()).getText());
+			 filterDialog.setVisible(true);
+		}
+		else if (e.getSource().equals(this.addArticleItem)) {
+			 JAddArticleToCartDialog addArticleDialog = new JAddArticleToCartDialog(
+					 this.mainFrame, this.store, this.cart);
+			 addArticleDialog.setVisible(true);
+		}
+		else if (e.getSource().equals(this.removeArticleItem)) {
+			 JRemoveArticleFromCartDialog removeArticleDialog = new JRemoveArticleFromCartDialog(
+					 this.mainFrame, this.cart);
+			 removeArticleDialog.setVisible(true);
+		}
+		else if (e.getSource().equals(this.backButton)) {
 			this.previousPage();
 		}
 		else if (e.getSource().equals(this.forwardButton)) {
 			this.nextPage();
 		}
-	}
-}
-
-class JClientControlPanel extends JPanel implements ActionListener{
-	private static final long serialVersionUID = -8385562955958262505L;
-	
-	private JComboBox <String> filterTypeComboBox;
-	private JFilterPanel filterPanel;
-	private StringBuilder filterTypeString;
-
-	private static final int LABEL_MARGIN = 20;
-	private static final int RIGHT_MARGIN = 20;
-	private static final int LEFT_MARGIN = 20;
-	private static final int LAYOUT_HORIZONTAL_MARGIN = 50;
-
-	private static final String FILTER_TYPE_LABEL = "Filtra per:";
-	private static final String FILTER_STRING_LABEL = "Criterio di ricerca:";
-	private static final String FILTER_BUTTON_TEXT = "Filtra";
-	private static final String CART_BUTTON_TEXT = "Carrello";	
-	protected static final String[] FILTER_TYPE_STRINGS = {
-			Magazzino.STRINGA_FILTRO_NOME,
-			Magazzino.STRINGA_FILTRO_MARCA,
-			Magazzino.STRINGA_FILTRO_CODICE,
-			Magazzino.STRINGA_FILTRO_CATEGORIA,
-			Magazzino.STRINGA_FILTRO_PREZZO,
-			Magazzino.STRINGA_FILTRO_QUANTITA
-		};
-	private static final String CART_IMAGE_PATH = "media/img/cart.png";
-	
-	protected static final int HEIGHT = 80;
-
-	public JClientControlPanel (JFrame mainFrame, JClientContentPanel parentPanel) {
-		JPanel leftPanel = new JPanel ();
-		
-		JPanel filterTypePanel = new JPanel ();
-		JLabel filterTypeLabel = new JLabel (FILTER_TYPE_LABEL);
-		filterTypePanel.setLayout (new BorderLayout ());
-		filterTypePanel.add (filterTypeLabel, BorderLayout.PAGE_START);
-		filterTypePanel.add (Box.createVerticalStrut (LABEL_MARGIN));
-		this.filterTypeComboBox = new JComboBox <String> (FILTER_TYPE_STRINGS);
-		this.filterTypeComboBox.addActionListener(this);
-		filterTypePanel.add (this.filterTypeComboBox, BorderLayout.PAGE_END);
-		
-		JPanel filterStringPanel = new JPanel ();
-		JLabel filterStringLabel = new JLabel (FILTER_STRING_LABEL);
-		filterStringPanel.setLayout(new BorderLayout ());
-		filterStringPanel.add (filterStringLabel, BorderLayout.PAGE_START);
-		filterStringPanel.add (Box.createVerticalStrut (LABEL_MARGIN));
-		this.filterPanel = new JFilterPanel(parentPanel.getStore().MaxQuantita(), 
-				parentPanel.getStore().MaxPrezzo());
-		filterStringPanel.add (this.filterPanel, BorderLayout.PAGE_END);
-		
-		this.filterTypeString = new StringBuilder(
-				this.filterTypeComboBox.getSelectedItem().toString());
-		JButton filterButton = new JButton (FILTER_BUTTON_TEXT);
-		filterButton.addActionListener(new FilterListener (parentPanel, 
-				this.filterTypeString, this.filterPanel));
-	
-		leftPanel.add (Box.createRigidArea(new Dimension(LEFT_MARGIN, HEIGHT)));
-		leftPanel.add (filterTypePanel);
-		leftPanel.add (Box.createHorizontalStrut(LAYOUT_HORIZONTAL_MARGIN));
-		leftPanel.add (filterStringPanel);
-		leftPanel.add (Box.createHorizontalStrut(LAYOUT_HORIZONTAL_MARGIN));
-		leftPanel.add (filterButton);
-		
-		JPanel rightPanel = new JPanel ();
-		
-		JButton cartButton = new JButton ();
-		try {
-		    Image img = ImageIO.read(new File (CART_IMAGE_PATH));
-		    cartButton.setIcon(new ImageIcon(img));
-		} catch (Exception ex) {
-			cartButton.setText(CART_BUTTON_TEXT);
-		}
-		cartButton.addActionListener(new OpenCartListener(mainFrame, 
-				parentPanel.getClient ().getCarrello (), parentPanel.getStore()));
-		cartButton.setTransferHandler(new ValueImportTransferHandler(
-				parentPanel.getClient().getCarrello()));
-		
-		rightPanel.add (cartButton);
-		rightPanel.add (Box.createRigidArea(new Dimension(RIGHT_MARGIN, HEIGHT)));
-		
-		this.setLayout(new BorderLayout());
-		this.add (leftPanel, BorderLayout.WEST);
-		this.add (rightPanel, BorderLayout.EAST);
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(this.filterTypeComboBox)) {
+		else if (e.getSource().equals(this.filterTypeComboBox)) {
 			this.filterTypeString.replace(0, this.filterTypeString.length(), 
 					this.filterTypeComboBox.getSelectedItem().toString());
 			this.filterPanel.enableCorrectFilter (this.filterTypeString.toString());
 		}
 	}
-}
-
-class ValueImportTransferHandler extends TransferHandler {
-	private static final long serialVersionUID = 7407303027786470664L;
-
-	private Carrello cart;
 	
-    public static final DataFlavor SUPPORTED_DATE_FLAVOR = Prodotto.getDataFlavor();
-
-    public ValueImportTransferHandler(Carrello cart) {
-    	this.cart = cart;
-    }
-
-    @Override
-    public boolean canImport(TransferSupport support) {
-        return support.isDataFlavorSupported(SUPPORTED_DATE_FLAVOR);
-    }
-
-    @Override
-    public boolean importData(TransferSupport support) {
-        boolean accept = false;
-        if (canImport(support)) {
-            try {
-                Transferable t = support.getTransferable();
-                Object value = t.getTransferData(SUPPORTED_DATE_FLAVOR);
-                if (value instanceof Prodotto) {
-                    Component component = support.getComponent();
-                    if (component instanceof JButton) {
-                        this.cart.aggiungiProdotto((Prodotto)value);
-                        accept = true;
-                    }
-                }
-            } catch (Exception exp) {
-                exp.printStackTrace();
-            }
+	class ArticleMouseAdapter extends MouseAdapter {
+		private JPanel articlePanel;
+		
+		public ArticleMouseAdapter (JPanel articlePanel) {
+			 this.articlePanel = articlePanel;
+		}
+		
+		@Override
+        public void mouseMoved(MouseEvent e) {
+        	this.articlePanel.setCursor(new Cursor(Cursor.MOVE_CURSOR));
         }
-        return accept;
-    }
-}
-
-class JArticlePanel extends JPanel {
-	private static final long serialVersionUID = -2838106312491733874L;
-	
-	private static final int AMOUNT_TEXTFIELD_WIDTH = 50;
-	private static final int AMOUNT_TEXTFIELD_HEIGHT = 25;
-	private static final int ICON_SIZE = 120;
-	private static final int BUTTON_SIZE = 32;
-	private static final int ADD_IMAGE_SIZE = BUTTON_SIZE + 6;
-	private static final int GENERIC_MARGIN = 15;
-	private static final int INTERACTION_HEIGHT = 35;
-	private static final int INTERACTION_HORIZONTAL_SPACE = 50;
-	private static final int INFORMATION_SPACE = 7;
-	private static final int MARGIN_SIZE = 3;
-	
-	private static final int DEFAULT_AMOUNT = 1;
-
-	private static final String CODE_TEXT = "Codice: ";
-	private static final String NAME_TEXT = "Nome: ";
-	private static final String BRAND_TEXT = "Marca: ";
-	private static final String CATEGORY_TEXT = "Categoria: ";
-	private static final String COST_TEXT = "Prezzo: ";
-	private static final String CURRENCY_SYMBOL = " €";
-	private static final String AVAILABILITY_TEXT = "Disponibilità: ";
-	private static final String OFFER_TEXT = "Offerta: ";
-	private static final String NONE_OFFER_TEXT = "Nessuna";
-	
-	private static final String ADD_BUTTON_TEXT = "+";
-	private static final String ADD_IMAGE_PATH = "media/img/add.png";
-
-	protected static final int WIDTH = 220;
-
-	public JArticlePanel(Magazzino store, Prodotto article, Cliente client) {
-		JLabel imageLabel = new JLabel("", SwingConstants.CENTER);
-		imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		ImageIcon icon = new ImageIcon(new ResizableIcon(article.getImmagine()).resizeIcon(ICON_SIZE, ICON_SIZE));
-		if (icon != null) {
-			imageLabel.setIcon(icon);
-		}
-		JPanel imagePanel = new JPanel ();
-		imagePanel.setLayout(new BoxLayout (imagePanel, BoxLayout.Y_AXIS));
-		imagePanel.add(Box.createVerticalStrut(GENERIC_MARGIN));
-		imagePanel.add(Box.createVerticalStrut((ICON_SIZE - icon.getIconHeight()) / 2));
-		imagePanel.add(imageLabel);
-		imagePanel.add(Box.createVerticalStrut((ICON_SIZE - icon.getIconHeight()) / 2));
-		
-		JLabel codeLabel = new JLabel(CODE_TEXT + article.getCodice());
-		JLabel nameLabel = new JLabel(NAME_TEXT + article.getNome());
-		JLabel brandLabel = new JLabel(BRAND_TEXT + article.getMarca());
-		JLabel categoryLabel = new JLabel(CATEGORY_TEXT + article.getCategoria());
-		JLabel priceLabel = new JLabel(COST_TEXT + article.getPrezzo() + CURRENCY_SYMBOL);
-		JLabel availabilityLabel = new JLabel(AVAILABILITY_TEXT + article.getQuantita());
-		String offer;
-		if (article.getOfferta() == null) {
-			offer = NONE_OFFER_TEXT;
-		}
-		else {
-			offer = article.getOfferta().toString();
-		}
-		JLabel offerLabel = new JLabel(OFFER_TEXT + offer);
-		JPanel informationPanel = new JPanel ();
-		informationPanel.setLayout(new BoxLayout(informationPanel, BoxLayout.Y_AXIS));
-		informationPanel.add(codeLabel);
-		informationPanel.add(nameLabel);
-		informationPanel.add(brandLabel);
-		informationPanel.add(categoryLabel);
-		informationPanel.add(priceLabel);
-		informationPanel.add(availabilityLabel);
-		informationPanel.add(offerLabel);
-		
-		JTextField amountTextField = new JTextField (String.valueOf(DEFAULT_AMOUNT));
-		amountTextField.setPreferredSize(new Dimension (AMOUNT_TEXTFIELD_WIDTH, 
-				AMOUNT_TEXTFIELD_HEIGHT));
-		PlainDocument doc = (PlainDocument) amountTextField.getDocument();
-		doc.setDocumentFilter(new AmountDocumentFilter(article.getQuantita()));	
-		JButton addToCartButton = new JButton ();
-		try {
-		    addToCartButton.setIcon(new ImageIcon(new ResizableIcon(new File(ADD_IMAGE_PATH)).resizeIcon(ADD_IMAGE_SIZE, ADD_IMAGE_SIZE)));
-		} catch (Exception e) {
-			addToCartButton.setText(ADD_BUTTON_TEXT);
-		}
-		addToCartButton.setBorder(new RoundedBorder(new Color (52, 158, 66), 1, 50, 0));
-		addToCartButton.setPreferredSize(new Dimension (BUTTON_SIZE, BUTTON_SIZE));
-		addToCartButton.addActionListener(new AddArticleToCartListener(store, 
-				client.getCarrello(), new StringBuilder(article.getCodice()), 
-				amountTextField));
-		addToCartButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-		JPanel interactionPanel = new JPanel ();
-		interactionPanel.add(amountTextField);
-		interactionPanel.add(Box.createRigidArea(new Dimension(INTERACTION_HORIZONTAL_SPACE, 
-				INTERACTION_HEIGHT)));
-		interactionPanel.add(addToCartButton);
-		JPanel bottomPanel = new JPanel(new BorderLayout());
-		bottomPanel.add(Box.createHorizontalStrut(GENERIC_MARGIN), BorderLayout.WEST);
-		bottomPanel.add(interactionPanel, BorderLayout.CENTER);
-		bottomPanel.add(Box.createHorizontalStrut(GENERIC_MARGIN), BorderLayout.EAST);
-		bottomPanel.add(Box.createVerticalStrut(GENERIC_MARGIN), BorderLayout.PAGE_END);
-
-		this.setTransferHandler(new ValueExportTransferHandler(article, amountTextField));
-        this.addMouseMotionListener(new MouseAdapter() {
-        	
-            @Override
-            public void mouseMoved(MouseEvent e) {
-            	JArticlePanel.this.setCursor(new Cursor(Cursor.MOVE_CURSOR));
-            }
-        	
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                JPanel panel = (JPanel) e.getSource();
-                TransferHandler handle = panel.getTransferHandler();
-                handle.exportAsDrag(panel, e, TransferHandler.COPY);
-            }
-        });
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setLayout (new BorderLayout(0, GENERIC_MARGIN));
-        panel.setBorder (new RoundedBorder(Color.GRAY, MARGIN_SIZE, GENERIC_MARGIN, 0));
-        panel.setPreferredSize(new Dimension(WIDTH, JArticlePanel.height()));
-        panel.add (imagePanel, BorderLayout.PAGE_START);
-        panel.add (informationPanel, BorderLayout.CENTER);
-        panel.add (Box.createHorizontalStrut(GENERIC_MARGIN), BorderLayout.WEST);
-        panel.add (bottomPanel, BorderLayout.PAGE_END);
-        this.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
-        this.add (panel, BorderLayout.PAGE_START);
+    	
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            JPanel panel = (JPanel) e.getSource();
+            TransferHandler handle = panel.getTransferHandler();
+            handle.exportAsDrag(panel, e, TransferHandler.COPY);
+        }
 	}
-	
-	public static int height () {
-		return  MARGIN_SIZE + GENERIC_MARGIN + 
-				ICON_SIZE + GENERIC_MARGIN + 
-				(new JLabel().getFont().getSize() + 
-				INFORMATION_SPACE) * 7 + GENERIC_MARGIN + 
-				INTERACTION_HEIGHT + GENERIC_MARGIN * 2 + 
-				MARGIN_SIZE;
-	}
-}
-
-class ValueExportTransferHandler extends TransferHandler {
-    private static final long serialVersionUID = -3689725432297463459L;
-
-    private Prodotto storeProduct;
-    private JTextField amountTextfield;
-    
-    public static final DataFlavor SUPPORTED_DATE_FLAVOR = Prodotto.getDataFlavor();
-
-    public ValueExportTransferHandler(Prodotto storeProduct, JTextField amountTextfield) {
-    	this.storeProduct = storeProduct;
-        this.amountTextfield = amountTextfield;
-    }
-
-    public Prodotto getValue() {
-    	try {
-			Prodotto product = this.storeProduct.clone();
-			product.setQuantita(Integer.parseInt(this.amountTextfield.getText()));
-            return product;
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
-    	return null;
-    }
-    
-    @Override
-    public int getSourceActions(JComponent c) {
-        return DnDConstants.ACTION_COPY_OR_MOVE;
-    }
-
-    @Override
-    protected Transferable createTransferable(JComponent c) {
-        Transferable t = this.getValue();
-        return t;
-    }
-
-    @Override
-    protected void exportDone(JComponent source, Transferable data, int action) {
-        super.exportDone(source, data, action);
-        // Decide what to do after the drop has been accepted
-    }
 }

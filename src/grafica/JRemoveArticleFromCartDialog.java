@@ -14,14 +14,14 @@ import javax.swing.JPanel;
 import negozio.Carrello;
 import negozio.Prodotto;
 
-public class JRemoveArticleDialog extends JDialog implements ActionListener{
+public class JRemoveArticleFromCartDialog extends JDialog implements ActionListener{
 	private static final long serialVersionUID = -4438831458822655741L;
 	
 	private Carrello cart;
 
 	private JButton okButton;
 	private JButton cancelButton;
-	private JModifyArticlePanel articlePanel;
+	private JSelectArticlePanel articlePanel;
 	
 	private static final int WIDTH = 400;
 	private static final int HEIGHT = 160;
@@ -34,14 +34,14 @@ public class JRemoveArticleDialog extends JDialog implements ActionListener{
 	private static final String CANCEL_STRING = "ANNULLA";
 	private static final String TITLE = "Rimuovi articolo";
 	
-	public JRemoveArticleDialog (JFrame mainFrame, Carrello cart) {
+	public JRemoveArticleFromCartDialog (JFrame mainFrame, Carrello cart) {
 		super (mainFrame, TITLE, JDialog.ModalityType.DOCUMENT_MODAL);
 		this.setMinimumSize(new Dimension(WIDTH, HEIGHT));
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		
 		this.cart = cart;
-		this.articlePanel = new JModifyArticlePanel(this.cart.getArticoli());
+		this.articlePanel = new JSelectArticlePanel(this.cart.getArticoli());
 
 		this.okButton = new JButton(OK_STRING);
 		this.okButton.addActionListener(this);

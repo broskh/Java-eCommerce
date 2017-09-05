@@ -38,17 +38,55 @@ public class ArticlesTableModel extends AbstractTableModel {
 	private ArrayList <Prodotto> products;
 	private int iconSize;
 	private int mode;
+
+	public static final int IMAGE_COLUMN_NUMBER = 0;
+	public static final int CODE_COLUMN_NUMBER = 1;
+	public static final int NAME_COLUMN_NUMBER = 2;
+	public static final int BRAND_COLUMN_NUMBER = 3;
+	public static final int CATEGORY_COLUMN_NUMBER = 4;
+	public static final int OFFER_COLUMN_NUMBER = 5;
+	public static final int EACH_COST_COLUMN_NUMBER = 6;
+	public static final int EACH_DISCOUNTED_COST_COLUMN_NUMBER = 7;
+	public static final int TOTAL_COST_COLUMN_NUMBER = 7;
+	public static final int AMOUNT_COLUMN_NUMBER = 8;
+	public static final int BUTTON_COLUMN_NUMBER = 9;
+
+	public static final String IMAGE_COLUMN = "Immagine";
+	public static final String CODE_COLUMN = "Codice";
+	public static final String NAME_COLUMN = "Nome";
+	public static final String BRAND_COLUMN = "Marca";
+	public static final String CATEGORY_COLUMN = "Categoria";
+	public static final String OFFER_COLUMN = "Offerta";
+	public static final String EACH_COST_COLUMN = "Prezzo cadauno";
+	public static final String EACH_DISCOUNTED_COST_COLUMN = "Prezzo cadauno scontato";
+	public static final String TOTAL_COST_COLUMN = "Prezzo totale";
+	public static final String AMOUNT_COLUMN = "Quantità";
+	public static final String BUTTON_COLUMN = "";
 	
-	private static final int AMOUNT_COLUMN = 8;
-	private static final int BUTTON_COLUMN = 9;
 	private static final String [] CART_COLUMNS = {
-			"Immagine", "Codice", "Nome", "Marca", 
-			"Categoria", "Offerta", "Prezzo cadauno", 
-			"Prezzo totale", "Quantità", ""};
+			ArticlesTableModel.IMAGE_COLUMN,
+			ArticlesTableModel.CODE_COLUMN,
+			ArticlesTableModel.NAME_COLUMN,
+			ArticlesTableModel.BRAND_COLUMN,
+			ArticlesTableModel.CATEGORY_COLUMN,
+			ArticlesTableModel.OFFER_COLUMN,
+			ArticlesTableModel.EACH_COST_COLUMN,
+			ArticlesTableModel.TOTAL_COST_COLUMN,
+			ArticlesTableModel.AMOUNT_COLUMN,
+			ArticlesTableModel.BUTTON_COLUMN
+		};
 	private static final String [] STORE_COLUMNS = {
-			"Immagine", "Codice", "Nome", "Marca", 
-			"Categoria", "Offerta", "Prezzo cadauno", 
-			"Prezzo cadauno scontato", "Quantità", ""};
+			ArticlesTableModel.IMAGE_COLUMN,
+			ArticlesTableModel.CODE_COLUMN,
+			ArticlesTableModel.NAME_COLUMN,
+			ArticlesTableModel.BRAND_COLUMN,
+			ArticlesTableModel.CATEGORY_COLUMN,
+			ArticlesTableModel.OFFER_COLUMN,
+			ArticlesTableModel.EACH_COST_COLUMN,
+			ArticlesTableModel.EACH_DISCOUNTED_COST_COLUMN,
+			ArticlesTableModel.AMOUNT_COLUMN,
+			ArticlesTableModel.BUTTON_COLUMN
+		};
 	private static final String NONE_OFFER_TEXT = "Nessuna";
 
 	public static final int CART_MODE = 1;
@@ -83,23 +121,23 @@ public class ArticlesTableModel extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		switch (columnIndex) {
-			case 0:
+			case IMAGE_COLUMN_NUMBER:
 				return new ImageIcon (new ResizableIcon(this.products.get(rowIndex)
 						.getImmagine(), this.iconSize, this.iconSize).getBufferedImage());
-			case 1:
+			case CODE_COLUMN_NUMBER:
 				return this.products.get(rowIndex).getCodice();
-			case 2:
+			case NAME_COLUMN_NUMBER:
 				return this.products.get(rowIndex).getNome();
-			case 3:
+			case BRAND_COLUMN_NUMBER:
 				return this.products.get(rowIndex).getMarca();
-			case 4:
+			case CATEGORY_COLUMN_NUMBER:
 				return this.products.get(rowIndex).getCategoria();
-			case 5:
+			case OFFER_COLUMN_NUMBER:
 				if (this.products.get(rowIndex).getOfferta() != null) {
 					return this.products.get(rowIndex).getOfferta().toString();
 				}
 				return NONE_OFFER_TEXT;
-			case 6:
+			case EACH_COST_COLUMN_NUMBER:
 				if (this.mode == ArticlesTableModel.CART_MODE) {
 					return String.format("%.2f", this.products.get(
 							rowIndex).prezzoCadaunoScontato());
@@ -109,7 +147,7 @@ public class ArticlesTableModel extends AbstractTableModel {
 							rowIndex).getPrezzo());
 				}
 				break;
-			case 7:
+			case EACH_DISCOUNTED_COST_COLUMN_NUMBER:
 				if (this.mode == ArticlesTableModel.CART_MODE) {
 					return String.format("%.2f", this.products.get(
 							rowIndex).prezzoTotaleScontato());
@@ -119,9 +157,9 @@ public class ArticlesTableModel extends AbstractTableModel {
 							rowIndex).prezzoCadaunoScontato());
 				}
 				break;
-			case 8:
+			case AMOUNT_COLUMN_NUMBER:
 				return Integer.toString(this.products.get(rowIndex).getQuantita());
-			case 9:
+			case BUTTON_COLUMN_NUMBER:
 				return new Object ();
 		}
 		return null;
@@ -140,7 +178,7 @@ public class ArticlesTableModel extends AbstractTableModel {
 
 	@Override
 	public boolean isCellEditable (int row, int column) {
-		if (column == AMOUNT_COLUMN || column == BUTTON_COLUMN) {
+		if (column == AMOUNT_COLUMN_NUMBER || column == BUTTON_COLUMN_NUMBER) {
 			return true;
 		}
 		return false;
@@ -149,25 +187,25 @@ public class ArticlesTableModel extends AbstractTableModel {
 	@Override
 	public Class <?> getColumnClass (int column) {
 		switch (column) {
-			case 0:
+			case IMAGE_COLUMN_NUMBER:
 				return ImageIcon.class;
-			case 1:
+			case CODE_COLUMN_NUMBER:
 				return String.class;
-			case 2:
+			case NAME_COLUMN_NUMBER:
 				return String.class;
-			case 3:
+			case BRAND_COLUMN_NUMBER:
 				return String.class;
-			case 4:
+			case CATEGORY_COLUMN_NUMBER:
 				return String.class;
-			case 5:
+			case OFFER_COLUMN_NUMBER:
 				return String.class;
-			case 6:
+			case EACH_COST_COLUMN_NUMBER:
 				return String.class;
-			case 7:
+			case EACH_DISCOUNTED_COST_COLUMN_NUMBER:
 				return String.class;
-			case 8:
+			case AMOUNT_COLUMN_NUMBER:
 				return String.class;
-			case 9:
+			case BUTTON_COLUMN_NUMBER:
 				return Object.class;
 		}
 		return null;
@@ -271,6 +309,7 @@ class AmountCell extends JPanel {
 	private static final int TEXTFIELD_WIDTH = 50;
 	private static final int TEXTFIELD_HEIGHT = 22;
 	private static final int SIDE_MARGIN = 10;
+	private static final int GENERIC_MARGIN = 10;
 
 	public AmountCell (int rowHeight, Prodotto article, Integer maxValue, 
 			ArticlesTableModel articlesTableModel) {
@@ -287,7 +326,7 @@ class AmountCell extends JPanel {
 		}
 		
 		this.textField.setPreferredSize(new Dimension(TEXTFIELD_WIDTH, TEXTFIELD_HEIGHT));
-		int topMargin = (rowHeight - TEXTFIELD_HEIGHT - 10) / 2;
+		int topMargin = (rowHeight - TEXTFIELD_HEIGHT - GENERIC_MARGIN) / 2;
 		
 		JPanel mainPanel = new JPanel ();
 		mainPanel.add(this.textField);
@@ -461,7 +500,9 @@ class RemoveCell extends JPanel implements ActionListener{
 	private Integer nArticle;
 	private ArrayList <Prodotto> articles;
 
-	private static final int BUTTON_SIZE = 28;		
+	private static final int BUTTON_SIZE = 28;
+	private static final int GENERIC_MARGIN = 10;
+	
 	private static final String BUTTON_TEXT = "Remove";
 	private static final String IMAGE_PATH = "media/img/remove.png";
 	
@@ -481,7 +522,7 @@ class RemoveCell extends JPanel implements ActionListener{
 		}
 		this.removeButton.setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
 		
-		int topMargin = (cellHeight - BUTTON_SIZE - 10) / 2;
+		int topMargin = (cellHeight - BUTTON_SIZE - GENERIC_MARGIN) / 2;
 		
 		JPanel removePanel = new JPanel();
 		removePanel.add(this.removeButton);

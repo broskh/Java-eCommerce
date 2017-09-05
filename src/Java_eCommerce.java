@@ -11,7 +11,6 @@ import javax.swing.plaf.FontUIResource;
 
 import grafica.JUserFrame;
 import grafica.JeCommerceFrame;
-import grafica.UserAccessListener;
 
 import negozio.Magazzino;
 import utenza.Utente;
@@ -25,43 +24,49 @@ import utenza.Utente;
  * @version 1.0
  */
 public class Java_eCommerce  {
+	private static final int FONT_SIZE = 13; /**<Font size.*/
+
+	private static final String FONT = "Inconsolata"; /**<Font.*/
+	private static final String THEME = "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"; /**<Tema.*/
+	private static final String LAST_CONFIG_FILE = "media/saves/last"; /**<File di configurazione contenente il percorso dell'ultimo file magazzino salvato.*/
 	
 	public static void main(String[] args) {
+		//cambio font di default
 		Enumeration <Object> keys = UIManager.getDefaults().keys();
 	    while (keys.hasMoreElements()) {
 	    	Object key = keys.nextElement();
 	    	Object value = UIManager.get (key);
 	    	if (value != null && value instanceof FontUIResource) {
-	    		UIManager.put (key, new FontUIResource("Inconsolata", Font.PLAIN, 13));
+	    		UIManager.put (key, new FontUIResource(
+	    				Java_eCommerce.FONT, Font.PLAIN, Java_eCommerce.FONT_SIZE));
 	    	}
 	    }
+	    
+	    //cambio tema grafico
 	    try {
-	    	UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+	    	UIManager.setLookAndFeel(Java_eCommerce.THEME);
         } catch (Exception e) {
           e.printStackTrace();
         }
-		Utente utente = null;
-		Magazzino magazzino = new Magazzino();
-        File lastStoreFile = new File("media/saves/last");
+	    
+	    //programma vero e proprio
+		Utente user = null;
+		Magazzino store = new Magazzino();
+        File lastStoreFile = new File(Java_eCommerce.LAST_CONFIG_FILE);
 		BufferedReader lastStore;
 		try {
 			lastStore = new BufferedReader(new FileReader(lastStoreFile));
-			magazzino.caricaMagazzino(lastStore.readLine());   /* scheri */
-			JUserFrame jUserFrame = new JUserFrame();
+			store.caricaMagazzino(lastStore.readLine());
 			JeCommerceFrame jeCommerceFrame = null;
-			UserAccessListener userAccessListener = new UserAccessListener(jUserFrame, jeCommerceFrame, utente, magazzino);
+			JUserFrame jUserFrame = new JUserFrame(jeCommerceFrame, store, user);
 			
 			jUserFrame.setVisible(true);
-			jUserFrame.setAccessListener(userAccessListener);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 				
-		
 		
 //		Magazzino magazzino = new Magazzino();
 //		Prodotto prodotto1 = new Prodotto("nome1", "marca1", "codice1", "categoria1", 
@@ -80,10 +85,6 @@ public class Java_eCommerce  {
 //		magazzino.aggiungiProdotto(prodotto4);
 //		magazzino.aggiungiProdotto(prodotto5);
 //		magazzino.salvaMagazzino("media/saves/magazzino.mag");
-		
-		
-		
-		
 		
 		
 //		Magazzino magazzino = new Magazzino();

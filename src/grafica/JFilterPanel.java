@@ -71,12 +71,12 @@ public class JFilterPanel extends JPanel implements ChangeListener{
 		return this.stringFilter.getText();
 	}
 	
-	public EstremiRange getAmount () {
-		return new EstremiRange(this.amountFilter.getLowerValue(), this.amountFilter.getUpperValue());
+	public RangeExtremes getAmount () {
+		return new RangeExtremes(this.amountFilter.getLowerValue(), this.amountFilter.getUpperValue());
 	}
 	
-	public EstremiRange getCost () {
-		return new EstremiRange(this.costFilter.getLowerValue(), this.costFilter.getUpperValue());
+	public RangeExtremes getCost () {
+		return new RangeExtremes(this.costFilter.getLowerValue(), this.costFilter.getUpperValue());
 	}
 	
 	private void enableStringFilter () {

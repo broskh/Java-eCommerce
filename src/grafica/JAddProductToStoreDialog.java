@@ -1,23 +1,21 @@
 package grafica;
 
-
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
 
-import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -33,15 +31,14 @@ import negozio.Promozione;
 import negozio.ScontoPercentuale;
 import negozio.ScontoTrePerDue;
 
-
-public class JAddProductPanel extends JPanel implements ActionListener{
-	private static final long serialVersionUID = -6881271668480137290L;
+public class JAddProductToStoreDialog extends JDialog implements ActionListener{
 	
-	private JAddProductDialog jAddProductDialog;
+	private static final long serialVersionUID = -3173951653228607174L;
+
 	private JStoreTable jStoreTable;
 	
-	protected Prodotto prodotto;
-	private Magazzino magazzino;
+	private Magazzino store;
+	private Prodotto product;
 	
 	/**/
 	private JPanel addPanel;
@@ -50,30 +47,32 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 	/**/
 	
 	private JLabel jCodeLabel;
-	protected JTextField jCodeTextField;
+	private JTextField jCodeTextField;
 	private JLabel jNameLabel;
-	protected JTextField jNameTextField;
+	private JTextField jNameTextField;
 	private JLabel jBrandLabel;
-	protected JTextField jBrandTextField;
+	private JTextField jBrandTextField;
 	private JLabel jCategoryLabel;
-	protected JTextField jCategoryTextField;
+	private JTextField jCategoryTextField;
 	private JLabel jPriceLabel;
-	protected JTextField jPriceTextField;
+	private JTextField jPriceTextField;
 	private JLabel jAmountLabel;
-	protected JTextField jAmountTextField;
+	private JTextField jAmountTextField;
 	private JLabel jOfferLabel;
-	protected JRadioButton jNoOfferRadioButton;
-	protected JRadioButton jPercentOfferRadioButton;
-	protected JRadioButton jThreePerTwoOfferRadioButton;
-	protected JTextField jPercentTextField;
-	protected JButton jAddButton;
-	protected JLabel jImageLabel; 
-	protected JButton jImageButton;
+	private JRadioButton jNoOfferRadioButton;
+	private JRadioButton jPercentOfferRadioButton;
+	private JRadioButton jThreePerTwoOfferRadioButton;
+	private JTextField jPercentTextField;
+	private JButton jAddButton;
+	private JLabel jImageLabel; 
+	private JButton jImageButton;
 		
 	private JLabel jEmptyLabel1;
 	private JLabel jEmptyLabel2;
 
-	
+
+	private ArrayList<Prodotto> imageToSave = new ArrayList<Prodotto>();
+	private ArrayList<Image> image = new ArrayList<Image>();
 	
 	private static final int WIDTH_TEXTBOX = 10;
 	private static final int N_LINES_ADD_PANEL = 6;
@@ -105,8 +104,8 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 	private static final String THREE_PER_TWO_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT = "3x2";
 	private static final String PRICE_TEXT_BOX_VALUE_DEFAULT = "0.00";
 	private static final String AMOUNT_TEXT_BOX_VALUE_DEFAULT = "0";
-	private static final String NEW_IMAGE_PATH = "media/img/products/";
-	private static final String RETURN_NEW_IMAGE_PATH = "media\\img\\products\\";
+	private static final String NEW_IMAGE_PATH = "media/img/this.products/";
+	private static final String RETURN_NEW_IMAGE_PATH = "media\\img\\this.products\\";
 	private static final String PRODUCT_ALREADY_EXIST_STRING = 
 			"Il prodotto che si vuole inserire è gia presente in magazzino";
 	private static final String ALERT_STRING = "Attenzione!";
@@ -121,28 +120,42 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 	private static final String SELECT_OFFER_STRING = "Selezionare un'offerta per il prodotto";
 	
 
-	private static final String DEFAULT_IMAGE = "media/img/products/immagine_non_disponibile.jpg";
+	private static final String DEFAULT_IMAGE = "media/img/this.products/immagine_non_disponibile.jpg";
 	
+	protected static final String TITLE = "Aggiungi prodotto";
+	protected static final int MIN_FRAME_HEIGHT = 410;
+	protected static final int MIN_FRAME_WIDTH = 300;
 	
-	public JAddProductPanel(Magazzino magazzino, JAddProductDialog jAddProductDialog,JStoreTable jStoreTable)
-	{
-		this.magazzino = magazzino;
-		this.jAddProductDialog = jAddProductDialog;
+	public JAddProductToStoreDialog (JFrame mainFrame, Magazzino store, JStoreTable jStoreTable, ArrayList<Prodotto> imageToSave,
+			ArrayList<Image> image) {
+		super(mainFrame,TITLE,JDialog.ModalityType.DOCUMENT_MODAL);
+		this.store = store;
 		this.jStoreTable = jStoreTable;
-		
+		this.imageToSave = imageToSave;
+		this.image = image;
+		this.setModal(true);
+		this.setSize(new Dimension(JAddProductToStoreDialog.MIN_FRAME_WIDTH,JAddProductToStoreDialog.
+				MIN_FRAME_HEIGHT));
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
+		this.setLayout(new BorderLayout());	
+		this.add(this.contentPanel(), BorderLayout.CENTER);
+	}
+	
+	private JPanel contentPanel () {
 		/* ROBA PER IMMAGINE */
-		this.prodotto = new Prodotto("","","","",0,DEFAULT_IMAGE,0,null);
+		this.product = new Prodotto("","","","",0,DEFAULT_IMAGE,0,null);
 		this.jImageLabel = new JLabel("",SwingConstants.CENTER);
 		
-		ImageIcon icon = new ImageIcon(new ResizableIcon(this.prodotto.getImmagine()).
-				resizeIcon(ICON_DIMENSION, ICON_DIMENSION),this.prodotto.getImmagine().toString());
+		ImageIcon icon = new ImageIcon(new ResizableIcon(this.product.getImmagine()).
+				resizeIcon(ICON_DIMENSION, ICON_DIMENSION),this.product.getImmagine().toString());
 		if(icon!=null)
 		{
 			this.jImageLabel.setIcon(icon);
 		}
 		
 		imagePanel = new JPanel();
-		this.jImageButton = new JButton(JAddProductPanel.IMAGE_BUTTON_TEXT);
+		this.jImageButton = new JButton(JAddProductToStoreDialog.IMAGE_BUTTON_TEXT);
 		imagePanel.setLayout(new BoxLayout(imagePanel,BoxLayout.X_AXIS));
 		imagePanel.add(Box.createVerticalStrut(DIMENSION_VERTICAL_STRUT));
 		imagePanel.add(this.jImageLabel);
@@ -153,56 +166,55 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 		imagePanel.add(Box.createVerticalStrut(DIMENSION_VERTICAL_STRUT));
 		/* FINE ROBA PER IMMAGINE */
 		
-		this.jCodeLabel = new JLabel(JAddProductPanel.CODE_LABEL_TEXT);
-		this.jCodeTextField = new JTextField(JAddProductPanel.WIDTH_TEXTBOX);
-		this.jNameLabel = new JLabel(JAddProductPanel.NAME_LABEL_TEXT);
-		this.jNameTextField = new JTextField(JAddProductPanel.WIDTH_TEXTBOX);
-		this.jBrandLabel = new JLabel(JAddProductPanel.BRAND_LABEL_TEXT);
-		this.jBrandTextField = new JTextField(JAddProductPanel.WIDTH_TEXTBOX);
-		this.jCategoryLabel = new JLabel(JAddProductPanel.CATEGORY_LABEL_TEXT);
-		this.jCategoryTextField = new JTextField(JAddProductPanel.WIDTH_TEXTBOX);
-		this.jPriceLabel = new JLabel(JAddProductPanel.PRICE_LABEL_TEXT);
-		this.jPriceTextField = new JTextField(PRICE_TEXT_BOX_VALUE_DEFAULT,JAddProductPanel.WIDTH_TEXTBOX);
+		this.jCodeLabel = new JLabel(JAddProductToStoreDialog.CODE_LABEL_TEXT);
+		this.jCodeTextField = new JTextField(JAddProductToStoreDialog.WIDTH_TEXTBOX);
+		this.jNameLabel = new JLabel(JAddProductToStoreDialog.NAME_LABEL_TEXT);
+		this.jNameTextField = new JTextField(JAddProductToStoreDialog.WIDTH_TEXTBOX);
+		this.jBrandLabel = new JLabel(JAddProductToStoreDialog.BRAND_LABEL_TEXT);
+		this.jBrandTextField = new JTextField(JAddProductToStoreDialog.WIDTH_TEXTBOX);
+		this.jCategoryLabel = new JLabel(JAddProductToStoreDialog.CATEGORY_LABEL_TEXT);
+		this.jCategoryTextField = new JTextField(JAddProductToStoreDialog.WIDTH_TEXTBOX);
+		this.jPriceLabel = new JLabel(JAddProductToStoreDialog.PRICE_LABEL_TEXT);
+		this.jPriceTextField = new JTextField(PRICE_TEXT_BOX_VALUE_DEFAULT,JAddProductToStoreDialog.WIDTH_TEXTBOX);
 		/* check TEXT FIELD price */
 		PlainDocument docP = (PlainDocument)this.jPriceTextField.getDocument();
 		docP.setDocumentFilter(new PriceDocumentFilter());
 		
-		this.jAmountLabel = new JLabel(JAddProductPanel.AMOUNT_LABEL_TEXT);
-		this.jAmountTextField = new JTextField(AMOUNT_TEXT_BOX_VALUE_DEFAULT,JAddProductPanel.WIDTH_TEXTBOX);
+		this.jAmountLabel = new JLabel(JAddProductToStoreDialog.AMOUNT_LABEL_TEXT);
+		this.jAmountTextField = new JTextField(AMOUNT_TEXT_BOX_VALUE_DEFAULT,JAddProductToStoreDialog.WIDTH_TEXTBOX);
 		/* check TEXT FIELD amount */
 		PlainDocument docQ = (PlainDocument)this.jAmountTextField.getDocument();
 		docQ.setDocumentFilter(new AmountDocumentFilter());
 		
 		
-		this.jOfferLabel = new JLabel(JAddProductPanel.OFFER_LABEL_TEXT);
-		this.jPercentTextField = new JTextField(JAddProductPanel.WIDTH_TEXTBOX);
+		this.jOfferLabel = new JLabel(JAddProductToStoreDialog.OFFER_LABEL_TEXT);
+		this.jPercentTextField = new JTextField(JAddProductToStoreDialog.WIDTH_TEXTBOX);
 		/* check TEXT FIELD amount */
 		PlainDocument docPC = (PlainDocument)this.jPercentTextField.getDocument();
 		docPC.setDocumentFilter(new AmountDocumentFilter());
 		
-		this.jNoOfferRadioButton = new JRadioButton(JAddProductPanel.NO_OFFER_RADIO_BUTTON_TEXT);
-		this.jPercentOfferRadioButton = new JRadioButton(JAddProductPanel.
+		this.jNoOfferRadioButton = new JRadioButton(JAddProductToStoreDialog.NO_OFFER_RADIO_BUTTON_TEXT);
+		this.jPercentOfferRadioButton = new JRadioButton(JAddProductToStoreDialog.
 				PERCENT_OFFER_RADIO_BUTTON_TEXT);
 		
-		this.jThreePerTwoOfferRadioButton = new JRadioButton(JAddProductPanel.
+		this.jThreePerTwoOfferRadioButton = new JRadioButton(JAddProductToStoreDialog.
 				THREE_PER_TWO_OFFER_RADIO_BUTTON_TEXT);
 		
 		ButtonGroup buttonGroup = new ButtonGroup();
 		buttonGroup.add(this.jNoOfferRadioButton);
 		buttonGroup.add(this.jPercentOfferRadioButton);
 		buttonGroup.add(this.jThreePerTwoOfferRadioButton);
-		this.jAddButton = new JButton(JAddProductPanel.ADD_BUTTON_TEXT);
+		this.jAddButton = new JButton(JAddProductToStoreDialog.ADD_BUTTON_TEXT);
 		
 		
 		
 		
 		
-		this.jEmptyLabel1 = new JLabel(JAddProductPanel.EMPTY_LABEL_TEXT);
-		this.jEmptyLabel2 = new JLabel(JAddProductPanel.EMPTY_LABEL_TEXT);
+		this.jEmptyLabel1 = new JLabel(JAddProductToStoreDialog.EMPTY_LABEL_TEXT);
+		this.jEmptyLabel2 = new JLabel(JAddProductToStoreDialog.EMPTY_LABEL_TEXT);
 
 		
 		
-		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		
 		addPanel = new JPanel(new GridLayout(N_LINES_ADD_PANEL,N_COLUMNS_ADD_PANEL));
@@ -231,11 +243,6 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 		offerPanel.add(this.jPercentOfferRadioButton);
 		offerPanel.add(this.jPercentTextField);
 		offerPanel.add(this.jThreePerTwoOfferRadioButton);
-		
-		this.add(imagePanel);
-		this.add(addPanel);
-		this.add(offerPanel);
-		this.add(this.jAddButton);
 		this.jAddButton.setActionCommand(ADD_BUTTON_ACTION_COMMAND_TEXT);
 		this.jAddButton.addActionListener(this);
 		
@@ -248,14 +255,18 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 		this.jNoOfferRadioButton.setActionCommand(NO_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT);
 		this.jThreePerTwoOfferRadioButton.addActionListener(this);
 		this.jThreePerTwoOfferRadioButton.setActionCommand(THREE_PER_TWO_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT);
-	
-		
-	}	
-	
+
+		JPanel contentPanel = new JPanel();
+		contentPanel.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		contentPanel.add(imagePanel);
+		contentPanel.add(addPanel);
+		contentPanel.add(offerPanel);
+		contentPanel.add(this.jAddButton);
+		return contentPanel;
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JAdminControlPanel adminControlPanel = new JAdminControlPanel();
 		if(e.getActionCommand().equals(PERCENT_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT))
 		{
 			this.jPercentTextField.setEditable(true);
@@ -283,8 +294,8 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 			}
 			else
 			{
-				newIcon = new ImageIcon(new ResizableIcon(this.prodotto.getImmagine()).
-						resizeIcon(ICON_DIMENSION, ICON_DIMENSION),this.prodotto.getImmagine().toString());
+				newIcon = new ImageIcon(new ResizableIcon(this.product.getImmagine()).
+						resizeIcon(ICON_DIMENSION, ICON_DIMENSION),this.product.getImmagine().toString());
 			}			
 			if(newIcon!=null)
 			{
@@ -301,7 +312,7 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 			String amount;
 			Promozione promo;
 			int check = 0;
-			articles = magazzino.getArticoli();
+			articles = this.store.getArticoli();
 			
 
 			for(int i = 0;i<articles.size();i++)
@@ -343,26 +354,26 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 						}
 						else
 						{
-							this.prodotto = new Prodotto(this.jNameTextField.getText(),
+							this.product = new Prodotto(this.jNameTextField.getText(),
 									this.jBrandTextField.getText(),this.jCodeTextField.getText(),
 									this.jCategoryTextField.getText(),Float.parseFloat(price),
 									imgicon.getDescription(),Integer.parseInt(amount));
 							
 							/* SALVATAGGIO IMMAGINE */		
-							adminControlPanel.addToSaveList(prodotto);
-							adminControlPanel.getImage(imgicon.getImage());
+							this.imageToSave.add(product);
+							this.image.add(imgicon.getImage());
 							
-							magazzino.aggiungiProdotto(prodotto);
+							this.store.aggiungiProdotto(product);
 							JOptionPane.showMessageDialog(this, RIGHT_INSERT_STRING,
 									ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
 	
-							this.jAddProductDialog.setVisible(false);
+							this.setVisible(false);
 							
-							jStoreTable.setModel(new ArticlesTableModel(this.magazzino.getArticoli(),
+							jStoreTable.setModel(new ArticlesTableModel(this.store.getArticoli(),
 									LINE_HEIGHT,ArticlesTableModel.STORE_MODE));
 							jStoreTable.getColumn("").setCellRenderer(new RemoveColumnRender(LINE_HEIGHT));
 							jStoreTable.getColumn("").setCellEditor(new RemoveColumnEditor(
-							this.magazzino.getArticoli(), LINE_HEIGHT));
+							this.store.getArticoli(), LINE_HEIGHT));
 						}
 					}
 				}
@@ -405,26 +416,26 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 						}
 						else
 						{
-							this.prodotto = new Prodotto(this.jNameTextField.getText(),
+							this.product = new Prodotto(this.jNameTextField.getText(),
 									this.jBrandTextField.getText(),this.jCodeTextField.getText(),
 									this.jCategoryTextField.getText(),Float.parseFloat(price),
 									imgicon.getDescription(),Integer.parseInt(amount),promo);
 							
 							/* SALVATAGGIO IMMAGINE */		
-							adminControlPanel.addToSaveList(prodotto);
-							adminControlPanel.getImage(imgicon.getImage());
+							this.imageToSave.add(product);
+							this.image.add(imgicon.getImage());
 
-							magazzino.aggiungiProdotto(prodotto);
+							this.store.aggiungiProdotto(product);
 							JOptionPane.showMessageDialog(this, RIGHT_INSERT_STRING,
 									ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
 							
-							jStoreTable.setModel(new ArticlesTableModel(this.magazzino.getArticoli(),
+							jStoreTable.setModel(new ArticlesTableModel(this.store.getArticoli(),
 									LINE_HEIGHT,ArticlesTableModel.STORE_MODE));
 							jStoreTable.getColumn("").setCellRenderer(new RemoveColumnRender(LINE_HEIGHT));
 							jStoreTable.getColumn("").setCellEditor(new RemoveColumnEditor(
-							this.magazzino.getArticoli(), LINE_HEIGHT));
+							this.store.getArticoli(), LINE_HEIGHT));
 							
-							this.jAddProductDialog.setVisible(false);
+							this.setVisible(false);
 						}
 						
 					}
@@ -456,26 +467,26 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 						}
 						else
 						{
-							this.prodotto = new Prodotto(this.jNameTextField.getText(),
+							this.product = new Prodotto(this.jNameTextField.getText(),
 									this.jBrandTextField.getText(),this.jCodeTextField.getText(),
 									this.jCategoryTextField.getText(),Float.parseFloat(price),
 									imgicon.getDescription(),Integer.parseInt(amount),promo);
 							
 							/* SALVATAGGIO IMMAGINE */		
-							adminControlPanel.addToSaveList(prodotto);
-							adminControlPanel.getImage(imgicon.getImage());
+							this.imageToSave.add(product);
+							this.image.add(imgicon.getImage());
 		
-							magazzino.aggiungiProdotto(prodotto);
+							this.store.aggiungiProdotto(product);
 							JOptionPane.showMessageDialog(this, RIGHT_INSERT_STRING,
 									ALERT_STRING,JOptionPane.INFORMATION_MESSAGE);
 							
-							jStoreTable.setModel(new ArticlesTableModel(this.magazzino.getArticoli(),
+							jStoreTable.setModel(new ArticlesTableModel(this.store.getArticoli(),
 									LINE_HEIGHT,ArticlesTableModel.STORE_MODE));
 							jStoreTable.getColumn("").setCellRenderer(new RemoveColumnRender(LINE_HEIGHT));
 							jStoreTable.getColumn("").setCellEditor(new RemoveColumnEditor(
-							this.magazzino.getArticoli(), LINE_HEIGHT));
+							this.store.getArticoli(), LINE_HEIGHT));
 									
-							this.jAddProductDialog.setVisible(false);
+							this.setVisible(false);
 						}
 						
 					}
@@ -488,8 +499,4 @@ public class JAddProductPanel extends JPanel implements ActionListener{
 			}
 		}
 	}
-	
 }
-
-
-

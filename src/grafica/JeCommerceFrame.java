@@ -3,14 +3,16 @@ package grafica;
 import java.awt.BorderLayout;
 
 import java.awt.Dimension;
+import java.awt.GridLayout;
 //import java.awt.GraphicsEnvironment;
 //import java.awt.Rectangle;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
 import javax.swing.JFrame;
-import javax.swing.JMenuBar;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
 
 import negozio.Magazzino;
 import utenza.Cliente;
@@ -19,19 +21,21 @@ import utenza.Utente;
 public class JeCommerceFrame extends JFrame implements ComponentListener {
 	private static final long serialVersionUID = 611728494453017801L;
 	
-	private JMenuBar menuBar;
-	private JPanel contentPanel;
-	private JStatusPanel statusPanel;
-	
 	private Utente user;
 	
-	public static final int MENU_HEIGHT = 22;
-	public static final int STATUSBAR_HEIGHT = 22;
+	private JPanel contentPanel;
 	
+	private static final int STATUSBAR_HEIGHT = 22;	
 	private static final int MINIMUM_JFRAME_HEIGHT = 650;
 	private static final int MINIMUM_JFRAME_WIDTH = 800;
 
 	private static final String TITLE = "Java-eCommerce";
+	private static final String NAME_TEXT = "Nome utente:  ";
+	private static final String TYPE_TEXT = "Tipo utente:  ";
+	private static final String AUTHOR_TEXT = "Autore:  ";
+	private static final String ADMIN_STRING = "Amministratore";
+	private static final String CLIENT_STRING = "Cliente";
+	private static final String AUTHOR = "Alessio Scheri";
  
 	public JeCommerceFrame (Utente user, Magazzino store) {
 		super (TITLE);
@@ -45,36 +49,52 @@ public class JeCommerceFrame extends JFrame implements ComponentListener {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		if (this.user.isAmministratore()) {
-			this.menuBar = new JAdminMenuBar(store,this);
-			this.contentPanel = new JAdminContentPanel(this,store);
+			this.contentPanel = new JAdminContentPanel(this, store);
 		}
 		else {
-			this.menuBar = new JClientMenuBar(this, store, ((Cliente) this.user).getCarrello());
 			this.contentPanel = new JClientContentPanel(this, store, (Cliente) this.user);
 		}
-		this.statusPanel = new JStatusPanel (this.user);
 		
-		this.menuBar.setPreferredSize(new Dimension(this.getWidth(), MENU_HEIGHT));
-		this.statusPanel.setPreferredSize(new Dimension(this.getWidth(), STATUSBAR_HEIGHT));
-
 		this.setLayout(new BorderLayout());
-		this.add(this.menuBar, BorderLayout.PAGE_START);
 		this.add(this.contentPanel, BorderLayout.CENTER);
-		this.add(this.statusPanel, BorderLayout.PAGE_END);
+		this.add(this.statusPanel (), BorderLayout.PAGE_END);
 	}
 	
-	public JPanel getJContentPanel () {
-		return this.contentPanel;
+	private JPanel statusPanel () {
+		JLabel nameLabel = new JLabel(NAME_TEXT + this.user.getNome() + 
+				" " + this.user.getCognome());
+		JLabel typeLabel = new JLabel ();
+		if (this.user.isAmministratore()) {
+			typeLabel.setText(TYPE_TEXT + ADMIN_STRING);
+		}
+		else {
+			typeLabel.setText(TYPE_TEXT + CLIENT_STRING);
+		}
+		JLabel authorLabel = new JLabel(AUTHOR_TEXT + AUTHOR);
+		nameLabel.setBorder(new BevelBorder(BevelBorder.LOWERED));
+		nameLabel.setHorizontalAlignment(JLabel.CENTER);
+		typeLabel.setBorder(new BevelBorder(BevelBorder.LOWERED));
+		typeLabel.setHorizontalAlignment(JLabel.CENTER);
+		authorLabel.setBorder(new BevelBorder(BevelBorder.LOWERED));
+		authorLabel.setHorizontalAlignment(JLabel.CENTER);
+
+		JPanel statusPanel = new JPanel();
+		statusPanel.setLayout(new GridLayout(1,3));
+		statusPanel.add(nameLabel);
+		statusPanel.add(typeLabel);
+		statusPanel.add(authorLabel);
+		statusPanel.setPreferredSize(new Dimension(statusPanel.getWidth(), STATUSBAR_HEIGHT));
+		return statusPanel;
 	}
 
 	@Override
 	public void componentHidden(ComponentEvent e) {
-		// TODO Auto-generated method stub		
+		;
 	}
 
 	@Override
 	public void componentMoved(ComponentEvent e) {
-		// TODO Auto-generated method stub		
+		;	
 	}
 
 	@Override
@@ -87,6 +107,6 @@ public class JeCommerceFrame extends JFrame implements ComponentListener {
 
 	@Override
 	public void componentShown(ComponentEvent e) {
-		// TODO Auto-generated method stub		
+		;	
 	}
 }

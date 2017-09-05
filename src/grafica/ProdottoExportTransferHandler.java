@@ -1,0 +1,53 @@
+package grafica;
+
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DnDConstants;
+
+import javax.swing.JComponent;
+import javax.swing.JTextField;
+import javax.swing.TransferHandler;
+
+import negozio.Prodotto;
+
+public class ProdottoExportTransferHandler extends TransferHandler {
+    private static final long serialVersionUID = -3689725432297463459L;
+
+    private Prodotto storeProduct;
+    private JTextField amountTextfield;
+    
+    public static final DataFlavor SUPPORTED_DATE_FLAVOR = Prodotto.getDataFlavor();
+
+    public ProdottoExportTransferHandler(Prodotto storeProduct, JTextField amountTextfield) {
+    	this.storeProduct = storeProduct;
+        this.amountTextfield = amountTextfield;
+    }
+
+    public Prodotto getValue() {
+    	try {
+			Prodotto product = this.storeProduct.clone();
+			product.setQuantita(Integer.parseInt(this.amountTextfield.getText()));
+            return product;
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+    	return null;
+    }
+    
+    @Override
+    public int getSourceActions(JComponent c) {
+        return DnDConstants.ACTION_COPY_OR_MOVE;
+    }
+
+    @Override
+    protected Transferable createTransferable(JComponent c) {
+        Transferable t = this.getValue();
+        return t;
+    }
+
+    @Override
+    protected void exportDone(JComponent source, Transferable data, int action) {
+        super.exportDone(source, data, action);
+        // Decide what to do after the drop has been accepted
+    }
+}

@@ -21,12 +21,12 @@ import java.util.ArrayList;
 public class Magazzino implements GestioneProdotti {
 	private ArrayList <Prodotto> articoli; /**<Articoli presenti in magazzino.*/
 
-	public static final String STRINGA_FILTRO_NOME = "Nome";
-	public static final String STRINGA_FILTRO_MARCA = "Marca";
-	public static final String STRINGA_FILTRO_CODICE = "Codice";
-	public static final String STRINGA_FILTRO_CATEGORIA = "Categoria";
-	public static final String STRINGA_FILTRO_PREZZO = "Prezzo";
-	public static final String STRINGA_FILTRO_QUANTITA = "Quantità";
+	public static final String STRINGA_FILTRO_NOME = "Nome"; /**<Stringa che indica il filtro per nome.*/
+	public static final String STRINGA_FILTRO_MARCA = "Marca"; /**<Stringa che indica il filtro per marca.*/
+	public static final String STRINGA_FILTRO_CODICE = "Codice"; /**<Stringa che indica il filtro per codice.*/
+	public static final String STRINGA_FILTRO_CATEGORIA = "Categoria"; /**<Stringa che indica il filtro per categoria.*/
+	public static final String STRINGA_FILTRO_PREZZO = "Prezzo"; /**<Stringa che indica il filtro per prezzo.*/
+	public static final String STRINGA_FILTRO_QUANTITA = "Quantità"; /**<Stringa che indica il filtro per quantità.*/
 	
 	/**
 	 * Crea un Magazzino vuoto.
@@ -277,7 +277,7 @@ public class Magazzino implements GestioneProdotti {
 	}
 
 	@Override
-	public float MaxPrezzo() {
+	public float maxPrezzo() {
 		float max = 0;
 		for (Prodotto articolo : this.articoli) {
 			if (articolo.getPrezzo() > max) {
@@ -288,7 +288,7 @@ public class Magazzino implements GestioneProdotti {
 	}
 
 	@Override
-	public int MaxQuantita() {
+	public int maxQuantita() {
 		int max = 0;
 		for (Prodotto articolo : this.articoli) {
 			if (articolo.getQuantita() > max) {
