@@ -13,19 +13,19 @@ import negozio.Prodotto;
 public class ProdottoExportTransferHandler extends TransferHandler {
     private static final long serialVersionUID = -3689725432297463459L;
 
-    private Prodotto storeProduct;
+    private Prodotto transferableProduct;
     private JTextField amountTextfield;
     
     public static final DataFlavor SUPPORTED_DATE_FLAVOR = Prodotto.getDataFlavor();
 
-    public ProdottoExportTransferHandler(Prodotto storeProduct, JTextField amountTextfield) {
-    	this.storeProduct = storeProduct;
+    public ProdottoExportTransferHandler(Prodotto transferableProduct, JTextField amountTextfield) {
+    	this.transferableProduct = transferableProduct;
         this.amountTextfield = amountTextfield;
     }
 
     public Prodotto getValue() {
     	try {
-			Prodotto product = this.storeProduct.clone();
+			Prodotto product = this.transferableProduct.clone();
 			product.setQuantita(Integer.parseInt(this.amountTextfield.getText()));
             return product;
 		} catch (CloneNotSupportedException e) {
@@ -48,6 +48,5 @@ public class ProdottoExportTransferHandler extends TransferHandler {
     @Override
     protected void exportDone(JComponent source, Transferable data, int action) {
         super.exportDone(source, data, action);
-        // Decide what to do after the drop has been accepted
     }
 }

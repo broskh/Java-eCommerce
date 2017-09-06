@@ -83,11 +83,6 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 	private static final String MODIFY_BUTTON_TEXT = "Modifica";
 	private static final String DELETE_BUTTON_TEXT = "Elimina";
 	
-	private static final String SAVE_BUTTON_ACTION_COMMAND_TEXT = "salva";
-	private static final String LOAD_BUTTON_ACTION_COMMAND_TEXT = "carica";
-	private static final String ADD_BUTTON_ACTION_COMMAND_TEXT = "aggiungi";
-	private static final String MODIFY_BUTTON_ACTION_COMMAND_TEXT = "modifica";
-	private static final String DELETE_BUTTON_ACTION_COMMAND_TEXT = "elimina";
 	private static final String NEW_IMAGE_PATH = "media/img/products/";
 	private static final String RETURN_NEW_IMAGE_PATH = "media\\img\\products\\";
 	private static final String START_TO_PATH_STRING = "media";
@@ -116,13 +111,6 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 	private static final String ADD_MENU_ITEM_TEXT = "Aggiungi";
 	private static final String MODIFY_MENU_ITEM_TEXT = "Modifica";
 	private static final String DELETE_MENU_ITEM_TEXT = "Elimina";
-	
-	private static final String CLOSE_MENU_ITEM_ACTION_COMMAND_TEXT = "chiudi";
-	private static final String LOAD_MENU_ITEM_ACTION_COMMAND_TEXT = "carica";
-	private static final String SAVE_MENU_ITEM_ACTION_COMMAND_TEXT = "salva";
-	private static final String ADD_MENU_ITEM_ACTION_COMMAND_TEXT = "aggiungi";
-	private static final String MODIFY_MENU_ITEM_ACTION_COMMAND_TEXT = "modifica";
-	private static final String DELETE_MENU_ITEM_ACTION_COMMAND_TEXT = "elimina";
 	
 	private static final String FILE_SAVE_STRING = "media/saves/save21.mag";
 
@@ -166,7 +154,6 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 				JAdminContentPanel.BUTTON_HEIGHT));
 		
 		this.jSaveButton.setBorder(new EtchedBorder());
-		this.jSaveButton.setActionCommand(SAVE_BUTTON_ACTION_COMMAND_TEXT);
 		this.jSaveButton.addActionListener(this);
 		
 		this.jLoadButton = new JButton(JAdminContentPanel.LOAD_BUTTON_TEXT);
@@ -174,7 +161,6 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 				JAdminContentPanel.BUTTON_HEIGHT));
 		
 		this.jLoadButton.setBorder(new EtchedBorder());
-		this.jLoadButton.setActionCommand(LOAD_BUTTON_ACTION_COMMAND_TEXT);
 		this.jLoadButton.addActionListener(this);
 		
 		this.jAddButton = new JButton(JAdminContentPanel.ADD_BUTTON_TEXT);
@@ -182,7 +168,6 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 				JAdminContentPanel.BUTTON_HEIGHT));
 		
 		this.jAddButton.setBorder(new EtchedBorder());
-		this.jAddButton.setActionCommand(ADD_BUTTON_ACTION_COMMAND_TEXT);
 		this.jAddButton.addActionListener(this);
 		
 		this.jModifyButton = new JButton(JAdminContentPanel.MODIFY_BUTTON_TEXT);
@@ -190,7 +175,6 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 				JAdminContentPanel.BUTTON_HEIGHT));
 		
 		this.jModifyButton.setBorder(new EtchedBorder());
-		this.jModifyButton.setActionCommand(MODIFY_BUTTON_ACTION_COMMAND_TEXT);
 		this.jModifyButton.addActionListener(this);
 		
 		this.jDeleteButton = new JButton(JAdminContentPanel.DELETE_BUTTON_TEXT);
@@ -198,7 +182,6 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 				JAdminContentPanel.BUTTON_HEIGHT));
 		
 		this.jDeleteButton.setBorder(new EtchedBorder());
-		this.jDeleteButton.setActionCommand(DELETE_BUTTON_ACTION_COMMAND_TEXT);
 		this.jDeleteButton.addActionListener(this);
 		
 		JPanel controlPanel = new JPanel();
@@ -216,15 +199,12 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 		this.managementMenu = new JMenu(MANAGEMENT_MENU_TEXT);
 		
 		this.closeMenuItem = new JMenuItem(CLOSE_MENU_ITEM_TEXT);
-		this.closeMenuItem.setActionCommand(CLOSE_MENU_ITEM_ACTION_COMMAND_TEXT);
 		this.closeMenuItem.addActionListener(this);
 		
 		this.loadMenuItem = new JMenuItem(LOAD_MENU_ITEM_TEXT);
-		this.loadMenuItem.setActionCommand(LOAD_MENU_ITEM_ACTION_COMMAND_TEXT);
 		this.loadMenuItem.addActionListener(this);
 		
 		this.saveMenuItem = new JMenuItem(SAVE_MENU_ITEM_TEXT);
-		this.saveMenuItem.setActionCommand(SAVE_MENU_ITEM_ACTION_COMMAND_TEXT);
 		this.saveMenuItem.addActionListener(this);
 		
 		this.fileMenu.add(this.loadMenuItem);
@@ -232,15 +212,12 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 		this.fileMenu.add(this.closeMenuItem);
 		
 		this.addMenuItem = new JMenuItem(ADD_MENU_ITEM_TEXT);
-		this.addMenuItem.setActionCommand(ADD_MENU_ITEM_ACTION_COMMAND_TEXT);
 		this.addMenuItem.addActionListener(this);
 		
 		this.modifyMenuItem = new JMenuItem(MODIFY_MENU_ITEM_TEXT);
-		this.modifyMenuItem.setActionCommand(MODIFY_MENU_ITEM_ACTION_COMMAND_TEXT);
 		this.modifyMenuItem.addActionListener(this);
 		
 		this.deleteMenuItem = new JMenuItem(DELETE_MENU_ITEM_TEXT);
-		this.deleteMenuItem.setActionCommand(DELETE_MENU_ITEM_ACTION_COMMAND_TEXT);
 		this.deleteMenuItem.addActionListener(this);
 		
 		this.managementMenu.add(this.addMenuItem);
@@ -254,7 +231,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 		return menuBar;
 	}
 	
-	class JStoreTable extends JTable implements JProductTable
+	class JStoreTable extends JTable implements JProductsTable
 	{
 		private static final long serialVersionUID = 4734550632778588769L;
 		
@@ -349,17 +326,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand().equals(SAVE_BUTTON_ACTION_COMMAND_TEXT))
-		{	
-			
-			
-			System.out.println("imagetosave: "+imageToSave);
-			System.out.println("imagetodelete: "+imageToDelete);
-			System.out.println("imagetosavefrommod: "+imageToSaveFromMod);
-			System.out.println("imagetodeletefrommod: "+imageToDeleteFromMod);
-			
-			
-			
+		if(e.getSource().equals(this.jSaveButton) || e.getSource().equals(this.saveMenuItem)) {	
 			JFileChooser fc = new JFileChooser(new File(FILE_CHOOSER_OPEN_DIRECTORY));
 			fc.setDialogTitle(FILE_CHOOSER_SET_TEXT);
 			fc.setApproveButtonText(FILE_CHOOSER_SET_TEXT);
@@ -381,7 +348,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 			if(returnVal == 0)
 			{
 				
-				/* CONTROLLO INCROCIATO */
+				/* CONTROLLO INCROCIATO */ 
 				for(int i = 0;i<imageToSave.size();i++)
 				{
 					String img = imageToSave.get(i).getImmagine().toString();
@@ -413,12 +380,6 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 						
 					}		
 				}
-				
-				System.out.println("post imagetosave: "+imageToSave);
-				System.out.println("post imagetodelete: "+imageToDelete);
-				System.out.println("post imagetosavefrommod: "+imageToSaveFromMod);
-				System.out.println("post imagetodeletefrommod: "+imageToDeleteFromMod);
-
 				
 				/* controllo immagini doppie modifica */
 				for(int i = 0;i<imageToSaveFromMod.size();i++)
@@ -521,26 +482,8 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 
 			}
 			
-
-			
-			/* fine decommentare
 	
-			/* Azzeramento array */		
-		
-//				emptyList(imageToSave);
-//				emptyList(imageToDelete);
-//				emptyList(imagePath);
-//				emptyList(imageName);
-//				emptyList(image);
-//				emptyList(imageToSaveFromMod);
-//				emptyList(imageFromMod);
-//				emptyList(imageToDeleteFromMod);
-//				emptyList(newPath);
-//				emptyList(imagePathMod);
-//				emptyList(imageNameMod);
-//				emptyList(newPathMod);
-//				emptyList(imageNameModRemove);
-//				emptyList(imagePathModRemove);
+			/* Azzeramento array */
 			imageToSave.clear();
 			imageToDelete.clear();
 			imagePath.clear();
@@ -555,8 +498,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 			newPathMod.clear();
 			imageNameModRemove.clear();
 			imagePathModRemove.clear();
-			
-			
+						
 
 			/* FINE CANCELLAZIONI IMMAGINI */
 				store.salvaMagazzino(fc.getSelectedFile());
@@ -579,7 +521,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 			}
 		
 	    }
-		if(e.getActionCommand().equals(LOAD_BUTTON_ACTION_COMMAND_TEXT))
+		if(e.getSource().equals(this.jLoadButton) || e.getSource().equals(this.loadMenuItem))
 		{
 			
 			JFileChooser fc = new JFileChooser(new File(FILE_CHOOSER_OPEN_DIRECTORY));
@@ -606,259 +548,203 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 				jStoreTable.getColumn("").setCellRenderer(new RemoveColumnRender(LINE_HEIGHT));
 				jStoreTable.getColumn("").setCellEditor(new RemoveColumnEditor(
 				this.store.getArticoli(), LINE_HEIGHT));
-//					((ArticlesTableModel)jStoreTable.getModel()).fireTableDataChanged();
 			}			
 		}
-		if(e.getActionCommand().equals(ADD_BUTTON_ACTION_COMMAND_TEXT))
+		if(e.getSource().equals(this.jAddButton) || e.getSource().equals(addMenuItem))
 		{
 			JAddProductToStoreDialog jAddProductDialog = new JAddProductToStoreDialog(mainFrame,store,jStoreTable, imageToSave, image);
 			jAddProductDialog.setVisible(true);
 		}
-		if(e.getActionCommand().equals(MODIFY_BUTTON_ACTION_COMMAND_TEXT))
+		if(e.getSource().equals(this.jModifyButton) || e.getSource().equals(this.modifyMenuItem))
 		{
 			JSearchProductDialog jSearchProductDialog = new JSearchProductDialog(mainFrame,store,jStoreTable,imageToDeleteFromMod, 
 					imageFromMod, imageToSave, imageToSaveFromMod);
 			jSearchProductDialog.setVisible(true);
 		}
-		if(e.getActionCommand().equals(DELETE_BUTTON_ACTION_COMMAND_TEXT))
+		if(e.getSource().equals(this.jDeleteButton) || e.getSource().equals(this.deleteMenuItem))
 		{
 			JRemoveProductFromStoreDialog jDeleteProductDialog = new JRemoveProductFromStoreDialog(mainFrame,store,jStoreTable, imageToDelete);
 			jDeleteProductDialog.setVisible(true);
 		}
-		
-		
-		
-		
-		
-		
-//		DA MENUBAR
-		
-		
-		
-		if(e.getActionCommand().equals(SAVE_MENU_ITEM_ACTION_COMMAND_TEXT))
-		{	
-			JFileChooser fc = new JFileChooser(new File("media/saves"));
-			fc.setDialogTitle("Salva");
-			fc.setApproveButtonText("Salva");
-			/* IMPOSTO LA VISUALIZZAZIONE SOLO DI FILE .MAG */
-			fc.setFileFilter(new FileFilter() {
-		        public boolean accept(File f) {
-		            if (f.isDirectory()) {
-		                return true;
-		            }
-		            final String name = f.getName();
-		            return name.endsWith(".mag");
-		        }
-		        @Override
-		        public String getDescription() {
-		            return "*.mag";
-		        }
-		    });
-			int returnVal = fc.showOpenDialog(this);
-			if(returnVal == 0)
-			{
-				
-				/* controllo immagini doppie */
-				for(int i = 0;i<imageToSave.size();i++)
-				{
-					String img = imageToSave.get(i).getImmagine().toString();
-					for(int j = 0;j<imageToDelete.size();j++)
-					{
-						if(imageToDelete.get(j).toString().equals(img))
-						{
-							imageToDelete.remove(j);
-							imageToSave.remove(i);
-						}
-						
-					}		
-				}
-				
-
-				
-				/* controllo immagini doppie modifica */
-				for(int i = 0;i<imageToSaveFromMod.size();i++)
-				{
-					String img = imageToSaveFromMod.get(i).getImmagine().toString();
-					for(int j = 0;j<imageToDeleteFromMod.size();j++)
-					{
-						if(imageToDeleteFromMod.get(j).toString().equals(img))
-						{
-							imageToDeleteFromMod.remove(j);
-							imageToSaveFromMod.remove(i);
-						}
-						
-					}		
-				}
-	
-				/* SALVATAGGIO IMMAGINE */
-				if(imageToSave.isEmpty() == false)
-				{
-					for(int i = 0;i<imageToSave.size();i++)
-					{
-						imagePath.add(imageToSave.get(i).getImmagine().toString());
-					}
-					imageName = getImageName(imagePath);
-					newPath = copyImage(image,imageName);
-					for(int i = 0;i<imageToSave.size();i++)
-					{
-						imageToSave.get(i).setImmagine(newPath.get(i));
-					}
-				}
-				/* FINE */
-			
-			/* CANCELLAZIONE IMMAGINI DA DELETE*/
-			if(imageToDelete.isEmpty() == false)
-			{
-				for(int i = 0;i<imageToDelete.size();i++)
-				{
-					if(imageToDelete.get(i).toString().equals("media\\img\\immagine_non_disponibile.jpg"))
-					{
-						System.out.println(" ");
-					}
-					else
-					{
-						File file = new File(imageToDelete.get(i).toString());
-						if (file.exists()) {
-						    file.delete();
-						}
-					}
-					
-				}
-			}
-			/* AGGIUNTA IMMAGINI DA MODIFY */
-			if(imageToSaveFromMod.isEmpty() == false)
-			{
-				for(int i = 0;i<imageToSaveFromMod.size();i++)
-				{
-					imagePathMod.add(imageToSaveFromMod.get(i).getImmagine().toString());
-				}
-				imageNameMod = getImageName(imagePathMod);
-				newPathMod = copyImage(imageFromMod,imageNameMod);
-				for(int i = 0;i<imageToSaveFromMod.size();i++)
-				{
-					imageToSaveFromMod.get(i).setImmagine(newPathMod.get(i));
-				}
-
-			}
-			
-			/* CANCELLAZIONE IMMAGINI DA MODIFY */
-			
-			if(imageToDeleteFromMod.isEmpty() == false)
-			{
-				for(int i = 0;i<imageToDeleteFromMod.size();i++)
-				{
-					if(imageToDeleteFromMod.isEmpty() == false)
-					{
-						if(imageToDeleteFromMod.get(i).toString().equals("media\\img\\immagine_non_disponibile.jpg"))
-						{
-							imageToDeleteFromMod.remove(i);
-							i = 0;						
-						}
-					}
-					else
-					{
-						i = imageToDeleteFromMod.size();
-					}
-				}
-			}
-			
-
-			
-			if(imageToDeleteFromMod.isEmpty() == false)
-			{
-				for(int i = 0;i<imageToDeleteFromMod.size();i++)
-				{
-					File file = new File(imageToDeleteFromMod.get(i).toString());
-					if (file.exists()) {
-					    file.delete();
-					}
-				}
-			}
-			
-			/* fine decommentare
-	
-			/* Azzeramento array */			
-			imageToSave.clear();
-			imageToDelete.clear();
-			imagePath.clear();
-			imageName.clear();
-			image.clear();
-			imageToSaveFromMod.clear();
-			imageFromMod.clear();
-			imageToDeleteFromMod.clear();
-			newPath.clear();
-			imagePathMod.clear();
-			imageNameMod.clear();
-			newPathMod.clear();
-			imageNameModRemove.clear();
-			imagePathModRemove.clear();
-			
-
-			/* FINE CANCELLAZIONI IMMAGINI */
-				store.salvaMagazzino(fc.getSelectedFile());
-				BufferedWriter output = null;
-		        try {
-		            File file = new File("media/saves/config");
-		            output = new BufferedWriter(new FileWriter(file));
-		            String fileName = getFileName(fc.getSelectedFile().toString());
-		            output.write(fileName);
-		        } catch ( IOException g ) {
-		            g.printStackTrace();
-		        } 
-		        try {
-					output.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-		        
-
-			}
-		
-	    }
-		if(e.getActionCommand().equals(LOAD_MENU_ITEM_ACTION_COMMAND_TEXT))
-		{
-			
-			JFileChooser fc = new JFileChooser(new File("media/saves"));
-			/* IMPOSTO LA VISUALIZZAZIONE SOLO DI FILE .MAG */
-			fc.setFileFilter(new FileFilter() {
-		        public boolean accept(File f) {
-		            if (f.isDirectory()) {
-		                return true;
-		            }
-		            final String name = f.getName();
-		            return name.endsWith(".mag");
-		        }
-		        @Override
-		        public String getDescription() {
-		            return "*.mag";
-		        }
-		    });
-			int returnVal = fc.showOpenDialog(this);
-			if(returnVal == 0)
-			{
-				store.caricaMagazzino(fc.getSelectedFile());
-				jStoreTable.setModel(new ArticlesTableModel(this.store.getArticoli(), LINE_HEIGHT,ArticlesTableModel.STORE_MODE));
-				jStoreTable.getColumn("").setCellRenderer(new RemoveColumnRender(LINE_HEIGHT));
-				jStoreTable.getColumn("").setCellEditor(new RemoveColumnEditor(
-				this.store.getArticoli(), LINE_HEIGHT));
-//				((ArticlesTableModel)jStoreTable.getModel()).fireTableDataChanged();
-			}			
+		if (e.getSource().equals(this.closeMenuItem)) {
+			this.mainFrame.dispose();
 		}
-		if(e.getActionCommand().equals(ADD_MENU_ITEM_ACTION_COMMAND_TEXT))
-		{
-			JAddProductToStoreDialog jAddProductDialog = new JAddProductToStoreDialog(mainFrame,store,jStoreTable, imageToSave, image);
-			jAddProductDialog.setVisible(true);
-		}
-		if(e.getActionCommand().equals(MODIFY_MENU_ITEM_ACTION_COMMAND_TEXT))
-		{
-			JSearchProductDialog jSearchProductDialog = new JSearchProductDialog(mainFrame,store,jStoreTable,imageToDeleteFromMod, 
-					imageFromMod, imageToSave, imageToSaveFromMod);
-			jSearchProductDialog.setVisible(true);
-		}
-		if(e.getActionCommand().equals(DELETE_MENU_ITEM_ACTION_COMMAND_TEXT))
-		{
-			JRemoveProductFromStoreDialog jDeleteProductDialog = new JRemoveProductFromStoreDialog(mainFrame,store,jStoreTable,imageToDelete);
-			jDeleteProductDialog.setVisible(true);
-		}
+//		if(e.getActionCommand().equals(SAVE_MENU_ITEM_ACTION_COMMAND_TEXT))
+//		{	
+//			JFileChooser fc = new JFileChooser(new File("media/saves"));
+//			fc.setDialogTitle("Salva");
+//			fc.setApproveButtonText("Salva");
+//			/* IMPOSTO LA VISUALIZZAZIONE SOLO DI FILE .MAG */
+//			fc.setFileFilter(new FileFilter() {
+//		        public boolean accept(File f) {
+//		            if (f.isDirectory()) {
+//		                return true;
+//		            }
+//		            final String name = f.getName();
+//		            return name.endsWith(".mag");
+//		        }
+//		        @Override
+//		        public String getDescription() {
+//		            return "*.mag";
+//		        }
+//		    });
+//			int returnVal = fc.showOpenDialog(this);
+//			if(returnVal == 0)
+//			{
+//				
+//				/* controllo immagini doppie */
+//				for(int i = 0;i<imageToSave.size();i++)
+//				{
+//					String img = imageToSave.get(i).getImmagine().toString();
+//					for(int j = 0;j<imageToDelete.size();j++)
+//					{
+//						if(imageToDelete.get(j).toString().equals(img))
+//						{
+//							imageToDelete.remove(j);
+//							imageToSave.remove(i);
+//						}
+//						
+//					}		
+//				}
+//				
+//
+//				
+//				/* controllo immagini doppie modifica */
+//				for(int i = 0;i<imageToSaveFromMod.size();i++)
+//				{
+//					String img = imageToSaveFromMod.get(i).getImmagine().toString();
+//					for(int j = 0;j<imageToDeleteFromMod.size();j++)
+//					{
+//						if(imageToDeleteFromMod.get(j).toString().equals(img))
+//						{
+//							imageToDeleteFromMod.remove(j);
+//							imageToSaveFromMod.remove(i);
+//						}
+//						
+//					}		
+//				}
+//	
+//				/* SALVATAGGIO IMMAGINE */
+//				if(imageToSave.isEmpty() == false)
+//				{
+//					for(int i = 0;i<imageToSave.size();i++)
+//					{
+//						imagePath.add(imageToSave.get(i).getImmagine().toString());
+//					}
+//					imageName = getImageName(imagePath);
+//					newPath = copyImage(image,imageName);
+//					for(int i = 0;i<imageToSave.size();i++)
+//					{
+//						imageToSave.get(i).setImmagine(newPath.get(i));
+//					}
+//				}
+//				/* FINE */
+//			
+//			/* CANCELLAZIONE IMMAGINI DA DELETE*/
+//			if(imageToDelete.isEmpty() == false)
+//			{
+//				for(int i = 0;i<imageToDelete.size();i++)
+//				{
+//					if(imageToDelete.get(i).toString().equals("media\\img\\immagine_non_disponibile.jpg"))
+//					{
+//						System.out.println(" ");
+//					}
+//					else
+//					{
+//						File file = new File(imageToDelete.get(i).toString());
+//						if (file.exists()) {
+//						    file.delete();
+//						}
+//					}
+//					
+//				}
+//			}
+//			/* AGGIUNTA IMMAGINI DA MODIFY */
+//			if(imageToSaveFromMod.isEmpty() == false)
+//			{
+//				for(int i = 0;i<imageToSaveFromMod.size();i++)
+//				{
+//					imagePathMod.add(imageToSaveFromMod.get(i).getImmagine().toString());
+//				}
+//				imageNameMod = getImageName(imagePathMod);
+//				newPathMod = copyImage(imageFromMod,imageNameMod);
+//				for(int i = 0;i<imageToSaveFromMod.size();i++)
+//				{
+//					imageToSaveFromMod.get(i).setImmagine(newPathMod.get(i));
+//				}
+//
+//			}
+//			
+//			/* CANCELLAZIONE IMMAGINI DA MODIFY */
+//			
+//			if(imageToDeleteFromMod.isEmpty() == false)
+//			{
+//				for(int i = 0;i<imageToDeleteFromMod.size();i++)
+//				{
+//					if(imageToDeleteFromMod.isEmpty() == false)
+//					{
+//						if(imageToDeleteFromMod.get(i).toString().equals("media\\img\\immagine_non_disponibile.jpg"))
+//						{
+//							imageToDeleteFromMod.remove(i);
+//							i = 0;						
+//						}
+//					}
+//					else
+//					{
+//						i = imageToDeleteFromMod.size();
+//					}
+//				}
+//			}
+//			
+//
+//			
+//			if(imageToDeleteFromMod.isEmpty() == false)
+//			{
+//				for(int i = 0;i<imageToDeleteFromMod.size();i++)
+//				{
+//					File file = new File(imageToDeleteFromMod.get(i).toString());
+//					if (file.exists()) {
+//					    file.delete();
+//					}
+//				}
+//			}
+//			
+//			/* fine decommentare
+//	
+//			/* Azzeramento array */			
+//			imageToSave.clear();
+//			imageToDelete.clear();
+//			imagePath.clear();
+//			imageName.clear();
+//			image.clear();
+//			imageToSaveFromMod.clear();
+//			imageFromMod.clear();
+//			imageToDeleteFromMod.clear();
+//			newPath.clear();
+//			imagePathMod.clear();
+//			imageNameMod.clear();
+//			newPathMod.clear();
+//			imageNameModRemove.clear();
+//			imagePathModRemove.clear();
+//			
+//
+//			/* FINE CANCELLAZIONI IMMAGINI */
+//				store.salvaMagazzino(fc.getSelectedFile());
+//				BufferedWriter output = null;
+//		        try {
+//		            File file = new File("media/saves/config");
+//		            output = new BufferedWriter(new FileWriter(file));
+//		            String fileName = getFileName(fc.getSelectedFile().toString());
+//		            output.write(fileName);
+//		        } catch ( IOException g ) {
+//		            g.printStackTrace();
+//		        } 
+//		        try {
+//					output.close();
+//				} catch (IOException e1) {
+//					e1.printStackTrace();
+//				}
+//			}
+//	    }
 	}
 }

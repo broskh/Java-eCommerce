@@ -21,24 +21,23 @@ public class JFilterPanel extends JPanel implements ChangeListener{
     private JLabel lowerValue;
     private JLabel upperValue;
 
-	private static final int WIDTH = 300;
+	private static final int PANEL_WIDTH = 300;
 	
-	public JFilterPanel (int amountMax, double costMax, String filterType) {
-		int costMaxInt = (int) Math.ceil(costMax);
-		
+	public JFilterPanel (int amountMax, double costMax, String filterType) {		
 		this.stringFilter = new JTextField ();
-		this.stringFilter.setPreferredSize (new Dimension(WIDTH, 
+		this.stringFilter.setPreferredSize (new Dimension(PANEL_WIDTH, 
 				this.stringFilter.getPreferredSize().height));
 		
 		this.amountFilter = new JRangeSlider(0, amountMax);
-		this.amountFilter.setPreferredSize (new Dimension(WIDTH, 
+		this.amountFilter.setPreferredSize (new Dimension(PANEL_WIDTH, 
 				this.amountFilter.getPreferredSize().height));
 		this.amountFilter.setLowerValue  (0);
 		this.amountFilter.setUpperValue (amountMax);
 		this.amountFilter.addChangeListener(this);
-		
+
+		int costMaxInt = (int) Math.ceil(costMax);
 		this.costFilter = new JRangeSlider (0, costMaxInt);
-		this.costFilter.setPreferredSize (new Dimension(WIDTH, 
+		this.costFilter.setPreferredSize (new Dimension(PANEL_WIDTH, 
 				this.costFilter.getPreferredSize().height));
 		this.costFilter.setLowerValue (0);
 		this.costFilter.setUpperValue (costMaxInt);
@@ -72,11 +71,13 @@ public class JFilterPanel extends JPanel implements ChangeListener{
 	}
 	
 	public RangeExtremes getAmount () {
-		return new RangeExtremes(this.amountFilter.getLowerValue(), this.amountFilter.getUpperValue());
+		return new RangeExtremes(this.amountFilter.getLowerValue(), 
+				this.amountFilter.getUpperValue());
 	}
 	
 	public RangeExtremes getCost () {
-		return new RangeExtremes(this.costFilter.getLowerValue(), this.costFilter.getUpperValue());
+		return new RangeExtremes(this.costFilter.getLowerValue(), 
+				this.costFilter.getUpperValue());
 	}
 	
 	private void enableStringFilter () {

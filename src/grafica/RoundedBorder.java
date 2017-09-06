@@ -32,13 +32,11 @@ class RoundedBorder extends AbstractBorder {
     private static int DEFAULT_POINTERSIZE = 7;
     private static int DEFAULT_POINTERPAD = 4;
 
-    RoundedBorder(
-            Color color) {
+    public RoundedBorder(Color color) {
         new RoundedBorder(color, DEFAULT_THICKNESS, DEFAULT_RADII, DEFAULT_POINTERSIZE);
     }
 
-    RoundedBorder(
-            Color color, int thickness, int radii, int pointerSize) {
+    public RoundedBorder(Color color, int thickness, int radii, int pointerSize) {
         this.thickness = thickness;
         this.radii = radii;
         this.pointerSize = pointerSize;

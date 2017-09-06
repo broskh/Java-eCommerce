@@ -7,6 +7,7 @@ import negozio.Carrello;
 import negozio.Magazzino;
 
 public class OpenCartListener implements ActionListener {
+	
 	private Magazzino store;
 	private Carrello cart;
 	

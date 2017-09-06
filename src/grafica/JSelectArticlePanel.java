@@ -16,16 +16,18 @@ import negozio.Prodotto;
 
 public class JSelectArticlePanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -8842725930146342385L;
+	
+	private StringBuilder code;
 
 	private JComboBox <String> codeComboBox;
 	private JTextField amountTextfield;
 	
-	private StringBuilder code;
-	
-	private static final int TEXTFIELDS_SPACE = 20;
 	private static final int CODE_TEXTFIELD_WIDTH = 150;
 	private static final int AMOUNT_TEXTFIELD_COLUMNS = 3;
+	private static final int TEXTFIELDS_SPACE = 20;
+	
 	private static final int DEFAULT_AMOUNT = 1;
+	
 	private static final String CODE_TEXT = "Codice: ";
 	private static final String AMOUNT_TEXT = "Qnt: ";
 	
@@ -35,7 +37,8 @@ public class JSelectArticlePanel extends JPanel implements ActionListener {
 		for (Prodotto articolo : articoli) {
 			codici.add(articolo.getCodice());
 		}
-		this.codeComboBox = new JComboBox <String> (codici.toArray(new String[codici.size()]));
+		this.codeComboBox = new JComboBox <String> (codici.toArray(
+				new String[codici.size()]));
 		this.codeComboBox.setPreferredSize(new Dimension(CODE_TEXTFIELD_WIDTH, 
 				this.codeComboBox.getPreferredSize().height));
 		this.codeComboBox.addActionListener(this);
@@ -53,10 +56,6 @@ public class JSelectArticlePanel extends JPanel implements ActionListener {
 		this.add(this.amountTextfield);
 	}
 	
-	public void setAmount (int amount) {
-		this.amountTextfield.setText(Integer.toString(amount));
-	}
-	
 	public int getAmount () {
 		return Integer.parseInt(this.amountTextfield.getText());
 	}
@@ -71,6 +70,7 @@ public class JSelectArticlePanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		this.code.replace(0, this.code.length(), this.codeComboBox.getSelectedItem().toString());
+		this.code.replace(0, this.code.length(), 
+				this.codeComboBox.getSelectedItem().toString());
 	}
 }

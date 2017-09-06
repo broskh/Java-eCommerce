@@ -2,7 +2,6 @@ package grafica;
 
 import negozio.Prodotto;
 
-public interface JProductTable {
-	
+public interface JProductsTable {	
 	public Prodotto getProductAtRow (int row);
 }

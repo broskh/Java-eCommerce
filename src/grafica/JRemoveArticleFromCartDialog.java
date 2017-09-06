@@ -23,29 +23,28 @@ public class JRemoveArticleFromCartDialog extends JDialog implements ActionListe
 	private JButton cancelButton;
 	private JSelectArticlePanel articlePanel;
 	
-	private static final int WIDTH = 400;
-	private static final int HEIGHT = 160;
-	private static final int SIDE_MARGIN = 30;
-	private static final int TOP_MARGIN = 30;
+	private static final int DIALOG_WIDTH = 400;
+	private static final int DIALOG_HEIGHT = 160;
 	private static final int BUTTONS_SPACE = 50;
-	private static final int BOTTOM_MARGIN = 30;
+	
+	private static final int DIALOG_MARGIN = 30;
 
-	private static final String OK_STRING = "RIMUOVI";
-	private static final String CANCEL_STRING = "ANNULLA";
 	private static final String TITLE = "Rimuovi articolo";
+	private static final String OK_BUTTON_TEXT = "RIMUOVI";
+	private static final String CANCEL_BUTTON_TEXT = "ANNULLA";
 	
 	public JRemoveArticleFromCartDialog (JFrame mainFrame, Carrello cart) {
 		super (mainFrame, TITLE, JDialog.ModalityType.DOCUMENT_MODAL);
-		this.setMinimumSize(new Dimension(WIDTH, HEIGHT));
+		this.setMinimumSize(new Dimension(DIALOG_WIDTH, DIALOG_HEIGHT));
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		
 		this.cart = cart;
 		this.articlePanel = new JSelectArticlePanel(this.cart.getArticoli());
 
-		this.okButton = new JButton(OK_STRING);
+		this.okButton = new JButton(OK_BUTTON_TEXT);
 		this.okButton.addActionListener(this);
-		this.cancelButton = new JButton(CANCEL_STRING);
+		this.cancelButton = new JButton(CANCEL_BUTTON_TEXT);
 		this.cancelButton.addActionListener(this);
 		JPanel buttonsPanel = new JPanel(new BorderLayout());
 		buttonsPanel.add(cancelButton, BorderLayout.WEST);
@@ -53,16 +52,16 @@ public class JRemoveArticleFromCartDialog extends JDialog implements ActionListe
 		buttonsPanel.add(okButton, BorderLayout.EAST);
 		
 		JPanel bottomPanel = new JPanel(new BorderLayout());
-		bottomPanel.add(Box.createHorizontalStrut(SIDE_MARGIN), BorderLayout.WEST);
+		bottomPanel.add(Box.createHorizontalStrut(DIALOG_MARGIN), BorderLayout.WEST);
 		bottomPanel.add(buttonsPanel, BorderLayout.CENTER);
-		bottomPanel.add(Box.createHorizontalStrut(SIDE_MARGIN), BorderLayout.EAST);
-		bottomPanel.add(Box.createVerticalStrut(BOTTOM_MARGIN), BorderLayout.PAGE_END);
+		bottomPanel.add(Box.createHorizontalStrut(DIALOG_MARGIN), BorderLayout.EAST);
+		bottomPanel.add(Box.createVerticalStrut(DIALOG_MARGIN), BorderLayout.PAGE_END);
 
 		this.setLayout(new BorderLayout());
-		this.add(Box.createVerticalStrut(TOP_MARGIN), BorderLayout.PAGE_START);
-		this.add(Box.createHorizontalStrut(SIDE_MARGIN), BorderLayout.WEST);
+		this.add(Box.createVerticalStrut(DIALOG_MARGIN), BorderLayout.PAGE_START);
+		this.add(Box.createHorizontalStrut(DIALOG_MARGIN), BorderLayout.WEST);
 		this.add(articlePanel, BorderLayout.CENTER);
-		this.add(Box.createHorizontalStrut(SIDE_MARGIN), BorderLayout.EAST);
+		this.add(Box.createHorizontalStrut(DIALOG_MARGIN), BorderLayout.EAST);
 		this.add(bottomPanel, BorderLayout.PAGE_END);
 	}
 
