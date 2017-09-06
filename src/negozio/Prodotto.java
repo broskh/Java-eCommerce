@@ -25,7 +25,7 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	private int quantita; /**<Quantità del prodotto presente.*/
 	private Promozione offerta; /**<Promozione attiva sul prodotto.*/
 	
-	private static final File immagineDefault = new File ("media/img/immagine_non_disponibile.jpg"); /**<Immagine di default.*/
+	public static final File IMMAGINE_DEFAULT = new File ("media/img/immagine_non_disponibile.jpg"); /**<Immagine di default.*/
 	
 	/**
 	 * Crea un Prodotto in offerta, completo di tutte le informazioni.
@@ -55,7 +55,7 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 			this.immagine = immagine;
 		}
 		else {
-			this.immagine = Prodotto.immagineDefault;
+			this.immagine = Prodotto.IMMAGINE_DEFAULT;
 		}
 		if (quantita >= 0) {
 			this.quantita = quantita;
@@ -116,7 +116,7 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	 * Crea un Prodotto vuoto, senza alcun tipo di informazione.
 	 */
 	public Prodotto() {
-		this ("", "", "", "", 0, Prodotto.immagineDefault, 0, null);
+		this ("", "", "", "", 0, Prodotto.IMMAGINE_DEFAULT, 0, null);
 	}
 	
 	/**

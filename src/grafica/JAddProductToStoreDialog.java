@@ -6,7 +6,9 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -39,6 +41,7 @@ public class JAddProductToStoreDialog extends JDialog implements ActionListener{
 	
 	private Magazzino store;
 	private Prodotto product;
+	private HashSet <Prodotto> articlesAdded;
 	
 	/**/
 	private JPanel addPanel;
@@ -126,13 +129,11 @@ public class JAddProductToStoreDialog extends JDialog implements ActionListener{
 	protected static final int MIN_FRAME_HEIGHT = 410;
 	protected static final int MIN_FRAME_WIDTH = 300;
 	
-	public JAddProductToStoreDialog (JFrame mainFrame, Magazzino store, JStoreTable jStoreTable, ArrayList<Prodotto> imageToSave,
-			ArrayList<Image> image) {
+	public JAddProductToStoreDialog (JFrame mainFrame, Magazzino store, JStoreTable jStoreTable, HashSet <Prodotto> articlesAdded) {
 		super(mainFrame,TITLE,JDialog.ModalityType.DOCUMENT_MODAL);
 		this.store = store;
 		this.jStoreTable = jStoreTable;
-		this.imageToSave = imageToSave;
-		this.image = image;
+		this.articlesAdded = articlesAdded;
 		this.setModal(true);
 		this.setSize(new Dimension(JAddProductToStoreDialog.MIN_FRAME_WIDTH,JAddProductToStoreDialog.
 				MIN_FRAME_HEIGHT));
@@ -257,7 +258,7 @@ public class JAddProductToStoreDialog extends JDialog implements ActionListener{
 		this.jThreePerTwoOfferRadioButton.setActionCommand(THREE_PER_TWO_OFFER_RADIO_BUTTON_ACTION_COMMAND_TEXT);
 
 		JPanel contentPanel = new JPanel();
-		contentPanel.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 		contentPanel.add(imagePanel);
 		contentPanel.add(addPanel);
 		contentPanel.add(offerPanel);

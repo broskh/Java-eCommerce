@@ -30,7 +30,7 @@ public class JAddArticleToCartDialog extends JDialog implements ActionListener{
 	private static final String CANCEL_STRING = "ANNULLA";
 	
 	public JAddArticleToCartDialog (JFrame mainFrame, Magazzino store, Carrello cart) {
-		super (mainFrame, TITLE, JDialog.ModalityType.DOCUMENT_MODAL);
+		super (mainFrame, TITLE, ModalityType.DOCUMENT_MODAL);
 		this.setPreferredSize(new Dimension(DIALOG_WIDTH, DIALOG_HEIGHT));
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);

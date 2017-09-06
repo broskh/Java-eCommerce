@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -39,6 +40,8 @@ public class JModifyProductDialog extends JDialog implements ActionListener{
 	private JSearchProductDialog jSearchProductDialog;
 	private Prodotto product;
 	private Magazzino store;
+	private HashSet <Prodotto> articlesAdded;
+	private HashSet <File> imagesToRemove;
 	
 	private static final String TITLE = "Modifica prodotto";
 	private static final int MIN_HEIGHT_FRAME = 410; //200
@@ -122,8 +125,7 @@ public class JModifyProductDialog extends JDialog implements ActionListener{
 	
 	
 	public JModifyProductDialog(JFrame mainFrame,Prodotto prodotto, Magazzino magazzino,
-			JSearchProductDialog jSearchProductDialog,JStoreTable jStoreTable,ArrayList<File> imageToDeleteFromMod, 
-			ArrayList<Image> imageFromMod, ArrayList<Prodotto> imageToSave, ArrayList<Prodotto> imageToSaveFromMod)
+			JSearchProductDialog jSearchProductDialog,JStoreTable jStoreTable, HashSet <Prodotto> articlesAdded, HashSet <File> imagesToRemove)
 	{
 		super(mainFrame,TITLE,JDialog.ModalityType.DOCUMENT_MODAL);
 		this.setModal(true);
@@ -133,10 +135,8 @@ public class JModifyProductDialog extends JDialog implements ActionListener{
 		this.product = prodotto;
 		this.store = magazzino;
 
-		this.imageToDeleteFromMod = imageToDeleteFromMod;
-		this.imageFromMod = imageFromMod;
-		this.imageToSave = imageToSave;
-		this.imageToSaveFromMod = imageToSaveFromMod;
+		this.articlesAdded = articlesAdded;
+		this.imagesToRemove = imagesToRemove;
 		
 		this.jStoreTable = jStoreTable;
 		
@@ -218,7 +218,7 @@ public class JModifyProductDialog extends JDialog implements ActionListener{
 		this.jEmptyLabel1 = new JLabel(JModifyProductDialog.EMPTY_LABEL_TEXT);
 		this.jEmptyLabel2 = new JLabel(JModifyProductDialog.EMPTY_LABEL_TEXT);
 		
-		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+//		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		JPanel modifyPanel = new JPanel(new GridLayout(N_LINES_MODIFY_PANEL,N_COLUMNS_MODIFY_PANEL));
 		modifyPanel.add(this.jCodeLabel);
