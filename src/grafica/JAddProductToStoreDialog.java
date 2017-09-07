@@ -82,6 +82,7 @@ public class JAddProductToStoreDialog extends JDialog implements ActionListener{
 			this.product.setPrezzo(this.modifyProductPanel.getProductCost());
 			this.product.setQuantita(this.modifyProductPanel.getProductAmount());
 			this.product.setOfferta(this.modifyProductPanel.getProductOffer());
+			this.store.aggiungiProdotto(this.product);
 			this.articlesAdded.add(this.product);
 			((ArticlesTableModel)jStoreTable.getModel()).fireTableDataChanged();
 			
