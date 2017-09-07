@@ -14,7 +14,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import java.io.File;
-
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -119,6 +119,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	
 	private static final String FILTER_TYPE_LABEL = "Filtra per:";
 	private static final String FILTER_STRING_LABEL = "Criterio di ricerca:";
+	private static final String IMAGE_LABEL = "Nessuna immagine";
 	private static final String CODE_LABEL = "Codice: ";
 	private static final String NAME_LABEL = "Nome: ";
 	private static final String BRAND_LABEL = "Marca: ";
@@ -335,17 +336,23 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	private JPanel articlePanel (Prodotto article) {        
 		JLabel imageLabel = new JLabel("", SwingConstants.CENTER);
 		imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		ImageIcon icon = new ImageIcon(new ResizableIcon(article.getImmagine())
-				.resizeIcon(ARTICLE_ICON_SIZE, ARTICLE_ICON_SIZE));
-		if (icon != null) {
+		int labelHeight;
+		try {
+			ImageIcon icon = new ImageIcon(new ResizableIcon(article.getImmagine())
+					.resizeIcon(ARTICLE_ICON_SIZE, ARTICLE_ICON_SIZE));
 			imageLabel.setIcon(icon);
+			labelHeight = icon.getIconHeight();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			imageLabel.setText(IMAGE_LABEL);
+			labelHeight = imageLabel.getFont().getSize();
 		}
 		JPanel imagePanel = new JPanel ();
 		imagePanel.setLayout(new BoxLayout (imagePanel, BoxLayout.Y_AXIS));
 		imagePanel.add(Box.createVerticalStrut(DEFAULT_GENERIC_MARGIN));
-		imagePanel.add(Box.createVerticalStrut((ARTICLE_ICON_SIZE - icon.getIconHeight()) / 2));
+		imagePanel.add(Box.createVerticalStrut((ARTICLE_ICON_SIZE - labelHeight) / 2));
 		imagePanel.add(imageLabel);
-		imagePanel.add(Box.createVerticalStrut((ARTICLE_ICON_SIZE - icon.getIconHeight()) / 2));
+		imagePanel.add(Box.createVerticalStrut((ARTICLE_ICON_SIZE - labelHeight) / 2));
 		
 		JLabel codeLabel = new JLabel(CODE_LABEL + article.getCodice());
 		JLabel nameLabel = new JLabel(NAME_LABEL + article.getNome());

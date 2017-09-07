@@ -35,7 +35,7 @@ public class JAddArticleToCartDialog extends JDialog implements ActionListener{
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		
-		JSelectArticlePanel articlePanel = new JSelectArticlePanel(store.getArticoli());
+		JSelectArticleWithAmountPanel articlePanel = new JSelectArticleWithAmountPanel(store.getArticoli());
 		this.okButton = new JButton(OK_STRING);
 		this.okButton.addActionListener(new AddArticleToCartListener(
 				this, store, cart, articlePanel.getCode(), articlePanel.getAmountTextfield()));

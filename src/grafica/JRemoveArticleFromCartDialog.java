@@ -21,7 +21,7 @@ public class JRemoveArticleFromCartDialog extends JDialog implements ActionListe
 
 	private JButton okButton;
 	private JButton cancelButton;
-	private JSelectArticlePanel articlePanel;
+	private JSelectArticleWithAmountPanel articlePanel;
 	
 	private static final int DIALOG_WIDTH = 400;
 	private static final int DIALOG_HEIGHT = 160;
@@ -40,7 +40,7 @@ public class JRemoveArticleFromCartDialog extends JDialog implements ActionListe
 		this.setResizable(false);
 		
 		this.cart = cart;
-		this.articlePanel = new JSelectArticlePanel(this.cart.getArticoli());
+		this.articlePanel = new JSelectArticleWithAmountPanel(this.cart.getArticoli());
 
 		this.okButton = new JButton(OK_BUTTON_TEXT);
 		this.okButton.addActionListener(this);

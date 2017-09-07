@@ -3,22 +3,17 @@ package grafica;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashSet;
 
-import javax.imageio.ImageIO;
+import java.nio.file.Files;
+
+import java.util.HashSet;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -58,22 +53,6 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 	private JMenuItem addMenuItem;
 	private JMenuItem modifyMenuItem;
 	private JMenuItem deleteMenuItem;
-	
-//	private ArrayList<Prodotto> imageToSave = new ArrayList<Prodotto>();
-//	private ArrayList<File> imageToDelete = new ArrayList<File>();
-//	private ArrayList<Image> image = new ArrayList<Image>();
-//	
-//	private ArrayList<Prodotto> imageToSaveFromMod = new ArrayList<Prodotto>();
-//	private ArrayList<Image> imageFromMod = new ArrayList<Image>();
-//	private ArrayList<File> imageToDeleteFromMod = new ArrayList<File>();
-//	
-//	private ArrayList<String> imagePath = new ArrayList<String>();
-//	private ArrayList<String> imageName = new ArrayList<String>();
-//	private ArrayList<String> newPath = new ArrayList<String>();
-//	
-//	private ArrayList<String> imagePathMod = new ArrayList<String>();
-//	private ArrayList<String> imageNameMod = new ArrayList<String>();
-//	private ArrayList<String> newPathMod = new ArrayList<String>();
 
 	private static final int CONTENTPANEL_TOP_MARGIN = 40;
 	private static final int CONTENTPANEL_SIDE_MARGIN = 40;
@@ -388,11 +367,10 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 					File newFile = this.getNewImageFile(articolo.getImmagine());
 					try {
 						JAdminContentPanel.copyImage(articolo.getImmagine(), newFile);
+						articolo.setImmagine(newFile);
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					articolo.setImmagine(newFile);
 				}
 //				PULISCO LISTE
 				this.imagesToRemove.clear();
@@ -427,6 +405,8 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 		else if(e.getSource().equals(this.jLoadButton) || e.getSource().equals(this.loadMenuItem)) {			
 			JFileChooser fc = new JFileChooser(new File(FILE_CHOOSER_OPEN_DIRECTORY));
 			fc.setFileFilter(new StoreFileFilter());
+			fc.setDialogTitle(FILE_CHOOSER_LOAD_TITLE);
+			fc.setApproveButtonText(FILE_CHOOSER_LOAD_BUTTON_TEXT);
 			if(fc.showOpenDialog(this) == 0) {
 				this.store.caricaMagazzino(fc.getSelectedFile());
 				this.jStoreTable = new JStoreTable(this.store);
@@ -442,7 +422,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 			jAddProductDialog.setVisible(true);
 		} 
 		else if(e.getSource().equals(this.jModifyButton) || e.getSource().equals(this.modifyMenuItem)) {
-			JSearchProductDialog jSearchProductDialog = new JSearchProductDialog(this.mainFrame, this.store, this.jStoreTable, this.articlesAdded, this.imagesToRemove);
+			JSelectProductToModifyDialog jSearchProductDialog = new JSelectProductToModifyDialog(this.mainFrame, this.store, this.jStoreTable, this.articlesAdded, this.imagesToRemove);
 			jSearchProductDialog.setVisible(true);
 		}
 		else if(e.getSource().equals(this.jDeleteButton) || e.getSource().equals(this.deleteMenuItem)) {

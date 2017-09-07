@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import java.io.File;
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EventObject;
 
@@ -122,8 +122,13 @@ public class ArticlesTableModel extends AbstractTableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		switch (columnIndex) {
 			case IMAGE_COLUMN_NUMBER:
-				return new ImageIcon (new ResizableIcon(this.products.get(rowIndex)
-						.getImmagine(), this.iconSize, this.iconSize).getBufferedImage());
+				try {
+					return new ImageIcon (new ResizableIcon(this.products.get(rowIndex)
+							.getImmagine(), this.iconSize, this.iconSize).getBufferedImage());
+				} catch (IOException e) {
+					e.printStackTrace();
+					return null;
+				}
 			case CODE_COLUMN_NUMBER:
 				return this.products.get(rowIndex).getCodice();
 			case NAME_COLUMN_NUMBER:

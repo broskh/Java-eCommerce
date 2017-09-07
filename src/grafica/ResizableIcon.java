@@ -14,24 +14,20 @@ public class ResizableIcon {
 	private File image;
 	private BufferedImage bufferedImage;
 	
-	public ResizableIcon (File image, int newWidth, int newHeight) {
+	public ResizableIcon (File image, int newWidth, int newHeight) throws IOException {
 		this.setImage(image, newWidth, newHeight);
 	}
 	
-	public ResizableIcon (File image) {
+	public ResizableIcon (File image) throws IOException {
 		this.setImage(image);
 	}
 	
-	public void setImage (File image) {
+	public void setImage (File image) throws IOException {
 		this.image = image;
-		try {
-			this.bufferedImage = ImageIO.read(this.image);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.bufferedImage = ImageIO.read(this.image);
 	}
 	
-	public void setImage (File image, int newWidth, int newHeight) {
+	public void setImage (File image, int newWidth, int newHeight) throws IOException {
 		this.image = image;
 		this.resizeIcon(newWidth, newHeight);
 	}

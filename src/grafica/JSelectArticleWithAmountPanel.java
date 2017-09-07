@@ -14,7 +14,7 @@ import javax.swing.text.PlainDocument;
 
 import negozio.Prodotto;
 
-public class JSelectArticlePanel extends JPanel implements ActionListener {
+public class JSelectArticleWithAmountPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -8842725930146342385L;
 	
 	private StringBuilder code;
@@ -31,7 +31,7 @@ public class JSelectArticlePanel extends JPanel implements ActionListener {
 	private static final String CODE_TEXT = "Codice: ";
 	private static final String AMOUNT_TEXT = "Qnt: ";
 	
-	public JSelectArticlePanel (ArrayList <Prodotto> articoli) {
+	public JSelectArticleWithAmountPanel (ArrayList <Prodotto> articoli) {
 		
 		ArrayList <String> codici = new ArrayList <> ();
 		for (Prodotto articolo : articoli) {
