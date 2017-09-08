@@ -54,18 +54,14 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	private int maxPage;
 	private StringBuilder filterTypeString;
 
-	private JFrame mainFrame;
-	
+	private JFrame mainFrame;	
 	private JPanel mainContentPanel;
-	private JPanel showcasePanel;
-	
-	private JFilterPanel filterPanel;
-	
+	private JPanel showcasePanel;	
+	private JFilterPanel filterPanel;	
 	private JButton backButton;
 	private JButton forwardButton;
-	
-	private JComboBox <String> filterTypeComboBox;
-	
+	private JButton cartButton;
+	private JComboBox <String> filterTypeComboBox;	
 	private JMenuItem closeItem;
 	private JMenuItem nameFilterItem;
 	private JMenuItem brandFilterItem;
@@ -252,8 +248,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		filterMenu.add (this.amountFilterItem);
 		
 		this.showCartItem = new JMenuItem(SHOW_CART_ITEM);
-		this.showCartItem.addActionListener(new OpenCartListener(
-				this, this.cart, this.store));
+		this.showCartItem.addActionListener(this);
 		this.addArticleItem = new JMenuItem(ADD_ARTICLE_ITEM);
 		this.addArticleItem.addActionListener(this);
 		this.removeArticleItem = new JMenuItem(REMOVE_ARTICLE_ITEM);
@@ -309,16 +304,15 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		leftPanel.add (filterButton);
 		
 		
-		JButton cartButton = new JButton ();
+		this.cartButton = new JButton ();
 		try {
 		    Image img = ImageIO.read(new File (CART_IMAGE_PATH));
-		    cartButton.setIcon(new ImageIcon(img));
+		    this.cartButton.setIcon(new ImageIcon(img));
 		} catch (Exception ex) {
-			cartButton.setText(CART_BUTTON_TEXT);
+			this.cartButton.setText(CART_BUTTON_TEXT);
 		}
-		cartButton.addActionListener(new OpenCartListener(this, 
-				this.cart, this.store));
-		cartButton.setTransferHandler(new ProdottoImportTransferHandler(
+		this.cartButton.addActionListener(this);
+		this.cartButton.setTransferHandler(new ProdottoImportTransferHandler(
 				this.cart));
 		JPanel rightPanel = new JPanel ();
 		rightPanel.add (cartButton);
@@ -526,6 +520,10 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 			this.filterTypeString.replace(0, this.filterTypeString.length(), 
 					this.filterTypeComboBox.getSelectedItem().toString());
 			this.filterPanel.enableCorrectFilter (this.filterTypeString.toString());
+		}
+		else if (e.getSource().equals(this.showCartItem) || e.getSource().equals(this.cartButton)) {
+			JCartDialog cartDialog = new JCartDialog(this, this.cart, this.store);
+			cartDialog.setVisible(true);
 		}
 	}
 	
