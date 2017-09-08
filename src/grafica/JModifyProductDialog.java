@@ -28,7 +28,7 @@ public class JModifyProductDialog extends JDialog implements ActionListener{
 	private static final int FRAME_HEIGHT = 450;
 	private static final int FRAME_WIDTH = 300;
 
-	private static final String BUTTON_TEXT = "MODIFICA";
+	private static final String BUTTON_TEXT = "Modifica";
 	private static final String ALERT_ERROR_TITLE = "Attenzione!";
 	private static final String ALERT_SUCCESS_TITLE = "Modifica avvenuta";
 	private static final String EMPTY_FIELDS_TEXT = "Inserire tutti i dati correttamente.";

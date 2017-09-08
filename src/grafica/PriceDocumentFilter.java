@@ -20,9 +20,27 @@ public class PriceDocumentFilter extends DocumentFilter{
 		this(NULL_VALUE);
 	}
 	
-	private boolean testFloat (String text) {
+	private boolean testFloat (String value) {
 		try {
-			Float.parseFloat(text);
+//			CONTROLLO CHE CI SIA UN SOLO PUNTO
+			int dots = 0;
+			for (int i = 0; i < value.length(); i++) {
+				if (value.charAt(i) == '.') {
+					dots++;
+				}
+			}
+			if (dots > 1) {
+				return false;
+			}
+//			CONTROLLO CHE NON VENGA AGGIUNTA UNA f
+			if (value.length() > 0 && (value.charAt(value.length() - 1) == 'f' || 
+					value.charAt(value.length() - 1) == 'F' || 
+					value.charAt(value.length() - 1) == 'd' || 
+					value.charAt(value.length() - 1) == 'D')) {
+				return false;
+			}
+//			CONTROLLO CHE SIA UN FLOAT ACCETTABILE
+			Float.parseFloat(value);
 			return true;
 		} catch (NumberFormatException e) {
 			return false;
@@ -30,30 +48,20 @@ public class PriceDocumentFilter extends DocumentFilter{
 	}
 	
 	private String correctValue(String value) {
-		System.out.println(value + " __ L: " + value.length());
-//		CONTROLLO CHE CI SIA UN SOLO PUNTO
-		int dots = 0;
-		for (int i = 0; i < value.length(); i++) {
-			if (value.charAt(i) == '.') {
-				dots++;
-			}
-		}
-		if (dots > 1) {
-			value = value.substring(0, value.length() - 1);
+//		CONTROLLO CHE LA STRINGA NON SIA VUOTA
+		if (value.equals("")) {
+			value = EMPTY_FIELD_VALUE;
 		}
 //		CONTROLLO CHE CI SIANO SOLO DUE CIFRE DOPO LA VIRGOLA
-		if ((value.length()-1) - value.indexOf('.') > 2) {
-			value = value.substring(0, value.length() - 2) + value.charAt(value.length() - 1);
+		if ((value.indexOf('.') != -1 && (value.length() - 1) - value.indexOf('.') > 2)) {
+			value = value.substring(0, value.length() - 2) + 
+					value.charAt(value.length() - 1);
 		}
 //		CONTROLLO CHE NON CI SIA UNO ZERO INUTILE ALL'INIZIO DEL NUMERO
 		if (value.length() > 1) {
 			if (value.charAt(0) == '0' && value.charAt(1) != '.') {
 				value = value.substring(1);
 			}
-		}
-//		CONTROLLO CHE LA STRINGA NON SIA VUOTA
-		if (value.equals("")) {
-			value = EMPTY_FIELD_VALUE;
 		}
 		Float floatValue = Float.parseFloat(value);
 		if(this.maxValue != NULL_VALUE && floatValue > this.maxValue) {
@@ -71,7 +79,8 @@ public class PriceDocumentFilter extends DocumentFilter{
 	}
 	
 	@Override
-	public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+	public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
+			throws BadLocationException {
 		Document doc = fb.getDocument();
 		StringBuilder sb = new StringBuilder();
 		sb.append(doc.getText(0, doc.getLength()));
@@ -83,7 +92,8 @@ public class PriceDocumentFilter extends DocumentFilter{
 	}
 	
 	@Override
-	public void replace(FilterBypass fb,int offset,int length,String text,AttributeSet attrs) throws BadLocationException {
+	public void replace(FilterBypass fb,int offset,int length,String text,AttributeSet attrs)
+			throws BadLocationException {
 		Document doc = fb.getDocument();
 		StringBuilder sb = new StringBuilder();
 		sb.append(doc.getText(0, doc.getLength()));
@@ -105,7 +115,7 @@ public class PriceDocumentFilter extends DocumentFilter{
 		if (this.testFloat (sb.toString())) {
 			super.remove(fb, offset, length);
 		} else {
-			this.replace(fb, offset, length, EMPTY_FIELD_VALUE, null);
+			this.replace(fb, offset, length, this.correctValue(sb.toString()), null);
 		}
 	}
 }

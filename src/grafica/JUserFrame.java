@@ -82,7 +82,6 @@ public class JUserFrame extends JFrame implements ActionListener {
 		this.nameTextField = new JTextField();
 		JLabel surnameLabel = new JLabel(JUserFrame.SURNAME_TEXT);
 		this.surnameTextField = new JTextField ();
-		this.surnameTextField.setSize(10,  10);
 		JPanel personalDataPanel = new JPanel(
 				new GridLayout(PERSONAL_DATA_PANEL_ROWS, PERSONAL_DATA_PANEL_COLUMNS));
 		personalDataPanel.add (nameLabel);
