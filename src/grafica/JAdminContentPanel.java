@@ -52,12 +52,14 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 	private JMenuItem modifyMenuItem;
 	private JMenuItem deleteMenuItem;
 
-	private static final int CONTENTPANEL_TOP_MARGIN = 40;
-	private static final int CONTENTPANEL_SIDE_MARGIN = 40;
+	private static final int CONTENTPANEL_TOP_MARGIN = 30;
+	private static final int CONTENTPANEL_SIDE_MARGIN = 30;
+	private static final int CONTROLPANEL_BUTTONS_MARGIN = 5;
 
 	private static final int MENUBAR_HEIGHT = 22;
 	private static final int CONTROLPANEL_BUTTON_SIZE = 80;
-
+	private static final int CONTROLPANEL_BUTTONS_SPACE = 20;
+	
 	private static final String FILE_CHOOSER_SAVE_TITLE = "Salva";
 	private static final String FILE_CHOOSER_LOAD_TITLE = "Carica";
 	private static final String SAVE_BUTTON_TEXT = "Salva";
@@ -112,37 +114,32 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 	private JPanel controlPanel () {
 		this.saveButton = new JButton(SAVE_BUTTON_TEXT);
 		this.saveButton.setPreferredSize(new Dimension(CONTROLPANEL_BUTTON_SIZE,
-				CONTROLPANEL_BUTTON_SIZE));		
-		this.saveButton.setBorder(new EtchedBorder());
+				CONTROLPANEL_BUTTON_SIZE));
 		this.saveButton.addActionListener(this);
 		
 		this.loadButton = new JButton(LOAD_BUTTON_TEXT);
 		this.loadButton.setPreferredSize(new Dimension(CONTROLPANEL_BUTTON_SIZE,
-				CONTROLPANEL_BUTTON_SIZE));		
-		this.loadButton.setBorder(new EtchedBorder());
+				CONTROLPANEL_BUTTON_SIZE));
 		this.loadButton.addActionListener(this);
 		
 		this.addButton = new JButton(ADD_BUTTON_TEXT);
 		this.addButton.setPreferredSize(new Dimension(CONTROLPANEL_BUTTON_SIZE,
-				CONTROLPANEL_BUTTON_SIZE));		
-		this.addButton.setBorder(new EtchedBorder());
+				CONTROLPANEL_BUTTON_SIZE));
 		this.addButton.addActionListener(this);
 		
 		this.modifyButton = new JButton(MODIFY_BUTTON_TEXT);
 		this.modifyButton.setPreferredSize(new Dimension(CONTROLPANEL_BUTTON_SIZE,
-				CONTROLPANEL_BUTTON_SIZE));		
-		this.modifyButton.setBorder(new EtchedBorder());
+				CONTROLPANEL_BUTTON_SIZE));
 		this.modifyButton.addActionListener(this);
 		
 		this.deleteButton = new JButton(DELETE_BUTTON_TEXT);
 		this.deleteButton.setPreferredSize(new Dimension(CONTROLPANEL_BUTTON_SIZE,
-				CONTROLPANEL_BUTTON_SIZE));		
-		this.deleteButton.setBorder(new EtchedBorder());
+				CONTROLPANEL_BUTTON_SIZE));
 		this.deleteButton.addActionListener(this);
 		
 		JPanel controlPanel = new JPanel();
-		controlPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
 		controlPanel.setBorder(new EtchedBorder());
+		controlPanel.setLayout(new FlowLayout(FlowLayout.LEADING, CONTROLPANEL_BUTTONS_SPACE, CONTROLPANEL_BUTTONS_MARGIN));
 		controlPanel.add(this.saveButton);
 		controlPanel.add(this.loadButton);
 		controlPanel.add(this.addButton);
@@ -247,19 +244,19 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 		}
 		else if(e.getSource().equals(this.addButton) || e.getSource().equals(this.addMenuItem)) {
 			JAddProductToStoreDialog jAddProductDialog = new JAddProductToStoreDialog(
-					this.mainFrame, this.store, (ArticlesTableModel)this.storeTable.getModel(), 
+					this.mainFrame, this.store, (ProductsArticlesTableModel)this.storeTable.getModel(), 
 					this.productsAdded);
 			jAddProductDialog.setVisible(true);
 		} 
 		else if(e.getSource().equals(this.modifyButton) || e.getSource().equals(this.modifyMenuItem)) {
 			JSelectProductToModifyDialog jSearchProductDialog = new JSelectProductToModifyDialog(
-					this.mainFrame, this.store, (ArticlesTableModel)this.storeTable.getModel(), 
+					this.mainFrame, this.store, (ProductsArticlesTableModel)this.storeTable.getModel(), 
 					this.productsAdded);
 			jSearchProductDialog.setVisible(true);
 		}
 		else if(e.getSource().equals(this.deleteButton) || e.getSource().equals(this.deleteMenuItem)) {
 			JRemoveProductFromStoreDialog jDeleteProductDialog = new JRemoveProductFromStoreDialog(
-					this.mainFrame, this.store, (ArticlesTableModel)this.storeTable.getModel());
+					this.mainFrame, this.store, (ProductsArticlesTableModel)this.storeTable.getModel());
 			jDeleteProductDialog.setVisible(true);
 		}
 		else if (e.getSource().equals(this.closeMenuItem)) {
@@ -283,16 +280,16 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 		{
 			this.store = store;
 			
-			this.setModel(new ArticlesTableModel(this.store.getArticoli(),
-					ROW_HEIGHT,ArticlesTableModel.STORE_MODE));
+			this.setModel(new ProductsArticlesTableModel(this.store.getArticoli(),
+					ROW_HEIGHT,ProductsArticlesTableModel.STORE_MODE));
 			this.setRowHeight(ROW_HEIGHT);
 			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 			centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );
 			this.setDefaultRenderer(String.class, centerRenderer);
 			this.setBackground(null);
-			this.getColumn(ArticlesTableModel.BUTTON_COLUMN).setCellRenderer(
+			this.getColumn(ProductsArticlesTableModel.BUTTON_COLUMN).setCellRenderer(
 					new RemoveColumnRender(ROW_HEIGHT));
-			this.getColumn(ArticlesTableModel.BUTTON_COLUMN).setCellEditor(
+			this.getColumn(ProductsArticlesTableModel.BUTTON_COLUMN).setCellEditor(
 					new RemoveColumnEditor(
 					this.store.getArticoli(), ROW_HEIGHT));			
 			this.setFocusable(false);

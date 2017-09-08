@@ -84,7 +84,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	private static final int CONTROLPANEL_LABEL_MARGIN = 20;
 	private static final int CONTROLPANEL_RIGHT_MARGIN = 20;
 	private static final int CONTROLPANEL_LEFT_MARGIN = 20;
-	private static final int CONTROLPANEL_HORIZONTAL_SPACE = 50;
+	private static final int CONTROLPANEL_HORIZONTAL_SPACE = 60;
 	private static final int ARTICLES_MARGIN = 10;
 
 	private static final int MENUBAR_HEIGHT = 22;
@@ -387,7 +387,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		addToCartButton.setBorder(new RoundedBorder(new Color (52, 158, 66), 1, 50, 0));
 		addToCartButton.setPreferredSize(new Dimension (
 				ARTICLE_ADD_BUTTON_SIZE, ARTICLE_ADD_BUTTON_SIZE));
-		addToCartButton.addActionListener(new AddArticleToCartListener(this.store, 
+		addToCartButton.addActionListener(new AddProductToCartListener(this.store, 
 				this.cart, new StringBuilder(article.getCodice()), 
 				amountTextField));
 		addToCartButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -501,12 +501,12 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 			 filterDialog.setVisible(true);
 		}
 		else if (e.getSource().equals(this.addArticleItem)) {
-			 JAddArticleToCartDialog addArticleDialog = new JAddArticleToCartDialog(
+			 JAddProductToCartDialog addArticleDialog = new JAddProductToCartDialog(
 					 this.mainFrame, this.store, this.cart);
 			 addArticleDialog.setVisible(true);
 		}
 		else if (e.getSource().equals(this.removeArticleItem)) {
-			 JRemoveArticleFromCartDialog removeArticleDialog = new JRemoveArticleFromCartDialog(
+			 JRemoveProductFromCartDialog removeArticleDialog = new JRemoveProductFromCartDialog(
 					 this.mainFrame, this.cart);
 			 removeArticleDialog.setVisible(true);
 		}

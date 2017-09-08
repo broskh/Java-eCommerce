@@ -37,10 +37,10 @@ public class JUserFrame extends JFrame implements ActionListener {
 	private JRadioButton adminRadioButton;
 	private JButton okButton;
 	
-	private static final int FRAME_HEIGHT = 225;
+	private static final int FRAME_HEIGHT = 220;
 	private static final int FRAME_WIDTH = 450;
 
-	private static final int GENERIC_MARGIN = 15;
+	private static final int GENERIC_MARGIN = 10;
 	private static final int FRAME_MARGIN = 15;
 	
 	private static final int PERSONAL_DATA_PANEL_ROWS = 2;

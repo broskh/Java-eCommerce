@@ -48,6 +48,8 @@ public class JModifyProductPanel extends JPanel implements ActionListener{
 	private static final int TEXTBOX_WIDTH = 10;
 	private static final int IMAGE_SPACE = 40;
 	
+	private static final int FIELDSPANEL_TOP_MARGIN = 10;
+	
 	private static final int ATTRIBUTESPANEL_ROWS = 10;
 	private static final int ATTIRUBTESPANEL_COLUMNS = 2;
 
@@ -128,6 +130,7 @@ public class JModifyProductPanel extends JPanel implements ActionListener{
 		buttonGroup.add(this.threeForTwoOfferRadioButton);
 		this.selectCorrectOffer ();
 		this.modifyButton = new JButton();
+		this.modifyButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		
 		JPanel fieldsPanel = new JPanel(new GridLayout(
 				ATTRIBUTESPANEL_ROWS, ATTIRUBTESPANEL_COLUMNS));
@@ -153,6 +156,7 @@ public class JModifyProductPanel extends JPanel implements ActionListener{
 
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.add(imagePanel);
+		this.add(Box.createVerticalStrut(FIELDSPANEL_TOP_MARGIN));
 		this.add(fieldsPanel);
 		this.add(this.modifyButton);
 	}

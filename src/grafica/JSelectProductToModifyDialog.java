@@ -20,20 +20,20 @@ public class JSelectProductToModifyDialog extends JDialog implements ActionListe
 	private HashSet <Prodotto> articlesAdded;
 
 	private JFrame mainFrame;
-	private ArticlesTableModel storeTableModel;
+	private ProductsArticlesTableModel storeTableModel;
 	private JSelectProductPanel selectProductPanel;
 		
 	private static final int FRAME_HEIGHT = 130;
 	private static final int FRAME_WIDTH = 400;
 	
-	private static final int MARGIN = 20;
+	private static final int MARGIN = 15;
 
 	private static final String TITLE = "Seleziona prodotto";
 	private static final String STRING_LABEL_TEXT = "Seleziona il prodotto da modificare:";
 	private static final String SELECT_BUTTON_TEXT = "Seleziona";
 	
 	public JSelectProductToModifyDialog(JFrame mainFrame, Magazzino store, 
-			ArticlesTableModel storeTableModel, HashSet <Prodotto> articlesAdded) {
+			ProductsArticlesTableModel storeTableModel, HashSet <Prodotto> articlesAdded) {
 		super(mainFrame, TITLE, ModalityType.DOCUMENT_MODAL);
 		this.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));		
 		this.setLocationRelativeTo(null);

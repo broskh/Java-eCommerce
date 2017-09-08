@@ -8,9 +8,9 @@ import negozio.Carrello;
 public class EmptyCartListener implements ActionListener {
 
 	private Carrello cart;
-	private ArticlesTableModel articlesTableModel;
+	private ProductsArticlesTableModel articlesTableModel;
 	
-	public EmptyCartListener (ArticlesTableModel articlesTableModel, Carrello cart) {
+	public EmptyCartListener (ProductsArticlesTableModel articlesTableModel, Carrello cart) {
 		this.cart = cart;
 		this.articlesTableModel = articlesTableModel;
 	}

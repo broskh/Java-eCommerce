@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import java.util.HashSet;
 
+import javax.swing.Box;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -23,12 +24,14 @@ public class JAddProductToStoreDialog extends JDialog implements ActionListener{
 	private HashSet <Prodotto> articlesAdded;
 
 	private JModifyProductPanel modifyProductPanel;
-	private ArticlesTableModel storeTableModel;
+	private ProductsArticlesTableModel storeTableModel;
 
-	protected static final int FRAME_HEIGHT = 450;
+	protected static final int FRAME_HEIGHT = 490;
 	protected static final int FRAME_WIDTH = 300;
 	
-	private static final String BUTTON_TEXT = "AGGIUNGI";
+	private static final int MARGIN = 15;
+	
+	private static final String BUTTON_TEXT = "Aggiungi";
 	private static final String ALERT_ERROR_TITLE = "Attenzione!";
 	private static final String ALERT_SUCCESS_TITLE = "Aggiunta avvenuta";
 	private static final String EMPTY_FIELDS_TEXT = "Inserire tutti i dati correttamente.";
@@ -40,7 +43,7 @@ public class JAddProductToStoreDialog extends JDialog implements ActionListener{
 	protected static final String TITLE = "Aggiungi prodotto";
 	
 	public JAddProductToStoreDialog (JFrame mainFrame, Magazzino store, 
-			ArticlesTableModel storeTableModel, HashSet <Prodotto> articlesAdded) {
+			ProductsArticlesTableModel storeTableModel, HashSet <Prodotto> articlesAdded) {
 		super(mainFrame, TITLE, ModalityType.DOCUMENT_MODAL);
 		this.store = store;
 		this.storeTableModel = storeTableModel;
@@ -56,7 +59,11 @@ public class JAddProductToStoreDialog extends JDialog implements ActionListener{
 		this.modifyProductPanel.setButtonActionListener(this);
 
 		this.setLayout(new BorderLayout());
+		this.add(Box.createVerticalStrut(MARGIN), BorderLayout.PAGE_START);
+		this.add(Box.createHorizontalStrut(MARGIN), BorderLayout.WEST);
 		this.add(this.modifyProductPanel, BorderLayout.CENTER);
+		this.add(Box.createHorizontalStrut(MARGIN), BorderLayout.EAST);
+		this.add(Box.createVerticalStrut(MARGIN), BorderLayout.PAGE_END);
 	}
 
 	@Override

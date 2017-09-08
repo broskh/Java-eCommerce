@@ -21,15 +21,15 @@ public class JFilterDialog extends JDialog implements ActionListener{
 	
 	private static final int DIALOG_WIDTH = 400;
 	private static final int DIALOG_HEIGHT = 160;
-	private static final int BUTTONS_SPACE = 50;
+	private static final int BUTTONS_SPACE = 120;
 	
-	private static final int SIDE_MARGIN = 50;
+	private static final int SIDE_MARGIN = 40;
 	private static final int TOP_MARGIN = 30;
-	private static final int BOTTOM_MARGIN = 30;
+	private static final int BOTTOM_MARGIN = 20;
 
 	private static final String TITLE = "Filtra per ";
-	private static final String OK_BUTTON_TEXT = "FILTRA";
-	private static final String CANCEL_BUTTON_TEXT = "ANNULLA";
+	private static final String OK_BUTTON_TEXT = "Filtra";
+	private static final String CANCEL_BUTTON_TEXT = "Annulla";
 	
 	public JFilterDialog (JClientContentPanel clientContentPanel, Magazzino store, 
 			String filterType) {
@@ -47,15 +47,13 @@ public class JFilterDialog extends JDialog implements ActionListener{
 				clientContentPanel, new StringBuilder(filterType), filterPanel, store));
 		this.cancelButton = new JButton(CANCEL_BUTTON_TEXT);
 		this.cancelButton.addActionListener(this);
-		JPanel buttonsPanel = new JPanel(new BorderLayout());
+		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.add(cancelButton, BorderLayout.WEST);
 		buttonsPanel.add(Box.createHorizontalStrut(BUTTONS_SPACE), BorderLayout.CENTER);
 		buttonsPanel.add(okButton, BorderLayout.EAST);
 		
 		JPanel bottomPanel = new JPanel(new BorderLayout());
-		bottomPanel.add(Box.createHorizontalStrut(SIDE_MARGIN), BorderLayout.WEST);
 		bottomPanel.add(buttonsPanel, BorderLayout.CENTER);
-		bottomPanel.add(Box.createHorizontalStrut(SIDE_MARGIN), BorderLayout.EAST);
 		bottomPanel.add(Box.createVerticalStrut(BOTTOM_MARGIN), BorderLayout.PAGE_END);
 
 		this.setLayout(new BorderLayout());

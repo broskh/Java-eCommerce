@@ -14,7 +14,7 @@ import javax.swing.text.PlainDocument;
 
 import negozio.Prodotto;
 
-public class JSelectArticleWithAmountPanel extends JPanel implements ActionListener {
+public class JSelectProductWithAmountPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -8842725930146342385L;
 	
 	private StringBuilder code;
@@ -24,14 +24,14 @@ public class JSelectArticleWithAmountPanel extends JPanel implements ActionListe
 	
 	private static final int CODE_TEXTFIELD_WIDTH = 150;
 	private static final int AMOUNT_TEXTFIELD_COLUMNS = 3;
-	private static final int TEXTFIELDS_SPACE = 20;
+	private static final int COMPONENTS_SPACE = 30;
 	
 	private static final int DEFAULT_AMOUNT = 1;
 	
 	private static final String CODE_TEXT = "Codice: ";
 	private static final String AMOUNT_TEXT = "Qnt: ";
 	
-	public JSelectArticleWithAmountPanel (ArrayList <Prodotto> articoli) {
+	public JSelectProductWithAmountPanel (ArrayList <Prodotto> articoli) {
 		
 		ArrayList <String> codici = new ArrayList <> ();
 		for (Prodotto articolo : articoli) {
@@ -51,7 +51,7 @@ public class JSelectArticleWithAmountPanel extends JPanel implements ActionListe
 
 		this.add(new JLabel(CODE_TEXT));
 		this.add(this.codeComboBox);
-		this.add(Box.createHorizontalStrut(TEXTFIELDS_SPACE));
+		this.add(Box.createHorizontalStrut(COMPONENTS_SPACE));
 		this.add(new JLabel(AMOUNT_TEXT));
 		this.add(this.amountTextfield);
 	}

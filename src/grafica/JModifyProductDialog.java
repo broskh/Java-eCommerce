@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import java.util.HashSet;
 
+import javax.swing.Box;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -21,12 +22,14 @@ public class JModifyProductDialog extends JDialog implements ActionListener{
 	private Magazzino store;
 	private HashSet <Prodotto> articlesAdded;
 
-	private ArticlesTableModel storeTableModel;
+	private ProductsArticlesTableModel storeTableModel;
 	private JModifyProductPanel modifyProductPanel;
 	
 	private static final String TITLE = "Modifica prodotto";
-	private static final int FRAME_HEIGHT = 450;
+	private static final int FRAME_HEIGHT = 490;
 	private static final int FRAME_WIDTH = 300;
+	
+	private static final int MARGIN = 15;
 
 	private static final String BUTTON_TEXT = "Modifica";
 	private static final String ALERT_ERROR_TITLE = "Attenzione!";
@@ -41,7 +44,7 @@ public class JModifyProductDialog extends JDialog implements ActionListener{
 	
 	
 	public JModifyProductDialog(JFrame mainFrame,Prodotto product, Magazzino store,
-			ArticlesTableModel storeTableModel, HashSet <Prodotto> articlesAdded) {
+			ProductsArticlesTableModel storeTableModel, HashSet <Prodotto> articlesAdded) {
 		super(mainFrame, TITLE, ModalityType.DOCUMENT_MODAL);		
 		this.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));		
 		this.setLocationRelativeTo(null);
@@ -57,7 +60,11 @@ public class JModifyProductDialog extends JDialog implements ActionListener{
 		this.modifyProductPanel.setButtonActionListener(this);
 
 		this.setLayout(new BorderLayout());
+		this.add(Box.createVerticalStrut(MARGIN), BorderLayout.PAGE_START);
+		this.add(Box.createHorizontalStrut(MARGIN), BorderLayout.WEST);
 		this.add(this.modifyProductPanel, BorderLayout.CENTER);
+		this.add(Box.createHorizontalStrut(MARGIN), BorderLayout.EAST);
+		this.add(Box.createVerticalStrut(MARGIN), BorderLayout.PAGE_END);
 	}
 	
 	@Override

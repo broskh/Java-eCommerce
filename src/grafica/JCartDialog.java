@@ -30,10 +30,10 @@ public class JCartDialog extends JDialog implements ActionListener{
 	
 	private static final int DIALOG_WIDTH = 950;
 	private static final int DIALOG_HEIGHT = 600;
-	private static final int BUTTONS_SPACE = 200;
+	private static final int BUTTONS_SPACE = 300;
 	
-	private static final int TOP_MARGIN = 40;
-	private static final int SIDE_MARGIN = 40;
+	private static final int TOP_MARGIN = 30;
+	private static final int SIDE_MARGIN = 30;
 	private static final int BOTTOM_MARGIN = 20;
 	private static final int BOTTOMPANEL_TOP_MARGIN = 10;
 	
@@ -56,7 +56,7 @@ public class JCartDialog extends JDialog implements ActionListener{
 		JButton emptyButton = new JButton(EMPTY_CART_BUTTON_TEXT);
 		JCartTable jCartTable = new JCartTable(cart, store);
 		emptyButton.addActionListener(new EmptyCartListener(
-				(ArticlesTableModel) jCartTable.getModel(), cart));
+				(ProductsArticlesTableModel) jCartTable.getModel(), cart));
 		this.payButton.addActionListener(this);
 		
 		JPanel buttonsPanel = new JPanel();
@@ -103,21 +103,21 @@ public class JCartDialog extends JDialog implements ActionListener{
 		public JCartTable (Carrello cart, Magazzino store) {
 			this.cart = cart;
 			
-			this.setModel(new ArticlesTableModel(this.cart.getArticoli(),
-					ROW_HEIGHT, ArticlesTableModel.CART_MODE));
+			this.setModel(new ProductsArticlesTableModel(this.cart.getArticoli(),
+					ROW_HEIGHT, ProductsArticlesTableModel.CART_MODE));
 			this.setRowHeight(ROW_HEIGHT);
 			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 			centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 			this.setDefaultRenderer(String.class, centerRenderer);
 			this.setBackground(null);
-			this.getColumn(ArticlesTableModel.AMOUNT_COLUMN)
+			this.getColumn(ProductsArticlesTableModel.AMOUNT_COLUMN)
 			.setCellRenderer(new AmountColumnRender(ROW_HEIGHT));
-			ArticlesTableModel model = (ArticlesTableModel) this.getModel();
-			this.getColumn(ArticlesTableModel.AMOUNT_COLUMN)
+			ProductsArticlesTableModel model = (ProductsArticlesTableModel) this.getModel();
+			this.getColumn(ProductsArticlesTableModel.AMOUNT_COLUMN)
 			.setCellEditor(new AmountColumnEditor(model, this.cart, store, ROW_HEIGHT));
-			this.getColumn(ArticlesTableModel.BUTTON_COLUMN)
+			this.getColumn(ProductsArticlesTableModel.BUTTON_COLUMN)
 			.setCellRenderer(new RemoveColumnRender(ROW_HEIGHT));
-			this.getColumn(ArticlesTableModel.BUTTON_COLUMN)
+			this.getColumn(ProductsArticlesTableModel.BUTTON_COLUMN)
 			.setCellEditor(new RemoveColumnEditor(
 					this.cart.getArticoli(), ROW_HEIGHT));
 			this.setFocusable(false);

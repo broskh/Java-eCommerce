@@ -10,7 +10,7 @@ import negozio.Carrello;
 import negozio.Magazzino;
 import negozio.Prodotto;
 
-public class AddArticleToCartListener implements ActionListener {
+public class AddProductToCartListener implements ActionListener {
 	
 	private Carrello cart;
 	private Magazzino store;
@@ -18,7 +18,7 @@ public class AddArticleToCartListener implements ActionListener {
 	private JTextField amount;
 	private Window windowCaller;
 	
-	public AddArticleToCartListener (Window windowCaller, Magazzino store, 
+	public AddProductToCartListener (Window windowCaller, Magazzino store, 
 			Carrello cart, StringBuilder code, JTextField amount) {
 		this.store = store;
 		this.cart = cart;
@@ -27,7 +27,7 @@ public class AddArticleToCartListener implements ActionListener {
 		this.windowCaller = windowCaller;
 	}
 	
-	public AddArticleToCartListener (Magazzino store, Carrello cart, 
+	public AddProductToCartListener (Magazzino store, Carrello cart, 
 			StringBuilder code, JTextField amount) {
 		this (null, store, cart, code, amount);
 	}

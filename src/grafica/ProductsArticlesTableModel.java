@@ -32,7 +32,7 @@ import negozio.Carrello;
 import negozio.Magazzino;
 import negozio.Prodotto;
 
-public class ArticlesTableModel extends AbstractTableModel {
+public class ProductsArticlesTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = -3450099361845613304L;
 	
 	private ArrayList <Prodotto> products;
@@ -64,40 +64,40 @@ public class ArticlesTableModel extends AbstractTableModel {
 	public static final String BUTTON_COLUMN = "";
 	
 	private static final String [] CART_COLUMNS = {
-			ArticlesTableModel.IMAGE_COLUMN,
-			ArticlesTableModel.CODE_COLUMN,
-			ArticlesTableModel.NAME_COLUMN,
-			ArticlesTableModel.BRAND_COLUMN,
-			ArticlesTableModel.CATEGORY_COLUMN,
-			ArticlesTableModel.OFFER_COLUMN,
-			ArticlesTableModel.EACH_COST_COLUMN,
-			ArticlesTableModel.TOTAL_COST_COLUMN,
-			ArticlesTableModel.AMOUNT_COLUMN,
-			ArticlesTableModel.BUTTON_COLUMN
+			ProductsArticlesTableModel.IMAGE_COLUMN,
+			ProductsArticlesTableModel.CODE_COLUMN,
+			ProductsArticlesTableModel.NAME_COLUMN,
+			ProductsArticlesTableModel.BRAND_COLUMN,
+			ProductsArticlesTableModel.CATEGORY_COLUMN,
+			ProductsArticlesTableModel.OFFER_COLUMN,
+			ProductsArticlesTableModel.EACH_COST_COLUMN,
+			ProductsArticlesTableModel.TOTAL_COST_COLUMN,
+			ProductsArticlesTableModel.AMOUNT_COLUMN,
+			ProductsArticlesTableModel.BUTTON_COLUMN
 		};
 	private static final String [] STORE_COLUMNS = {
-			ArticlesTableModel.IMAGE_COLUMN,
-			ArticlesTableModel.CODE_COLUMN,
-			ArticlesTableModel.NAME_COLUMN,
-			ArticlesTableModel.BRAND_COLUMN,
-			ArticlesTableModel.CATEGORY_COLUMN,
-			ArticlesTableModel.OFFER_COLUMN,
-			ArticlesTableModel.EACH_COST_COLUMN,
-			ArticlesTableModel.EACH_DISCOUNTED_COST_COLUMN,
-			ArticlesTableModel.AMOUNT_COLUMN,
-			ArticlesTableModel.BUTTON_COLUMN
+			ProductsArticlesTableModel.IMAGE_COLUMN,
+			ProductsArticlesTableModel.CODE_COLUMN,
+			ProductsArticlesTableModel.NAME_COLUMN,
+			ProductsArticlesTableModel.BRAND_COLUMN,
+			ProductsArticlesTableModel.CATEGORY_COLUMN,
+			ProductsArticlesTableModel.OFFER_COLUMN,
+			ProductsArticlesTableModel.EACH_COST_COLUMN,
+			ProductsArticlesTableModel.EACH_DISCOUNTED_COST_COLUMN,
+			ProductsArticlesTableModel.AMOUNT_COLUMN,
+			ProductsArticlesTableModel.BUTTON_COLUMN
 		};
 	private static final String NONE_OFFER_TEXT = "Nessuna";
 
 	public static final int CART_MODE = 1;
 	public static final int STORE_MODE = 2;
 	
-	public ArticlesTableModel (ArrayList <Prodotto> products, int iconSize, int mode) {
+	public ProductsArticlesTableModel (ArrayList <Prodotto> products, int iconSize, int mode) {
 		super ();
 		this.products = products;
 		this.iconSize = iconSize;
 		this.mode = CART_MODE;
-		if (mode == ArticlesTableModel.CART_MODE || mode == ArticlesTableModel.STORE_MODE) {
+		if (mode == ProductsArticlesTableModel.CART_MODE || mode == ProductsArticlesTableModel.STORE_MODE) {
 			this.mode = mode;
 		}
 	}
@@ -109,11 +109,11 @@ public class ArticlesTableModel extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		if (this.mode == ArticlesTableModel.CART_MODE) {
-			return ArticlesTableModel.CART_COLUMNS.length;
+		if (this.mode == ProductsArticlesTableModel.CART_MODE) {
+			return ProductsArticlesTableModel.CART_COLUMNS.length;
 		}
-		else if (this.mode == ArticlesTableModel.STORE_MODE) {
-			return ArticlesTableModel.STORE_COLUMNS.length;
+		else if (this.mode == ProductsArticlesTableModel.STORE_MODE) {
+			return ProductsArticlesTableModel.STORE_COLUMNS.length;
 		}
 		return 0;
 	}
@@ -143,21 +143,21 @@ public class ArticlesTableModel extends AbstractTableModel {
 				}
 				return NONE_OFFER_TEXT;
 			case EACH_COST_COLUMN_NUMBER:
-				if (this.mode == ArticlesTableModel.CART_MODE) {
+				if (this.mode == ProductsArticlesTableModel.CART_MODE) {
 					return String.format("%.2f", this.products.get(
 							rowIndex).prezzoCadaunoScontato());
 				}
-				else if (this.mode == ArticlesTableModel.STORE_MODE) {
+				else if (this.mode == ProductsArticlesTableModel.STORE_MODE) {
 					return String.format("%.2f", this.products.get(
 							rowIndex).getPrezzo());
 				}
 				break;
 			case EACH_DISCOUNTED_COST_COLUMN_NUMBER:
-				if (this.mode == ArticlesTableModel.CART_MODE) {
+				if (this.mode == ProductsArticlesTableModel.CART_MODE) {
 					return String.format("%.2f", this.products.get(
 							rowIndex).prezzoTotaleScontato());
 				}
-				else if (this.mode == ArticlesTableModel.STORE_MODE) {
+				else if (this.mode == ProductsArticlesTableModel.STORE_MODE) {
 					return String.format("%.2f", this.products.get(
 							rowIndex).prezzoCadaunoScontato());
 				}
@@ -172,11 +172,11 @@ public class ArticlesTableModel extends AbstractTableModel {
 
 	@Override
 	public String getColumnName (int column) {
-		if (this.mode == ArticlesTableModel.CART_MODE) {
-			return ArticlesTableModel.CART_COLUMNS [column];
+		if (this.mode == ProductsArticlesTableModel.CART_MODE) {
+			return ProductsArticlesTableModel.CART_COLUMNS [column];
 		}
-		else if (this.mode == ArticlesTableModel.STORE_MODE) {
-			return ArticlesTableModel.STORE_COLUMNS [column];
+		else if (this.mode == ProductsArticlesTableModel.STORE_MODE) {
+			return ProductsArticlesTableModel.STORE_COLUMNS [column];
 		}
 		return null;
 	}
@@ -228,7 +228,7 @@ class AmountColumnEditor extends DefaultCellEditor{
 	
 	private static final int NULL_VALUE = -1;
 
-    public AmountColumnEditor (ArticlesTableModel articlesTableModel, 
+    public AmountColumnEditor (ProductsArticlesTableModel articlesTableModel, 
     		Carrello cart, Magazzino store, int cellHeight) {
     	super (new JTextField());
     	this.lastRowSelected = NULL_VALUE;
@@ -308,7 +308,7 @@ class AmountCell extends JPanel {
 	private static final long serialVersionUID = 2028713241711826134L;
 
 	private JTextField textField;
-	private ArticlesTableModel articlesTableModel;
+	private ProductsArticlesTableModel articlesTableModel;
 	private Prodotto article;
 	
 	private static final int TEXTFIELD_WIDTH = 50;
@@ -317,7 +317,7 @@ class AmountCell extends JPanel {
 	private static final int GENERIC_MARGIN = 10;
 
 	public AmountCell (int rowHeight, Prodotto article, Integer maxValue, 
-			ArticlesTableModel articlesTableModel) {
+			ProductsArticlesTableModel articlesTableModel) {
 		this.textField = new JTextField();
 		this.article = article;
 		this.articlesTableModel = articlesTableModel;
@@ -347,7 +347,7 @@ class AmountCell extends JPanel {
 		this (rowHeight, null, null, null);
 	}
 	
-	public AmountCell (int rowHeight, ArticlesTableModel articlesTableModel) {
+	public AmountCell (int rowHeight, ProductsArticlesTableModel articlesTableModel) {
 		this (rowHeight, null, null, articlesTableModel);
 	}
 	
@@ -397,7 +397,7 @@ class AmountCell extends JPanel {
 		this.initTableUpdate();
 	}
 	
-	public void setArticlesTableModel (ArticlesTableModel articlesTableModel) {
+	public void setArticlesTableModel (ProductsArticlesTableModel articlesTableModel) {
 		this.articlesTableModel = articlesTableModel;
 		this.initTableUpdate();
 	}
@@ -406,7 +406,7 @@ class AmountCell extends JPanel {
 		return this.article;
 	}
 	
-	public ArticlesTableModel getArticlesTableModel () {
+	public ProductsArticlesTableModel getArticlesTableModel () {
 		return this.articlesTableModel;
 	}
 	
@@ -568,6 +568,6 @@ class RemoveCell extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		this.articles.remove((int)this.nArticle);
-		((ArticlesTableModel)((JTable)this.getParent()).getModel()).fireTableDataChanged();
+		((ProductsArticlesTableModel)((JTable)this.getParent()).getModel()).fireTableDataChanged();
 	}
 }
