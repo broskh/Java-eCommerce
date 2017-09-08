@@ -38,11 +38,11 @@ public class JModifyProductPanel extends JPanel implements ActionListener{
 	private JTextField categoryTextField;
 	private JTextField costTextField;
 	private JTextField amountTextField;
-	private JTextField percentTextField;
+	private JTextField perCentTextField;
 	private JButton modifyButton;
 	private JRadioButton noOfferRadioButton;
-	private JRadioButton percentOfferRadioButton;
-	private JRadioButton threePerTwoOfferRadioButton;
+	private JRadioButton perCentOfferRadioButton;
+	private JRadioButton threeForTwoOfferRadioButton;
 
 	private static final int ICON_SIZE = 120;
 	private static final int TEXTBOX_WIDTH = 10;
@@ -61,10 +61,10 @@ public class JModifyProductPanel extends JPanel implements ActionListener{
 	private static final String AMOUNT_LABEL_TEXT = "Quantità: ";
 	private static final String OFFER_LABEL_TEXT = "Offerta:";
 	private static final String NO_OFFER_TEXT = "Nessuna";
-	private static final String PERCENT_OFFER_TEXT = "Percentuale";
-	private static final String THREE_PER_TWO_OFFER__TEXT = "3x2";
+	private static final String PER_CENT_OFFER_TEXT = "Percentuale";
+	private static final String THREE_FOR_TWO_OFFER__TEXT = "3x2";
 
-	private static final String DEFAULT_PERCENT_VALUE = "0";
+	private static final String DEFAULT_PER_CENT_VALUE = "0";
 	
 	public JModifyProductPanel () {
 		this (new Prodotto ()); 
@@ -99,35 +99,38 @@ public class JModifyProductPanel extends JPanel implements ActionListener{
 		JLabel categoryLabel = new JLabel(CATEGORY_LABEL_TEXT);
 		this.categoryTextField = new JTextField(this.product.getCategoria(), TEXTBOX_WIDTH);
 		JLabel costLabel = new JLabel(PRICE_LABEL_TEXT);
-		this.costTextField = new JTextField(Float.toString(this.product.getPrezzo()), TEXTBOX_WIDTH);
+		this.costTextField = new JTextField(Float.toString(this.product.getPrezzo()), 
+				TEXTBOX_WIDTH);
 		PlainDocument pdCost = (PlainDocument)this.costTextField.getDocument();
 		pdCost.setDocumentFilter(new PriceDocumentFilter());
 		JLabel amountLabel = new JLabel(AMOUNT_LABEL_TEXT);
-		this.amountTextField = new JTextField(Integer.toString(this.product.getQuantita()),TEXTBOX_WIDTH);
+		this.amountTextField = new JTextField(Integer.toString(this.product.getQuantita()), 
+				TEXTBOX_WIDTH);
 		PlainDocument pdAmount = (PlainDocument)this.amountTextField.getDocument();
 		pdAmount.setDocumentFilter(new AmountDocumentFilter());
 		
 		JLabel offerLabel = new JLabel(OFFER_LABEL_TEXT);
-		this.percentTextField = new JTextField(TEXTBOX_WIDTH);
-		PlainDocument docPC = (PlainDocument)this.percentTextField.getDocument();
+		this.perCentTextField = new JTextField(TEXTBOX_WIDTH);
+		PlainDocument docPC = (PlainDocument)this.perCentTextField.getDocument();
 		docPC.setDocumentFilter(new AmountDocumentFilter(100));
-		this.percentTextField.setText(DEFAULT_PERCENT_VALUE);
+		this.perCentTextField.setText(DEFAULT_PER_CENT_VALUE);
 		this.noOfferRadioButton = new JRadioButton(NO_OFFER_TEXT);
 		this.noOfferRadioButton.addActionListener(this);
-		this.percentOfferRadioButton = new JRadioButton(
-				PERCENT_OFFER_TEXT);		
-		this.percentOfferRadioButton.addActionListener(this);
-		this.threePerTwoOfferRadioButton = new JRadioButton(
-				THREE_PER_TWO_OFFER__TEXT);		
-		this.threePerTwoOfferRadioButton.addActionListener(this);
+		this.perCentOfferRadioButton = new JRadioButton(
+				PER_CENT_OFFER_TEXT);		
+		this.perCentOfferRadioButton.addActionListener(this);
+		this.threeForTwoOfferRadioButton = new JRadioButton(
+				THREE_FOR_TWO_OFFER__TEXT);		
+		this.threeForTwoOfferRadioButton.addActionListener(this);
 		ButtonGroup buttonGroup = new ButtonGroup();
 		buttonGroup.add(this.noOfferRadioButton);
-		buttonGroup.add(this.percentOfferRadioButton);
-		buttonGroup.add(this.threePerTwoOfferRadioButton);
+		buttonGroup.add(this.perCentOfferRadioButton);
+		buttonGroup.add(this.threeForTwoOfferRadioButton);
 		this.selectCorrectOffer ();
 		this.modifyButton = new JButton();
 		
-		JPanel fieldsPanel = new JPanel(new GridLayout(ATTRIBUTESPANEL_ROWS,ATTIRUBTESPANEL_COLUMNS));
+		JPanel fieldsPanel = new JPanel(new GridLayout(
+				ATTRIBUTESPANEL_ROWS, ATTIRUBTESPANEL_COLUMNS));
 		fieldsPanel.add(codeLabel);
 		fieldsPanel.add(this.codeTextField);
 		fieldsPanel.add(nameLabel);
@@ -144,9 +147,9 @@ public class JModifyProductPanel extends JPanel implements ActionListener{
 		fieldsPanel.add(Box.createGlue());
 		fieldsPanel.add(this.noOfferRadioButton);
 		fieldsPanel.add(Box.createGlue());
-		fieldsPanel.add(this.percentOfferRadioButton);
-		fieldsPanel.add(this.percentTextField);
-		fieldsPanel.add(this.threePerTwoOfferRadioButton);
+		fieldsPanel.add(this.perCentOfferRadioButton);
+		fieldsPanel.add(this.perCentTextField);
+		fieldsPanel.add(this.threeForTwoOfferRadioButton);
 
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.add(imagePanel);
@@ -155,24 +158,22 @@ public class JModifyProductPanel extends JPanel implements ActionListener{
 	}
 	
 	private void selectCorrectOffer () {
-		if(this.product.getOfferta() == null)
-		{
+		if(this.product.getOfferta() == null) {
 			this.noOfferRadioButton.setSelected(true);
-			this.percentTextField.setEnabled(false);
+			this.perCentTextField.setEnabled(false);
 		}
-		else if(this.product.getOfferta().getClass().equals(ScontoTrePerDue.class))
-		{
-			this.threePerTwoOfferRadioButton.setSelected(true);
-			this.percentTextField.setEnabled(false);
+		else if(this.product.getOfferta().getClass().equals(ScontoTrePerDue.class)) {
+			this.threeForTwoOfferRadioButton.setSelected(true);
+			this.perCentTextField.setEnabled(false);
 		}
-		else if (this.product.getOfferta().getClass().equals(ScontoPercentuale.class))
-		{
-			this.percentOfferRadioButton.setSelected(true);
-			this.percentTextField.setText(Integer.toString(((ScontoPercentuale) this.product.getOfferta()).getPercentuale()));
+		else if (this.product.getOfferta().getClass().equals(ScontoPercentuale.class)) {
+			this.perCentOfferRadioButton.setSelected(true);
+			int perCent = ((ScontoPercentuale) this.product.getOfferta()).getPercentuale();
+			this.perCentTextField.setText(Integer.toString(perCent));
 		}
 	}
 	
-	public File getImmagine () {
+	public File getProductImage () {
 		return new File (((ImageIcon)this.imageLabel.getIcon()).getDescription());
 	}
 	
@@ -204,8 +205,8 @@ public class JModifyProductPanel extends JPanel implements ActionListener{
 		if (this.noOfferRadioButton.isSelected()) {
 			return null;
 		}
-		else if (this.percentOfferRadioButton.isSelected()) {
-			int percent = Integer.parseInt(this.percentTextField.getText());
+		else if (this.perCentOfferRadioButton.isSelected()) {
+			int percent = Integer.parseInt(this.perCentTextField.getText());
 			if (percent != 0) {
 				return new ScontoPercentuale(percent);
 			}
@@ -213,7 +214,7 @@ public class JModifyProductPanel extends JPanel implements ActionListener{
 				return null;
 			}
 		}
-		else if (this.threePerTwoOfferRadioButton.isSelected()) {
+		else if (this.threeForTwoOfferRadioButton.isSelected()) {
 			return new ScontoTrePerDue();
 		}
 		return null;
@@ -229,37 +230,31 @@ public class JModifyProductPanel extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource().equals(this.percentOfferRadioButton))
-		{
-			this.percentTextField.setEnabled(true);
+		if(e.getSource().equals(this.perCentOfferRadioButton)) {
+			this.perCentTextField.setEnabled(true);
 		}
-		else if(e.getSource().equals(this.noOfferRadioButton))
-		{
-			this.percentTextField.setEnabled(false);
+		else if(e.getSource().equals(this.noOfferRadioButton)) {
+			this.perCentTextField.setEnabled(false);
 		}
-		else if(e.getSource().equals(this.threePerTwoOfferRadioButton))
-		{
-			this.percentTextField.setEnabled(false);
+		else if(e.getSource().equals(this.threeForTwoOfferRadioButton)) {
+			this.perCentTextField.setEnabled(false);
 		}
-		else if(e.getSource().equals(this.imageButton)) //DA CONTROLLARE
-		{
+		else if(e.getSource().equals(this.imageButton)) {
 			JFileChooser fc = new JFileChooser();
 			int returnVal = fc.showOpenDialog(this);
 			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			fc.setMultiSelectionEnabled(false);
-			if(returnVal == 0)
-			{
-				ResizableIcon newIcon;
+			if(returnVal == 0) {
 				try {
-					newIcon = new ResizableIcon(
+					ResizableIcon newIcon = new ResizableIcon(
 							fc.getSelectedFile(),ICON_SIZE, ICON_SIZE);
 					this.imageLabel.setIcon(new ImageIcon(
 							newIcon.getBufferedImage(), fc.getSelectedFile().toString()));
-					this.updateUI();
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block IMMAGINE NON CORRETTA
+					this.imageLabel.setText(IMAGE_LABEL_TEXT);
 					e1.printStackTrace();
 				}
+				this.updateUI();
 			}			
 		}
 	}

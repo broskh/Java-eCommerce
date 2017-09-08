@@ -34,8 +34,7 @@ public class JSelectProductPanel extends JPanel {
 		for (Prodotto articolo : this.prodotti) {
 			codici.add(articolo.getCodice());
 		}
-		this.codeComboBox = new JComboBox <String> (codici.toArray(
-				new String[codici.size()]));
+		this.codeComboBox = new JComboBox <String> (codici.toArray (new String[codici.size()]));
 		this.label = new JLabel();
 		this.label.setAlignmentX(SwingConstants.LEFT);
 		this.selectButton = new JButton();
@@ -47,7 +46,8 @@ public class JSelectProductPanel extends JPanel {
 
 		this.setLayout(new BorderLayout());
 		this.add(label, BorderLayout.PAGE_START);
-		this.add(Box.createRigidArea(new Dimension(this.getWidth(), INTERACTIONPANEL_TOP_MARGIN)), BorderLayout.CENTER);
+		Dimension rigidAreadDimension = new Dimension(this.getWidth(), INTERACTIONPANEL_TOP_MARGIN);
+		this.add(Box.createRigidArea(rigidAreadDimension), BorderLayout.CENTER);
 		this.add(interactionPanel, BorderLayout.PAGE_END);
 	}
 	
