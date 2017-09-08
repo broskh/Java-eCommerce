@@ -18,23 +18,25 @@ public class JSelectProductWithAmountPanel extends JPanel implements ActionListe
 	private static final long serialVersionUID = -8842725930146342385L;
 	
 	private StringBuilder code;
+	private ArrayList <Prodotto> articoli;
 
 	private JComboBox <String> codeComboBox;
 	private JTextField amountTextfield;
+	private AmountDocumentFilter amountDocumentFilter;
 	
 	private static final int CODE_TEXTFIELD_WIDTH = 150;
 	private static final int AMOUNT_TEXTFIELD_COLUMNS = 3;
 	private static final int COMPONENTS_SPACE = 30;
 	
-	private static final int DEFAULT_AMOUNT = 1;
+	private static final int DEFAULT_AMOUNT = 0;
 	
 	private static final String CODE_TEXT = "Codice: ";
 	private static final String AMOUNT_TEXT = "Qnt: ";
 	
 	public JSelectProductWithAmountPanel (ArrayList <Prodotto> articoli) {
-		
+		this.articoli = articoli;
 		ArrayList <String> codici = new ArrayList <> ();
-		for (Prodotto articolo : articoli) {
+		for (Prodotto articolo : this.articoli) {
 			codici.add(articolo.getCodice());
 		}
 		this.codeComboBox = new JComboBox <String> (codici.toArray(
@@ -47,7 +49,8 @@ public class JSelectProductWithAmountPanel extends JPanel implements ActionListe
 		this.amountTextfield = new JTextField(String.valueOf(DEFAULT_AMOUNT), 
 				AMOUNT_TEXTFIELD_COLUMNS);
 		PlainDocument doc = (PlainDocument) this.amountTextfield.getDocument();
-		doc.setDocumentFilter(new AmountDocumentFilter());
+		this.amountDocumentFilter = new AmountDocumentFilter(this.articoli.get(0).getQuantita());
+		doc.setDocumentFilter(this.amountDocumentFilter);
 
 		this.add(new JLabel(CODE_TEXT));
 		this.add(this.codeComboBox);
@@ -72,5 +75,7 @@ public class JSelectProductWithAmountPanel extends JPanel implements ActionListe
 	public void actionPerformed(ActionEvent e) {
 		this.code.replace(0, this.code.length(), 
 				this.codeComboBox.getSelectedItem().toString());
+		this.amountTextfield.setText(String.valueOf(DEFAULT_AMOUNT));
+		this.amountDocumentFilter.setMaxValue(this.articoli.get(this.codeComboBox.getSelectedIndex()).getQuantita());
 	}
 }
