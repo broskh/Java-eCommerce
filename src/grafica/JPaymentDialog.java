@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -13,6 +14,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -28,6 +30,7 @@ public class JPaymentDialog extends JDialog implements ActionListener {
 	private Carrello cart;
 	private Magazzino store;
 
+	private JTextField addressTextfield;
 	private JButton cancelButton;
 	private JButton okButton;
 	private JClientContentPanel clientContenPanel;
@@ -60,6 +63,11 @@ public class JPaymentDialog extends JDialog implements ActionListener {
 	private static final String OK_BUTTON_TEXT = "Conferma";
 	private static final String CANCEL_BUTTON_TEXT = "Annulla";
 
+	private static final String ALERT_SUCCESS_TITLE = "Pagamento effettuato";
+	private static final String ALERT_SUCCESS_TEXT = "Pagamento effettuato con successo.";
+	private static final String ALERT_NO_ADDRESS_TITLE = "Attenzione";
+	private static final String ALERT_NO_ADDRESS_TEXT = "Inserire un indirizzo per la spedizione.";
+
 	public JPaymentDialog (JClientContentPanel clientContentPanel, Carrello cart, 
 			Magazzino store) {
 		super (SwingUtilities.getWindowAncestor(clientContentPanel), TITLE, 
@@ -86,10 +94,11 @@ public class JPaymentDialog extends JDialog implements ActionListener {
 		bottomPanel.add(buttonsPanel, BorderLayout.CENTER);
 		bottomPanel.add(Box.createVerticalStrut(BOTTOM_MARGIN), BorderLayout.PAGE_END);
 		
+		this.addressTextfield = new JTextField(ADDRESS_TEXTFIELD_WIDTH);
 		JPanel addressPanel = new JPanel();
 		addressPanel.add(new JLabel(ADDRESS_TITLE));
 		addressPanel.add(Box.createHorizontalStrut(ADDRESS_SPACE));
-		addressPanel.add(new JTextField(ADDRESS_TEXTFIELD_WIDTH));
+		addressPanel.add(this.addressTextfield);
 				
 		JRadioButton transferButton = new JRadioButton(PAYMENT_1_TEXT);
 	    transferButton.setSelected(true);
@@ -147,12 +156,21 @@ public class JPaymentDialog extends JDialog implements ActionListener {
 			this.setVisible(false);
 		}
 		else if (e.getSource() == this.okButton) {
-			for (Prodotto articolo : this.cart.getArticoli()) {
-				this.store.rimuoviProdotto(articolo.getCodice(), articolo.getQuantita());
+			Window mainWindow = SwingUtilities.getWindowAncestor(this.clientContenPanel);
+			if (this.addressTextfield.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(mainWindow, ALERT_NO_ADDRESS_TEXT,
+						ALERT_NO_ADDRESS_TITLE, JOptionPane.ERROR_MESSAGE);
 			}
-			this.cart.svuota();
-			this.setVisible(false);
-			this.clientContenPanel.updateArticles();
+			else {
+				for (Prodotto articolo : this.cart.getArticoli()) {
+					this.store.rimuoviProdotto(articolo.getCodice(), articolo.getQuantita());
+				}
+				this.cart.svuota();
+				this.setVisible(false);
+				this.clientContenPanel.updateArticles();
+				JOptionPane.showMessageDialog(mainWindow, ALERT_SUCCESS_TEXT,
+						ALERT_SUCCESS_TITLE, JOptionPane.INFORMATION_MESSAGE);
+			}
 		}
 	}
 }

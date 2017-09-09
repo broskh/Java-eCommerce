@@ -245,10 +245,9 @@ public class JModifyProductPanel extends JPanel implements ActionListener{
 		}
 		else if(e.getSource().equals(this.imageButton)) {
 			JFileChooser fc = new JFileChooser();
-			int returnVal = fc.showOpenDialog(this);
 			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			fc.setMultiSelectionEnabled(false);
-			if(returnVal == 0) {
+			if(fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 				try {
 					ResizableIcon newIcon = new ResizableIcon(
 							fc.getSelectedFile(),ICON_SIZE, ICON_SIZE);

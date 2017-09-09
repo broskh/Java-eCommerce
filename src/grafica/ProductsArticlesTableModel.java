@@ -39,6 +39,9 @@ public class ProductsArticlesTableModel extends AbstractTableModel {
 	private int iconSize;
 	private int mode;
 
+	public static final int CART_MODE = 1;
+	public static final int STORE_MODE = 2;
+
 	public static final int IMAGE_COLUMN_NUMBER = 0;
 	public static final int CODE_COLUMN_NUMBER = 1;
 	public static final int NAME_COLUMN_NUMBER = 2;
@@ -88,9 +91,6 @@ public class ProductsArticlesTableModel extends AbstractTableModel {
 			ProductsArticlesTableModel.BUTTON_COLUMN
 		};
 	private static final String NONE_OFFER_TEXT = "Nessuna";
-
-	public static final int CART_MODE = 1;
-	public static final int STORE_MODE = 2;
 	
 	public ProductsArticlesTableModel (ArrayList <Prodotto> products, int iconSize, int mode) {
 		super ();
@@ -169,7 +169,7 @@ public class ProductsArticlesTableModel extends AbstractTableModel {
 		}
 		return null;
 	}
-
+	
 	@Override
 	public String getColumnName (int column) {
 		if (this.mode == ProductsArticlesTableModel.CART_MODE) {
@@ -509,6 +509,7 @@ class RemoveCell extends JPanel implements ActionListener{
 	private static final int GENERIC_MARGIN = 10;
 	
 	private static final String BUTTON_TEXT = "Remove";
+	
 	private static final String IMAGE_PATH = "media/img/remove.png";
 	
     public RemoveCell (int cellHeight) {
@@ -567,7 +568,10 @@ class RemoveCell extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		this.articles.remove((int)this.nArticle);
-		((ProductsArticlesTableModel)((JTable)this.getParent()).getModel()).fireTableDataChanged();
+		if (e.getSource().equals(this.removeButton)) {
+			this.articles.remove((int)this.nArticle);
+			JTable table = (JTable) this.getParent();
+			((ProductsArticlesTableModel) table.getModel()).fireTableDataChanged ();
+		}
 	}
 }

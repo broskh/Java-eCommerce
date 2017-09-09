@@ -1,19 +1,11 @@
 import java.awt.Font;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Enumeration;
 
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 
 import grafica.JUserFrame;
-import grafica.JeCommerceFrame;
-
 import negozio.Magazzino;
-import utenza.Utente;
 
 /**
  * La classe Java_eCommerce è la classe principale che contiene il
@@ -28,7 +20,6 @@ public class Java_eCommerce  {
 
 	private static final String FONT = "Inconsolata"; /**<Font.*/
 	private static final String THEME = "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"; /**<Tema.*/
-	private static final String LAST_CONFIG_FILE = "media/saves/last"; /**<File di configurazione contenente il percorso dell'ultimo file magazzino salvato.*/
 	
 	public static void main(String[] args) {
 		//cambio font di default
@@ -50,23 +41,9 @@ public class Java_eCommerce  {
         }
 	    
 	    //programma vero e proprio
-		Utente user = null;
 		Magazzino store = new Magazzino();
-        File lastStoreFile = new File(Java_eCommerce.LAST_CONFIG_FILE);
-		BufferedReader lastStore;
-		try {
-			lastStore = new BufferedReader(new FileReader(lastStoreFile));
-			store.caricaMagazzino(lastStore.readLine());
-			JeCommerceFrame jeCommerceFrame = null;
-			JUserFrame jUserFrame = new JUserFrame(jeCommerceFrame, store, user);
-			
-			jUserFrame.setVisible(true);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-				
+		JUserFrame jUserFrame = new JUserFrame(store);
+		jUserFrame.setVisible(true);				
 		
 //		Magazzino magazzino = new Magazzino();
 //		Prodotto prodotto1 = new Prodotto("nome1", "marca1", "codice1", "categoria1", 

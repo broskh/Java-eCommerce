@@ -29,6 +29,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -111,8 +112,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	private static final String FORWARD_BUTTON_TEXT = ">";
 	private static final String FILTER_BUTTON_TEXT = "Filtra";
 	private static final String CART_BUTTON_TEXT = "Carrello";	
-	private static final String ADD_BUTTON_TEXT = "+";
-	
+	private static final String ADD_BUTTON_TEXT = "+";	
 	private static final String FILTER_TYPE_LABEL = "Filtra per:";
 	private static final String FILTER_STRING_LABEL = "Criterio di ricerca:";
 	private static final String IMAGE_LABEL = "Nessuna immagine";
@@ -122,8 +122,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	private static final String CATEGORY_LABEL = "Categoria: ";
 	private static final String COST_LABEL = "Prezzo: ";
 	private static final String AVAILABILITY_LABEL = "Disponibilità: ";
-	private static final String OFFER_LABEL = "Offerta: ";
-	
+	private static final String OFFER_LABEL = "Offerta: ";	
 	private static final String FILE_MENU_STRING = "File";
 	private static final String FILTER_MENU_STRING = "Filtra";
 	private static final String CART_MENU_STRING = "Carrello";
@@ -132,6 +131,10 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	private static final String ADD_ARTICLE_ITEM = "Aggiungi articolo";
 	private static final String REMOVE_ARTICLE_ITEM = "Rimuovi articolo";
 	private static final String EMPTY_CART_ITEM = "Svuota";
+	private static final String CURRENCY_SYMBOL = " €";
+	private static final String NONE_OFFER_TEXT = "Nessuna";	
+	private static final String ALERT_REMOVE_PRODUCT_TITLE = "Prodotto eliminato";
+	private static final String ALERT_REMOVE_PRODUCT_TEXT = "Prodotto eliminato correttamente dal carrello.";
 	
 	private static final String[] FILTER_TYPE_STRINGS = {
 			Magazzino.STRINGA_FILTRO_NOME,
@@ -141,8 +144,6 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 			Magazzino.STRINGA_FILTRO_PREZZO,
 			Magazzino.STRINGA_FILTRO_QUANTITA
 		};
-	private static final String CURRENCY_SYMBOL = " €";
-	private static final String NONE_OFFER_TEXT = "Nessuna";
 	
 	private static final String ADD_IMAGE_PATH = "media/img/add.png";
 	private static final String CART_IMAGE_PATH = "media/img/cart.png";
@@ -254,7 +255,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		this.removeArticleItem = new JMenuItem(REMOVE_ARTICLE_ITEM);
 		this.removeArticleItem.addActionListener(this);
 		this.emptyCartItem = new JMenuItem(EMPTY_CART_ITEM);
-		this.emptyCartItem.addActionListener(new EmptyCartListener (this.cart));
+		this.emptyCartItem.addActionListener(new EmptyCartListener (this.mainFrame, this.cart));
 		JMenu cartMenu = new JMenu (CART_MENU_STRING);
 		cartMenu.add(this.showCartItem);
 		cartMenu.add(this.addArticleItem);
@@ -509,6 +510,8 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 			 JRemoveProductFromCartDialog removeArticleDialog = new JRemoveProductFromCartDialog(
 					 this.mainFrame, this.cart);
 			 removeArticleDialog.setVisible(true);
+			JOptionPane.showMessageDialog(this.mainFrame, ALERT_REMOVE_PRODUCT_TEXT,
+					ALERT_REMOVE_PRODUCT_TITLE, JOptionPane.INFORMATION_MESSAGE);
 		}
 		else if (e.getSource().equals(this.backButton)) {
 			this.previousPage();

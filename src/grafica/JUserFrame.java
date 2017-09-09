@@ -6,6 +6,11 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -28,9 +33,7 @@ public class JUserFrame extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 979362510733265067L;
 	
 	private Magazzino store;
-	private Utente user;
 	
-	private JeCommerceFrame eCommerceFrame;
 	private JTextField nameTextField;
 	private JTextField surnameTextField;
 	private JRadioButton clientRadioButton;
@@ -56,14 +59,16 @@ public class JUserFrame extends JFrame implements ActionListener {
 	private static final String ADMIN_TEXT = "Amministratore";
 	private static final String OK_BUTTON_TEXT = "Accedi";
 	private static final String ERROR_TITLE = "Attenzione";
-	private static final String NO_TYPE_ERROR_TEXT = "Selezionare il tipo di utente";
-	private static final String NO_PERSONAL_DATA_ERROR_TEXT = "Inserire i propri dati correttamente";
+	private static final String NO_TYPE_ERROR_TEXT = "Selezionare il tipo di utente.";
+	private static final String NO_PERSONAL_DATA_ERROR_TEXT = "Inserire i propri dati correttamente.";
+	private static final String ALERT_FILE_NOT_FOUND_TITLE = "File non trovato";
+	private static final String ALERT_FILE_NOT_FOUND_TEXT = "File contenente il magazzino non trovato.";
 	
-	public JUserFrame(JeCommerceFrame eCommerceFrame, Magazzino store, Utente user)	{
+	private static final String LAST_CONFIG_FILE = "media/saves/last";
+	
+	public JUserFrame(Magazzino store)	{
 		super(JUserFrame.TITLE);
-		this.eCommerceFrame = eCommerceFrame;
 		this.store  = store;
-		this.user = user;
 		
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setSize(new Dimension(JUserFrame.FRAME_WIDTH, JUserFrame.FRAME_HEIGHT));
@@ -121,19 +126,38 @@ public class JUserFrame extends JFrame implements ActionListener {
 			boolean noTextFieldEmpty = !this.nameTextField.getText().equals("") && 
 					!this.surnameTextField.getText().equals("");
 			if (noTextFieldEmpty) {
+				Utente user;
+				JeCommerceFrame eCommerceFrame;
 				if(this.adminRadioButton.isSelected()) {
-					this.user = new Amministratore(this.nameTextField.getText(),
+					user = new Amministratore(this.nameTextField.getText(),
 							this.surnameTextField.getText());
-					this.eCommerceFrame = new JeCommerceFrame(this.user, this.store);
+					eCommerceFrame = new JeCommerceFrame(user, this.store);
 					this.setVisible(false);
-					this.eCommerceFrame.setVisible(true);
+					eCommerceFrame.setVisible(true);
 				}
 				else if (this.clientRadioButton.isSelected()) {
-					this.user = new Cliente(this.nameTextField.getText(),
+					user = new Cliente(this.nameTextField.getText(),
 							this.surnameTextField.getText());
-					this.eCommerceFrame = new JeCommerceFrame(this.user, this.store);
+					File lastStoreFile = new File(LAST_CONFIG_FILE);
+					BufferedReader lastStore;
+					try {
+						lastStore = new BufferedReader(new FileReader(lastStoreFile));
+						File storeFile = new File(lastStore.readLine());
+						if (storeFile.exists()) {
+							store.caricaMagazzino(storeFile);
+							eCommerceFrame = new JeCommerceFrame(user, this.store);
+							eCommerceFrame.setVisible(true);
+						}
+						else {
+							JOptionPane.showMessageDialog(null, ALERT_FILE_NOT_FOUND_TEXT,
+									ALERT_FILE_NOT_FOUND_TITLE, JOptionPane.INFORMATION_MESSAGE);
+						}
+					} catch (FileNotFoundException e1) {
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 					this.setVisible(false);
-					this.eCommerceFrame.setVisible(true);
 				}
 				else {
 					JOptionPane.showMessageDialog(this, JUserFrame.NO_TYPE_ERROR_TEXT,

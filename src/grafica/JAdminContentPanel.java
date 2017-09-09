@@ -22,6 +22,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -32,7 +33,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import negozio.Magazzino;  
 import negozio.Prodotto;
 
-public class JAdminContentPanel extends JPanel implements ActionListener{
+public class JAdminContentPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -3936116522061776556L;
 
 	private Magazzino store;
@@ -77,6 +78,10 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 	private static final String ADD_MENU_ITEM_TEXT = "Aggiungi";
 	private static final String MODIFY_MENU_ITEM_TEXT = "Modifica";
 	private static final String DELETE_MENU_ITEM_TEXT = "Elimina";
+	private static final String ALERT_LOAD_TITLE = "Caricamento avvenuto";
+	private static final String ALERT_LOAD_TEXT = "Caricamento avvenuto con successo.";
+	private static final String ALERT_SAVE_TITLE = "Salvataggio avvenuto";
+	private static final String ALERT_SAVE_TEXT = "Salvataggio avvenuto con successo.";
 	
 	private static final String NEW_IMAGES_FOLDER = "media/img/products/";
 	private static final String FILE_CHOOSER_OPEN_DIRECTORY = "media/saves";
@@ -205,7 +210,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 			fc.setDialogTitle(FILE_CHOOSER_SAVE_TITLE);
 			fc.setApproveButtonText(FILE_CHOOSER_SAVE_BUTTON_TEXT);
 			fc.setFileFilter(new StoreFileFilter());
-			if(fc.showOpenDialog(this) == 0) {
+			if(fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 //				AGGIUNTA NUOVE IMMAGINI
 				for (Prodotto articolo : this.productsAdded) {
 					File newFile = this.getNewImageFile(articolo.getImmagine());
@@ -219,7 +224,13 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 //				PULISCO LISTE
 				this.productsAdded.clear();
 				
-				store.salvaMagazzino(fc.getSelectedFile());
+				if (fc.getSelectedFile().getName().endsWith(StoreFileFilter.EXTENSION)) {
+					store.salvaMagazzino(fc.getSelectedFile());
+				}
+				else {
+					store.salvaMagazzino(new File(
+							fc.getSelectedFile().getPath() + StoreFileFilter.EXTENSION));
+				}
 //				SALVO NELL'APPOSITO FILE IL PERCORSO DELL'ULTIMO MAGAZZINO SALVATO
 				BufferedWriter lastStoreFile = null;
 		        try {
@@ -230,6 +241,8 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 		        } catch ( IOException g ) {
 		            g.printStackTrace();
 		        }
+				JOptionPane.showMessageDialog(this, ALERT_SAVE_TEXT,
+						ALERT_SAVE_TITLE, JOptionPane.INFORMATION_MESSAGE);
 			}
 	    }
 		else if(e.getSource().equals(this.loadButton) || e.getSource().equals(this.loadMenuItem)) {			
@@ -237,10 +250,13 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 			fc.setFileFilter(new StoreFileFilter());
 			fc.setDialogTitle(FILE_CHOOSER_LOAD_TITLE);
 			fc.setApproveButtonText(FILE_CHOOSER_LOAD_BUTTON_TEXT);
-			if(fc.showOpenDialog(this) == 0) {
+			if(fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 				this.store.caricaMagazzino(fc.getSelectedFile());
-				this.storeTable = new JStoreTable(this.store);
-			}			
+				((ProductsArticlesTableModel)this.storeTable.getModel()).fireTableDataChanged();
+				JOptionPane.showMessageDialog(this, ALERT_LOAD_TEXT,
+						ALERT_LOAD_TITLE, JOptionPane.INFORMATION_MESSAGE);	
+			}
+			this.updateUI();
 		}
 		else if(e.getSource().equals(this.addButton) || e.getSource().equals(this.addMenuItem)) {
 			JAddProductToStoreDialog jAddProductDialog = new JAddProductToStoreDialog(
@@ -268,16 +284,14 @@ public class JAdminContentPanel extends JPanel implements ActionListener{
 		Files.copy(source.toPath(), dest.toPath());
 	}
 	
-	class JStoreTable extends JTable implements JProductsTable
-	{
+	class JStoreTable extends JTable implements JProductsTable {
 		private static final long serialVersionUID = 4734550632778588769L;
 		
 		private Magazzino store;
 		
 		private static final int ROW_HEIGHT = 100;
 		
-		public JStoreTable(Magazzino store)
-		{
+		public JStoreTable(Magazzino store) {
 			this.store = store;
 			
 			this.setModel(new ProductsArticlesTableModel(this.store.getArticoli(),

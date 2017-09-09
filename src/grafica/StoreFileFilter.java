@@ -6,7 +6,7 @@ import javax.swing.filechooser.FileFilter;
 
 public class StoreFileFilter extends FileFilter {
 	
-	private static final String EXTENSION = ".mag";
+	public static final String EXTENSION = ".mag";
 	
 	public StoreFileFilter () {
 		super ();

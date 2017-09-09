@@ -85,7 +85,11 @@ public class Magazzino implements GestioneProdotti {
 		ObjectInputStream objectInputStream;
 		try {
 			objectInputStream = new ObjectInputStream(new FileInputStream(file));
-			this.articoli = (ArrayList <Prodotto>) objectInputStream.readObject();
+			this.articoli.clear();
+			ArrayList <Prodotto> articoli = (ArrayList <Prodotto>) objectInputStream.readObject();
+			for (Prodotto articolo : articoli) {
+				this.articoli.add(articolo);
+			}
 			objectInputStream.close();
 			return true;
 		} catch (FileNotFoundException e) {

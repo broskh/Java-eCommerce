@@ -4,6 +4,7 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import negozio.Carrello;
@@ -17,6 +18,9 @@ public class AddProductToCartListener implements ActionListener {
 	private StringBuilder code;
 	private JTextField amount;
 	private Window windowCaller;
+	
+	private static final String ALERT_TITLE = "Prodotto aggiunto";
+	private static final String ALERT_TEXT = "Prodotto aggiunto correttamente al carrello.";
 	
 	public AddProductToCartListener (Window windowCaller, Magazzino store, 
 			Carrello cart, StringBuilder code, JTextField amount) {
@@ -59,5 +63,7 @@ public class AddProductToCartListener implements ActionListener {
 				e1.printStackTrace();
 			}
 		}
+		JOptionPane.showMessageDialog(this.windowCaller, ALERT_TEXT,
+				ALERT_TITLE, JOptionPane.INFORMATION_MESSAGE);
 	}
 }

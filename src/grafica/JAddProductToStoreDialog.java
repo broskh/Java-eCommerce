@@ -74,12 +74,12 @@ public class JAddProductToStoreDialog extends JDialog implements ActionListener{
 				!this.modifyProductPanel.getProductCategory().equals("")) {
 			if (this.modifyProductPanel.getProductCost() == 0) {
 				JOptionPane.showMessageDialog(this, NO_COST_TEXT,
-						ALERT_ERROR_TITLE,JOptionPane.INFORMATION_MESSAGE);
+						ALERT_ERROR_TITLE,JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			if (this.store.getProdotto(this.modifyProductPanel.getProductCode()) != null) {
 				JOptionPane.showMessageDialog(this, EXSISTING_PRODUCT_TEXT,
-						ALERT_ERROR_TITLE,JOptionPane.INFORMATION_MESSAGE);
+						ALERT_ERROR_TITLE,JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			this.product.setImmagine(this.modifyProductPanel.getProductImage());
@@ -107,7 +107,7 @@ public class JAddProductToStoreDialog extends JDialog implements ActionListener{
 		}
 		else {
 			JOptionPane.showMessageDialog(this, EMPTY_FIELDS_TEXT,
-					ALERT_ERROR_TITLE,JOptionPane.INFORMATION_MESSAGE);
+					ALERT_ERROR_TITLE,JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }
