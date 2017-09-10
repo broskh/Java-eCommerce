@@ -2,6 +2,7 @@ import java.awt.Font;
 import java.util.Enumeration;
 
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.plaf.FontUIResource;
 
 import grafica.JUserFrame;
@@ -19,26 +20,34 @@ public class Java_eCommerce  {
 	private static final int FONT_SIZE = 13; /**<Font size.*/
 
 	private static final String FONT = "Inconsolata"; /**<Font.*/
-	private static final String THEME = "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"; /**<Tema.*/
+//	private static final String THEME = "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"; /**<Tema.*/
 	
-	public static void main(String[] args) {
-		//cambio font di default
+	public static void main(String[] args) {	    
+	    //cambio tema grafico
+		try {
+		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+		        if ("Nimbus".equals(info.getName())) {
+		            UIManager.setLookAndFeel(info.getClassName());
+//		            UIManager.put("nimbusBase", Color.GREEN); //alone
+//		            UIManager.put("nimbusBlueGrey", new Color(0,	127,	255)); //componenti tipo bottoni
+//		            UIManager.put("control", Color.WHITE); //sfondo
+		            break;
+		        }
+		    }
+		} catch (Exception e) {
+		    // GUI alternativa
+		}
+	    
 		Enumeration <Object> keys = UIManager.getDefaults().keys();
 	    while (keys.hasMoreElements()) {
 	    	Object key = keys.nextElement();
 	    	Object value = UIManager.get (key);
+			//cambio font di default
 	    	if (value != null && value instanceof FontUIResource) {
 	    		UIManager.put (key, new FontUIResource(
 	    				Java_eCommerce.FONT, Font.PLAIN, Java_eCommerce.FONT_SIZE));
 	    	}
 	    }
-	    
-	    //cambio tema grafico
-	    try {
-	    	UIManager.setLookAndFeel(Java_eCommerce.THEME);
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
 	    
 	    //programma vero e proprio
 		Magazzino store = new Magazzino();

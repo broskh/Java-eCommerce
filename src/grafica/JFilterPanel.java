@@ -34,6 +34,7 @@ public class JFilterPanel extends JPanel implements ChangeListener{
 		this.amountFilter.setLowerValue  (0);
 		this.amountFilter.setUpperValue (amountMax);
 		this.amountFilter.addChangeListener(this);
+		this.amountFilter.setOpaque(false);
 
 		int costMaxInt = (int) Math.ceil(costMax);
 		this.costFilter = new JRangeSlider (0, costMaxInt);
@@ -42,6 +43,7 @@ public class JFilterPanel extends JPanel implements ChangeListener{
 		this.costFilter.setLowerValue (0);
 		this.costFilter.setUpperValue (costMaxInt);
 		this.costFilter.addChangeListener(this);
+		this.costFilter.setOpaque(false);
 		
 		this.lowerValue = new JLabel();
 		this.lowerValue.setHorizontalAlignment(JLabel.LEFT);
@@ -49,6 +51,7 @@ public class JFilterPanel extends JPanel implements ChangeListener{
 		this.upperValue.setHorizontalAlignment(JLabel.LEFT);
 
 		this.setLayout(new BorderLayout());
+		this.setOpaque(false);
 		this.enableCorrectFilter(filterType);
 	}
 	

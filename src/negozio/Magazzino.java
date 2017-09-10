@@ -89,6 +89,9 @@ public class Magazzino implements GestioneProdotti {
 			ArrayList <Prodotto> articoli = (ArrayList <Prodotto>) objectInputStream.readObject();
 			for (Prodotto articolo : articoli) {
 				this.articoli.add(articolo);
+				if (!articolo.getImmagine().exists()) {
+					articolo.setImmagine(Prodotto.IMMAGINE_DEFAULT);
+				}
 			}
 			objectInputStream.close();
 			return true;

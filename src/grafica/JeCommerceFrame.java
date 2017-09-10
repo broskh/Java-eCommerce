@@ -1,7 +1,6 @@
 package grafica;
 
 import java.awt.BorderLayout;
-
 import java.awt.Dimension;
 import java.awt.GridLayout;
 //import java.awt.GraphicsEnvironment;
@@ -12,7 +11,7 @@ import java.awt.event.ComponentListener;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.BevelBorder;
+import javax.swing.border.EtchedBorder;
 
 import negozio.Magazzino;
 import utenza.Cliente;
@@ -71,19 +70,19 @@ public class JeCommerceFrame extends JFrame implements ComponentListener {
 			typeLabel.setText(TYPE_TEXT + CLIENT_STRING);
 		}
 		JLabel authorLabel = new JLabel(AUTHOR_TEXT + AUTHOR);
-		nameLabel.setBorder(new BevelBorder(BevelBorder.LOWERED));
+		nameLabel.setBorder(new EtchedBorder());
 		nameLabel.setHorizontalAlignment(JLabel.CENTER);
-		typeLabel.setBorder(new BevelBorder(BevelBorder.LOWERED));
+		
+		typeLabel.setBorder(new EtchedBorder());
 		typeLabel.setHorizontalAlignment(JLabel.CENTER);
-		authorLabel.setBorder(new BevelBorder(BevelBorder.LOWERED));
+		authorLabel.setBorder(new EtchedBorder());
 		authorLabel.setHorizontalAlignment(JLabel.CENTER);
 
-		JPanel statusPanel = new JPanel();
-		statusPanel.setLayout(new GridLayout(1,3));
+		JPanel statusPanel = new JPanel(new GridLayout(1,3));
+		statusPanel.setPreferredSize(new Dimension(statusPanel.getWidth(), STATUSBAR_HEIGHT));
 		statusPanel.add(nameLabel);
 		statusPanel.add(typeLabel);
 		statusPanel.add(authorLabel);
-		statusPanel.setPreferredSize(new Dimension(statusPanel.getWidth(), STATUSBAR_HEIGHT));
 		return statusPanel;
 	}
 
@@ -100,7 +99,7 @@ public class JeCommerceFrame extends JFrame implements ComponentListener {
 	@Override
 	public void componentResized(ComponentEvent e) {
 		if (!this.user.isAmministratore()) {
-			((JClientContentPanel) this.contentPanel).resetPagina();;
+			((JClientContentPanel) this.contentPanel).resetPagina();
 			((JClientContentPanel) this.contentPanel).updateArticles ();
 		}		
 	}

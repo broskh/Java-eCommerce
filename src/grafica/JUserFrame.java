@@ -74,6 +74,7 @@ public class JUserFrame extends JFrame implements ActionListener {
 		this.setSize(new Dimension(JUserFrame.FRAME_WIDTH, JUserFrame.FRAME_HEIGHT));
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
+		
 		this.setLayout(new BorderLayout());
 		this.add(Box.createVerticalStrut(FRAME_MARGIN), BorderLayout.PAGE_START);
 		this.add(Box.createHorizontalStrut(FRAME_MARGIN), BorderLayout.WEST);
@@ -89,6 +90,7 @@ public class JUserFrame extends JFrame implements ActionListener {
 		this.surnameTextField = new JTextField ();
 		JPanel personalDataPanel = new JPanel(
 				new GridLayout(PERSONAL_DATA_PANEL_ROWS, PERSONAL_DATA_PANEL_COLUMNS));
+		personalDataPanel.setOpaque(true);
 		personalDataPanel.add (nameLabel);
 		personalDataPanel.add (surnameLabel);
 		personalDataPanel.add (this.nameTextField);
@@ -102,6 +104,7 @@ public class JUserFrame extends JFrame implements ActionListener {
 		userTypeGroup.add(this.adminRadioButton);
 		JPanel userTypePanel = new JPanel(
 				new GridLayout(USER_TYPE_PANEL_ROWS, USER_TYPE_PANEL_COLUMNS));
+		userTypePanel.setOpaque(true);
 		userTypePanel.add(userTypeTitleLabel);
 		userTypePanel.add(this.clientRadioButton);
 		userTypePanel.add(this.adminRadioButton);
@@ -117,6 +120,7 @@ public class JUserFrame extends JFrame implements ActionListener {
 		contentPanel.add (userTypePanel);
 		contentPanel.add (Box.createVerticalStrut(GENERIC_MARGIN));
 		contentPanel.add (this.okButton);
+		contentPanel.setOpaque(true);
 		return contentPanel;
 	}
 

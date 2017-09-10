@@ -245,7 +245,7 @@ public class JModifyProductPanel extends JPanel implements ActionListener{
 		}
 		else if(e.getSource().equals(this.imageButton)) {
 			JFileChooser fc = new JFileChooser();
-			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+//			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			fc.setMultiSelectionEnabled(false);
 			if(fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 				try {

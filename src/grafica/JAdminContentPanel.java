@@ -185,7 +185,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 	
 	private File getNewImageFile (File oldImageFile) {
 		String newFileName = oldImageFile.getName();
-		File newFile = new File (newFileName);
+		File newFile = new File (NEW_IMAGES_FOLDER + newFileName);
 		if (!newFile.exists()) {
 			return newFile;
 		}
@@ -210,6 +210,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 			fc.setDialogTitle(FILE_CHOOSER_SAVE_TITLE);
 			fc.setApproveButtonText(FILE_CHOOSER_SAVE_BUTTON_TEXT);
 			fc.setFileFilter(new StoreFileFilter());
+			fc.setMultiSelectionEnabled(false);
 			if(fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 //				AGGIUNTA NUOVE IMMAGINI
 				for (Prodotto articolo : this.productsAdded) {
@@ -250,6 +251,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 			fc.setFileFilter(new StoreFileFilter());
 			fc.setDialogTitle(FILE_CHOOSER_LOAD_TITLE);
 			fc.setApproveButtonText(FILE_CHOOSER_LOAD_BUTTON_TEXT);
+			fc.setMultiSelectionEnabled(false);
 			if(fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 				this.store.caricaMagazzino(fc.getSelectedFile());
 				((ProductsArticlesTableModel)this.storeTable.getModel()).fireTableDataChanged();

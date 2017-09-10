@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import negozio.Carrello;
@@ -23,6 +24,7 @@ public class JRemoveProductFromCartDialog extends JDialog implements ActionListe
 
 	private JButton okButton;
 	private JButton cancelButton;
+	private JFrame mainFrame;
 	private JSelectProductWithAmountPanel articlePanel;
 	
 	private static final int DIALOG_WIDTH = 400;
@@ -35,6 +37,8 @@ public class JRemoveProductFromCartDialog extends JDialog implements ActionListe
 	private static final String EMPTY_CART_TEXT = "Il carrello è vuoto.";
 	private static final String OK_BUTTON_TEXT = "Elimina";
 	private static final String CANCEL_BUTTON_TEXT = "Annulla";
+	private static final String ALERT_REMOVE_PRODUCT_TITLE = "Prodotto eliminato";
+	private static final String ALERT_REMOVE_PRODUCT_TEXT = "Prodotto eliminato correttamente dal carrello.";
 	
 	public JRemoveProductFromCartDialog (JFrame mainFrame, Carrello cart) {
 		super (mainFrame, TITLE, JDialog.ModalityType.DOCUMENT_MODAL);
@@ -44,6 +48,7 @@ public class JRemoveProductFromCartDialog extends JDialog implements ActionListe
 		this.setLayout(new BorderLayout());
 		
 		this.cart = cart;
+		this.mainFrame = mainFrame;
 		
 		this.cancelButton = new JButton(CANCEL_BUTTON_TEXT);
 		this.cancelButton.addActionListener(this);
@@ -96,6 +101,8 @@ public class JRemoveProductFromCartDialog extends JDialog implements ActionListe
 				}
 				this.cart.rimuoviProdotto(code, amount);
 				this.dispose();
+				JOptionPane.showMessageDialog(this.mainFrame, ALERT_REMOVE_PRODUCT_TEXT,
+						ALERT_REMOVE_PRODUCT_TITLE, JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 	}

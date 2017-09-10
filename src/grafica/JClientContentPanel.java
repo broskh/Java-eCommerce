@@ -29,13 +29,12 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
-import javax.swing.border.EtchedBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.text.PlainDocument;
 
 import negozio.Carrello;
@@ -132,9 +131,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	private static final String REMOVE_ARTICLE_ITEM = "Rimuovi articolo";
 	private static final String EMPTY_CART_ITEM = "Svuota";
 	private static final String CURRENCY_SYMBOL = " €";
-	private static final String NONE_OFFER_TEXT = "Nessuna";	
-	private static final String ALERT_REMOVE_PRODUCT_TITLE = "Prodotto eliminato";
-	private static final String ALERT_REMOVE_PRODUCT_TEXT = "Prodotto eliminato correttamente dal carrello.";
+	private static final String NONE_OFFER_TEXT = "Nessuna";
 	
 	private static final String[] FILTER_TYPE_STRINGS = {
 			Magazzino.STRINGA_FILTRO_NOME,
@@ -275,6 +272,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		this.filterTypeComboBox = new JComboBox <String> (FILTER_TYPE_STRINGS);
 		this.filterTypeComboBox.addActionListener(this);
 		JPanel filterTypePanel = new JPanel ();
+		filterTypePanel.setOpaque(false);
 		filterTypePanel.setLayout (new BorderLayout ());
 		filterTypePanel.add (filterTypeLabel, BorderLayout.PAGE_START);
 		filterTypePanel.add (Box.createVerticalStrut (CONTROLPANEL_LABEL_MARGIN));
@@ -284,6 +282,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		this.filterPanel = new JFilterPanel(this.store.maxQuantita(), 
 				this.store.maxPrezzo());
 		JPanel filterStringPanel = new JPanel ();
+		filterStringPanel.setOpaque(false);
 		filterStringPanel.setLayout(new BorderLayout ());
 		filterStringPanel.add (filterStringLabel, BorderLayout.PAGE_START);
 		filterStringPanel.add (Box.createVerticalStrut (CONTROLPANEL_LABEL_MARGIN));
@@ -296,6 +295,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 				this.filterTypeString, this.filterPanel, this.store));
 
 		JPanel leftPanel = new JPanel ();
+		leftPanel.setOpaque(false);
 		leftPanel.add (Box.createRigidArea(new Dimension(
 				CONTROLPANEL_LEFT_MARGIN, CONTROLPANEL_HEIGHT)));
 		leftPanel.add (filterTypePanel);
@@ -316,12 +316,13 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		this.cartButton.setTransferHandler(new ProdottoImportTransferHandler(
 				this.cart));
 		JPanel rightPanel = new JPanel ();
+		rightPanel.setOpaque(false);
 		rightPanel.add (cartButton);
 		rightPanel.add (Box.createRigidArea(new Dimension(
 				CONTROLPANEL_RIGHT_MARGIN, CONTROLPANEL_HEIGHT)));
 
 		JPanel controlPanel = new JPanel();
-		controlPanel.setBorder(new EtchedBorder ());
+//		controlPanel.setBorder(new EtchedBorder ());
 		controlPanel.setLayout(new BorderLayout());
 		controlPanel.add (leftPanel, BorderLayout.WEST);
 		controlPanel.add (rightPanel, BorderLayout.EAST);
@@ -330,6 +331,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	
 	private JPanel articlePanel (Prodotto article) {        
 		JLabel imageLabel = new JLabel("", SwingConstants.CENTER);
+		imageLabel.setBorder(new LineBorder(Color.DARK_GRAY));
 		imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		int labelHeight;
 		try {
@@ -343,6 +345,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 			labelHeight = imageLabel.getFont().getSize();
 		}
 		JPanel imagePanel = new JPanel ();
+		imagePanel.setOpaque(false);
 		imagePanel.setLayout(new BoxLayout (imagePanel, BoxLayout.Y_AXIS));
 		imagePanel.add(Box.createVerticalStrut(DEFAULT_GENERIC_MARGIN));
 		imagePanel.add(Box.createVerticalStrut((ARTICLE_ICON_SIZE - labelHeight) / 2));
@@ -364,6 +367,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		}
 		JLabel offerLabel = new JLabel(OFFER_LABEL + offer);
 		JPanel informationPanel = new JPanel ();
+		informationPanel.setOpaque(false);
 		informationPanel.setLayout(new BoxLayout(informationPanel, BoxLayout.Y_AXIS));
 		informationPanel.add(codeLabel);
 		informationPanel.add(nameLabel);
@@ -393,18 +397,21 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 				amountTextField));
 		addToCartButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		JPanel interactionPanel = new JPanel ();
+		interactionPanel.setOpaque(false);
 		interactionPanel.add(amountTextField);
 		interactionPanel.add(Box.createRigidArea(new Dimension(
 				ARTICLE_INTERACTION_HORIZONTAL_SPACE, ARTICLE_INTERACTION_HEIGHT)));
 		interactionPanel.add(addToCartButton);
 		
 		JPanel bottomPanel = new JPanel(new BorderLayout());
+		bottomPanel.setOpaque(false);
 		bottomPanel.add(Box.createHorizontalStrut(DEFAULT_GENERIC_MARGIN), BorderLayout.WEST);
 		bottomPanel.add(interactionPanel, BorderLayout.CENTER);
 		bottomPanel.add(Box.createHorizontalStrut(DEFAULT_GENERIC_MARGIN), BorderLayout.EAST);
 		bottomPanel.add(Box.createVerticalStrut(DEFAULT_GENERIC_MARGIN), BorderLayout.PAGE_END);
         
         JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBackground(Color.WHITE);
         mainPanel.setLayout (new BorderLayout(0, DEFAULT_GENERIC_MARGIN));
         mainPanel.setBorder (new RoundedBorder(
         		Color.GRAY, ARTICLE_BORDER_SIZE, ARTICLE_BORDER_RADII, 0));
@@ -510,8 +517,6 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 			 JRemoveProductFromCartDialog removeArticleDialog = new JRemoveProductFromCartDialog(
 					 this.mainFrame, this.cart);
 			 removeArticleDialog.setVisible(true);
-			JOptionPane.showMessageDialog(this.mainFrame, ALERT_REMOVE_PRODUCT_TEXT,
-					ALERT_REMOVE_PRODUCT_TITLE, JOptionPane.INFORMATION_MESSAGE);
 		}
 		else if (e.getSource().equals(this.backButton)) {
 			this.previousPage();
