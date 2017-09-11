@@ -28,7 +28,7 @@ public class JSelectProductWithAmountPanel extends JPanel implements ActionListe
 	private static final int AMOUNT_TEXTFIELD_COLUMNS = 3;
 	private static final int COMPONENTS_SPACE = 30;
 	
-	private static final int DEFAULT_AMOUNT = 0;
+	private static final int DEFAULT_AMOUNT = 1;
 	
 	private static final String CODE_TEXT = "Codice: ";
 	private static final String AMOUNT_TEXT = "Qnt: ";

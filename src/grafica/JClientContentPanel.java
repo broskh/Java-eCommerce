@@ -7,7 +7,6 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -15,9 +14,8 @@ import java.awt.event.MouseEvent;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
+import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -29,6 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -97,7 +96,8 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	private static final int ARTICLE_AMOUNT_HEIGHT = 25;
 	private static final int ARTICLE_ICON_SIZE = 120;
 	private static final int ARTICLE_ADD_BUTTON_SIZE = 32;
-	private static final int ARTICLE_ADD_IMAGE_SIZE = ARTICLE_ADD_BUTTON_SIZE + 6;	
+	private static final int CART_ICON_SIZE = 70;
+	private static final int ARTICLE_ADD_IMAGE_SIZE = ARTICLE_ADD_BUTTON_SIZE - 14;	
 	private static final int ARTICLE_INTERACTION_HEIGHT = 35;
 	private static final int ARTICLE_INTERACTION_HORIZONTAL_SPACE = 50;
 	private static final int ARTICLE_INFORMATION_SPACE = 7;	
@@ -106,6 +106,9 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	private static final int WIDTH = 220;
 	
 	private static final int DEFAULT_AMOUNT = 1;
+
+	private static final Color ADD_PRODUCT_BUTTON_COLOR = new Color (23, 165, 86);
+//	private static final Color CART_BUTTON_COLOR = new Color (178, 190, 204);
 
 	private static final String BACK_BUTTON_TEXT = "<";
 	private static final String FORWARD_BUTTON_TEXT = ">";
@@ -132,6 +135,10 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	private static final String EMPTY_CART_ITEM = "Svuota";
 	private static final String CURRENCY_SYMBOL = " €";
 	private static final String NONE_OFFER_TEXT = "Nessuna";
+	private static final String EMPTY_CART_TITLE = "Attenzione";
+	private static final String EMPTY_CART_TEXT = "Il carrello è vuoto.";
+	private static final String EMPTY_STORE_TITLE = "Attenzione";
+	private static final String EMPTY_STORE_TEXT = "Il magazzino è vuoto.";
 	
 	private static final String[] FILTER_TYPE_STRINGS = {
 			Magazzino.STRINGA_FILTRO_NOME,
@@ -142,8 +149,8 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 			Magazzino.STRINGA_FILTRO_QUANTITA
 		};
 	
-	private static final String ADD_IMAGE_PATH = "media/img/add.png";
-	private static final String CART_IMAGE_PATH = "media/img/cart.png";
+	private static final String ADD_IMAGE_PATH = "media/img/add_to_cart_icon.png";
+	private static final String CART_IMAGE_PATH = "media/img/cart_icon.png";
 	private static final String BACK_IMAGE_PATH = "media/img/back_icon.png";
 	private static final String FORWARD_IMAGE_PATH = "media/img/forward_icon.png";
 	
@@ -304,11 +311,12 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		leftPanel.add (Box.createHorizontalStrut(CONTROLPANEL_HORIZONTAL_SPACE));
 		leftPanel.add (filterButton);
 		
-		
 		this.cartButton = new JButton ();
+//		this.cartButton.setBackground(CART_BUTTON_COLOR);
 		try {
-		    Image img = ImageIO.read(new File (CART_IMAGE_PATH));
-		    this.cartButton.setIcon(new ImageIcon(img));
+			ImageIcon icon = new ImageIcon(new ResizableIcon(new File (CART_IMAGE_PATH))
+					.resizeIcon(CART_ICON_SIZE, CART_ICON_SIZE));
+		    this.cartButton.setIcon(icon);
 		} catch (Exception ex) {
 			this.cartButton.setText(CART_BUTTON_TEXT);
 		}
@@ -322,14 +330,13 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 				CONTROLPANEL_RIGHT_MARGIN, CONTROLPANEL_HEIGHT)));
 
 		JPanel controlPanel = new JPanel();
-//		controlPanel.setBorder(new EtchedBorder ());
 		controlPanel.setLayout(new BorderLayout());
 		controlPanel.add (leftPanel, BorderLayout.WEST);
 		controlPanel.add (rightPanel, BorderLayout.EAST);
 		return controlPanel;
 	}
 	
-	private JPanel articlePanel (Prodotto article) {        
+	private JPanel articlePanel (Prodotto article) {
 		JLabel imageLabel = new JLabel("", SwingConstants.CENTER);
 		imageLabel.setBorder(new LineBorder(Color.DARK_GRAY));
 		imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -382,20 +389,20 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 				ARTICLE_AMOUNT_HEIGHT));
 		PlainDocument doc = (PlainDocument) amountTextField.getDocument();
 		doc.setDocumentFilter(new AmountDocumentFilter(article.getQuantita()));	
-		JButton addToCartButton = new JButton ();
+		JButton addToCartButton = new JButton();
 		try {
 		    addToCartButton.setIcon(new ImageIcon(new ResizableIcon(new File(ADD_IMAGE_PATH))
 		    		.resizeIcon(ARTICLE_ADD_IMAGE_SIZE, ARTICLE_ADD_IMAGE_SIZE)));
 		} catch (Exception e) {
 			addToCartButton.setText(ADD_BUTTON_TEXT);
 		}
-		addToCartButton.setBorder(new RoundedBorder(new Color (52, 158, 66), 1, 50, 0));
 		addToCartButton.setPreferredSize(new Dimension (
 				ARTICLE_ADD_BUTTON_SIZE, ARTICLE_ADD_BUTTON_SIZE));
 		addToCartButton.addActionListener(new AddProductToCartListener(this.store, 
 				this.cart, new StringBuilder(article.getCodice()), 
 				amountTextField));
-		addToCartButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+		addToCartButton.setBackground(ADD_PRODUCT_BUTTON_COLOR);
+		addToCartButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		JPanel interactionPanel = new JPanel ();
 		interactionPanel.setOpaque(false);
 		interactionPanel.add(amountTextField);
@@ -422,6 +429,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
         mainPanel.add (bottomPanel, BorderLayout.PAGE_END);
 
         JPanel articlePanel = new JPanel();
+        articlePanel.setOpaque(false);
         articlePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
         articlePanel.setTransferHandler(new ProdottoExportTransferHandler(article, amountTextField));
 		articlePanel.addMouseMotionListener(new ArticleMouseAdapter(articlePanel));
@@ -496,7 +504,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(this.closeItem)) {
-			 this.mainFrame.dispose();
+			this.mainFrame.dispose();
 		 }
 		 else if (e.getSource().equals(this.nameFilterItem) || 
 				 e.getSource().equals(this.brandFilterItem) ||
@@ -504,19 +512,31 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 				 e.getSource().equals(this.categoryFilterItem) || 
 				 e.getSource().equals(this.amountFilterItem) || 
 				 e.getSource().equals(this.costFilterItem)) {
-			 JFilterDialog filterDialog = new JFilterDialog(
-					 this, this.store, ((JMenuItem)e.getSource()).getText());
-			 filterDialog.setVisible(true);
+			JFilterDialog filterDialog = new JFilterDialog(
+					this, this.store, ((JMenuItem)e.getSource()).getText());
+			filterDialog.setVisible(true);
 		}
 		else if (e.getSource().equals(this.addArticleItem)) {
-			 JAddProductToCartDialog addArticleDialog = new JAddProductToCartDialog(
-					 this.mainFrame, this.store, this.cart);
-			 addArticleDialog.setVisible(true);
+			if (this.store.getArticoli().isEmpty()) {
+				JOptionPane.showMessageDialog(this, EMPTY_STORE_TEXT, EMPTY_STORE_TITLE,
+						JOptionPane.ERROR_MESSAGE);
+			}
+			else {
+				JAddProductToCartDialog addArticleDialog = new JAddProductToCartDialog(
+						this.mainFrame, this.store, this.cart);
+				addArticleDialog.setVisible(true);
+			}
 		}
 		else if (e.getSource().equals(this.removeArticleItem)) {
-			 JRemoveProductFromCartDialog removeArticleDialog = new JRemoveProductFromCartDialog(
+			if (this.cart.getArticoli().isEmpty()) {
+				JOptionPane.showMessageDialog(this, EMPTY_CART_TEXT, EMPTY_CART_TITLE,
+						JOptionPane.ERROR_MESSAGE);
+			}
+			else {
+				JRemoveProductFromCartDialog removeArticleDialog = new JRemoveProductFromCartDialog(
 					 this.mainFrame, this.cart);
-			 removeArticleDialog.setVisible(true);
+				removeArticleDialog.setVisible(true);
+			}			 
 		}
 		else if (e.getSource().equals(this.backButton)) {
 			this.previousPage();

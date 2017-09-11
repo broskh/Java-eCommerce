@@ -22,6 +22,7 @@ public class JModifyProductDialog extends JDialog implements ActionListener{
 	private Magazzino store;
 	private HashSet <Prodotto> articlesAdded;
 
+	private JFrame mainFrame;
 	private ProductsArticlesTableModel storeTableModel;
 	private JModifyProductPanel modifyProductPanel;
 	
@@ -52,6 +53,7 @@ public class JModifyProductDialog extends JDialog implements ActionListener{
 		
 		this.product = product;
 		this.store = store;
+		this.mainFrame = mainFrame;
 		this.storeTableModel = storeTableModel;
 		this.articlesAdded = articlesAdded;
 				
@@ -101,10 +103,9 @@ public class JModifyProductDialog extends JDialog implements ActionListener{
 				}
 			}
 			this.storeTableModel.fireTableDataChanged();
-			
-			JOptionPane.showMessageDialog(this, SUCCESS_TEXT,
-					ALERT_SUCCESS_TITLE,JOptionPane.INFORMATION_MESSAGE);
 			this.dispose ();
+			JOptionPane.showMessageDialog(this.mainFrame, SUCCESS_TEXT,
+					ALERT_SUCCESS_TITLE,JOptionPane.INFORMATION_MESSAGE);
 		}
 		else {
 			JOptionPane.showMessageDialog(this, EMPTY_FIELDS_TEXT,

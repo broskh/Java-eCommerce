@@ -2,7 +2,6 @@ package grafica;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,7 +9,6 @@ import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -34,7 +32,6 @@ public class JRemoveProductFromCartDialog extends JDialog implements ActionListe
 	private static final int DIALOG_MARGIN = 15;
 
 	private static final String TITLE = "Elimina articolo";
-	private static final String EMPTY_CART_TEXT = "Il carrello è vuoto.";
 	private static final String OK_BUTTON_TEXT = "Elimina";
 	private static final String CANCEL_BUTTON_TEXT = "Annulla";
 	private static final String ALERT_REMOVE_PRODUCT_TITLE = "Prodotto eliminato";
@@ -49,39 +46,26 @@ public class JRemoveProductFromCartDialog extends JDialog implements ActionListe
 		
 		this.cart = cart;
 		this.mainFrame = mainFrame;
-		
+		this.articlePanel = new JSelectProductWithAmountPanel(this.cart.getArticoli());
+	
+		this.okButton = new JButton(OK_BUTTON_TEXT);
+		this.okButton.addActionListener(this);			
 		this.cancelButton = new JButton(CANCEL_BUTTON_TEXT);
 		this.cancelButton.addActionListener(this);
-		JPanel bottomPanel;
-		
-		if (!this.cart.getArticoli().isEmpty()) {
-			this.articlePanel = new JSelectProductWithAmountPanel(this.cart.getArticoli());
-	
-			this.okButton = new JButton(OK_BUTTON_TEXT);
-			this.okButton.addActionListener(this);
-			JPanel buttonsPanel = new JPanel();
-			buttonsPanel.add(cancelButton, BorderLayout.WEST);
-			buttonsPanel.add(Box.createHorizontalStrut(BUTTONS_SPACE), BorderLayout.CENTER);
-			buttonsPanel.add(okButton, BorderLayout.EAST);
-			
-			bottomPanel = new JPanel(new BorderLayout());
-			bottomPanel.add(Box.createHorizontalStrut(DIALOG_MARGIN), BorderLayout.WEST);
-			bottomPanel.add(buttonsPanel, BorderLayout.CENTER);
-			bottomPanel.add(Box.createHorizontalStrut(DIALOG_MARGIN), BorderLayout.EAST);
-			bottomPanel.add(Box.createVerticalStrut(DIALOG_MARGIN), BorderLayout.PAGE_END);
+		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.add(cancelButton, BorderLayout.WEST);
+		buttonsPanel.add(Box.createHorizontalStrut(BUTTONS_SPACE), BorderLayout.CENTER);
+		buttonsPanel.add(okButton, BorderLayout.EAST);
 
-			this.add(articlePanel, BorderLayout.CENTER);
-		}
-		else {
-			bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-			bottomPanel.add(this.cancelButton);
-			
-			JPanel messagePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-			messagePanel.add(new JLabel(EMPTY_CART_TEXT));
-			this.add(messagePanel, BorderLayout.CENTER);
-		}
+		JPanel bottomPanel = new JPanel(new BorderLayout());
+		bottomPanel.add(Box.createHorizontalStrut(DIALOG_MARGIN), BorderLayout.WEST);
+		bottomPanel.add(buttonsPanel, BorderLayout.CENTER);
+		bottomPanel.add(Box.createHorizontalStrut(DIALOG_MARGIN), BorderLayout.EAST);
+		bottomPanel.add(Box.createVerticalStrut(DIALOG_MARGIN), BorderLayout.PAGE_END);
+
 		this.add(Box.createVerticalStrut(DIALOG_MARGIN), BorderLayout.PAGE_START);
 		this.add(Box.createHorizontalStrut(DIALOG_MARGIN), BorderLayout.WEST);
+		this.add(articlePanel, BorderLayout.CENTER);
 		this.add(Box.createHorizontalStrut(DIALOG_MARGIN), BorderLayout.EAST);
 		this.add(bottomPanel, BorderLayout.PAGE_END);
 	}

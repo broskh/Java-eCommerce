@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.util.HashSet;
 
 import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -44,7 +45,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 	private JButton saveButton;
 	private JButton loadButton;
 	private JButton addButton;
-	private JButton modifyButton;
+	private JButton editButton;
 	private JButton deleteButton;
 	private JMenuItem closeMenuItem;
 	private JMenuItem loadMenuItem;
@@ -59,6 +60,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 
 	private static final int MENUBAR_HEIGHT = 22;
 	private static final int CONTROLPANEL_BUTTON_SIZE = 80;
+	private static final int CONTROLPANEL_BUTTON_ICON_SIZE = CONTROLPANEL_BUTTON_SIZE - 25;
 	private static final int CONTROLPANEL_BUTTONS_SPACE = 20;
 	
 	private static final String FILE_CHOOSER_SAVE_TITLE = "Salva";
@@ -66,7 +68,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 	private static final String SAVE_BUTTON_TEXT = "Salva";
 	private static final String LOAD_BUTTON_TEXT = "Carica";
 	private static final String ADD_BUTTON_TEXT = "Aggiungi";
-	private static final String MODIFY_BUTTON_TEXT = "Modifica";
+	private static final String EDIT_BUTTON_TEXT = "Modifica";
 	private static final String DELETE_BUTTON_TEXT = "Elimina";
 	private static final String FILE_CHOOSER_SAVE_BUTTON_TEXT = "Salva";
 	private static final String FILE_CHOOSER_LOAD_BUTTON_TEXT = "Carica";
@@ -82,10 +84,17 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 	private static final String ALERT_LOAD_TEXT = "Caricamento avvenuto con successo.";
 	private static final String ALERT_SAVE_TITLE = "Salvataggio avvenuto";
 	private static final String ALERT_SAVE_TEXT = "Salvataggio avvenuto con successo.";
+	private static final String EMPTY_STORE_TITLE = "Attenzione";
+	private static final String EMPTY_STORE_TEXT = "Il magazzino è vuoto.";
 	
 	private static final String NEW_IMAGES_FOLDER = "media/img/products/";
 	private static final String FILE_CHOOSER_OPEN_DIRECTORY = "media/saves";
 	private static final String LAST_STORE_FILE_PATH = "media/saves/last";
+	private static final String SAVE_BUTTON_ICON = "media/img/save_icon.png";
+	private static final String LOAD_BUTTON_ICON = "media/img/load_icon.png";
+	private static final String ADD_BUTTON_ICON = "media/img/add_to_store_icon.png";
+	private static final String EDIT_BUTTON_ICON = "media/img/edit_icon.png";
+	private static final String DELETE_BUTTON_ICON = "media/img/delete_from_store_icon.png";
 
 	public JAdminContentPanel(JFrame mainFrame, Magazzino store) {
 		this.store = store;  
@@ -117,30 +126,70 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 	}
 	
 	private JPanel controlPanel () {
-		this.saveButton = new JButton(SAVE_BUTTON_TEXT);
+		this.saveButton = new JButton();
 		this.saveButton.setPreferredSize(new Dimension(CONTROLPANEL_BUTTON_SIZE,
 				CONTROLPANEL_BUTTON_SIZE));
 		this.saveButton.addActionListener(this);
+		try {
+			this.saveButton.setIcon(new ImageIcon(new ResizableIcon(
+					new File(SAVE_BUTTON_ICON)).resizeIcon(
+					CONTROLPANEL_BUTTON_ICON_SIZE, CONTROLPANEL_BUTTON_ICON_SIZE)));
+		} catch (IOException e) {
+			e.printStackTrace();
+			this.saveButton.setText(SAVE_BUTTON_TEXT);
+		}
 		
-		this.loadButton = new JButton(LOAD_BUTTON_TEXT);
+		this.loadButton = new JButton();
 		this.loadButton.setPreferredSize(new Dimension(CONTROLPANEL_BUTTON_SIZE,
 				CONTROLPANEL_BUTTON_SIZE));
 		this.loadButton.addActionListener(this);
+		try {
+			this.loadButton.setIcon(new ImageIcon(new ResizableIcon(
+					new File(LOAD_BUTTON_ICON)).resizeIcon(
+							CONTROLPANEL_BUTTON_ICON_SIZE, CONTROLPANEL_BUTTON_ICON_SIZE)));
+		} catch (IOException e) {
+			e.printStackTrace();
+			this.loadButton.setText(LOAD_BUTTON_TEXT);
+		}
 		
-		this.addButton = new JButton(ADD_BUTTON_TEXT);
+		this.addButton = new JButton();
 		this.addButton.setPreferredSize(new Dimension(CONTROLPANEL_BUTTON_SIZE,
 				CONTROLPANEL_BUTTON_SIZE));
 		this.addButton.addActionListener(this);
+		try {
+			this.addButton.setIcon(new ImageIcon(new ResizableIcon(
+					new File(ADD_BUTTON_ICON)).resizeIcon(
+					CONTROLPANEL_BUTTON_ICON_SIZE, CONTROLPANEL_BUTTON_ICON_SIZE)));
+		} catch (IOException e) {
+			e.printStackTrace();
+			this.addButton.setText(ADD_BUTTON_TEXT);
+		};
 		
-		this.modifyButton = new JButton(MODIFY_BUTTON_TEXT);
-		this.modifyButton.setPreferredSize(new Dimension(CONTROLPANEL_BUTTON_SIZE,
+		this.editButton = new JButton();
+		this.editButton.setPreferredSize(new Dimension(CONTROLPANEL_BUTTON_SIZE,
 				CONTROLPANEL_BUTTON_SIZE));
-		this.modifyButton.addActionListener(this);
+		this.editButton.addActionListener(this);
+		try {
+			this.editButton.setIcon(new ImageIcon(new ResizableIcon(
+					new File(EDIT_BUTTON_ICON)).resizeIcon(
+					CONTROLPANEL_BUTTON_ICON_SIZE, CONTROLPANEL_BUTTON_ICON_SIZE)));
+		} catch (IOException e) {
+			e.printStackTrace();
+			this.editButton.setText(EDIT_BUTTON_TEXT);
+		}
 		
-		this.deleteButton = new JButton(DELETE_BUTTON_TEXT);
+		this.deleteButton = new JButton();
 		this.deleteButton.setPreferredSize(new Dimension(CONTROLPANEL_BUTTON_SIZE,
 				CONTROLPANEL_BUTTON_SIZE));
 		this.deleteButton.addActionListener(this);
+		try {
+			this.deleteButton.setIcon(new ImageIcon(new ResizableIcon(
+					new File(DELETE_BUTTON_ICON)).resizeIcon(
+					CONTROLPANEL_BUTTON_ICON_SIZE, CONTROLPANEL_BUTTON_ICON_SIZE)));
+		} catch (IOException e) {
+			e.printStackTrace();
+			this.deleteButton.setText(DELETE_BUTTON_TEXT);
+		}
 		
 		JPanel controlPanel = new JPanel();
 		controlPanel.setBorder(new EtchedBorder());
@@ -148,7 +197,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 		controlPanel.add(this.saveButton);
 		controlPanel.add(this.loadButton);
 		controlPanel.add(this.addButton);
-		controlPanel.add(this.modifyButton);
+		controlPanel.add(this.editButton);
 		controlPanel.add(this.deleteButton);
 		return controlPanel;
 	}
@@ -266,16 +315,28 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 					this.productsAdded);
 			jAddProductDialog.setVisible(true);
 		} 
-		else if(e.getSource().equals(this.modifyButton) || e.getSource().equals(this.modifyMenuItem)) {
-			JSelectProductToModifyDialog jSearchProductDialog = new JSelectProductToModifyDialog(
-					this.mainFrame, this.store, (ProductsArticlesTableModel)this.storeTable.getModel(), 
-					this.productsAdded);
-			jSearchProductDialog.setVisible(true);
+		else if(e.getSource().equals(this.editButton) || e.getSource().equals(this.modifyMenuItem)) {
+			if (this.store.getArticoli().isEmpty()) {
+				JOptionPane.showMessageDialog(this, EMPTY_STORE_TEXT, EMPTY_STORE_TITLE,
+						JOptionPane.ERROR_MESSAGE);
+			}
+			else {
+				JSelectProductToModifyDialog jSearchProductDialog = new JSelectProductToModifyDialog(
+						this.mainFrame, this.store, (ProductsArticlesTableModel)this.storeTable.getModel(), 
+						this.productsAdded);
+				jSearchProductDialog.setVisible(true);
+			}
 		}
 		else if(e.getSource().equals(this.deleteButton) || e.getSource().equals(this.deleteMenuItem)) {
-			JRemoveProductFromStoreDialog jDeleteProductDialog = new JRemoveProductFromStoreDialog(
-					this.mainFrame, this.store, (ProductsArticlesTableModel)this.storeTable.getModel());
-			jDeleteProductDialog.setVisible(true);
+			if (this.store.getArticoli().isEmpty()) {
+				JOptionPane.showMessageDialog(this, EMPTY_STORE_TEXT, EMPTY_STORE_TITLE,
+						JOptionPane.ERROR_MESSAGE);
+			}
+			else {
+				JRemoveProductFromStoreDialog jDeleteProductDialog = new JRemoveProductFromStoreDialog(
+						this.mainFrame, this.store, (ProductsArticlesTableModel)this.storeTable.getModel());
+				jDeleteProductDialog.setVisible(true);
+			}
 		}
 		else if (e.getSource().equals(this.closeMenuItem)) {
 			this.mainFrame.dispose();
@@ -297,12 +358,14 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 			this.store = store;
 			
 			this.setModel(new ProductsArticlesTableModel(this.store.getArticoli(),
-					ROW_HEIGHT,ProductsArticlesTableModel.STORE_MODE));
+					ProductsArticlesTableModel.STORE_MODE));
 			this.setRowHeight(ROW_HEIGHT);
 			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 			centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );
 			this.setDefaultRenderer(String.class, centerRenderer);
 			this.setBackground(null);
+			this.getColumn(ProductsArticlesTableModel.IMAGE_COLUMN).setCellRenderer(
+					new ImageColumnRender(ROW_HEIGHT));
 			this.getColumn(ProductsArticlesTableModel.BUTTON_COLUMN).setCellRenderer(
 					new RemoveColumnRender(ROW_HEIGHT));
 			this.getColumn(ProductsArticlesTableModel.BUTTON_COLUMN).setCellEditor(

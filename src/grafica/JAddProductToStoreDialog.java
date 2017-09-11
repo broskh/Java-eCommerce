@@ -23,6 +23,7 @@ public class JAddProductToStoreDialog extends JDialog implements ActionListener{
 	private Prodotto product;
 	private HashSet <Prodotto> articlesAdded;
 
+	private JFrame mainFrame;
 	private JModifyProductPanel modifyProductPanel;
 	private ProductsArticlesTableModel storeTableModel;
 
@@ -38,17 +39,17 @@ public class JAddProductToStoreDialog extends JDialog implements ActionListener{
 	private static final String NO_COST_TEXT = "Inserire un prezzo diverso da 0.";
 	private static final String EXSISTING_PRODUCT_TEXT = 
 			"È già presente nel magazzino un prodotto con questo codice.";
-	private static final String SUCCESS_TEXT = "Aggiunta effettuata con successo.";
-	
+	private static final String SUCCESS_TEXT = "Aggiunta effettuata con successo.";	
 	protected static final String TITLE = "Aggiungi prodotto";
 	
 	public JAddProductToStoreDialog (JFrame mainFrame, Magazzino store, 
 			ProductsArticlesTableModel storeTableModel, HashSet <Prodotto> articlesAdded) {
 		super(mainFrame, TITLE, ModalityType.DOCUMENT_MODAL);
 		this.store = store;
-		this.storeTableModel = storeTableModel;
 		this.articlesAdded = articlesAdded;
 		this.product = new Prodotto();
+		this.mainFrame = mainFrame;
+		this.storeTableModel = storeTableModel;
 
 		this.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
 		this.setLocationRelativeTo(null);
@@ -100,10 +101,9 @@ public class JAddProductToStoreDialog extends JDialog implements ActionListener{
 				}
 			}
 			this.storeTableModel.fireTableDataChanged();
-			
-			JOptionPane.showMessageDialog(this, SUCCESS_TEXT,
-					ALERT_SUCCESS_TITLE,JOptionPane.INFORMATION_MESSAGE);
 			this.dispose ();
+			JOptionPane.showMessageDialog(this.mainFrame, SUCCESS_TEXT,
+					ALERT_SUCCESS_TITLE,JOptionPane.INFORMATION_MESSAGE);
 		}
 		else {
 			JOptionPane.showMessageDialog(this, EMPTY_FIELDS_TEXT,

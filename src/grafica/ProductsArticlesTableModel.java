@@ -1,6 +1,7 @@
 package grafica;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -18,9 +19,12 @@ import javax.swing.Box;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -36,7 +40,6 @@ public class ProductsArticlesTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = -3450099361845613304L;
 	
 	private ArrayList <Prodotto> products;
-	private int iconSize;
 	private int mode;
 
 	public static final int CART_MODE = 1;
@@ -91,11 +94,13 @@ public class ProductsArticlesTableModel extends AbstractTableModel {
 			ProductsArticlesTableModel.BUTTON_COLUMN
 		};
 	private static final String NONE_OFFER_TEXT = "Nessuna";
+
+	public static final Color EVEN_COLOR = Color.WHITE;
+	public static final Color ODD_COLOR = new Color(242, 242, 242);
 	
-	public ProductsArticlesTableModel (ArrayList <Prodotto> products, int iconSize, int mode) {
+	public ProductsArticlesTableModel (ArrayList <Prodotto> products, int mode) {
 		super ();
 		this.products = products;
-		this.iconSize = iconSize;
 		this.mode = CART_MODE;
 		if (mode == ProductsArticlesTableModel.CART_MODE || mode == ProductsArticlesTableModel.STORE_MODE) {
 			this.mode = mode;
@@ -122,13 +127,7 @@ public class ProductsArticlesTableModel extends AbstractTableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		switch (columnIndex) {
 			case IMAGE_COLUMN_NUMBER:
-				try {
-					return new ImageIcon (new ResizableIcon(this.products.get(rowIndex)
-							.getImmagine(), this.iconSize, this.iconSize).getBufferedImage());
-				} catch (IOException e) {
-					e.printStackTrace();
-					return null;
-				}
+				return this.products.get(rowIndex).getImmagine();
 			case CODE_COLUMN_NUMBER:
 				return this.products.get(rowIndex).getCodice();
 			case NAME_COLUMN_NUMBER:
@@ -193,7 +192,7 @@ public class ProductsArticlesTableModel extends AbstractTableModel {
 	public Class <?> getColumnClass (int column) {
 		switch (column) {
 			case IMAGE_COLUMN_NUMBER:
-				return ImageIcon.class;
+				return File.class;
 			case CODE_COLUMN_NUMBER:
 				return String.class;
 			case NAME_COLUMN_NUMBER:
@@ -220,7 +219,7 @@ public class ProductsArticlesTableModel extends AbstractTableModel {
 class AmountColumnEditor extends DefaultCellEditor{
     private static final long serialVersionUID = 7039137261252411532L;
     
-	private int lastRowSelected;
+	private Integer lastRowSelected;
 	private Carrello cart;
 	private Magazzino store;
 	
@@ -234,7 +233,7 @@ class AmountColumnEditor extends DefaultCellEditor{
     	this.lastRowSelected = NULL_VALUE;
     	this.cart = cart;
     	this.store = store;
-    	this.cellPanel = new AmountCell(cellHeight, articlesTableModel);
+    	this.cellPanel = new AmountCell(cellHeight, this.lastRowSelected, articlesTableModel);
 		
         this.setClickCountToStart(1);
     }
@@ -300,7 +299,9 @@ class AmountColumnRender implements TableCellRenderer {
 	public Component getTableCellRendererComponent(JTable table, 
 			Object value, boolean isSelected, boolean hasFocus,
 			int row, int column) {
-		return new AmountCell(this.rowHeight, ((JProductsTable) table).getProductAtRow(row));
+		AmountCell amountCell = new AmountCell(
+				this.rowHeight, row, ((JProductsTable) table).getProductAtRow(row));
+		return amountCell;
 	}
 }
 
@@ -316,7 +317,7 @@ class AmountCell extends JPanel {
 	private static final int SIDE_MARGIN = 10;
 	private static final int GENERIC_MARGIN = 10;
 
-	public AmountCell (int rowHeight, Prodotto article, Integer maxValue, 
+	public AmountCell (int rowHeight, Integer row, Prodotto article, Integer maxValue, 
 			ProductsArticlesTableModel articlesTableModel) {
 		this.textField = new JTextField();
 		this.article = article;
@@ -334,8 +335,15 @@ class AmountCell extends JPanel {
 		int topMargin = (rowHeight - TEXTFIELD_HEIGHT - GENERIC_MARGIN) / 2;
 		
 		JPanel mainPanel = new JPanel ();
+		mainPanel.setOpaque(false);
 		mainPanel.add(this.textField);
-		
+
+		if (row % 2 == 0) {
+			this.setBackground(ProductsArticlesTableModel.EVEN_COLOR);
+		}
+		else {
+			this.setBackground(ProductsArticlesTableModel.ODD_COLOR);
+		}
 		this.setLayout (new BorderLayout());
         this.add(Box.createVerticalStrut(topMargin), BorderLayout.PAGE_START);
         this.add(Box.createHorizontalStrut(SIDE_MARGIN), BorderLayout.WEST);
@@ -343,20 +351,20 @@ class AmountCell extends JPanel {
         this.add(Box.createHorizontalStrut(SIDE_MARGIN), BorderLayout.EAST);
 	}
 	
-	public AmountCell (int rowHeight) {
-		this (rowHeight, null, null, null);
+	public AmountCell (int rowHeight, Integer row) {
+		this (rowHeight, row, null, null, null);
 	}
 	
-	public AmountCell (int rowHeight, ProductsArticlesTableModel articlesTableModel) {
-		this (rowHeight, null, null, articlesTableModel);
+	public AmountCell (int rowHeight, Integer row, ProductsArticlesTableModel articlesTableModel) {
+		this (rowHeight, row, null, null, articlesTableModel);
 	}
 	
-	public AmountCell (int rowHeight, Prodotto article) {
-		this (rowHeight, article, null, null);
+	public AmountCell (int rowHeight, Integer row, Prodotto article) {
+		this (rowHeight, row, article, null, null);
 	}
 	
-	public AmountCell (int rowHeight, Prodotto article, Integer maxValue) {
-		this (rowHeight, article, maxValue, null);
+	public AmountCell (int rowHeight, Integer row, Prodotto article, Integer maxValue) {
+		this (rowHeight, row, article, maxValue, null);
 	}
 	
 	private boolean initTableUpdate () {
@@ -416,6 +424,53 @@ class AmountCell extends JPanel {
 	}
 }
 
+class ImageColumnRender implements TableCellRenderer {
+	
+	private int rowHeight;
+	
+    public ImageColumnRender (int rowHeight) {
+    	this.rowHeight = rowHeight;
+    }
+
+	@Override
+	public Component getTableCellRendererComponent(JTable table, Object value, 
+			boolean isSelected, boolean hasFocus, int row, int column) {
+		ImageCell imageCell =new ImageCell(this.rowHeight, row, (File) value);
+		return imageCell;
+	}
+}
+
+class ImageCell extends JPanel {
+	private static final long serialVersionUID = 2028713241711826134L;
+
+	public ImageCell (int rowHeight, int row, File image) {
+
+		JLabel imageLabel = new JLabel("", SwingConstants.CENTER);
+		int margin = 0;
+		ImageIcon icon;
+		try {
+			icon = new ImageIcon (new ResizableIcon(
+					image, rowHeight, rowHeight).getBufferedImage());
+			imageLabel.setIcon(icon);
+			imageLabel.setBorder(new LineBorder(Color.DARK_GRAY));
+			margin = (rowHeight - icon.getIconHeight()) / 2;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		if (row % 2 == 0) {
+			this.setBackground(ProductsArticlesTableModel.EVEN_COLOR);
+		}
+		else {
+			this.setBackground(ProductsArticlesTableModel.ODD_COLOR);
+		}
+		this.setLayout (new BorderLayout());
+        this.add(Box.createVerticalStrut(margin), BorderLayout.PAGE_START);
+        this.add(imageLabel, BorderLayout.CENTER);
+        this.add(Box.createVerticalStrut(margin), BorderLayout.PAGE_END);
+	}	
+}
+
 class RemoveColumnRender implements TableCellRenderer {
 	
 	private int rowHeight;
@@ -435,20 +490,25 @@ class RemoveColumnRender implements TableCellRenderer {
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, 
 			boolean isSelected, boolean hasFocus, int row, int column) {
-		return new RemoveCell(this.rowHeight);
+		RemoveCell removeCell =new RemoveCell(this.rowHeight, row);
+		return removeCell;
 	}
 }
 
-class RemoveColumnEditor extends DefaultCellEditor{
+class RemoveColumnEditor extends DefaultCellEditor {
     private static final long serialVersionUID = -5785051616524283761L;
-    
+
+	private Integer lastRowSelected;
 	private RemoveCell cellPanel;
 	private ArrayList <Prodotto> articles;
+	
+	private static final int NULL_VALUE = -1;
 
     public RemoveColumnEditor (ArrayList <Prodotto> articles, int rowHeight) {
     	super (new JTextField());
     	this.articles = articles;
-    	this.cellPanel = new RemoveCell(rowHeight);
+    	this.lastRowSelected = NULL_VALUE;
+    	this.cellPanel = new RemoveCell(rowHeight, this.lastRowSelected);
     	this.cellPanel.setArticoli(this.articles);
 		
         this.setClickCountToStart(1);
@@ -462,6 +522,7 @@ class RemoveColumnEditor extends DefaultCellEditor{
 	@Override
 	public Component getTableCellEditorComponent(JTable table, Object value, 
 			boolean isSelected, int row, int column) {
+		this.lastRowSelected = row; 
 		this.cellPanel.setnArticolo(row);
         return this.cellPanel;
 	}
@@ -510,13 +571,13 @@ class RemoveCell extends JPanel implements ActionListener{
 	
 	private static final String BUTTON_TEXT = "Remove";
 	
-	private static final String IMAGE_PATH = "media/img/remove.png";
+	private static final String IMAGE_PATH = "media/img/small_bin_icon.png";
 	
-    public RemoveCell (int cellHeight) {
-    	this (cellHeight, null, null);
+    public RemoveCell (int cellHeight, int row) {
+    	this (cellHeight, row, null, null);
     }
 	
-    public RemoveCell (int cellHeight, Integer nArticle, ArrayList <Prodotto> articles) {
+    public RemoveCell (int cellHeight, int row, Integer nArticle, ArrayList <Prodotto> articles) {
 		this.articles = articles;
 		this.nArticle = nArticle;
     	this.removeButton = new JButton();
@@ -531,8 +592,15 @@ class RemoveCell extends JPanel implements ActionListener{
 		int topMargin = (cellHeight - BUTTON_SIZE - GENERIC_MARGIN) / 2;
 		
 		JPanel removePanel = new JPanel();
+		removePanel.setOpaque(false);
 		removePanel.add(this.removeButton);
 		
+		if (row % 2 == 0) {
+			this.setBackground(ProductsArticlesTableModel.EVEN_COLOR);
+		}
+		else {
+			this.setBackground(ProductsArticlesTableModel.ODD_COLOR);
+		}
 		this.setLayout(new BorderLayout());
 		this.add(Box.createVerticalStrut(topMargin), BorderLayout.PAGE_START);
 		this.add(removePanel);

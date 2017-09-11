@@ -104,12 +104,14 @@ public class JCartDialog extends JDialog implements ActionListener{
 			this.cart = cart;
 			
 			this.setModel(new ProductsArticlesTableModel(this.cart.getArticoli(),
-					ROW_HEIGHT, ProductsArticlesTableModel.CART_MODE));
+					ProductsArticlesTableModel.CART_MODE));
 			this.setRowHeight(ROW_HEIGHT);
 			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 			centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 			this.setDefaultRenderer(String.class, centerRenderer);
 			this.setBackground(null);
+			this.getColumn(ProductsArticlesTableModel.IMAGE_COLUMN)
+			.setCellRenderer(new ImageColumnRender(ROW_HEIGHT));
 			this.getColumn(ProductsArticlesTableModel.AMOUNT_COLUMN)
 			.setCellRenderer(new AmountColumnRender(ROW_HEIGHT));
 			ProductsArticlesTableModel model = (ProductsArticlesTableModel) this.getModel();
