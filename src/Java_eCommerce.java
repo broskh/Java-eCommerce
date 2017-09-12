@@ -21,7 +21,7 @@ public class Java_eCommerce  {
 	private static final int FONT_SIZE = 13; /**<Font size.*/
 
 	private static final String FONT_PATH = "media/font/"; /**<Cartella contenente i font.*/
-	private static final String FONT_NAME = "OpenSans"; /**<Nome del font.*/
+	private static final String FONT_NAME = "Encode Sans"; /**<Nome del font.*/
 	
 	public static void main(String[] args) {	    
 	    //cambio tema grafico
@@ -30,7 +30,7 @@ public class Java_eCommerce  {
 		    File fontFolder = new File(Java_eCommerce.FONT_PATH);
 		    if (fontFolder.isDirectory()) {
 			    for(final File fontFile : fontFolder.listFiles()) {
-			    	if (fontFile.getName().startsWith(Java_eCommerce.FONT_NAME)) {
+			    	if (fontFile.getName().startsWith(Java_eCommerce.FONT_NAME.replace(" ", ""))) {
 			    		ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, fontFile));
 			    	}
 			    }
