@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -229,7 +231,8 @@ class ImageColumnRender implements TableCellRenderer {
 	public Component getTableCellRendererComponent(JTable table, Object value, 
 			boolean isSelected, boolean hasFocus, int row, int column) {
 		table.getColumn(table.getColumnName(column)).setMinWidth(this.iconSize + ImageCell.BORDER_THICKNESS * 2);
-		ImageCell imageCell = new ImageCell(this.iconSize, row, (File) value);
+		ImageCell imageCell = new ImageCell(this.iconSize, (File) value);
+		imageCell.setBackgroundColor(row);
 		return imageCell;
 	}
 }
@@ -239,7 +242,7 @@ class ImageCell extends JPanel {
 	
 	public static int BORDER_THICKNESS = 1;
 
-	public ImageCell (int iconSize, int row, File image) {
+	public ImageCell (int iconSize, File image) {
 
 		JLabel imageLabel = new JLabel("", SwingConstants.CENTER);
 		int margin = 0;
@@ -258,17 +261,20 @@ class ImageCell extends JPanel {
 		imagePanel.setOpaque(false);
 		imagePanel.add(imageLabel);
 
+		this.setLayout (new BorderLayout());
+        this.add(Box.createVerticalStrut(margin), BorderLayout.PAGE_START);
+        this.add(imagePanel, BorderLayout.CENTER);
+        this.add(Box.createVerticalStrut(margin), BorderLayout.PAGE_END);
+	}
+	
+	public void setBackgroundColor (int row) {
 		if (row % 2 == 0) {
 			this.setBackground(ProductsArticlesTableModel.EVEN_COLOR);
 		}
 		else {
 			this.setBackground(ProductsArticlesTableModel.ODD_COLOR);
 		}
-		this.setLayout (new BorderLayout());
-        this.add(Box.createVerticalStrut(margin), BorderLayout.PAGE_START);
-        this.add(imagePanel, BorderLayout.CENTER);
-        this.add(Box.createVerticalStrut(margin), BorderLayout.PAGE_END);
-	}	
+	}
 }
 
 class AmountColumnEditor extends DefaultCellEditor{
@@ -288,7 +294,7 @@ class AmountColumnEditor extends DefaultCellEditor{
     	this.lastRowSelected = NULL_VALUE;
     	this.cart = cart;
     	this.store = store;
-    	this.cellPanel = new AmountCell(cellHeight, this.lastRowSelected, articlesTableModel);
+    	this.cellPanel = new AmountCell(cellHeight, articlesTableModel);
 		
         this.setClickCountToStart(1);
     }
@@ -307,6 +313,7 @@ class AmountColumnEditor extends DefaultCellEditor{
 		Prodotto storeProduct = this.store.getProdotto(product.getCodice());
 		this.cellPanel.setFilter(storeProduct.getQuantita());
 		this.cellPanel.setArticle(product);
+		this.cellPanel.setBackgroundColor(this.lastRowSelected);
         return this.cellPanel;
 	}
 	
@@ -356,7 +363,8 @@ class AmountColumnRender implements TableCellRenderer {
 			boolean isSelected, boolean hasFocus, int row, int column) {
 		table.getColumn(table.getColumnName(column)).setMinWidth(AmountCell.TEXTFIELD_WIDTH);
 		AmountCell amountCell = new AmountCell(
-				this.rowHeight, row, ((JProductsTable) table).getProductAtRow(row));
+				this.rowHeight, ((JProductsTable) table).getProductAtRow(row));
+		amountCell.setBackgroundColor(row);
 		return amountCell;
 	}
 }
@@ -367,15 +375,13 @@ class AmountCell extends JPanel {
 	private JTextField textField;
 	private ProductsArticlesTableModel articlesTableModel;
 	private Prodotto article;
-	
-	private static final int TEXTFIELD_HEIGHT = 22;
-	private static final int GENERIC_MARGIN = 10;
 
 	public static final int TEXTFIELD_WIDTH = 50;
 
-	public AmountCell (int rowHeight, Integer row, Prodotto article, Integer maxValue, 
+	public AmountCell (int rowHeight, Prodotto article, Integer maxValue, 
 			ProductsArticlesTableModel articlesTableModel) {
 		this.textField = new JTextField();
+		this.textField.setPreferredSize(new Dimension(TEXTFIELD_WIDTH, (int)this.textField.getPreferredSize().getHeight()));
 		this.article = article;
 		this.articlesTableModel = articlesTableModel;
 		if (article != null) {
@@ -387,38 +393,29 @@ class AmountCell extends JPanel {
 			doc.setDocumentFilter(new AmountDocumentFilter(maxValue));
 		}
 		
-		this.textField.setPreferredSize(new Dimension(TEXTFIELD_WIDTH, TEXTFIELD_HEIGHT));
-		int topMargin = (rowHeight - TEXTFIELD_HEIGHT - GENERIC_MARGIN) / 2;
-		
 		JPanel mainPanel = new JPanel (new FlowLayout(FlowLayout.CENTER, 0, 0));
 		mainPanel.setOpaque(false);
 		mainPanel.add(this.textField);
-
+		this.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        this.add(mainPanel, gbc);
+	}
+	
+	public AmountCell (int rowHeight, ProductsArticlesTableModel articlesTableModel) {
+		this (rowHeight, null, null, articlesTableModel);
+	}
+	
+	public AmountCell (int rowHeight, Prodotto article) {
+		this (rowHeight, article, null, null);
+	}
+	
+	public void setBackgroundColor (int row) {
 		if (row % 2 == 0) {
 			this.setBackground(ProductsArticlesTableModel.EVEN_COLOR);
 		}
 		else {
 			this.setBackground(ProductsArticlesTableModel.ODD_COLOR);
 		}
-		this.setLayout (new BorderLayout());
-        this.add(Box.createVerticalStrut(topMargin), BorderLayout.PAGE_START);
-        this.add(mainPanel, BorderLayout.CENTER);
-	}
-	
-	public AmountCell (int rowHeight, Integer row) {
-		this (rowHeight, row, null, null, null);
-	}
-	
-	public AmountCell (int rowHeight, Integer row, ProductsArticlesTableModel articlesTableModel) {
-		this (rowHeight, row, null, null, articlesTableModel);
-	}
-	
-	public AmountCell (int rowHeight, Integer row, Prodotto article) {
-		this (rowHeight, row, article, null, null);
-	}
-	
-	public AmountCell (int rowHeight, Integer row, Prodotto article, Integer maxValue) {
-		this (rowHeight, row, article, maxValue, null);
 	}
 	
 	private boolean initTableUpdate () {
@@ -490,7 +487,8 @@ class RemoveColumnRender implements TableCellRenderer {
 	public Component getTableCellRendererComponent(JTable table, Object value, 
 			boolean isSelected, boolean hasFocus, int row, int column) {
 		table.getColumn(table.getColumnName(column)).setMinWidth(RemoveCell.BUTTON_SIZE);
-		RemoveCell removeCell =new RemoveCell(this.rowHeight, row);
+		RemoveCell removeCell =new RemoveCell(this.rowHeight);
+		removeCell.setBackgroundColor(row);;
 		return removeCell;
 	}
 }
@@ -508,7 +506,7 @@ class RemoveColumnEditor extends DefaultCellEditor {
     	super (new JTextField());
     	this.articles = articles;
     	this.lastRowSelected = NULL_VALUE;
-    	this.cellPanel = new RemoveCell(rowHeight, this.lastRowSelected);
+    	this.cellPanel = new RemoveCell(rowHeight);
     	this.cellPanel.setArticoli(this.articles);
 		
         this.setClickCountToStart(1);
@@ -525,6 +523,7 @@ class RemoveColumnEditor extends DefaultCellEditor {
 		table.getColumn(table.getColumnName(column)).setMinWidth(RemoveCell.BUTTON_SIZE);
 		this.lastRowSelected = row; 
 		this.cellPanel.setnArticolo(row);
+		this.cellPanel.setBackgroundColor(this.lastRowSelected);
         return this.cellPanel;
 	}
 	
@@ -574,11 +573,11 @@ class RemoveCell extends JPanel implements ActionListener{
 
 	public static final int BUTTON_SIZE = 32;
 	
-    public RemoveCell (int cellHeight, int row) {
-    	this (cellHeight, row, null, null);
+    public RemoveCell (int cellHeight) {
+    	this (cellHeight, null, null);
     }
 	
-    public RemoveCell (int cellHeight, int row, Integer nArticle, ArrayList <Prodotto> articles) {
+    public RemoveCell (int cellHeight, Integer nArticle, ArrayList <Prodotto> articles) {
 		this.articles = articles;
 		this.nArticle = nArticle;
     	this.removeButton = new JButton();
@@ -596,17 +595,20 @@ class RemoveCell extends JPanel implements ActionListener{
 		removePanel.setOpaque(false);
 		removePanel.add(this.removeButton);
 		
+		this.setLayout(new BorderLayout());
+		this.add(Box.createVerticalStrut(topMargin), BorderLayout.PAGE_START);
+		this.add(removePanel);
+		
+		this.addRemoveButtonActionListener();
+    }
+    
+    public void setBackgroundColor (int row) {
 		if (row % 2 == 0) {
 			this.setBackground(ProductsArticlesTableModel.EVEN_COLOR);
 		}
 		else {
 			this.setBackground(ProductsArticlesTableModel.ODD_COLOR);
 		}
-		this.setLayout(new BorderLayout());
-		this.add(Box.createVerticalStrut(topMargin), BorderLayout.PAGE_START);
-		this.add(removePanel);
-		
-		this.addRemoveButtonActionListener();
     }
 
 	private boolean addRemoveButtonActionListener () {

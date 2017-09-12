@@ -27,7 +27,7 @@ public class JAddProductToStoreDialog extends JDialog implements ActionListener{
 	private JModifyProductPanel modifyProductPanel;
 	private ProductsArticlesTableModel storeTableModel;
 
-	protected static final int FRAME_HEIGHT = 505;
+	protected static final int FRAME_HEIGHT = 510;
 	protected static final int FRAME_WIDTH = 300;
 	
 	private static final int MARGIN = 15;
