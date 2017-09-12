@@ -66,8 +66,8 @@ public class ProductsArticlesTableModel extends AbstractTableModel {
 	public static final String BRAND_COLUMN = "Marca";
 	public static final String CATEGORY_COLUMN = "Categoria";
 	public static final String OFFER_COLUMN = "Offerta";
-	public static final String EACH_COST_COLUMN = "Prezzo cadauno";
-	public static final String EACH_DISCOUNTED_COST_COLUMN = "Prezzo cadauno scontato";
+	public static final String EACH_COST_COLUMN = "Prezzo cad.";
+	public static final String EACH_DISCOUNTED_COST_COLUMN = "Prezzo cad. scontato";
 	public static final String TOTAL_COST_COLUMN = "Prezzo totale";
 	public static final String AMOUNT_COLUMN = "Quantità";
 	public static final String BUTTON_COLUMN = "";
@@ -185,7 +185,10 @@ public class ProductsArticlesTableModel extends AbstractTableModel {
 
 	@Override
 	public boolean isCellEditable (int row, int column) {
-		if (column == AMOUNT_COLUMN_NUMBER || column == BUTTON_COLUMN_NUMBER) {
+		if (column == BUTTON_COLUMN_NUMBER) {
+			return true;
+		}
+		else if (this.mode == CART_MODE && column == AMOUNT_COLUMN_NUMBER) {
 			return true;
 		}
 		return false;
