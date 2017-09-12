@@ -27,7 +27,7 @@ public class JModifyProductDialog extends JDialog implements ActionListener{
 	private JModifyProductPanel modifyProductPanel;
 	
 	private static final String TITLE = "Modifica prodotto";
-	private static final int FRAME_HEIGHT = 490;
+	private static final int FRAME_HEIGHT = 505;
 	private static final int FRAME_WIDTH = 300;
 	
 	private static final int MARGIN = 15;

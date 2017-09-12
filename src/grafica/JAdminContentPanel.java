@@ -134,6 +134,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 			this.saveButton.setIcon(new ImageIcon(new ResizableIcon(
 					new File(SAVE_BUTTON_ICON)).resizeIcon(
 					CONTROLPANEL_BUTTON_ICON_SIZE, CONTROLPANEL_BUTTON_ICON_SIZE)));
+			this.saveButton.setToolTipText(SAVE_BUTTON_TEXT);
 		} catch (IOException e) {
 			e.printStackTrace();
 			this.saveButton.setText(SAVE_BUTTON_TEXT);
@@ -147,6 +148,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 			this.loadButton.setIcon(new ImageIcon(new ResizableIcon(
 					new File(LOAD_BUTTON_ICON)).resizeIcon(
 							CONTROLPANEL_BUTTON_ICON_SIZE, CONTROLPANEL_BUTTON_ICON_SIZE)));
+			this.loadButton.setToolTipText(LOAD_BUTTON_TEXT);
 		} catch (IOException e) {
 			e.printStackTrace();
 			this.loadButton.setText(LOAD_BUTTON_TEXT);
@@ -160,6 +162,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 			this.addButton.setIcon(new ImageIcon(new ResizableIcon(
 					new File(ADD_BUTTON_ICON)).resizeIcon(
 					CONTROLPANEL_BUTTON_ICON_SIZE, CONTROLPANEL_BUTTON_ICON_SIZE)));
+			this.addButton.setToolTipText(ADD_BUTTON_TEXT);
 		} catch (IOException e) {
 			e.printStackTrace();
 			this.addButton.setText(ADD_BUTTON_TEXT);
@@ -173,6 +176,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 			this.editButton.setIcon(new ImageIcon(new ResizableIcon(
 					new File(EDIT_BUTTON_ICON)).resizeIcon(
 					CONTROLPANEL_BUTTON_ICON_SIZE, CONTROLPANEL_BUTTON_ICON_SIZE)));
+			this.editButton.setToolTipText(EDIT_BUTTON_TEXT);
 		} catch (IOException e) {
 			e.printStackTrace();
 			this.editButton.setText(EDIT_BUTTON_TEXT);
@@ -186,6 +190,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 			this.deleteButton.setIcon(new ImageIcon(new ResizableIcon(
 					new File(DELETE_BUTTON_ICON)).resizeIcon(
 					CONTROLPANEL_BUTTON_ICON_SIZE, CONTROLPANEL_BUTTON_ICON_SIZE)));
+			this.deleteButton.setToolTipText(DELETE_BUTTON_TEXT);
 		} catch (IOException e) {
 			e.printStackTrace();
 			this.deleteButton.setText(DELETE_BUTTON_TEXT);

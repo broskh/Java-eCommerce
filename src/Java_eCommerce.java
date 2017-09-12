@@ -1,9 +1,10 @@
 import java.awt.Font;
-import java.util.Enumeration;
+import java.awt.GraphicsEnvironment;
+import java.io.File;
 
+import javax.swing.UIDefaults;
 import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.plaf.FontUIResource;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import grafica.JUserFrame;
 import negozio.Magazzino;
@@ -19,35 +20,36 @@ import negozio.Magazzino;
 public class Java_eCommerce  {
 	private static final int FONT_SIZE = 13; /**<Font size.*/
 
-	private static final String FONT = "Inconsolata"; /**<Font.*/
-//	private static final String THEME = "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"; /**<Tema.*/
+	private static final String FONT_PATH = "media/font/"; /**<Cartella contenente i font.*/
+	private static final String FONT_NAME = "OpenSans"; /**<Nome del font.*/
 	
 	public static void main(String[] args) {	    
 	    //cambio tema grafico
 		try {
-		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-		        if ("Nimbus".equals(info.getName())) {
-		            UIManager.setLookAndFeel(info.getClassName());
-//		            UIManager.put("nimbusBase", Color.GREEN); //alone
-//		            UIManager.put("nimbusBlueGrey", new Color(0,	127,	255)); //componenti tipo bottoni
-//		            UIManager.put("control", Color.WHITE); //sfondo
-		            break;
-		        }
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		    File fontFolder = new File(Java_eCommerce.FONT_PATH);
+		    if (fontFolder.isDirectory()) {
+			    for(final File fontFile : fontFolder.listFiles()) {
+			    	if (fontFile.getName().startsWith(Java_eCommerce.FONT_NAME)) {
+			    		ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, fontFile));
+			    	}
+			    }
 		    }
+			UIManager.setLookAndFeel(new NimbusLookAndFeel() {
+				private static final long serialVersionUID = 8961215144947530197L;
+
+				@Override
+				public UIDefaults getDefaults() {
+					UIDefaults ret = super.getDefaults();
+					ret.put("defaultFont",
+					new Font(Java_eCommerce.FONT_NAME, Font.PLAIN, Java_eCommerce.FONT_SIZE)); // supersize me
+					return ret;
+				}
+		    });
 		} catch (Exception e) {
+			e.printStackTrace();
 		    // GUI alternativa
 		}
-	    
-		Enumeration <Object> keys = UIManager.getDefaults().keys();
-	    while (keys.hasMoreElements()) {
-	    	Object key = keys.nextElement();
-	    	Object value = UIManager.get (key);
-			//cambio font di default
-	    	if (value != null && value instanceof FontUIResource) {
-	    		UIManager.put (key, new FontUIResource(
-	    				Java_eCommerce.FONT, Font.PLAIN, Java_eCommerce.FONT_SIZE));
-	    	}
-	    }
 	    
 	    //programma vero e proprio
 		Magazzino store = new Magazzino();

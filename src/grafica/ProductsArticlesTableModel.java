@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -216,6 +217,60 @@ public class ProductsArticlesTableModel extends AbstractTableModel {
 	}
 }
 
+class ImageColumnRender implements TableCellRenderer {
+	
+	private int iconSize;
+	
+    public ImageColumnRender (int iconSize) {
+    	this.iconSize = iconSize;
+    }
+
+	@Override
+	public Component getTableCellRendererComponent(JTable table, Object value, 
+			boolean isSelected, boolean hasFocus, int row, int column) {
+		table.getColumn(table.getColumnName(column)).setMinWidth(this.iconSize + ImageCell.BORDER_THICKNESS * 2);
+		ImageCell imageCell = new ImageCell(this.iconSize, row, (File) value);
+		return imageCell;
+	}
+}
+
+class ImageCell extends JPanel {
+	private static final long serialVersionUID = 2028713241711826134L;
+	
+	public static int BORDER_THICKNESS = 1;
+
+	public ImageCell (int iconSize, int row, File image) {
+
+		JLabel imageLabel = new JLabel("", SwingConstants.CENTER);
+		int margin = 0;
+		ImageIcon icon;
+		try {
+			icon = new ImageIcon (new ResizableIcon(
+					image, iconSize, iconSize).getBufferedImage());
+			imageLabel.setIcon(icon);
+			imageLabel.setBorder(new LineBorder(Color.DARK_GRAY, BORDER_THICKNESS));
+			margin = (iconSize - (icon.getIconHeight() + BORDER_THICKNESS * 2)) / 2;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		JPanel imagePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+		imagePanel.setOpaque(false);
+		imagePanel.add(imageLabel);
+
+		if (row % 2 == 0) {
+			this.setBackground(ProductsArticlesTableModel.EVEN_COLOR);
+		}
+		else {
+			this.setBackground(ProductsArticlesTableModel.ODD_COLOR);
+		}
+		this.setLayout (new BorderLayout());
+        this.add(Box.createVerticalStrut(margin), BorderLayout.PAGE_START);
+        this.add(imagePanel, BorderLayout.CENTER);
+        this.add(Box.createVerticalStrut(margin), BorderLayout.PAGE_END);
+	}	
+}
+
 class AmountColumnEditor extends DefaultCellEditor{
     private static final long serialVersionUID = 7039137261252411532L;
     
@@ -246,6 +301,7 @@ class AmountColumnEditor extends DefaultCellEditor{
 	@Override
 	public Component getTableCellEditorComponent(JTable table, Object value, 
 			boolean isSelected, int row, int column) {
+		table.getColumn(table.getColumnName(column)).setMinWidth(AmountCell.TEXTFIELD_WIDTH);
 		this.lastRowSelected = row; 
 		Prodotto product = this.cart.getArticoli().get(this.lastRowSelected);
 		Prodotto storeProduct = this.store.getProdotto(product.getCodice());
@@ -296,9 +352,9 @@ class AmountColumnRender implements TableCellRenderer {
     }
 
 	@Override
-	public Component getTableCellRendererComponent(JTable table, 
-			Object value, boolean isSelected, boolean hasFocus,
-			int row, int column) {
+	public Component getTableCellRendererComponent(JTable table, Object value, 
+			boolean isSelected, boolean hasFocus, int row, int column) {
+		table.getColumn(table.getColumnName(column)).setMinWidth(AmountCell.TEXTFIELD_WIDTH);
 		AmountCell amountCell = new AmountCell(
 				this.rowHeight, row, ((JProductsTable) table).getProductAtRow(row));
 		return amountCell;
@@ -312,10 +368,10 @@ class AmountCell extends JPanel {
 	private ProductsArticlesTableModel articlesTableModel;
 	private Prodotto article;
 	
-	private static final int TEXTFIELD_WIDTH = 50;
 	private static final int TEXTFIELD_HEIGHT = 22;
-	private static final int SIDE_MARGIN = 10;
 	private static final int GENERIC_MARGIN = 10;
+
+	public static final int TEXTFIELD_WIDTH = 50;
 
 	public AmountCell (int rowHeight, Integer row, Prodotto article, Integer maxValue, 
 			ProductsArticlesTableModel articlesTableModel) {
@@ -334,7 +390,7 @@ class AmountCell extends JPanel {
 		this.textField.setPreferredSize(new Dimension(TEXTFIELD_WIDTH, TEXTFIELD_HEIGHT));
 		int topMargin = (rowHeight - TEXTFIELD_HEIGHT - GENERIC_MARGIN) / 2;
 		
-		JPanel mainPanel = new JPanel ();
+		JPanel mainPanel = new JPanel (new FlowLayout(FlowLayout.CENTER, 0, 0));
 		mainPanel.setOpaque(false);
 		mainPanel.add(this.textField);
 
@@ -346,9 +402,7 @@ class AmountCell extends JPanel {
 		}
 		this.setLayout (new BorderLayout());
         this.add(Box.createVerticalStrut(topMargin), BorderLayout.PAGE_START);
-        this.add(Box.createHorizontalStrut(SIDE_MARGIN), BorderLayout.WEST);
         this.add(mainPanel, BorderLayout.CENTER);
-        this.add(Box.createHorizontalStrut(SIDE_MARGIN), BorderLayout.EAST);
 	}
 	
 	public AmountCell (int rowHeight, Integer row) {
@@ -424,53 +478,6 @@ class AmountCell extends JPanel {
 	}
 }
 
-class ImageColumnRender implements TableCellRenderer {
-	
-	private int rowHeight;
-	
-    public ImageColumnRender (int rowHeight) {
-    	this.rowHeight = rowHeight;
-    }
-
-	@Override
-	public Component getTableCellRendererComponent(JTable table, Object value, 
-			boolean isSelected, boolean hasFocus, int row, int column) {
-		ImageCell imageCell =new ImageCell(this.rowHeight, row, (File) value);
-		return imageCell;
-	}
-}
-
-class ImageCell extends JPanel {
-	private static final long serialVersionUID = 2028713241711826134L;
-
-	public ImageCell (int rowHeight, int row, File image) {
-
-		JLabel imageLabel = new JLabel("", SwingConstants.CENTER);
-		int margin = 0;
-		ImageIcon icon;
-		try {
-			icon = new ImageIcon (new ResizableIcon(
-					image, rowHeight, rowHeight).getBufferedImage());
-			imageLabel.setIcon(icon);
-			imageLabel.setBorder(new LineBorder(Color.DARK_GRAY));
-			margin = (rowHeight - icon.getIconHeight()) / 2;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		if (row % 2 == 0) {
-			this.setBackground(ProductsArticlesTableModel.EVEN_COLOR);
-		}
-		else {
-			this.setBackground(ProductsArticlesTableModel.ODD_COLOR);
-		}
-		this.setLayout (new BorderLayout());
-        this.add(Box.createVerticalStrut(margin), BorderLayout.PAGE_START);
-        this.add(imageLabel, BorderLayout.CENTER);
-        this.add(Box.createVerticalStrut(margin), BorderLayout.PAGE_END);
-	}	
-}
-
 class RemoveColumnRender implements TableCellRenderer {
 	
 	private int rowHeight;
@@ -478,18 +485,11 @@ class RemoveColumnRender implements TableCellRenderer {
     public RemoveColumnRender (int rowHeight) {
 		this.rowHeight = rowHeight;
     }
-    
-    public void setRowHeight (int rowHeight) {
-    	this.rowHeight = rowHeight;
-    }
-    
-    public int getRowHeight () {
-    	return this.rowHeight;
-    }
 
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, 
 			boolean isSelected, boolean hasFocus, int row, int column) {
+		table.getColumn(table.getColumnName(column)).setMinWidth(RemoveCell.BUTTON_SIZE);
 		RemoveCell removeCell =new RemoveCell(this.rowHeight, row);
 		return removeCell;
 	}
@@ -522,6 +522,7 @@ class RemoveColumnEditor extends DefaultCellEditor {
 	@Override
 	public Component getTableCellEditorComponent(JTable table, Object value, 
 			boolean isSelected, int row, int column) {
+		table.getColumn(table.getColumnName(column)).setMinWidth(RemoveCell.BUTTON_SIZE);
 		this.lastRowSelected = row; 
 		this.cellPanel.setnArticolo(row);
         return this.cellPanel;
@@ -565,13 +566,13 @@ class RemoveCell extends JPanel implements ActionListener{
 	
 	private Integer nArticle;
 	private ArrayList <Prodotto> articles;
-
-	private static final int BUTTON_SIZE = 28;
 	private static final int GENERIC_MARGIN = 10;
 	
 	private static final String BUTTON_TEXT = "Remove";
 	
 	private static final String IMAGE_PATH = "media/img/small_bin_icon.png";
+
+	public static final int BUTTON_SIZE = 32;
 	
     public RemoveCell (int cellHeight, int row) {
     	this (cellHeight, row, null, null);
