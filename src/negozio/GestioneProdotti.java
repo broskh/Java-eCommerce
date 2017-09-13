@@ -1,5 +1,7 @@
 package negozio;
 
+import java.util.ArrayList;
+
 /**
  * Questa interfeccia implementa i metodi astratti necessari per la gestione di un'insieme
  * di articoli.
@@ -13,7 +15,7 @@ public interface GestioneProdotti {
 	 * 
 	 * @param prodotto Prodotto da aggiungere.
 	 */
-	public abstract void aggiungiProdotto (Prodotto prodotto);
+	public void aggiungiProdotto (Prodotto prodotto);
 	
 	/**
 	 * Rimuove un prodotto dagli articoli presenti. La quantità di unità del prodotto
@@ -48,4 +50,10 @@ public interface GestioneProdotti {
 	 * @return Quantità massima.
 	 */
 	public int maxQuantita ();
+	
+
+	/**
+	 * @return gli articoli presenti.
+	 */
+	public ArrayList <Prodotto> getArticoli();
 }

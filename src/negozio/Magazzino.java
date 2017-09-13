@@ -36,13 +36,6 @@ public class Magazzino implements GestioneProdotti {
 	}
 	
 	/**
-	 * @return gli articoli presenti in magazzino.
-	 */
-	public ArrayList <Prodotto> getArticoli() {
-		return articoli;
-	}
-	
-	/**
 	 * Salva lo stato di un magazzino su un file.
 	 * 
 	 * @param file File sul quale salvare lo stato del magazzino.
@@ -245,6 +238,11 @@ public class Magazzino implements GestioneProdotti {
 		}
 		return articoliFiltrati;
 	}*/
+	
+	@Override
+	public ArrayList <Prodotto> getArticoli() {
+		return articoli;
+	}
 	
 	@Override
 	public void aggiungiProdotto(Prodotto prodotto) {

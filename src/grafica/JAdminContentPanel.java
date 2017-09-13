@@ -26,10 +26,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
-import javax.swing.table.DefaultTableCellRenderer;
 
 import negozio.Magazzino;  
 import negozio.Prodotto;
@@ -41,7 +38,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 	private HashSet <Prodotto> productsAdded;
 
 	private JFrame mainFrame;
-	private JStoreTable storeTable;
+	private JProductsTable storeTable;
 	private JButton saveButton;
 	private JButton loadButton;
 	private JButton addButton;
@@ -107,7 +104,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 	}
 	
 	private JPanel contentPanel () {
-		this.storeTable = new JStoreTable(this.store);
+		this.storeTable = new JProductsTable(this.store);
 		JScrollPane scrollTable = new JScrollPane(this.storeTable);
         scrollTable.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollTable.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -350,39 +347,5 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 	
 	private static void copyImage(File source, File dest) throws IOException {
 		Files.copy(source.toPath(), dest.toPath());
-	}
-	
-	class JStoreTable extends JTable implements JProductsTable {
-		private static final long serialVersionUID = 4734550632778588769L;
-		
-		private Magazzino store;
-		
-		private static final int ROW_HEIGHT = 100;
-		
-		public JStoreTable(Magazzino store) {
-			this.store = store;
-			
-			this.setModel(new ProductsArticlesTableModel(this.store.getArticoli(),
-					ProductsArticlesTableModel.STORE_MODE));
-			this.setRowHeight(ROW_HEIGHT);
-			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-			centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );
-			this.setDefaultRenderer(String.class, centerRenderer);
-			this.setBackground(null);
-			this.getColumn(ProductsArticlesTableModel.IMAGE_COLUMN).setCellRenderer(
-					new ImageColumnRender(ROW_HEIGHT));
-			this.getColumn(ProductsArticlesTableModel.BUTTON_COLUMN).setCellRenderer(
-					new RemoveColumnRender(ROW_HEIGHT));
-			this.getColumn(ProductsArticlesTableModel.BUTTON_COLUMN).setCellEditor(
-					new RemoveColumnEditor(
-					this.store.getArticoli(), ROW_HEIGHT));			
-			this.setFocusable(false);
-			this.setRowSelectionAllowed(false);
-		}
-
-		@Override
-		public Prodotto getProductAtRow(int row) {
-			return this.store.getArticoli().get(row);
-		}
 	}
 }

@@ -19,13 +19,6 @@ public class Carrello implements GestioneProdotti{
 	public Carrello () {
 		this.articoli = new ArrayList <Prodotto> ();
 	}
-	
-	/**
-	 * @return gli articoli presenti nel carrello.
-	 */
-	public ArrayList <Prodotto> getArticoli() {
-		return articoli;
-	}
 
 	/**
 	 * @return il totale del costo degli articoli nel carrello, privo di sconto.
@@ -55,6 +48,11 @@ public class Carrello implements GestioneProdotti{
 	 */
 	public void svuota() {
 		this.articoli.clear();
+	}
+	
+	@Override
+	public ArrayList <Prodotto> getArticoli() {
+		return articoli;
 	}
 
 	@Override

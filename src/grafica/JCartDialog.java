@@ -10,14 +10,10 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.table.DefaultTableCellRenderer;
 
 import negozio.Carrello;
 import negozio.Magazzino;
-import negozio.Prodotto;
 
 public class JCartDialog extends JDialog implements ActionListener{
 	private static final long serialVersionUID = 6774400022574447743L;
@@ -54,9 +50,9 @@ public class JCartDialog extends JDialog implements ActionListener{
 
 		this.payButton = new JButton(PAY_BUTTON_TEXT);
 		JButton emptyButton = new JButton(EMPTY_CART_BUTTON_TEXT);
-		JCartTable jCartTable = new JCartTable(cart, store);
+		JProductsTable cartTable = new JProductsTable(cart, store);
 		emptyButton.addActionListener(new EmptyCartListener(this, 
-				(ProductsArticlesTableModel) jCartTable.getModel(), cart));
+				(ProductsArticlesTableModel) cartTable.getModel(), cart));
 		this.payButton.addActionListener(this);
 		
 		JPanel buttonsPanel = new JPanel();
@@ -69,7 +65,7 @@ public class JCartDialog extends JDialog implements ActionListener{
 		bottomPanel.add(buttonsPanel, BorderLayout.CENTER);
 		bottomPanel.add(Box.createVerticalStrut(BOTTOM_MARGIN), BorderLayout.PAGE_END);
 		
-		JScrollPane scrollTable = new JScrollPane(jCartTable);
+		JScrollPane scrollTable = new JScrollPane(cartTable);
         scrollTable.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollTable.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		
@@ -90,44 +86,6 @@ public class JCartDialog extends JDialog implements ActionListener{
 			JPaymentDialog jPaymentDialog = new JPaymentDialog (
 					this.clientContentPanel, this.cart, this.store);
 			jPaymentDialog.setVisible (true);
-		}
-	}
-	
-	class JCartTable extends JTable implements JProductsTable {
-		private static final long serialVersionUID = 4734550632778588769L;
-
-		private Carrello cart;
-
-		private static final int ROW_HEIGHT = 100;
-		
-		public JCartTable (Carrello cart, Magazzino store) {
-			this.cart = cart;
-			
-			this.setModel(new ProductsArticlesTableModel(this.cart.getArticoli(),
-					ProductsArticlesTableModel.CART_MODE));
-			this.setRowHeight(ROW_HEIGHT);
-			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-			centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-			this.setDefaultRenderer(String.class, centerRenderer);
-			this.setBackground(null);
-			this.getColumn(ProductsArticlesTableModel.IMAGE_COLUMN)
-			.setCellRenderer(new ImageColumnRender(ROW_HEIGHT));
-			this.getColumn(ProductsArticlesTableModel.AMOUNT_COLUMN)
-			.setCellRenderer(new AmountColumnRender(ROW_HEIGHT));
-			ProductsArticlesTableModel model = (ProductsArticlesTableModel) this.getModel();
-			this.getColumn(ProductsArticlesTableModel.AMOUNT_COLUMN)
-			.setCellEditor(new AmountColumnEditor(model, this.cart, store, ROW_HEIGHT));
-			this.getColumn(ProductsArticlesTableModel.BUTTON_COLUMN)
-			.setCellRenderer(new RemoveColumnRender(ROW_HEIGHT));
-			this.getColumn(ProductsArticlesTableModel.BUTTON_COLUMN)
-			.setCellEditor(new RemoveColumnEditor(
-					this.cart.getArticoli(), ROW_HEIGHT));
-			this.setFocusable(false);
-			this.setRowSelectionAllowed(false);
-		}
-		
-		public Prodotto getProductAtRow (int row) {
-			return this.cart.getArticoli().get(row);
 		}
 	}
 }

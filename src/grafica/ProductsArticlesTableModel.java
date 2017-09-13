@@ -27,7 +27,6 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.LineBorder;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -628,6 +627,7 @@ class RemoveCell extends JPanel implements ActionListener{
 
 	public void setnArticolo (Integer nArticolo) {
 		this.nArticle = nArticolo;
+		this.removeButton.removeActionListener(this);
 		this.addRemoveButtonActionListener();
 	}
 
@@ -637,6 +637,7 @@ class RemoveCell extends JPanel implements ActionListener{
 
 	public void setArticoli (ArrayList <Prodotto> articoli) {
 		this.articles = articoli;
+		this.removeButton.removeActionListener(this);
 		this.addRemoveButtonActionListener();
 	}
 
