@@ -18,6 +18,7 @@ public class JRemoveProductFromStoreDialog extends JDialog implements ActionList
 
 	private Magazzino store;
 	
+	private JFrame mainFrame;
 	private JSelectProductPanel selectProductPanel;
 	private ProductsArticlesTableModel storeTableModel;
 	
@@ -39,6 +40,7 @@ public class JRemoveProductFromStoreDialog extends JDialog implements ActionList
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 
+		this.mainFrame = mainFrame;
 		this.store = store;
 		this.storeTableModel = storeTableModel;
 		
@@ -58,10 +60,10 @@ public class JRemoveProductFromStoreDialog extends JDialog implements ActionList
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Prodotto product = store.getProdotto(this.selectProductPanel.getSelectedCode());
-		store.rimuoviProdotto(product.getCodice(), product.getQuantita());
-		JOptionPane.showMessageDialog(this, ALERT_TEXT,ALERT_TITLE,
-				JOptionPane.INFORMATION_MESSAGE);			
+		store.rimuoviProdotto(product.getCodice(), product.getQuantita());		
 		this.storeTableModel.fireTableDataChanged();
-		this.setVisible(false);	 
+		this.dispose();
+		JOptionPane.showMessageDialog(this.mainFrame, ALERT_TEXT,ALERT_TITLE,
+				JOptionPane.INFORMATION_MESSAGE);		 
 	}
 }

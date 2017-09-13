@@ -9,7 +9,6 @@ import java.io.File;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -167,7 +166,7 @@ public class JModifyProductPanel extends JPanel implements ActionListener{
 	}
 	
 	public File getProductImage () {
-		return new File (((ImageIcon)this.imageLabel.getIcon()).getDescription());
+		return this.imageLabel.getIconFile();
 	}
 	
 	public String getProductCode () {
@@ -234,7 +233,6 @@ public class JModifyProductPanel extends JPanel implements ActionListener{
 		}
 		else if(e.getSource().equals(this.imageButton)) {
 			JFileChooser fc = new JFileChooser();
-//			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			fc.setMultiSelectionEnabled(false);
 			if(fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 				this.imageLabel.setIcon(fc.getSelectedFile(), ICON_SIZE);

@@ -276,18 +276,20 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 //				PULISCO LISTE
 				this.productsAdded.clear();
 				
+				File fileToSave;
 				if (fc.getSelectedFile().getName().endsWith(StoreFileFilter.EXTENSION)) {
-					store.salvaMagazzino(fc.getSelectedFile());
+					fileToSave = fc.getSelectedFile();
 				}
 				else {
-					store.salvaMagazzino(new File(
-							fc.getSelectedFile().getPath() + StoreFileFilter.EXTENSION));
+					fileToSave = new File(
+							fc.getSelectedFile().getPath() + StoreFileFilter.EXTENSION);
 				}
+				store.salvaMagazzino(fileToSave);
 //				SALVO NELL'APPOSITO FILE IL PERCORSO DELL'ULTIMO MAGAZZINO SALVATO
 				BufferedWriter lastStoreFile = null;
 		        try {
 		        	lastStoreFile = new BufferedWriter(new FileWriter(new File(LAST_STORE_FILE_PATH)));
-		            String filePath = fc.getSelectedFile().toString();
+		            String filePath = fileToSave.toString();
 		            lastStoreFile.write(filePath);
 		        	lastStoreFile.close();
 		        } catch ( IOException g ) {
