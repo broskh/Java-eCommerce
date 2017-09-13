@@ -1,6 +1,5 @@
 package grafica;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 import java.util.EventObject;
 
 import javax.imageio.ImageIO;
-import javax.swing.Box;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -100,7 +98,8 @@ public class ProductsArticlesTableModel extends AbstractTableModel {
 		super ();
 		this.products = products;
 		this.mode = CART_MODE;
-		if (mode == ProductsArticlesTableModel.CART_MODE || mode == ProductsArticlesTableModel.STORE_MODE) {
+		if (mode == ProductsArticlesTableModel.CART_MODE || 
+				mode == ProductsArticlesTableModel.STORE_MODE) {
 			this.mode = mode;
 		}
 	}
@@ -215,6 +214,15 @@ public class ProductsArticlesTableModel extends AbstractTableModel {
 		}
 		return null;
 	}
+	
+	public static void setCellBackgroundColor (JPanel cell, int row) {
+		if (row % 2 == 0) {
+			cell.setBackground(EVEN_COLOR);
+		}
+		else {
+			cell.setBackground(ODD_COLOR);
+		}
+	}
 }
 
 class ImageColumnRender implements TableCellRenderer {
@@ -230,7 +238,7 @@ class ImageColumnRender implements TableCellRenderer {
 			boolean isSelected, boolean hasFocus, int row, int column) {
 		table.getColumn(table.getColumnName(column)).setMinWidth(this.iconSize + JIconLabel.BORDER_THICKNESS * 2);
 		ImageCell imageCell = new ImageCell(this.iconSize, (File) value);
-		imageCell.setBackgroundColor(row);
+		ProductsArticlesTableModel.setCellBackgroundColor(imageCell, row);
 		return imageCell;
 	}
 }
@@ -249,15 +257,6 @@ class ImageCell extends JPanel {
 		this.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         this.add(imagePanel, gbc);
-	}
-	
-	public void setBackgroundColor (int row) {
-		if (row % 2 == 0) {
-			this.setBackground(ProductsArticlesTableModel.EVEN_COLOR);
-		}
-		else {
-			this.setBackground(ProductsArticlesTableModel.ODD_COLOR);
-		}
 	}
 }
 
@@ -297,7 +296,7 @@ class AmountColumnEditor extends DefaultCellEditor{
 		Prodotto storeProduct = this.store.getProdotto(product.getCodice());
 		this.cellPanel.setFilter(storeProduct.getQuantita());
 		this.cellPanel.setArticle(product);
-		this.cellPanel.setBackgroundColor(this.lastRowSelected);
+		ProductsArticlesTableModel.setCellBackgroundColor(cellPanel, row);
         return this.cellPanel;
 	}
 	
@@ -348,7 +347,7 @@ class AmountColumnRender implements TableCellRenderer {
 		table.getColumn(table.getColumnName(column)).setMinWidth(AmountCell.TEXTFIELD_WIDTH);
 		AmountCell amountCell = new AmountCell(
 				this.rowHeight, ((JProductsTable) table).getProductAtRow(row));
-		amountCell.setBackgroundColor(row);
+		ProductsArticlesTableModel.setCellBackgroundColor(amountCell, row);
 		return amountCell;
 	}
 }
@@ -393,14 +392,7 @@ class AmountCell extends JPanel {
 		this (rowHeight, article, null, null);
 	}
 	
-	public void setBackgroundColor (int row) {
-		if (row % 2 == 0) {
-			this.setBackground(ProductsArticlesTableModel.EVEN_COLOR);
-		}
-		else {
-			this.setBackground(ProductsArticlesTableModel.ODD_COLOR);
-		}
-	}
+	
 	
 	private boolean initTableUpdate () {
 		if (this.articlesTableModel != null && this.article != null) {
@@ -472,7 +464,7 @@ class RemoveColumnRender implements TableCellRenderer {
 			boolean isSelected, boolean hasFocus, int row, int column) {
 		table.getColumn(table.getColumnName(column)).setMinWidth(RemoveCell.BUTTON_SIZE);
 		RemoveCell removeCell =new RemoveCell(this.rowHeight);
-		removeCell.setBackgroundColor(row);;
+		ProductsArticlesTableModel.setCellBackgroundColor(removeCell, row);
 		return removeCell;
 	}
 }
@@ -507,7 +499,7 @@ class RemoveColumnEditor extends DefaultCellEditor {
 		table.getColumn(table.getColumnName(column)).setMinWidth(RemoveCell.BUTTON_SIZE);
 		this.lastRowSelected = row; 
 		this.cellPanel.setnArticolo(row);
-		this.cellPanel.setBackgroundColor(this.lastRowSelected);
+		ProductsArticlesTableModel.setCellBackgroundColor(cellPanel, this.lastRowSelected);
         return this.cellPanel;
 	}
 	
@@ -549,7 +541,6 @@ class RemoveCell extends JPanel implements ActionListener{
 	
 	private Integer nArticle;
 	private ArrayList <Prodotto> articles;
-	private static final int GENERIC_MARGIN = 10;
 	
 	private static final String BUTTON_TEXT = "Remove";
 	
@@ -573,29 +564,18 @@ class RemoveCell extends JPanel implements ActionListener{
 		}
 		this.removeButton.setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
 		
-		int topMargin = (cellHeight - BUTTON_SIZE - GENERIC_MARGIN) / 2;
-		
-		JPanel removePanel = new JPanel();
+		JPanel removePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		removePanel.setOpaque(false);
 		removePanel.add(this.removeButton);
-		
-		this.setLayout(new BorderLayout());
-		this.add(Box.createVerticalStrut(topMargin), BorderLayout.PAGE_START);
-		this.add(removePanel);
-		
+
+		this.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        this.add(removePanel, gbc);
+        
 		this.addRemoveButtonActionListener();
     }
     
-    public void setBackgroundColor (int row) {
-		if (row % 2 == 0) {
-			this.setBackground(ProductsArticlesTableModel.EVEN_COLOR);
-		}
-		else {
-			this.setBackground(ProductsArticlesTableModel.ODD_COLOR);
-		}
-    }
-
-	private boolean addRemoveButtonActionListener () {
+    private boolean addRemoveButtonActionListener () {
     	if (this.nArticle != null && this.articles != null) {
 			this.removeButton.addActionListener(this);
 			return true;

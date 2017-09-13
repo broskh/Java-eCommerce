@@ -21,12 +21,18 @@ import java.util.ArrayList;
 public class Magazzino implements GestioneProdotti {
 	private ArrayList <Prodotto> articoli; /**<Articoli presenti in magazzino.*/
 
-	public static final String STRINGA_FILTRO_NOME = "Nome"; /**<Stringa che indica il filtro per nome.*/
-	public static final String STRINGA_FILTRO_MARCA = "Marca"; /**<Stringa che indica il filtro per marca.*/
-	public static final String STRINGA_FILTRO_CODICE = "Codice"; /**<Stringa che indica il filtro per codice.*/
-	public static final String STRINGA_FILTRO_CATEGORIA = "Categoria"; /**<Stringa che indica il filtro per categoria.*/
-	public static final String STRINGA_FILTRO_PREZZO = "Prezzo"; /**<Stringa che indica il filtro per prezzo.*/
-	public static final String STRINGA_FILTRO_QUANTITA = "Quantità"; /**<Stringa che indica il filtro per quantità.*/
+	public static final String STRINGA_FILTRO_NOME = 
+			"Nome"; /**<Stringa che indica il filtro per nome.*/
+	public static final String STRINGA_FILTRO_MARCA = 
+			"Marca"; /**<Stringa che indica il filtro per marca.*/
+	public static final String STRINGA_FILTRO_CODICE = 
+			"Codice"; /**<Stringa che indica il filtro per codice.*/
+	public static final String STRINGA_FILTRO_CATEGORIA = 
+			"Categoria"; /**<Stringa che indica il filtro per categoria.*/
+	public static final String STRINGA_FILTRO_PREZZO = 
+			"Prezzo"; /**<Stringa che indica il filtro per prezzo.*/
+	public static final String STRINGA_FILTRO_QUANTITA = 
+			"Quantità"; /**<Stringa che indica il filtro per quantità.*/
 	
 	/**
 	 * Crea un Magazzino vuoto.
@@ -223,21 +229,6 @@ public class Magazzino implements GestioneProdotti {
 	public ArrayList <Prodotto> filtraPerQuantita (int quantitaMin, int quantitaMax) {
 		return this.filtraPerQuantita((float)quantitaMin, (float)quantitaMax);
 	}
-	
-	/**
-	 * Filtra gli articoli presenti in magazzino e ritorna quelli in offerta.
-	 * 
-	 * @return gli articoli che rispettano il criterio di filtraggio.
-	 */
-	/*public ArrayList <Prodotto> filtraPerOfferta () {
-		ArrayList <Prodotto> articoliFiltrati = new ArrayList <Prodotto> ();
-		for (Prodotto articolo : this.articoli) {
-			if (articolo.inOfferta ()) {
-				articoliFiltrati.add(articolo);
-			}
-		}
-		return articoliFiltrati;
-	}*/
 	
 	@Override
 	public ArrayList <Prodotto> getArticoli() {

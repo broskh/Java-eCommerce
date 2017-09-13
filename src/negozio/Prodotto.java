@@ -25,7 +25,8 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	private int quantita; /**<Quantità del prodotto presente.*/
 	private Promozione offerta; /**<Promozione attiva sul prodotto.*/
 	
-	public static final File IMMAGINE_DEFAULT = new File ("media/img/immagine_non_disponibile.jpg"); /**<Immagine di default.*/
+	public static final File IMMAGINE_DEFAULT = 
+			new File ("media/img/immagine_non_disponibile.jpg"); /**<Immagine di default.*/
 	
 	/**
 	 * Crea un Prodotto in offerta, completo di tutte le informazioni.
@@ -39,8 +40,8 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	 * @param quantita Quantita del prodotto.
 	 * @param offerta Offerta attiva sul prodotto.
 	 */
-	public Prodotto(String nome, String marca, String codice, String categoria, float prezzo, File immagine,
-			int quantita, Promozione offerta) {
+	public Prodotto(String nome, String marca, String codice, String categoria, 
+			float prezzo, File immagine, int quantita, Promozione offerta) {
 		this.nome = nome;
 		this.marca = marca;
 		this.codice = codice;
@@ -75,8 +76,8 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	 * @param quantita Quantita del prodotto.
 	 * @param offerta Offerta attiva sul prodotto.
 	 */
-	public Prodotto(String nome, String marca, String codice, String categoria, float prezzo, String immagine,
-			int quantita, Promozione offerta) {
+	public Prodotto(String nome, String marca, String codice, String categoria, 
+			float prezzo, String immagine, int quantita, Promozione offerta) {
 		this (nome, marca, codice, categoria, prezzo, new File (immagine), quantita, offerta);
 	}
 
@@ -91,8 +92,8 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	 * @param immagine Immagine del prodotto.
 	 * @param quantita Quantita del prodotto.
 	 */
-	public Prodotto(String nome, String marca, String codice, String categoria, float prezzo, File immagine,
-			int quantita) {
+	public Prodotto(String nome, String marca, String codice, String categoria, 
+			float prezzo, File immagine, int quantita) {
 		this (nome, marca, codice, categoria, prezzo, immagine, quantita, null);
 	}
 
@@ -107,8 +108,8 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	 * @param immagine Immagine del prodotto.
 	 * @param quantita Quantita del prodotto.
 	 */
-	public Prodotto(String nome, String marca, String codice, String categoria, float prezzo, String immagine,
-			int quantita) {
+	public Prodotto(String nome, String marca, String codice, String categoria, 
+			float prezzo, String immagine, int quantita) {
 		this (nome, marca, codice, categoria, prezzo, new File (immagine), quantita, null);
 	}
 
@@ -341,14 +342,15 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 
 	@Override
 	public String toString() {
-		return "Prodotto [nome=" + nome + ", marca=" + marca + ", codice=" + codice + ", categoria=" + categoria
-				+ ", prezzo=" + prezzo + ", immagine=" + immagine + ", quantita=" + quantita + ", offerta=" + offerta
-				+ "]";
+		return "Prodotto [nome=" + nome + ", marca=" + marca + ", codice=" + codice 
+				+ ", categoria=" + categoria + ", prezzo=" + prezzo + ", immagine=" 
+				+ immagine + ", quantita=" + quantita + ", offerta=" + offerta + "]";
 	}
 	
 	public static final DataFlavor getDataFlavor () {
 		try {
-			return new DataFlavor (DataFlavor.javaJVMLocalObjectMimeType + ";class=\""+Prodotto.class.getName() + "\"");
+			return new DataFlavor (DataFlavor.javaJVMLocalObjectMimeType 
+					+ ";class=\""+Prodotto.class.getName() + "\"");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -375,7 +377,8 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	}
 
 	@Override
-	public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+	public Object getTransferData(DataFlavor flavor) 
+			throws UnsupportedFlavorException, IOException {
 		if (flavor.equals(Prodotto.getDataFlavor())) {
 			return this;
 		}
