@@ -6,6 +6,8 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +15,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import java.io.File;
-import java.io.IOException;
 
 import java.util.ArrayList;
 
@@ -30,10 +31,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
-import javax.swing.border.LineBorder;
 import javax.swing.text.PlainDocument;
 
 import negozio.Carrello;
@@ -94,7 +93,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	private static final int FORWARD_BUTTON_SIZE = FORWARD_IMAGE_SIZE + 15;
 	private static final int ARTICLE_AMOUNT_WIDTH = 50;
 	private static final int ARTICLE_AMOUNT_HEIGHT = 25;
-	private static final int ARTICLE_ICON_SIZE = 120;
+	private static final int PRODUCT_ICON_SIZE = 120;
 	private static final int ARTICLE_ADD_BUTTON_SIZE = 32;
 	private static final int CART_ICON_SIZE = 70;
 	private static final int ARTICLE_ADD_IMAGE_SIZE = ARTICLE_ADD_BUTTON_SIZE - 14;	
@@ -117,7 +116,6 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	private static final String ADD_BUTTON_TEXT = "+";	
 	private static final String FILTER_TYPE_LABEL = "Filtra per:";
 	private static final String FILTER_STRING_LABEL = "Criterio di ricerca:";
-	private static final String IMAGE_LABEL = "Nessuna immagine";
 	private static final String CODE_LABEL = "Codice: ";
 	private static final String NAME_LABEL = "Nome: ";
 	private static final String BRAND_LABEL = "Marca: ";
@@ -336,41 +334,29 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		return controlPanel;
 	}
 	
-	private JPanel articlePanel (Prodotto article) {
-		JLabel imageLabel = new JLabel("", SwingConstants.CENTER);
-		imageLabel.setBorder(new LineBorder(Color.DARK_GRAY));
+	private JPanel articlePanel (Prodotto product) {
+		JIconLabel imageLabel = new JIconLabel(product.getImmagine(), PRODUCT_ICON_SIZE);
 		imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		int labelHeight;
-		try {
-			ImageIcon icon = new ImageIcon(new ResizableIcon(article.getImmagine())
-					.resizeIcon(ARTICLE_ICON_SIZE, ARTICLE_ICON_SIZE));
-			imageLabel.setIcon(icon);
-			labelHeight = icon.getIconHeight();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-			imageLabel.setText(IMAGE_LABEL);
-			labelHeight = imageLabel.getFont().getSize();
-		}
+
 		JPanel imagePanel = new JPanel ();
 		imagePanel.setOpaque(false);
-		imagePanel.setLayout(new BoxLayout (imagePanel, BoxLayout.Y_AXIS));
-		imagePanel.add(Box.createVerticalStrut(DEFAULT_GENERIC_MARGIN));
-		imagePanel.add(Box.createVerticalStrut((ARTICLE_ICON_SIZE - labelHeight) / 2));
-		imagePanel.add(imageLabel);
-		imagePanel.add(Box.createVerticalStrut((ARTICLE_ICON_SIZE - labelHeight) / 2));
+		imagePanel.setPreferredSize(new Dimension(PRODUCT_ICON_SIZE, PRODUCT_ICON_SIZE));
+		imagePanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        imagePanel.add(imageLabel, gbc);
 		
-		JLabel codeLabel = new JLabel(CODE_LABEL + article.getCodice());
-		JLabel nameLabel = new JLabel(NAME_LABEL + article.getNome());
-		JLabel brandLabel = new JLabel(BRAND_LABEL + article.getMarca());
-		JLabel categoryLabel = new JLabel(CATEGORY_LABEL + article.getCategoria());
-		JLabel priceLabel = new JLabel(COST_LABEL + article.getPrezzo() + CURRENCY_SYMBOL);
-		JLabel availabilityLabel = new JLabel(AVAILABILITY_LABEL + article.getQuantita());
+		JLabel codeLabel = new JLabel(CODE_LABEL + product.getCodice());
+		JLabel nameLabel = new JLabel(NAME_LABEL + product.getNome());
+		JLabel brandLabel = new JLabel(BRAND_LABEL + product.getMarca());
+		JLabel categoryLabel = new JLabel(CATEGORY_LABEL + product.getCategoria());
+		JLabel priceLabel = new JLabel(COST_LABEL + product.getPrezzo() + CURRENCY_SYMBOL);
+		JLabel availabilityLabel = new JLabel(AVAILABILITY_LABEL + product.getQuantita());
 		String offer;
-		if (article.getOfferta() == null) {
+		if (product.getOfferta() == null) {
 			offer = NONE_OFFER_TEXT;
 		}
 		else {
-			offer = article.getOfferta().toString();
+			offer = product.getOfferta().toString();
 		}
 		JLabel offerLabel = new JLabel(OFFER_LABEL + offer);
 		JPanel informationPanel = new JPanel ();
@@ -388,7 +374,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		amountTextField.setPreferredSize(new Dimension (ARTICLE_AMOUNT_WIDTH, 
 				ARTICLE_AMOUNT_HEIGHT));
 		PlainDocument doc = (PlainDocument) amountTextField.getDocument();
-		doc.setDocumentFilter(new AmountDocumentFilter(article.getQuantita()));	
+		doc.setDocumentFilter(new AmountDocumentFilter(product.getQuantita()));	
 		JButton addToCartButton = new JButton();
 		try {
 		    addToCartButton.setIcon(new ImageIcon(new ResizableIcon(new File(ADD_IMAGE_PATH))
@@ -399,7 +385,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		addToCartButton.setPreferredSize(new Dimension (
 				ARTICLE_ADD_BUTTON_SIZE, ARTICLE_ADD_BUTTON_SIZE));
 		addToCartButton.addActionListener(new AddProductToCartListener(this.store, 
-				this.cart, new StringBuilder(article.getCodice()), 
+				this.cart, new StringBuilder(product.getCodice()), 
 				amountTextField));
 		addToCartButton.setBackground(ADD_PRODUCT_BUTTON_COLOR);
 		addToCartButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -431,7 +417,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
         JPanel articlePanel = new JPanel();
         articlePanel.setOpaque(false);
         articlePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
-        articlePanel.setTransferHandler(new ProdottoExportTransferHandler(article, amountTextField));
+        articlePanel.setTransferHandler(new ProdottoExportTransferHandler(product, amountTextField));
 		articlePanel.addMouseMotionListener(new ArticleMouseAdapter(articlePanel));
         articlePanel.add (mainPanel, BorderLayout.PAGE_START);
         return articlePanel;
@@ -439,7 +425,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	
 	public static int articlePanelHeight () {
 		return  ARTICLE_BORDER_SIZE + DEFAULT_GENERIC_MARGIN + 
-				ARTICLE_ICON_SIZE + DEFAULT_GENERIC_MARGIN + 
+				PRODUCT_ICON_SIZE + DEFAULT_GENERIC_MARGIN + 
 				(new JLabel().getFont().getSize() + 
 				ARTICLE_INFORMATION_SPACE) * 7 + DEFAULT_GENERIC_MARGIN + 
 				ARTICLE_INTERACTION_HEIGHT + DEFAULT_GENERIC_MARGIN * 2 + 

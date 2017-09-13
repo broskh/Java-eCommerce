@@ -12,21 +12,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EventObject;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -232,7 +228,7 @@ class ImageColumnRender implements TableCellRenderer {
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, 
 			boolean isSelected, boolean hasFocus, int row, int column) {
-		table.getColumn(table.getColumnName(column)).setMinWidth(this.iconSize + ImageCell.BORDER_THICKNESS * 2);
+		table.getColumn(table.getColumnName(column)).setMinWidth(this.iconSize + JIconLabel.BORDER_THICKNESS * 2);
 		ImageCell imageCell = new ImageCell(this.iconSize, (File) value);
 		imageCell.setBackgroundColor(row);
 		return imageCell;
@@ -241,32 +237,18 @@ class ImageColumnRender implements TableCellRenderer {
 
 class ImageCell extends JPanel {
 	private static final long serialVersionUID = 2028713241711826134L;
-	
-	public static int BORDER_THICKNESS = 1;
 
 	public ImageCell (int iconSize, File image) {
 
-		JLabel imageLabel = new JLabel("", SwingConstants.CENTER);
-		int margin = 0;
-		ImageIcon icon;
-		try {
-			icon = new ImageIcon (new ResizableIcon(
-					image, iconSize, iconSize).getBufferedImage());
-			imageLabel.setIcon(icon);
-			imageLabel.setBorder(BorderFactory.createMatteBorder(BORDER_THICKNESS, BORDER_THICKNESS, BORDER_THICKNESS, BORDER_THICKNESS, Color.DARK_GRAY));
-			margin = (iconSize - (icon.getIconHeight() + BORDER_THICKNESS * 2)) / 2;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		JIconLabel imageLabel = new JIconLabel(image,iconSize);		
 		
 		JPanel imagePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		imagePanel.setOpaque(false);
 		imagePanel.add(imageLabel);
 
-		this.setLayout (new BorderLayout());
-        this.add(Box.createVerticalStrut(margin), BorderLayout.PAGE_START);
-        this.add(imagePanel, BorderLayout.CENTER);
-        this.add(Box.createVerticalStrut(margin), BorderLayout.PAGE_END);
+		this.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        this.add(imagePanel, gbc);
 	}
 	
 	public void setBackgroundColor (int row) {

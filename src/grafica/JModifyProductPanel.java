@@ -5,7 +5,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -17,7 +16,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.text.PlainDocument;
 
 import negozio.Prodotto;
@@ -30,7 +28,7 @@ public class JModifyProductPanel extends JPanel implements ActionListener{
 
 	private Prodotto product;
 
-	private JLabel imageLabel; 
+	private JIconLabel imageLabel; 
 	private JButton imageButton;
 	private JTextField codeTextField;
 	private JTextField nameTextField;
@@ -54,7 +52,6 @@ public class JModifyProductPanel extends JPanel implements ActionListener{
 	private static final int ATTIRUBTESPANEL_COLUMNS = 2;
 
 	private static final String IMAGE_BUTTON_TEXT =  "Cambia";
-	private static final String IMAGE_LABEL_TEXT = "Immagine non disponibile";
 	private static final String CODE_LABEL_TEXT = "Codice:";
 	private static final String NAME_LABEL_TEXT = "Nome:";
 	private static final String BRAND_LABEL_TEXT = "Marca:";
@@ -75,15 +72,7 @@ public class JModifyProductPanel extends JPanel implements ActionListener{
 	public JModifyProductPanel(Prodotto product) {
 		this.product = product;
 		
-		this.imageLabel = new JLabel("",SwingConstants.CENTER);		
-		ImageIcon icon;
-		try {
-			icon = new ImageIcon(new ResizableIcon(this.product.getImmagine()).
-					resizeIcon(ICON_SIZE, ICON_SIZE), this.product.getImmagine().toString());
-			this.imageLabel.setIcon(icon);
-		} catch (IOException e) {
-			this.imageLabel.setText(IMAGE_LABEL_TEXT);
-		}
+		this.imageLabel = new JIconLabel(this.product.getImmagine(), ICON_SIZE);
 		this.imageButton = new JButton(IMAGE_BUTTON_TEXT);
 		this.imageButton.addActionListener(this);
 		JPanel imagePanel = new JPanel();
@@ -248,15 +237,7 @@ public class JModifyProductPanel extends JPanel implements ActionListener{
 //			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			fc.setMultiSelectionEnabled(false);
 			if(fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-				try {
-					ResizableIcon newIcon = new ResizableIcon(
-							fc.getSelectedFile(),ICON_SIZE, ICON_SIZE);
-					this.imageLabel.setIcon(new ImageIcon(
-							newIcon.getBufferedImage(), fc.getSelectedFile().toString()));
-				} catch (IOException e1) {
-					this.imageLabel.setText(IMAGE_LABEL_TEXT);
-					e1.printStackTrace();
-				}
+				this.imageLabel.setIcon(fc.getSelectedFile(), ICON_SIZE);
 				this.updateUI();
 			}			
 		}
