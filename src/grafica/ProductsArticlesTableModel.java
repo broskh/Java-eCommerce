@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.EventObject;
 
 import javax.imageio.ImageIO;
-
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
@@ -254,7 +254,7 @@ class ImageCell extends JPanel {
 			icon = new ImageIcon (new ResizableIcon(
 					image, iconSize, iconSize).getBufferedImage());
 			imageLabel.setIcon(icon);
-			imageLabel.setBorder(new LineBorder(Color.DARK_GRAY, BORDER_THICKNESS));
+			imageLabel.setBorder(BorderFactory.createMatteBorder(BORDER_THICKNESS, BORDER_THICKNESS, BORDER_THICKNESS, BORDER_THICKNESS, Color.DARK_GRAY));
 			margin = (iconSize - (icon.getIconHeight() + BORDER_THICKNESS * 2)) / 2;
 		} catch (IOException e) {
 			e.printStackTrace();
