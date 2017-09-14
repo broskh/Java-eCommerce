@@ -86,7 +86,17 @@ public class JModifyProductDialog extends JDialog implements ActionListener{
 						ALERT_ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			this.product.setImmagine(this.modifyProductPanel.getProductImage());
+			if (!this.product.getImmagine().equals(this.modifyProductPanel.getProductImage())) {
+				this.product.setImmagine(this.modifyProductPanel.getProductImage());
+				if (!this.product.getImmagine().equals(Prodotto.IMMAGINE_DEFAULT)) {
+					this.articlesAdded.add(this.product);
+				}
+				else {
+					if (this.articlesAdded.contains(this.product)) {//??
+						this.articlesAdded.remove(this.product);
+					}
+				}
+			}
 			this.product.setCodice(this.modifyProductPanel.getProductCode());
 			this.product.setNome(this.modifyProductPanel.getProductName());
 			this.product.setCategoria(this.modifyProductPanel.getProductCategory());
@@ -94,14 +104,6 @@ public class JModifyProductDialog extends JDialog implements ActionListener{
 			this.product.setPrezzo(this.modifyProductPanel.getProductCost());
 			this.product.setQuantita(this.modifyProductPanel.getProductAmount());
 			this.product.setOfferta(this.modifyProductPanel.getProductOffer());
-			if (!this.product.getImmagine().equals(Prodotto.IMMAGINE_DEFAULT)) {
-				this.articlesAdded.add(this.product);
-			}
-			else {
-				if (this.articlesAdded.contains(this.product)) {
-					this.articlesAdded.remove(this.product);
-				}
-			}
 			this.storeTableModel.fireTableDataChanged();
 			this.dispose ();
 			JOptionPane.showMessageDialog(this.mainFrame, SUCCESS_TEXT,
