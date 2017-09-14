@@ -5,8 +5,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import java.util.HashSet;
-
 import javax.swing.Box;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -20,7 +18,6 @@ public class JModifyProductDialog extends JDialog implements ActionListener{
 	
 	private Prodotto product;
 	private Magazzino store;
-	private HashSet <Prodotto> articlesAdded;
 
 	private JFrame mainFrame;
 	private ProductsTableModel storeTableModel;
@@ -44,8 +41,7 @@ public class JModifyProductDialog extends JDialog implements ActionListener{
 	
 	
 	
-	public JModifyProductDialog(JFrame mainFrame,Prodotto product, Magazzino store,
-			ProductsTableModel storeTableModel, HashSet <Prodotto> articlesAdded) {
+	public JModifyProductDialog(JFrame mainFrame,Prodotto product, Magazzino store, ProductsTableModel storeTableModel) {
 		super(mainFrame, TITLE, ModalityType.DOCUMENT_MODAL);		
 		this.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));		
 		this.setLocationRelativeTo(null);
@@ -55,7 +51,6 @@ public class JModifyProductDialog extends JDialog implements ActionListener{
 		this.store = store;
 		this.mainFrame = mainFrame;
 		this.storeTableModel = storeTableModel;
-		this.articlesAdded = articlesAdded;
 				
 		this.modifyProductPanel = new JModifyProductPanel(this.product);
 		this.modifyProductPanel.setButtonText(BUTTON_TEXT);
@@ -86,17 +81,7 @@ public class JModifyProductDialog extends JDialog implements ActionListener{
 						ALERT_ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			if (!this.product.getImmagine().equals(this.modifyProductPanel.getProductImage())) {
-				this.product.setImmagine(this.modifyProductPanel.getProductImage());
-				if (!this.product.getImmagine().equals(Prodotto.IMMAGINE_DEFAULT)) {
-					this.articlesAdded.add(this.product);
-				}
-				else {
-					if (this.articlesAdded.contains(this.product)) {//??
-						this.articlesAdded.remove(this.product);
-					}
-				}
-			}
+			this.product.setImmagine(this.modifyProductPanel.getProductImage());
 			this.product.setCodice(this.modifyProductPanel.getProductCode());
 			this.product.setNome(this.modifyProductPanel.getProductName());
 			this.product.setCategoria(this.modifyProductPanel.getProductCategory());

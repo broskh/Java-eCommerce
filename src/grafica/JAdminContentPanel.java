@@ -6,14 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
-import java.nio.file.Files;
-
-import java.util.HashSet;
 
 import javax.swing.Box;
 import javax.swing.JFileChooser;
@@ -26,14 +19,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EtchedBorder;
 
-import negozio.Magazzino;  
-import negozio.Prodotto;
+import negozio.Magazzino;
 
 public class JAdminContentPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -3936116522061776556L;
 
 	private Magazzino store;
-	private HashSet <Prodotto> productsAdded;
 
 	private JFrame mainFrame;
 	private JProductsTable storeTable;
@@ -82,9 +73,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 	private static final String EMPTY_STORE_TITLE = "Attenzione";
 	private static final String EMPTY_STORE_TEXT = "Il magazzino è vuoto.";
 	
-	private static final String NEW_IMAGES_FOLDER = "media/img/products/";
 	private static final String FILE_CHOOSER_OPEN_DIRECTORY = "media/saves";
-	private static final String LAST_STORE_FILE_PATH = "media/saves/last";
 	private static final String SAVE_BUTTON_ICON = "media/img/save_icon.png";
 	private static final String LOAD_BUTTON_ICON = "media/img/load_icon.png";
 	private static final String ADD_BUTTON_ICON = "media/img/add_to_store_icon.png";
@@ -94,7 +83,6 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 	public JAdminContentPanel(JFrame mainFrame, Magazzino store) {
 		this.store = store;  
 		this.mainFrame = mainFrame;
-		this.productsAdded = new HashSet<>();
 		
 		this.setLayout(new BorderLayout());
 		this.add(this.menuBar(), BorderLayout.PAGE_START);
@@ -182,26 +170,6 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 		menuBar.add(managementMenu);
 		return menuBar;
 	}
-	
-	private File getNewImageFile (File oldImageFile) {
-		String newFileName = oldImageFile.getName();
-		File newFile = new File (NEW_IMAGES_FOLDER + newFileName);
-		if (!newFile.exists()) {
-			return newFile;
-		}
-		String extension = "";
-		int extensionIndex = newFileName.lastIndexOf('.');
-		if (extensionIndex != -1) {
-			extension = newFileName.substring(extensionIndex, newFileName.length());
-			newFileName = newFileName.substring(0, extensionIndex);
-		}
-		int i = 0;
-		do {
-			i++;
-			newFile = new File (NEW_IMAGES_FOLDER + newFileName + "_" + i + extension);
-		} while (newFile.exists());
-		return newFile;
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -211,20 +179,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 			fc.setApproveButtonText(FILE_CHOOSER_SAVE_BUTTON_TEXT);
 			fc.setFileFilter(new StoreFileFilter());
 			fc.setMultiSelectionEnabled(false);
-			if(fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-//				AGGIUNTA NUOVE IMMAGINI
-				for (Prodotto articolo : this.productsAdded) {
-					File newFile = this.getNewImageFile(articolo.getImmagine());
-					try {
-						JAdminContentPanel.copyImage(articolo.getImmagine(), newFile);
-						articolo.setImmagine(newFile);
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-				}
-//				PULISCO LISTE
-				this.productsAdded.clear();
-				
+			if(fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {				
 				File fileToSave;
 				if (fc.getSelectedFile().getName().endsWith(StoreFileFilter.EXTENSION)) {
 					fileToSave = fc.getSelectedFile();
@@ -234,17 +189,6 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 							fc.getSelectedFile().getPath() + StoreFileFilter.EXTENSION);
 				}
 				store.salvaMagazzino(fileToSave);
-//				SALVO NELL'APPOSITO FILE IL PERCORSO DELL'ULTIMO MAGAZZINO SALVATO
-				BufferedWriter lastStoreFile = null;
-		        try {
-		        	lastStoreFile = new BufferedWriter(new FileWriter(
-		        			new File(LAST_STORE_FILE_PATH)));
-		            String filePath = fileToSave.toString();
-		            lastStoreFile.write(filePath);
-		        	lastStoreFile.close();
-		        } catch ( IOException g ) {
-		            g.printStackTrace();
-		        }
 				JOptionPane.showMessageDialog(this, ALERT_SAVE_TEXT,
 						ALERT_SAVE_TITLE, JOptionPane.INFORMATION_MESSAGE);
 			}
@@ -267,7 +211,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 		else if(e.getSource().equals(this.addButton) || e.getSource().equals(this.addMenuItem)) {
 			JAddProductToStoreDialog jAddProductDialog = 
 					new JAddProductToStoreDialog(this.mainFrame, this.store, 
-					(ProductsTableModel)this.storeTable.getModel(), this.productsAdded);
+					(ProductsTableModel)this.storeTable.getModel());
 			jAddProductDialog.setVisible(true);
 		} 
 		else if(e.getSource().equals(this.editButton) || 
@@ -279,8 +223,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 			else {
 				JSelectProductToModifyDialog jSearchProductDialog = 
 						new JSelectProductToModifyDialog (this.mainFrame, this.store, 
-						(ProductsTableModel)this.storeTable.getModel(), 
-						this.productsAdded);
+						(ProductsTableModel)this.storeTable.getModel());
 				jSearchProductDialog.setVisible(true);
 			}
 		}
@@ -300,9 +243,5 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 		else if (e.getSource().equals(this.closeMenuItem)) {
 			this.mainFrame.dispose();
 		}
-	}
-	
-	private static void copyImage(File source, File dest) throws IOException {
-		Files.copy(source.toPath(), dest.toPath());
 	}
 }

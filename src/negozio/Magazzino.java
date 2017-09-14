@@ -1,13 +1,15 @@
 package negozio;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
+import java.nio.file.Files;
 import java.util.ArrayList;
 
 /**
@@ -33,6 +35,47 @@ public class Magazzino implements GestioneProdotti {
 			"Prezzo"; /**<Stringa che indica il filtro per prezzo.*/
 	public static final String STRINGA_FILTRO_QUANTITA = 
 			"Quantità"; /**<Stringa che indica il filtro per quantità.*/
+
+	private static final String NEW_IMAGES_FOLDER = "media/img/products/";
+	/**<Percorso dove salvare le immagini dei prodotti in magazzino.*/
+	private static final String LAST_STORE_FILE_PATH = "media/saves/last"; 
+	/**<File nel quale è memorizzato l'ultimo file magazzino salvato.*/
+
+	/**
+	 * Copia il file sorgente nel file di destinazione.
+	 * 
+	 * @param sorgente File sorgente.
+	 * @param destinazione File di destinazione.
+	 * @throws IOException
+	 */
+	private static void copyImage(File sorgente, File destinazione) throws IOException {
+		Files.copy(sorgente.toPath(), destinazione.toPath());
+	}
+	
+	/**
+	 * Prende un file immagine e ne ritorna il file che dovrà contenerne la copia dopo il salvataggio del magazzino.
+	 * @param oldImageFile File dell'immagine da copiare.
+	 * @return il file che ne conterrà la copia.
+	 */
+	private static File getNewImageFile (File oldImageFile) {
+		String newFileName = oldImageFile.getName();
+		File newFile = new File (NEW_IMAGES_FOLDER + newFileName);
+		if (!newFile.exists()) {
+			return newFile;
+		}
+		String extension = "";
+		int extensionIndex = newFileName.lastIndexOf('.');
+		if (extensionIndex != -1) {
+			extension = newFileName.substring(extensionIndex, newFileName.length());
+			newFileName = newFileName.substring(0, extensionIndex);
+		}
+		int i = 0;
+		do {
+			i++;
+			newFile = new File (NEW_IMAGES_FOLDER + newFileName + "_" + i + extension);
+		} while (newFile.exists());
+		return newFile;
+	}
 	
 	/**
 	 * Crea un Magazzino vuoto.
@@ -50,9 +93,50 @@ public class Magazzino implements GestioneProdotti {
 	public boolean salvaMagazzino (File file) {
 		ObjectOutputStream objectOutputStream;
 		try {
+//			CREO UNA COPIA DELLE IMMAGINI
+			Magazzino vecchioMagazzino = null;
+			if (file.exists()) {
+				vecchioMagazzino = new Magazzino();
+				vecchioMagazzino.caricaMagazzino(file);
+			}
+			for (Prodotto articolo : this.articoli) {
+				if (!articolo.getImmagine().equals(Prodotto.IMMAGINE_DEFAULT)) {	
+					File newFile = getNewImageFile(articolo.getImmagine());
+					try {
+						copyImage(articolo.getImmagine(), newFile);
+						articolo.setImmagine(newFile);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+			if (vecchioMagazzino != null) {
+				for (Prodotto articolo : vecchioMagazzino.getArticoli()) {
+					File fileToDelete = articolo.getImmagine();
+					if (!fileToDelete.equals(Prodotto.IMMAGINE_DEFAULT)) {
+						try {
+							Files.delete(fileToDelete.toPath());
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+					}
+				}
+			}
+//			SALVO EFFETTIVAMENTE IL MAGAZZINO
 			objectOutputStream = new ObjectOutputStream(new FileOutputStream(file));
 			objectOutputStream.writeObject(this.articoli);
 			objectOutputStream.close();
+//			SALVO NELL'APPOSITO FILE IL PERCORSO DELL'ULTIMO MAGAZZINO SALVATO
+			BufferedWriter lastStoreFile = null;
+	        try {
+	        	lastStoreFile = new BufferedWriter(new FileWriter(
+	        			new File(LAST_STORE_FILE_PATH)));
+	            String filePath = file.toString();
+	            lastStoreFile.write(filePath);
+	        	lastStoreFile.close();
+	        } catch ( IOException g ) {
+	            g.printStackTrace();
+	        }
 			return true;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

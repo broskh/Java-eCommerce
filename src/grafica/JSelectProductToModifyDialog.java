@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashSet;
 
 import javax.swing.Box;
 import javax.swing.JDialog;
@@ -17,7 +16,6 @@ public class JSelectProductToModifyDialog extends JDialog implements ActionListe
 	private static final long serialVersionUID = 2972527475553839904L;
 	
 	private Magazzino store;
-	private HashSet <Prodotto> articlesAdded;
 
 	private JFrame mainFrame;
 	private ProductsTableModel storeTableModel;
@@ -33,7 +31,7 @@ public class JSelectProductToModifyDialog extends JDialog implements ActionListe
 	private static final String SELECT_BUTTON_TEXT = "Seleziona";
 	
 	public JSelectProductToModifyDialog(JFrame mainFrame, Magazzino store, 
-			ProductsTableModel storeTableModel, HashSet <Prodotto> articlesAdded) {
+			ProductsTableModel storeTableModel) {
 		super(mainFrame, TITLE, ModalityType.DOCUMENT_MODAL);
 		this.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));		
 		this.setLocationRelativeTo(null);
@@ -42,7 +40,6 @@ public class JSelectProductToModifyDialog extends JDialog implements ActionListe
 		this.store = store;
 		this.mainFrame = mainFrame;
 		this.storeTableModel = storeTableModel;
-		this.articlesAdded = articlesAdded;
 				
 		this.selectProductPanel = new JSelectProductPanel(this.store.getArticoli());
 		this.selectProductPanel.setLabelText(STRING_LABEL_TEXT);
@@ -62,7 +59,7 @@ public class JSelectProductToModifyDialog extends JDialog implements ActionListe
 		this.dispose();
 		Prodotto product = this.store.getProdotto(this.selectProductPanel.getSelectedCode());	
 		JModifyProductDialog modifyProductDialog = new JModifyProductDialog(this.mainFrame, 
-				product, this.store, this.storeTableModel, this.articlesAdded);
+				product, this.store, this.storeTableModel);
 		modifyProductDialog.setVisible(true);
 	}
 }

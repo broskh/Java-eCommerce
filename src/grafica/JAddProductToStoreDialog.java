@@ -5,8 +5,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import java.util.HashSet;
-
 import javax.swing.Box;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -21,7 +19,6 @@ public class JAddProductToStoreDialog extends JDialog implements ActionListener{
 	
 	private Magazzino store;
 	private Prodotto product;
-	private HashSet <Prodotto> articlesAdded;
 
 	private JFrame mainFrame;
 	private JModifyProductPanel modifyProductPanel;
@@ -42,11 +39,9 @@ public class JAddProductToStoreDialog extends JDialog implements ActionListener{
 	private static final String SUCCESS_TEXT = "Aggiunta effettuata con successo.";	
 	protected static final String TITLE = "Aggiungi prodotto";
 	
-	public JAddProductToStoreDialog (JFrame mainFrame, Magazzino store, 
-			ProductsTableModel storeTableModel, HashSet <Prodotto> articlesAdded) {
+	public JAddProductToStoreDialog (JFrame mainFrame, Magazzino store, ProductsTableModel storeTableModel) {
 		super(mainFrame, TITLE, ModalityType.DOCUMENT_MODAL);
 		this.store = store;
-		this.articlesAdded = articlesAdded;
 		this.product = new Prodotto();
 		this.mainFrame = mainFrame;
 		this.storeTableModel = storeTableModel;
@@ -92,14 +87,6 @@ public class JAddProductToStoreDialog extends JDialog implements ActionListener{
 			this.product.setQuantita(this.modifyProductPanel.getProductAmount());
 			this.product.setOfferta(this.modifyProductPanel.getProductOffer());
 			this.store.aggiungiProdotto(this.product);
-			if (!this.product.getImmagine().equals(Prodotto.IMMAGINE_DEFAULT)) {
-				this.articlesAdded.add(this.product);
-			}
-			else {
-				if (this.articlesAdded.contains(this.product)) {
-					this.articlesAdded.remove(this.product);
-				}
-			}
 			this.storeTableModel.fireTableDataChanged();
 			this.dispose ();
 			JOptionPane.showMessageDialog(this.mainFrame, SUCCESS_TEXT,
