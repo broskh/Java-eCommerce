@@ -1,11 +1,8 @@
 package grafica;
 
-import java.awt.Color;
-
 import java.io.File;
 import java.io.IOException;
 
-import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -18,13 +15,9 @@ public class JIconLabel extends JLabel {
 	
 	private File image;
 	
-	public static int BORDER_THICKNESS = 1;
-	
 	public JIconLabel (File image, int iconSize) {
 		super ("", SwingConstants.CENTER);
 		this.setIcon(image, iconSize);
-		this.setBorder(BorderFactory.createMatteBorder(BORDER_THICKNESS, 
-				BORDER_THICKNESS, BORDER_THICKNESS, BORDER_THICKNESS, Color.DARK_GRAY));
 	}
 	
 	public void setIcon (File image, int iconSize) {

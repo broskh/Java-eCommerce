@@ -89,8 +89,7 @@ public class JProductsTable extends JTable{
 		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, 
 				boolean isSelected, boolean hasFocus, int row, int column) {
-			table.getColumn(table.getColumnName(column)).setMinWidth(
-					this.iconSize + JIconLabel.BORDER_THICKNESS * 2);
+			table.getColumn(table.getColumnName(column)).setMinWidth(this.iconSize);
 			ImageCell imageCell = new ImageCell(this.iconSize, (File) value);
 			ProductsTableModel.setCellBackgroundColor(imageCell, row);
 			return imageCell;

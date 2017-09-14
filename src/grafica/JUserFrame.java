@@ -145,19 +145,27 @@ public class JUserFrame extends JFrame implements ActionListener {
 					user = new Cliente(this.nameTextField.getText(),
 							this.surnameTextField.getText());
 					File lastStoreFile = new File(LAST_CONFIG_FILE);
-					BufferedReader lastStore;
 					try {
-						lastStore = new BufferedReader(new FileReader(lastStoreFile));
-						File storeFile = new File(lastStore.readLine());
-						if (storeFile.exists()) {
-							store.caricaMagazzino(storeFile);
-							eCommerceFrame = new JeCommerceFrame(user, this.store);
-							eCommerceFrame.setVisible(true);
+						BufferedReader lastBufferedReader = 
+								new BufferedReader(new FileReader(lastStoreFile));
+						String lastContent = lastBufferedReader.readLine();
+						if (lastContent != null) {
+							File storeFile = new File(lastContent);
+							if (storeFile.exists()) {
+								store.caricaMagazzino(storeFile);
+								eCommerceFrame = new JeCommerceFrame(user, this.store);
+								eCommerceFrame.setVisible(true);
+							}
+							else {
+								JOptionPane.showMessageDialog(this, ALERT_FILE_NOT_FOUND_TEXT,
+										ALERT_FILE_NOT_FOUND_TITLE, JOptionPane.INFORMATION_MESSAGE);
+							}
 						}
 						else {
-							JOptionPane.showMessageDialog(null, ALERT_FILE_NOT_FOUND_TEXT,
+							JOptionPane.showMessageDialog(this, ALERT_FILE_NOT_FOUND_TEXT,
 									ALERT_FILE_NOT_FOUND_TITLE, JOptionPane.INFORMATION_MESSAGE);
 						}
+						lastBufferedReader.close();
 					} catch (FileNotFoundException e1) {
 						e1.printStackTrace();
 					} catch (IOException e1) {

@@ -124,7 +124,7 @@ public class Magazzino implements GestioneProdotti {
 	public ArrayList <Prodotto> filtraPerCategoria (String pattern) {
 		ArrayList <Prodotto> articoliFiltrati = new ArrayList <Prodotto> ();
 		for (Prodotto articolo : this.articoli) {
-			if (articolo.getCategoria().contains(pattern)) {
+			if (articolo.getCategoria().toLowerCase().contains(pattern.toLowerCase())) {
 				articoliFiltrati.add(articolo);
 			}
 		}
@@ -141,7 +141,7 @@ public class Magazzino implements GestioneProdotti {
 	public ArrayList <Prodotto> filtraPerNome (String pattern) {
 		ArrayList <Prodotto> articoliFiltrati = new ArrayList <Prodotto> ();
 		for (Prodotto articolo : this.articoli) {
-			if (articolo.getNome().contains(pattern)) {
+			if (articolo.getNome().toLowerCase().contains(pattern.toLowerCase())) {
 				articoliFiltrati.add(articolo);
 			}
 		}
@@ -158,7 +158,7 @@ public class Magazzino implements GestioneProdotti {
 	public ArrayList <Prodotto> filtraPerMarca (String pattern) {
 		ArrayList <Prodotto> articoliFiltrati = new ArrayList <Prodotto> ();
 		for (Prodotto articolo : this.articoli) {
-			if (articolo.getMarca().contains(pattern)) {
+			if (articolo.getMarca().toLowerCase().contains(pattern.toLowerCase())) {
 				articoliFiltrati.add(articolo);
 			}
 		}
@@ -175,7 +175,7 @@ public class Magazzino implements GestioneProdotti {
 	public ArrayList <Prodotto> filtraPerCodice (String pattern) {
 		ArrayList <Prodotto> articoliFiltrati = new ArrayList <Prodotto> ();
 		for (Prodotto articolo : this.articoli) {
-			if (articolo.getCodice().contains(pattern)) {
+			if (articolo.getCodice().toLowerCase().contains(pattern.toLowerCase())) {
 				articoliFiltrati.add(articolo);
 			}
 		}

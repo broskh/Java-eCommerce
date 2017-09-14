@@ -372,9 +372,8 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		bottomPanel.add(Box.createHorizontalStrut(DEFAULT_GENERIC_MARGIN), BorderLayout.EAST);
 		bottomPanel.add(Box.createVerticalStrut(DEFAULT_GENERIC_MARGIN), BorderLayout.PAGE_END);
         
-        JPanel mainPanel = new JPanel(new BorderLayout());
+        JPanel mainPanel = new JPanel(new BorderLayout(0, DEFAULT_GENERIC_MARGIN));
         mainPanel.setBackground(Color.WHITE);
-        mainPanel.setLayout (new BorderLayout(0, DEFAULT_GENERIC_MARGIN));
         mainPanel.setBorder (new RoundedBorder(
         		Color.GRAY, ARTICLE_BORDER_SIZE, ARTICLE_BORDER_RADII, 0));
         mainPanel.setPreferredSize(new Dimension(WIDTH, JClientContentPanel.articlePanelHeight()));
@@ -383,9 +382,8 @@ public class JClientContentPanel extends JPanel implements ActionListener{
         mainPanel.add (Box.createHorizontalStrut(DEFAULT_GENERIC_MARGIN), BorderLayout.WEST);
         mainPanel.add (bottomPanel, BorderLayout.PAGE_END);
 
-        JPanel articlePanel = new JPanel();
+        JPanel articlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         articlePanel.setOpaque(false);
-        articlePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
         articlePanel.setTransferHandler(new ProdottoExportTransferHandler(product, amountTextField));
 		articlePanel.addMouseMotionListener(new ArticleMouseAdapter(articlePanel));
         articlePanel.add (mainPanel, BorderLayout.PAGE_START);
