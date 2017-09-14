@@ -23,7 +23,7 @@ public class JModifyProductDialog extends JDialog implements ActionListener{
 	private HashSet <Prodotto> articlesAdded;
 
 	private JFrame mainFrame;
-	private ProductsArticlesTableModel storeTableModel;
+	private ProductsTableModel storeTableModel;
 	private JModifyProductPanel modifyProductPanel;
 	
 	private static final String TITLE = "Modifica prodotto";
@@ -45,7 +45,7 @@ public class JModifyProductDialog extends JDialog implements ActionListener{
 	
 	
 	public JModifyProductDialog(JFrame mainFrame,Prodotto product, Magazzino store,
-			ProductsArticlesTableModel storeTableModel, HashSet <Prodotto> articlesAdded) {
+			ProductsTableModel storeTableModel, HashSet <Prodotto> articlesAdded) {
 		super(mainFrame, TITLE, ModalityType.DOCUMENT_MODAL);		
 		this.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));		
 		this.setLocationRelativeTo(null);

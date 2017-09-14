@@ -10,7 +10,7 @@ import javax.swing.table.AbstractTableModel;
 
 import negozio.Prodotto;
 
-public class ProductsArticlesTableModel extends AbstractTableModel {
+public class ProductsTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = -3450099361845613304L;
 	
 	private ArrayList <Prodotto> products;
@@ -44,40 +44,40 @@ public class ProductsArticlesTableModel extends AbstractTableModel {
 	public static final String BUTTON_COLUMN = "";
 	
 	private static final String [] CART_COLUMNS = {
-			ProductsArticlesTableModel.IMAGE_COLUMN,
-			ProductsArticlesTableModel.CODE_COLUMN,
-			ProductsArticlesTableModel.NAME_COLUMN,
-			ProductsArticlesTableModel.BRAND_COLUMN,
-			ProductsArticlesTableModel.CATEGORY_COLUMN,
-			ProductsArticlesTableModel.OFFER_COLUMN,
-			ProductsArticlesTableModel.EACH_COST_COLUMN,
-			ProductsArticlesTableModel.TOTAL_COST_COLUMN,
-			ProductsArticlesTableModel.AMOUNT_COLUMN,
-			ProductsArticlesTableModel.BUTTON_COLUMN
+			ProductsTableModel.IMAGE_COLUMN,
+			ProductsTableModel.CODE_COLUMN,
+			ProductsTableModel.NAME_COLUMN,
+			ProductsTableModel.BRAND_COLUMN,
+			ProductsTableModel.CATEGORY_COLUMN,
+			ProductsTableModel.OFFER_COLUMN,
+			ProductsTableModel.EACH_COST_COLUMN,
+			ProductsTableModel.TOTAL_COST_COLUMN,
+			ProductsTableModel.AMOUNT_COLUMN,
+			ProductsTableModel.BUTTON_COLUMN
 		};
 	private static final String [] STORE_COLUMNS = {
-			ProductsArticlesTableModel.IMAGE_COLUMN,
-			ProductsArticlesTableModel.CODE_COLUMN,
-			ProductsArticlesTableModel.NAME_COLUMN,
-			ProductsArticlesTableModel.BRAND_COLUMN,
-			ProductsArticlesTableModel.CATEGORY_COLUMN,
-			ProductsArticlesTableModel.OFFER_COLUMN,
-			ProductsArticlesTableModel.EACH_COST_COLUMN,
-			ProductsArticlesTableModel.EACH_DISCOUNTED_COST_COLUMN,
-			ProductsArticlesTableModel.AMOUNT_COLUMN,
-			ProductsArticlesTableModel.BUTTON_COLUMN
+			ProductsTableModel.IMAGE_COLUMN,
+			ProductsTableModel.CODE_COLUMN,
+			ProductsTableModel.NAME_COLUMN,
+			ProductsTableModel.BRAND_COLUMN,
+			ProductsTableModel.CATEGORY_COLUMN,
+			ProductsTableModel.OFFER_COLUMN,
+			ProductsTableModel.EACH_COST_COLUMN,
+			ProductsTableModel.EACH_DISCOUNTED_COST_COLUMN,
+			ProductsTableModel.AMOUNT_COLUMN,
+			ProductsTableModel.BUTTON_COLUMN
 		};
 	private static final String NONE_OFFER_TEXT = "Nessuna";
 
 	public static final Color EVEN_COLOR = Color.WHITE;
 	public static final Color ODD_COLOR = new Color(242, 242, 242);
 	
-	public ProductsArticlesTableModel (ArrayList <Prodotto> products, int mode) {
+	public ProductsTableModel (ArrayList <Prodotto> products, int mode) {
 		super ();
 		this.products = products;
 		this.mode = CART_MODE;
-		if (mode == ProductsArticlesTableModel.CART_MODE || 
-				mode == ProductsArticlesTableModel.STORE_MODE) {
+		if (mode == ProductsTableModel.CART_MODE || 
+				mode == ProductsTableModel.STORE_MODE) {
 			this.mode = mode;
 		}
 	}
@@ -89,11 +89,11 @@ public class ProductsArticlesTableModel extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		if (this.mode == ProductsArticlesTableModel.CART_MODE) {
-			return ProductsArticlesTableModel.CART_COLUMNS.length;
+		if (this.mode == ProductsTableModel.CART_MODE) {
+			return ProductsTableModel.CART_COLUMNS.length;
 		}
-		else if (this.mode == ProductsArticlesTableModel.STORE_MODE) {
-			return ProductsArticlesTableModel.STORE_COLUMNS.length;
+		else if (this.mode == ProductsTableModel.STORE_MODE) {
+			return ProductsTableModel.STORE_COLUMNS.length;
 		}
 		return 0;
 	}
@@ -117,21 +117,21 @@ public class ProductsArticlesTableModel extends AbstractTableModel {
 				}
 				return NONE_OFFER_TEXT;
 			case EACH_COST_COLUMN_NUMBER:
-				if (this.mode == ProductsArticlesTableModel.CART_MODE) {
+				if (this.mode == ProductsTableModel.CART_MODE) {
 					return String.format("%.2f", this.products.get(
 							rowIndex).prezzoCadaunoScontato());
 				}
-				else if (this.mode == ProductsArticlesTableModel.STORE_MODE) {
+				else if (this.mode == ProductsTableModel.STORE_MODE) {
 					return String.format("%.2f", this.products.get(
 							rowIndex).getPrezzo());
 				}
 				break;
 			case EACH_DISCOUNTED_COST_COLUMN_NUMBER:
-				if (this.mode == ProductsArticlesTableModel.CART_MODE) {
+				if (this.mode == ProductsTableModel.CART_MODE) {
 					float cost = this.products.get(rowIndex).prezzoTotaleScontato();
 					return String.format("%.2f", cost);
 				}
-				else if (this.mode == ProductsArticlesTableModel.STORE_MODE) {
+				else if (this.mode == ProductsTableModel.STORE_MODE) {
 					float cost = this.products.get(rowIndex).prezzoCadaunoScontato();
 					return String.format("%.2f", cost);
 				}
@@ -146,11 +146,11 @@ public class ProductsArticlesTableModel extends AbstractTableModel {
 	
 	@Override
 	public String getColumnName (int column) {
-		if (this.mode == ProductsArticlesTableModel.CART_MODE) {
-			return ProductsArticlesTableModel.CART_COLUMNS [column];
+		if (this.mode == ProductsTableModel.CART_MODE) {
+			return ProductsTableModel.CART_COLUMNS [column];
 		}
-		else if (this.mode == ProductsArticlesTableModel.STORE_MODE) {
-			return ProductsArticlesTableModel.STORE_COLUMNS [column];
+		else if (this.mode == ProductsTableModel.STORE_MODE) {
+			return ProductsTableModel.STORE_COLUMNS [column];
 		}
 		return null;
 	}

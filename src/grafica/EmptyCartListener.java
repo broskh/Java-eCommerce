@@ -13,13 +13,13 @@ public class EmptyCartListener implements ActionListener {
 	private Carrello cart;
 
 	private Window windowCaller;
-	private ProductsArticlesTableModel articlesTableModel;
+	private ProductsTableModel articlesTableModel;
 	
 	private static final String ALERT_TITLE = "Carrello svuotato";
 	private static final String ALERT_TEXT = "Carrello svuotato correttamente.";
 	
 	public EmptyCartListener (Window windowCaller, 
-			ProductsArticlesTableModel articlesTableModel, Carrello cart) {
+			ProductsTableModel articlesTableModel, Carrello cart) {
 		this.cart = cart;
 		this.windowCaller = windowCaller;
 		this.articlesTableModel = articlesTableModel;

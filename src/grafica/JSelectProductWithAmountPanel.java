@@ -35,7 +35,7 @@ public class JSelectProductWithAmountPanel extends JPanel implements ActionListe
 	
 	public JSelectProductWithAmountPanel (ArrayList <Prodotto> articoli) {
 		this.articoli = articoli;
-		ArrayList <String> codici = new ArrayList <> ();
+		ArrayList <String> codici = new ArrayList <String> ();
 		for (Prodotto articolo : this.articoli) {
 			codici.add(articolo.getCodice());
 		}

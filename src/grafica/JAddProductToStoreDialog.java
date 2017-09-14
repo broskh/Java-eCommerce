@@ -25,7 +25,7 @@ public class JAddProductToStoreDialog extends JDialog implements ActionListener{
 
 	private JFrame mainFrame;
 	private JModifyProductPanel modifyProductPanel;
-	private ProductsArticlesTableModel storeTableModel;
+	private ProductsTableModel storeTableModel;
 
 	protected static final int FRAME_HEIGHT = 510;
 	protected static final int FRAME_WIDTH = 300;
@@ -43,7 +43,7 @@ public class JAddProductToStoreDialog extends JDialog implements ActionListener{
 	protected static final String TITLE = "Aggiungi prodotto";
 	
 	public JAddProductToStoreDialog (JFrame mainFrame, Magazzino store, 
-			ProductsArticlesTableModel storeTableModel, HashSet <Prodotto> articlesAdded) {
+			ProductsTableModel storeTableModel, HashSet <Prodotto> articlesAdded) {
 		super(mainFrame, TITLE, ModalityType.DOCUMENT_MODAL);
 		this.store = store;
 		this.articlesAdded = articlesAdded;

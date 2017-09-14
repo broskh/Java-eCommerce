@@ -30,7 +30,7 @@ public class JSelectProductPanel extends JPanel {
 	public JSelectProductPanel (ArrayList <Prodotto> prodotti) {
 		this.prodotti = prodotti;
 		
-		ArrayList <String> codici = new ArrayList<String>();
+		ArrayList <String> codici = new ArrayList <String>();
 		for (Prodotto articolo : this.prodotti) {
 			codici.add(articolo.getCodice());
 		}

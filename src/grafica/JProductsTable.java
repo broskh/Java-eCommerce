@@ -39,34 +39,34 @@ public class JProductsTable extends JTable{
 	
 	public JProductsTable(Magazzino store) {
 		this.productsManager = store;
-		this.mode = ProductsArticlesTableModel.STORE_MODE;
+		this.mode = ProductsTableModel.STORE_MODE;
 		
 		basicTable();
 	}
 	
 	public JProductsTable (Carrello cart, Magazzino store) {
 		this.productsManager = cart;
-		this.mode = ProductsArticlesTableModel.CART_MODE;
+		this.mode = ProductsTableModel.CART_MODE;
 
 		basicTable();
-		TableColumn amountColumn = this.getColumn(ProductsArticlesTableModel.AMOUNT_COLUMN);
+		TableColumn amountColumn = this.getColumn(ProductsTableModel.AMOUNT_COLUMN);
 		amountColumn.setCellRenderer(new AmountColumnRender(ROW_HEIGHT));
-		ProductsArticlesTableModel model = (ProductsArticlesTableModel) this.getModel();
+		ProductsTableModel model = (ProductsTableModel) this.getModel();
 		amountColumn.setCellEditor(
 				new AmountColumnEditor(model, (Carrello)this.productsManager, store, ROW_HEIGHT));
 	}
 	
 	private void basicTable () {
-		this.setModel(new ProductsArticlesTableModel(this.productsManager.getArticoli(),
+		this.setModel(new ProductsTableModel(this.productsManager.getArticoli(),
 				this.mode));
 		this.setRowHeight(ROW_HEIGHT);
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );
 		this.setDefaultRenderer(String.class, centerRenderer);
 
-		TableColumn imageColumn = this.getColumn(ProductsArticlesTableModel.IMAGE_COLUMN);
+		TableColumn imageColumn = this.getColumn(ProductsTableModel.IMAGE_COLUMN);
 		imageColumn.setCellRenderer(new ImageColumnRender(ROW_HEIGHT));
-		TableColumn buttonColumn = this.getColumn(ProductsArticlesTableModel.BUTTON_COLUMN);
+		TableColumn buttonColumn = this.getColumn(ProductsTableModel.BUTTON_COLUMN);
 		buttonColumn.setCellRenderer(new RemoveColumnRender(ROW_HEIGHT));
 		buttonColumn.setCellEditor(
 				new RemoveColumnEditor(this.productsManager.getArticoli(), ROW_HEIGHT));			
@@ -92,7 +92,7 @@ public class JProductsTable extends JTable{
 			table.getColumn(table.getColumnName(column)).setMinWidth(
 					this.iconSize + JIconLabel.BORDER_THICKNESS * 2);
 			ImageCell imageCell = new ImageCell(this.iconSize, (File) value);
-			ProductsArticlesTableModel.setCellBackgroundColor(imageCell, row);
+			ProductsTableModel.setCellBackgroundColor(imageCell, row);
 			return imageCell;
 		}
 	}
@@ -125,7 +125,7 @@ public class JProductsTable extends JTable{
 		
 		private static final int NULL_VALUE = -1;
 	
-	    public AmountColumnEditor (ProductsArticlesTableModel articlesTableModel, 
+	    public AmountColumnEditor (ProductsTableModel articlesTableModel, 
 	    		Carrello cart, Magazzino store, int cellHeight) {
 	    	super (new JTextField());
 	    	this.lastRowSelected = NULL_VALUE;
@@ -150,7 +150,7 @@ public class JProductsTable extends JTable{
 			Prodotto storeProduct = this.store.getProdotto(product.getCodice());
 			this.cellPanel.setFilter(storeProduct.getQuantita());
 			this.cellPanel.setArticle(product);
-			ProductsArticlesTableModel.setCellBackgroundColor(cellPanel, row);
+			ProductsTableModel.setCellBackgroundColor(cellPanel, row);
 	        return this.cellPanel;
 		}
 		
@@ -201,7 +201,7 @@ public class JProductsTable extends JTable{
 			table.getColumn(table.getColumnName(column)).setMinWidth(AmountCell.TEXTFIELD_WIDTH);
 			AmountCell amountCell = new AmountCell(
 					this.rowHeight, ((JProductsTable) table).getProductAtRow(row));
-			ProductsArticlesTableModel.setCellBackgroundColor(amountCell, row);
+			ProductsTableModel.setCellBackgroundColor(amountCell, row);
 			return amountCell;
 		}
 	}
@@ -210,13 +210,13 @@ public class JProductsTable extends JTable{
 		private static final long serialVersionUID = 2028713241711826134L;
 	
 		private JTextField textField;
-		private ProductsArticlesTableModel articlesTableModel;
+		private ProductsTableModel articlesTableModel;
 		private Prodotto article;
 	
 		public static final int TEXTFIELD_WIDTH = 50;
 	
 		public AmountCell (int rowHeight, Prodotto article, Integer maxValue, 
-				ProductsArticlesTableModel articlesTableModel) {
+				ProductsTableModel articlesTableModel) {
 			this.textField = new JTextField();
 			this.textField.setPreferredSize(new Dimension(
 					TEXTFIELD_WIDTH, (int)this.textField.getPreferredSize().getHeight()));
@@ -239,7 +239,7 @@ public class JProductsTable extends JTable{
 	        this.add(mainPanel, gbc);
 		}
 		
-		public AmountCell (int rowHeight, ProductsArticlesTableModel articlesTableModel) {
+		public AmountCell (int rowHeight, ProductsTableModel articlesTableModel) {
 			this (rowHeight, null, null, articlesTableModel);
 		}
 		
@@ -285,7 +285,7 @@ public class JProductsTable extends JTable{
 			this.initTableUpdate();
 		}
 		
-		public void setArticlesTableModel (ProductsArticlesTableModel articlesTableModel) {
+		public void setArticlesTableModel (ProductsTableModel articlesTableModel) {
 			this.articlesTableModel = articlesTableModel;
 			this.initTableUpdate();
 		}
@@ -294,7 +294,7 @@ public class JProductsTable extends JTable{
 			return this.article;
 		}
 		
-		public ProductsArticlesTableModel getArticlesTableModel () {
+		public ProductsTableModel getArticlesTableModel () {
 			return this.articlesTableModel;
 		}
 		
@@ -317,7 +317,7 @@ public class JProductsTable extends JTable{
 				boolean isSelected, boolean hasFocus, int row, int column) {
 			table.getColumn(table.getColumnName(column)).setMinWidth(RemoveCell.BUTTON_SIZE);
 			RemoveCell removeCell =new RemoveCell(this.rowHeight);
-			ProductsArticlesTableModel.setCellBackgroundColor(removeCell, row);
+			ProductsTableModel.setCellBackgroundColor(removeCell, row);
 			return removeCell;
 		}
 	}
@@ -352,7 +352,7 @@ public class JProductsTable extends JTable{
 			table.getColumn(table.getColumnName(column)).setMinWidth(RemoveCell.BUTTON_SIZE);
 			this.lastRowSelected = row; 
 			this.cellPanel.setnArticolo(row);
-			ProductsArticlesTableModel.setCellBackgroundColor(cellPanel, this.lastRowSelected);
+			ProductsTableModel.setCellBackgroundColor(cellPanel, this.lastRowSelected);
 	        return this.cellPanel;
 		}
 		
@@ -392,8 +392,8 @@ public class JProductsTable extends JTable{
 	
 		private JImageButton removeButton;
 		
-		private Integer nArticle;
-		private ArrayList <Prodotto> articles;
+		private Integer nProduct;
+		private ArrayList <Prodotto> products;
 	
 		public static final int BUTTON_SIZE = 36;
 		
@@ -405,9 +405,9 @@ public class JProductsTable extends JTable{
 	    	this (cellHeight, null, null);
 	    }
 		
-	    public RemoveCell (int cellHeight, Integer nArticle, ArrayList <Prodotto> articles) {
-			this.articles = articles;
-			this.nArticle = nArticle;
+	    public RemoveCell (int cellHeight, Integer nProduct, ArrayList <Prodotto> products) {
+			this.products = products;
+			this.nProduct = nProduct;
 	    	this.removeButton = 
 	    			new JImageButton(new File (BUTTON_IMAGE_PATH), BUTTON_SIZE, BUTTON_TEXT);
 			
@@ -423,7 +423,7 @@ public class JProductsTable extends JTable{
 	    }
 	    
 	    private boolean addRemoveButtonActionListener () {
-	    	if (this.nArticle != null && this.articles != null) {
+	    	if (this.nProduct != null && this.products != null) {
 				this.removeButton.addActionListener(this);
 				return true;
 			}
@@ -431,21 +431,21 @@ public class JProductsTable extends JTable{
 	    }
 	    
 	    public Integer getnArticolo () {
-			return this.nArticle;
+			return this.nProduct;
 		}
 	
 		public void setnArticolo (Integer nArticolo) {
-			this.nArticle = nArticolo;
+			this.nProduct = nArticolo;
 			this.removeButton.removeActionListener(this);
 			this.addRemoveButtonActionListener();
 		}
 	
 		public ArrayList <Prodotto> getArticoli() {
-			return this.articles;
+			return this.products;
 		}
 	
 		public void setArticoli (ArrayList <Prodotto> articoli) {
-			this.articles = articoli;
+			this.products = articoli;
 			this.removeButton.removeActionListener(this);
 			this.addRemoveButtonActionListener();
 		}
@@ -453,9 +453,9 @@ public class JProductsTable extends JTable{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource().equals(this.removeButton)) {
-				this.articles.remove((int)this.nArticle);
+				this.products.remove((int)this.nProduct);
 				JTable table = (JTable) this.getParent();
-				((ProductsArticlesTableModel) table.getModel()).fireTableDataChanged ();
+				((ProductsTableModel) table.getModel()).fireTableDataChanged ();
 			}
 		}
 	}

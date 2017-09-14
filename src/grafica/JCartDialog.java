@@ -52,7 +52,7 @@ public class JCartDialog extends JDialog implements ActionListener{
 		JButton emptyButton = new JButton(EMPTY_CART_BUTTON_TEXT);
 		JProductsTable cartTable = new JProductsTable(cart, store);
 		emptyButton.addActionListener(new EmptyCartListener(this, 
-				(ProductsArticlesTableModel) cartTable.getModel(), cart));
+				(ProductsTableModel) cartTable.getModel(), cart));
 		this.payButton.addActionListener(this);
 		
 		JPanel buttonsPanel = new JPanel();

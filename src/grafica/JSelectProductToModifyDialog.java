@@ -20,7 +20,7 @@ public class JSelectProductToModifyDialog extends JDialog implements ActionListe
 	private HashSet <Prodotto> articlesAdded;
 
 	private JFrame mainFrame;
-	private ProductsArticlesTableModel storeTableModel;
+	private ProductsTableModel storeTableModel;
 	private JSelectProductPanel selectProductPanel;
 		
 	private static final int FRAME_HEIGHT = 130;
@@ -33,7 +33,7 @@ public class JSelectProductToModifyDialog extends JDialog implements ActionListe
 	private static final String SELECT_BUTTON_TEXT = "Seleziona";
 	
 	public JSelectProductToModifyDialog(JFrame mainFrame, Magazzino store, 
-			ProductsArticlesTableModel storeTableModel, HashSet <Prodotto> articlesAdded) {
+			ProductsTableModel storeTableModel, HashSet <Prodotto> articlesAdded) {
 		super(mainFrame, TITLE, ModalityType.DOCUMENT_MODAL);
 		this.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));		
 		this.setLocationRelativeTo(null);

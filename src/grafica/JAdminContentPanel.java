@@ -258,7 +258,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 			fc.setMultiSelectionEnabled(false);
 			if(fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 				this.store.caricaMagazzino(fc.getSelectedFile());
-				((ProductsArticlesTableModel)this.storeTable.getModel()).fireTableDataChanged();
+				((ProductsTableModel)this.storeTable.getModel()).fireTableDataChanged();
 				JOptionPane.showMessageDialog(this, ALERT_LOAD_TEXT,
 						ALERT_LOAD_TITLE, JOptionPane.INFORMATION_MESSAGE);	
 			}
@@ -267,7 +267,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 		else if(e.getSource().equals(this.addButton) || e.getSource().equals(this.addMenuItem)) {
 			JAddProductToStoreDialog jAddProductDialog = 
 					new JAddProductToStoreDialog(this.mainFrame, this.store, 
-					(ProductsArticlesTableModel)this.storeTable.getModel(), this.productsAdded);
+					(ProductsTableModel)this.storeTable.getModel(), this.productsAdded);
 			jAddProductDialog.setVisible(true);
 		} 
 		else if(e.getSource().equals(this.editButton) || 
@@ -279,7 +279,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 			else {
 				JSelectProductToModifyDialog jSearchProductDialog = 
 						new JSelectProductToModifyDialog (this.mainFrame, this.store, 
-						(ProductsArticlesTableModel)this.storeTable.getModel(), 
+						(ProductsTableModel)this.storeTable.getModel(), 
 						this.productsAdded);
 				jSearchProductDialog.setVisible(true);
 			}
@@ -293,7 +293,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 			else {
 				JRemoveProductFromStoreDialog jDeleteProductDialog = 
 						new JRemoveProductFromStoreDialog(this.mainFrame, this.store, 
-						(ProductsArticlesTableModel)this.storeTable.getModel());
+						(ProductsTableModel)this.storeTable.getModel());
 				jDeleteProductDialog.setVisible(true);
 			}
 		}

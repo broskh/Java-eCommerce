@@ -20,7 +20,7 @@ public class JRemoveProductFromStoreDialog extends JDialog implements ActionList
 	
 	private JFrame mainFrame;
 	private JSelectProductPanel selectProductPanel;
-	private ProductsArticlesTableModel storeTableModel;
+	private ProductsTableModel storeTableModel;
 	
 	private static final int FRAME_HEIGHT = 130;
 	private static final int FRAME_WIDTH = 400;
@@ -34,7 +34,7 @@ public class JRemoveProductFromStoreDialog extends JDialog implements ActionList
 	private static final String ALERT_TEXT = "Prodotto eliminato correttamente";
 
 	public JRemoveProductFromStoreDialog(JFrame mainFrame, Magazzino store, 
-			ProductsArticlesTableModel storeTableModel) {
+			ProductsTableModel storeTableModel) {
 		super(mainFrame, TITLE, ModalityType.DOCUMENT_MODAL);
 		this.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));		
 		this.setLocationRelativeTo(null);
