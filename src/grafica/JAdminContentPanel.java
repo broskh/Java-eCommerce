@@ -16,8 +16,6 @@ import java.nio.file.Files;
 import java.util.HashSet;
 
 import javax.swing.Box;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -39,11 +37,11 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 
 	private JFrame mainFrame;
 	private JProductsTable storeTable;
-	private JButton saveButton;
-	private JButton loadButton;
-	private JButton addButton;
-	private JButton editButton;
-	private JButton deleteButton;
+	private JImageButton saveButton;
+	private JImageButton loadButton;
+	private JImageButton addButton;
+	private JImageButton editButton;
+	private JImageButton deleteButton;
 	private JMenuItem closeMenuItem;
 	private JMenuItem loadMenuItem;
 	private JMenuItem saveMenuItem;
@@ -57,7 +55,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 
 	private static final int MENUBAR_HEIGHT = 22;
 	private static final int CONTROLPANEL_BUTTON_SIZE = 80;
-	private static final int CONTROLPANEL_BUTTON_ICON_SIZE = CONTROLPANEL_BUTTON_SIZE - 25;
+	private static final int CONTROLPANEL_BUTTON_PADDING = 25;
 	private static final int CONTROLPANEL_BUTTONS_SPACE = 20;
 	
 	private static final String FILE_CHOOSER_SAVE_TITLE = "Salva";
@@ -123,79 +121,30 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 	}
 	
 	private JPanel controlPanel () {
-		this.saveButton = new JButton();
-		this.saveButton.setPreferredSize(new Dimension(CONTROLPANEL_BUTTON_SIZE,
-				CONTROLPANEL_BUTTON_SIZE));
+		this.saveButton = new JImageButton(
+				new File(SAVE_BUTTON_ICON), CONTROLPANEL_BUTTON_SIZE, 
+				CONTROLPANEL_BUTTON_PADDING, SAVE_BUTTON_TEXT);	
 		this.saveButton.addActionListener(this);
-		try {
-			this.saveButton.setIcon(new ImageIcon(new ResizableIcon(
-					new File(SAVE_BUTTON_ICON)).resizeIcon(
-					CONTROLPANEL_BUTTON_ICON_SIZE, CONTROLPANEL_BUTTON_ICON_SIZE)));
-			this.saveButton.setToolTipText(SAVE_BUTTON_TEXT);
-		} catch (IOException e) {
-			e.printStackTrace();
-			this.saveButton.setText(SAVE_BUTTON_TEXT);
-		}
-		
-		this.loadButton = new JButton();
-		this.loadButton.setPreferredSize(new Dimension(CONTROLPANEL_BUTTON_SIZE,
-				CONTROLPANEL_BUTTON_SIZE));
-		this.loadButton.addActionListener(this);
-		try {
-			this.loadButton.setIcon(new ImageIcon(new ResizableIcon(
-					new File(LOAD_BUTTON_ICON)).resizeIcon(
-							CONTROLPANEL_BUTTON_ICON_SIZE, CONTROLPANEL_BUTTON_ICON_SIZE)));
-			this.loadButton.setToolTipText(LOAD_BUTTON_TEXT);
-		} catch (IOException e) {
-			e.printStackTrace();
-			this.loadButton.setText(LOAD_BUTTON_TEXT);
-		}
-		
-		this.addButton = new JButton();
-		this.addButton.setPreferredSize(new Dimension(CONTROLPANEL_BUTTON_SIZE,
-				CONTROLPANEL_BUTTON_SIZE));
-		this.addButton.addActionListener(this);
-		try {
-			this.addButton.setIcon(new ImageIcon(new ResizableIcon(
-					new File(ADD_BUTTON_ICON)).resizeIcon(
-					CONTROLPANEL_BUTTON_ICON_SIZE, CONTROLPANEL_BUTTON_ICON_SIZE)));
-			this.addButton.setToolTipText(ADD_BUTTON_TEXT);
-		} catch (IOException e) {
-			e.printStackTrace();
-			this.addButton.setText(ADD_BUTTON_TEXT);
-		};
-		
-		this.editButton = new JButton();
-		this.editButton.setPreferredSize(new Dimension(CONTROLPANEL_BUTTON_SIZE,
-				CONTROLPANEL_BUTTON_SIZE));
-		this.editButton.addActionListener(this);
-		try {
-			this.editButton.setIcon(new ImageIcon(new ResizableIcon(
-					new File(EDIT_BUTTON_ICON)).resizeIcon(
-					CONTROLPANEL_BUTTON_ICON_SIZE, CONTROLPANEL_BUTTON_ICON_SIZE)));
-			this.editButton.setToolTipText(EDIT_BUTTON_TEXT);
-		} catch (IOException e) {
-			e.printStackTrace();
-			this.editButton.setText(EDIT_BUTTON_TEXT);
-		}
-		
-		this.deleteButton = new JButton();
-		this.deleteButton.setPreferredSize(new Dimension(CONTROLPANEL_BUTTON_SIZE,
-				CONTROLPANEL_BUTTON_SIZE));
-		this.deleteButton.addActionListener(this);
-		try {
-			this.deleteButton.setIcon(new ImageIcon(new ResizableIcon(
-					new File(DELETE_BUTTON_ICON)).resizeIcon(
-					CONTROLPANEL_BUTTON_ICON_SIZE, CONTROLPANEL_BUTTON_ICON_SIZE)));
-			this.deleteButton.setToolTipText(DELETE_BUTTON_TEXT);
-		} catch (IOException e) {
-			e.printStackTrace();
-			this.deleteButton.setText(DELETE_BUTTON_TEXT);
-		}
-		
+		this.loadButton = new JImageButton(
+				new File(LOAD_BUTTON_ICON), CONTROLPANEL_BUTTON_SIZE, 
+				CONTROLPANEL_BUTTON_PADDING, LOAD_BUTTON_TEXT);	
+		this.loadButton.addActionListener(this);	
+		this.addButton = new JImageButton(
+				new File(ADD_BUTTON_ICON), CONTROLPANEL_BUTTON_SIZE, 
+				CONTROLPANEL_BUTTON_PADDING, ADD_BUTTON_TEXT);	
+		this.addButton.addActionListener(this);	
+		this.editButton = new JImageButton(
+				new File(EDIT_BUTTON_ICON), CONTROLPANEL_BUTTON_SIZE, 
+				CONTROLPANEL_BUTTON_PADDING, EDIT_BUTTON_TEXT);	
+		this.editButton.addActionListener(this);	
+		this.deleteButton = new JImageButton(
+				new File(DELETE_BUTTON_ICON), CONTROLPANEL_BUTTON_SIZE, 
+				CONTROLPANEL_BUTTON_PADDING, DELETE_BUTTON_TEXT);
+		this.deleteButton.addActionListener(this);		
 		JPanel controlPanel = new JPanel();
 		controlPanel.setBorder(new EtchedBorder());
-		controlPanel.setLayout(new FlowLayout(FlowLayout.LEADING, CONTROLPANEL_BUTTONS_SPACE, CONTROLPANEL_BUTTONS_MARGIN));
+		controlPanel.setLayout(new FlowLayout(
+				FlowLayout.LEADING, CONTROLPANEL_BUTTONS_SPACE, CONTROLPANEL_BUTTONS_MARGIN));
 		controlPanel.add(this.saveButton);
 		controlPanel.add(this.loadButton);
 		controlPanel.add(this.addButton);
@@ -288,7 +237,8 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 //				SALVO NELL'APPOSITO FILE IL PERCORSO DELL'ULTIMO MAGAZZINO SALVATO
 				BufferedWriter lastStoreFile = null;
 		        try {
-		        	lastStoreFile = new BufferedWriter(new FileWriter(new File(LAST_STORE_FILE_PATH)));
+		        	lastStoreFile = new BufferedWriter(new FileWriter(
+		        			new File(LAST_STORE_FILE_PATH)));
 		            String filePath = fileToSave.toString();
 		            lastStoreFile.write(filePath);
 		        	lastStoreFile.close();
@@ -299,7 +249,8 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 						ALERT_SAVE_TITLE, JOptionPane.INFORMATION_MESSAGE);
 			}
 	    }
-		else if(e.getSource().equals(this.loadButton) || e.getSource().equals(this.loadMenuItem)) {			
+		else if(e.getSource().equals(this.loadButton) || 
+				e.getSource().equals(this.loadMenuItem)) {			
 			JFileChooser fc = new JFileChooser(new File(FILE_CHOOSER_OPEN_DIRECTORY));
 			fc.setFileFilter(new StoreFileFilter());
 			fc.setDialogTitle(FILE_CHOOSER_LOAD_TITLE);
@@ -314,31 +265,35 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 			this.updateUI();
 		}
 		else if(e.getSource().equals(this.addButton) || e.getSource().equals(this.addMenuItem)) {
-			JAddProductToStoreDialog jAddProductDialog = new JAddProductToStoreDialog(
-					this.mainFrame, this.store, (ProductsArticlesTableModel)this.storeTable.getModel(), 
-					this.productsAdded);
+			JAddProductToStoreDialog jAddProductDialog = 
+					new JAddProductToStoreDialog(this.mainFrame, this.store, 
+					(ProductsArticlesTableModel)this.storeTable.getModel(), this.productsAdded);
 			jAddProductDialog.setVisible(true);
 		} 
-		else if(e.getSource().equals(this.editButton) || e.getSource().equals(this.modifyMenuItem)) {
+		else if(e.getSource().equals(this.editButton) || 
+				e.getSource().equals(this.modifyMenuItem)) {
 			if (this.store.getArticoli().isEmpty()) {
 				JOptionPane.showMessageDialog(this, EMPTY_STORE_TEXT, EMPTY_STORE_TITLE,
 						JOptionPane.ERROR_MESSAGE);
 			}
 			else {
-				JSelectProductToModifyDialog jSearchProductDialog = new JSelectProductToModifyDialog(
-						this.mainFrame, this.store, (ProductsArticlesTableModel)this.storeTable.getModel(), 
+				JSelectProductToModifyDialog jSearchProductDialog = 
+						new JSelectProductToModifyDialog (this.mainFrame, this.store, 
+						(ProductsArticlesTableModel)this.storeTable.getModel(), 
 						this.productsAdded);
 				jSearchProductDialog.setVisible(true);
 			}
 		}
-		else if(e.getSource().equals(this.deleteButton) || e.getSource().equals(this.deleteMenuItem)) {
+		else if(e.getSource().equals(this.deleteButton) || 
+				e.getSource().equals(this.deleteMenuItem)) {
 			if (this.store.getArticoli().isEmpty()) {
 				JOptionPane.showMessageDialog(this, EMPTY_STORE_TEXT, EMPTY_STORE_TITLE,
 						JOptionPane.ERROR_MESSAGE);
 			}
 			else {
-				JRemoveProductFromStoreDialog jDeleteProductDialog = new JRemoveProductFromStoreDialog(
-						this.mainFrame, this.store, (ProductsArticlesTableModel)this.storeTable.getModel());
+				JRemoveProductFromStoreDialog jDeleteProductDialog = 
+						new JRemoveProductFromStoreDialog(this.mainFrame, this.store, 
+						(ProductsArticlesTableModel)this.storeTable.getModel());
 				jDeleteProductDialog.setVisible(true);
 			}
 		}

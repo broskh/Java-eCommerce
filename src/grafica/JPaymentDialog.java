@@ -66,7 +66,8 @@ public class JPaymentDialog extends JDialog implements ActionListener {
 	private static final String ALERT_SUCCESS_TITLE = "Pagamento effettuato";
 	private static final String ALERT_SUCCESS_TEXT = "Pagamento effettuato con successo.";
 	private static final String ALERT_NO_ADDRESS_TITLE = "Attenzione";
-	private static final String ALERT_NO_ADDRESS_TEXT = "Inserire un indirizzo per la spedizione.";
+	private static final String ALERT_NO_ADDRESS_TEXT = 
+			"Inserire un indirizzo per la spedizione.";
 
 	public JPaymentDialog (JClientContentPanel clientContentPanel, Carrello cart, 
 			Magazzino store) {

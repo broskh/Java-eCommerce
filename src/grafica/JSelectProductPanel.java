@@ -47,7 +47,8 @@ public class JSelectProductPanel extends JPanel {
 
 		this.setLayout(new BorderLayout());
 		this.add(labelPanel, BorderLayout.PAGE_START);
-		Dimension rigidAreadDimension = new Dimension(this.getWidth(), INTERACTIONPANEL_TOP_MARGIN);
+		Dimension rigidAreadDimension = new Dimension(
+				this.getWidth(), INTERACTIONPANEL_TOP_MARGIN);
 		this.add(Box.createRigidArea(rigidAreadDimension), BorderLayout.CENTER);
 		this.add(interactionPanel, BorderLayout.PAGE_END);
 	}

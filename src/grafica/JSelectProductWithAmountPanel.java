@@ -73,9 +73,11 @@ public class JSelectProductWithAmountPanel extends JPanel implements ActionListe
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
 		this.code.replace(0, this.code.length(), 
 				this.codeComboBox.getSelectedItem().toString());
 		this.amountTextfield.setText(String.valueOf(DEFAULT_AMOUNT));
-		this.amountDocumentFilter.setMaxValue(this.articoli.get(this.codeComboBox.getSelectedIndex()).getQuantita());
+		Prodotto selectedProduct = this.articoli.get(this.codeComboBox.getSelectedIndex());
+		this.amountDocumentFilter.setMaxValue(selectedProduct.getQuantita());
 	}
 }

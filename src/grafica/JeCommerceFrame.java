@@ -39,9 +39,6 @@ public class JeCommerceFrame extends JFrame implements ComponentListener {
 	public JeCommerceFrame (Utente user, Magazzino store) {
 		super (TITLE);
 		this.user = user;
-//		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//		Rectangle bounds = env.getMaximumWindowBounds();
-//		this.setSize(bounds.width, bounds.height);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setMinimumSize(new Dimension(MINIMUM_JFRAME_WIDTH, MINIMUM_JFRAME_HEIGHT));
 		this.addComponentListener(this);

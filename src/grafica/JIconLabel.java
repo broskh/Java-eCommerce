@@ -23,7 +23,8 @@ public class JIconLabel extends JLabel {
 	public JIconLabel (File image, int iconSize) {
 		super ("", SwingConstants.CENTER);
 		this.setIcon(image, iconSize);
-		this.setBorder(BorderFactory.createMatteBorder(BORDER_THICKNESS, BORDER_THICKNESS, BORDER_THICKNESS, BORDER_THICKNESS, Color.DARK_GRAY));
+		this.setBorder(BorderFactory.createMatteBorder(BORDER_THICKNESS, 
+				BORDER_THICKNESS, BORDER_THICKNESS, BORDER_THICKNESS, Color.DARK_GRAY));
 	}
 	
 	public void setIcon (File image, int iconSize) {

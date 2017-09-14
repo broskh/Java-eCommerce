@@ -60,8 +60,7 @@ public class JCartDialog extends JDialog implements ActionListener{
 		buttonsPanel.add(Box.createHorizontalStrut(BUTTONS_SPACE));
 		buttonsPanel.add(this.payButton);
 		JPanel bottomPanel = new JPanel(new BorderLayout());
-		bottomPanel.add(Box.createVerticalStrut(BOTTOMPANEL_TOP_MARGIN), 
-				BorderLayout.PAGE_START);
+		bottomPanel.add(Box.createVerticalStrut(BOTTOMPANEL_TOP_MARGIN), BorderLayout.PAGE_START);
 		bottomPanel.add(buttonsPanel, BorderLayout.CENTER);
 		bottomPanel.add(Box.createVerticalStrut(BOTTOM_MARGIN), BorderLayout.PAGE_END);
 		

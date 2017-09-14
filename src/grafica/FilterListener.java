@@ -32,39 +32,39 @@ public class FilterListener implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		String filter = "";
 		switch (this.filterType.toString()) {
 			case Magazzino.STRINGA_FILTRO_NOME:
-				this.articlesPanel.setViewedArticles(
-						this.store.filtraPerNome(this.filterPanel.getText()));
+				filter = this.filterPanel.getText();
+				this.articlesPanel.setViewedArticles(this.store.filtraPerNome(filter));
 				this.articlesPanel.resetPagina();
 				break;
 			case Magazzino.STRINGA_FILTRO_MARCA:
-				this.articlesPanel.setViewedArticles(
-						this.store.filtraPerMarca(this.filterPanel.getText()));
+				filter = this.filterPanel.getText();
+				this.articlesPanel.setViewedArticles(this.store.filtraPerMarca(filter));
 				this.articlesPanel.resetPagina();
 				break;
 			case Magazzino.STRINGA_FILTRO_CODICE:
-				this.articlesPanel.setViewedArticles(
-						this.store.filtraPerCodice(this.filterPanel.getText()));
+				filter = this.filterPanel.getText();
+				this.articlesPanel.setViewedArticles(this.store.filtraPerCodice(filter));
 				this.articlesPanel.resetPagina();
 				break;
 			case Magazzino.STRINGA_FILTRO_CATEGORIA:
-				this.articlesPanel.setViewedArticles(
-						this.store.filtraPerCategoria(this.filterPanel.getText()));
+				filter = this.filterPanel.getText();
+				this.articlesPanel.setViewedArticles(this.store.filtraPerCategoria(filter));
 				this.articlesPanel.resetPagina();
 				break;
 			case Magazzino.STRINGA_FILTRO_PREZZO:
-				RangeExtremes estremiPrezzo = this.filterPanel.getCost();
+				RangeExtremes costRange = this.filterPanel.getCost();
 				this.articlesPanel.setViewedArticles(
 						this.store.filtraPerPrezzo(
-								estremiPrezzo.getFirst(), estremiPrezzo.getLast()));
+								costRange.getFirst(), costRange.getLast()));
 				this.articlesPanel.resetPagina();
 				break;
 			case Magazzino.STRINGA_FILTRO_QUANTITA:
-				RangeExtremes estremiQuantita = this.filterPanel.getAmount();
-				this.articlesPanel.setViewedArticles(
-						this.store.filtraPerQuantita(
-								estremiQuantita.getFirst(), estremiQuantita.getLast()));
+				RangeExtremes amountRange = this.filterPanel.getAmount();
+				this.articlesPanel.setViewedArticles(this.store.filtraPerQuantita(
+								amountRange.getFirst(), amountRange.getLast()));
 				this.articlesPanel.resetPagina();
 				break;
 		}

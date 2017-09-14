@@ -20,7 +20,6 @@ import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -56,9 +55,9 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	private JPanel mainContentPanel;
 	private JPanel showcasePanel;	
 	private JFilterPanel filterPanel;	
-	private JButton backButton;
-	private JButton forwardButton;
-	private JButton cartButton;
+	private JImageButton backButton;
+	private JImageButton forwardButton;
+	private JImageButton cartButton;
 	private JComboBox <String> filterTypeComboBox;	
 	private JMenuItem closeItem;
 	private JMenuItem nameFilterItem;
@@ -87,16 +86,12 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 
 	private static final int MENUBAR_HEIGHT = 22;
 	private static final int CONTROLPANEL_HEIGHT = 80;
-	private static final int BACK_IMAGE_SIZE = 30;
-	private static final int BACK_BUTTON_SIZE = BACK_IMAGE_SIZE + 15;
-	private static final int FORWARD_IMAGE_SIZE = 30;
-	private static final int FORWARD_BUTTON_SIZE = FORWARD_IMAGE_SIZE + 15;
+	private static final int BOTTOM_BUTTON_SIZE = 45;
 	private static final int ARTICLE_AMOUNT_WIDTH = 50;
 	private static final int ARTICLE_AMOUNT_HEIGHT = 25;
 	private static final int PRODUCT_ICON_SIZE = 120;
 	private static final int ARTICLE_ADD_BUTTON_SIZE = 32;
-	private static final int CART_ICON_SIZE = 70;
-	private static final int ARTICLE_ADD_IMAGE_SIZE = ARTICLE_ADD_BUTTON_SIZE - 14;	
+	private static final int CART_BUTTON_SIZE = 80;
 	private static final int ARTICLE_INTERACTION_HEIGHT = 35;
 	private static final int ARTICLE_INTERACTION_HORIZONTAL_SPACE = 50;
 	private static final int ARTICLE_INFORMATION_SPACE = 7;	
@@ -107,7 +102,6 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	private static final int DEFAULT_AMOUNT = 1;
 
 	private static final Color ADD_PRODUCT_BUTTON_COLOR = new Color (23, 165, 86);
-//	private static final Color CART_BUTTON_COLOR = new Color (178, 190, 204);
 
 	private static final String BACK_BUTTON_TEXT = "<";
 	private static final String FORWARD_BUTTON_TEXT = ">";
@@ -176,12 +170,12 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		
 		this.mainContentPanel = new JPanel(new BorderLayout());
 		this.mainContentPanel.add(Box.createVerticalStrut(
-				JClientContentPanel.CONTENTPANEL_TOP_MARGIN), BorderLayout.PAGE_START);
+				CONTENTPANEL_TOP_MARGIN), BorderLayout.PAGE_START);
 		this.mainContentPanel.add(Box.createHorizontalStrut(
-				JClientContentPanel.FRAME_LEFT_MARGIN), BorderLayout.WEST);
+				FRAME_LEFT_MARGIN), BorderLayout.WEST);
 		this.mainContentPanel.add(this.showcasePanel, BorderLayout.CENTER);
 		this.mainContentPanel.add(Box.createHorizontalStrut(
-				JClientContentPanel.FRAME_RIGHT_MARGIN), BorderLayout.EAST);
+				FRAME_RIGHT_MARGIN), BorderLayout.EAST);
 		this.mainContentPanel.add(this.bottomButtonsPanel(), BorderLayout.PAGE_END);
 		
 		JPanel contentPanel = new JPanel(new BorderLayout());
@@ -191,25 +185,14 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	}
 	
 	private JPanel bottomButtonsPanel () {
-		this.backButton = new JButton();
+		this.backButton =
+				new JImageButton(new File(BACK_IMAGE_PATH), BOTTOM_BUTTON_SIZE, BACK_BUTTON_TEXT);
 		this.backButton.addActionListener(this);
-		this.backButton.setPreferredSize(new Dimension(BACK_BUTTON_SIZE, BACK_BUTTON_SIZE));
-		try {
-		    this.backButton.setIcon(new ImageIcon(new ResizableIcon(
-		    		new File (BACK_IMAGE_PATH)).resizeIcon(BACK_IMAGE_SIZE, BACK_IMAGE_SIZE)));
-		} catch (Exception ex) {
-			this.backButton.setText(BACK_BUTTON_TEXT);
-		}
 		
-		this.forwardButton = new JButton();
+		this.forwardButton = 
+				new JImageButton(
+				new File(FORWARD_IMAGE_PATH), BOTTOM_BUTTON_SIZE, FORWARD_BUTTON_TEXT);
 		this.forwardButton.addActionListener(this);
-		this.forwardButton.setPreferredSize(new Dimension(FORWARD_BUTTON_SIZE, FORWARD_BUTTON_SIZE));
-		try {
-		    this.forwardButton.setIcon(new ImageIcon(new ResizableIcon(
-		    		new File (FORWARD_IMAGE_PATH)).resizeIcon(FORWARD_IMAGE_SIZE, FORWARD_IMAGE_SIZE)));
-		} catch (Exception ex) {
-			this.forwardButton.setText(FORWARD_BUTTON_TEXT);
-		}
 		
 		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		buttonsPanel.add(this.backButton);
@@ -220,7 +203,8 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		bottomPanel.add(Box.createVerticalStrut(BOTTOMBUTTONS_TOP_MARGIN), 
 				BorderLayout.PAGE_START);
 		bottomPanel.add(buttonsPanel, BorderLayout.CENTER);
-		bottomPanel.add(Box.createVerticalStrut(CONTENTPANEL_BOTTOM_MARGIN), BorderLayout.PAGE_END);
+		bottomPanel.add(Box.createVerticalStrut(
+				CONTENTPANEL_BOTTOM_MARGIN), BorderLayout.PAGE_END);
 		return bottomPanel;
 	}
 	
@@ -284,8 +268,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		filterTypePanel.add (this.filterTypeComboBox, BorderLayout.PAGE_END);
 
 		JLabel filterStringLabel = new JLabel (FILTER_STRING_LABEL);
-		this.filterPanel = new JFilterPanel(this.store.maxQuantita(), 
-				this.store.maxPrezzo());
+		this.filterPanel = new JFilterPanel(this.store.maxQuantita(), this.store.maxPrezzo());
 		JPanel filterStringPanel = new JPanel ();
 		filterStringPanel.setOpaque(false);
 		filterStringPanel.setLayout(new BorderLayout ());
@@ -301,23 +284,16 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 
 		JPanel leftPanel = new JPanel ();
 		leftPanel.setOpaque(false);
-		leftPanel.add (Box.createRigidArea(new Dimension(
-				CONTROLPANEL_LEFT_MARGIN, CONTROLPANEL_HEIGHT)));
+		leftPanel.add (Box.createRigidArea(
+				new Dimension(CONTROLPANEL_LEFT_MARGIN, CONTROLPANEL_HEIGHT)));
 		leftPanel.add (filterTypePanel);
 		leftPanel.add (Box.createHorizontalStrut(CONTROLPANEL_HORIZONTAL_SPACE));
 		leftPanel.add (filterStringPanel);
 		leftPanel.add (Box.createHorizontalStrut(CONTROLPANEL_HORIZONTAL_SPACE));
 		leftPanel.add (filterButton);
 		
-		this.cartButton = new JButton ();
-//		this.cartButton.setBackground(CART_BUTTON_COLOR);
-		try {
-			ImageIcon icon = new ImageIcon(new ResizableIcon(new File (CART_IMAGE_PATH))
-					.resizeIcon(CART_ICON_SIZE, CART_ICON_SIZE));
-		    this.cartButton.setIcon(icon);
-		} catch (Exception ex) {
-			this.cartButton.setText(CART_BUTTON_TEXT);
-		}
+		this.cartButton = 
+				new JImageButton(new File(CART_IMAGE_PATH), CART_BUTTON_SIZE, CART_BUTTON_TEXT);
 		this.cartButton.addActionListener(this);
 		this.cartButton.setTransferHandler(new ProdottoImportTransferHandler(
 				this.cart));
@@ -371,22 +347,15 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		informationPanel.add(offerLabel);
 		
 		JTextField amountTextField = new JTextField (String.valueOf(DEFAULT_AMOUNT));
-		amountTextField.setPreferredSize(new Dimension (ARTICLE_AMOUNT_WIDTH, 
-				ARTICLE_AMOUNT_HEIGHT));
+		amountTextField.setPreferredSize(
+				new Dimension (ARTICLE_AMOUNT_WIDTH, ARTICLE_AMOUNT_HEIGHT));
 		PlainDocument doc = (PlainDocument) amountTextField.getDocument();
 		doc.setDocumentFilter(new AmountDocumentFilter(product.getQuantita()));	
-		JButton addToCartButton = new JButton();
-		try {
-		    addToCartButton.setIcon(new ImageIcon(new ResizableIcon(new File(ADD_IMAGE_PATH))
-		    		.resizeIcon(ARTICLE_ADD_IMAGE_SIZE, ARTICLE_ADD_IMAGE_SIZE)));
-		} catch (Exception e) {
-			addToCartButton.setText(ADD_BUTTON_TEXT);
-		}
-		addToCartButton.setPreferredSize(new Dimension (
-				ARTICLE_ADD_BUTTON_SIZE, ARTICLE_ADD_BUTTON_SIZE));
+		JImageButton addToCartButton = 
+				new JImageButton(
+				new File(ADD_IMAGE_PATH), ARTICLE_ADD_BUTTON_SIZE, ADD_BUTTON_TEXT);
 		addToCartButton.addActionListener(new AddProductToCartListener(this.store, 
-				this.cart, new StringBuilder(product.getCodice()), 
-				amountTextField));
+				this.cart, new StringBuilder(product.getCodice()), amountTextField));
 		addToCartButton.setBackground(ADD_PRODUCT_BUTTON_COLOR);
 		addToCartButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		JPanel interactionPanel = new JPanel ();
@@ -433,8 +402,8 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	}
 	
 	public void updateArticles () {
-		int showcaseWidth = ((JeCommerceFrame) SwingUtilities.getWindowAncestor(this)).getWidth() - 
-				FRAME_RIGHT_MARGIN - FRAME_LEFT_MARGIN;
+		JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+		int showcaseWidth = mainFrame.getWidth() - FRAME_RIGHT_MARGIN - FRAME_LEFT_MARGIN;
 		int showcaseHeight = this.getHeight() - CONTROLPANEL_HEIGHT - 
 				CONTENTPANEL_TOP_MARGIN - CONTENTPANEL_BOTTOM_MARGIN - 
 				BOTTOMBUTTONS_TOP_MARGIN - this.backButton.getHeight() - 1;
@@ -519,7 +488,8 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 						JOptionPane.ERROR_MESSAGE);
 			}
 			else {
-				JRemoveProductFromCartDialog removeArticleDialog = new JRemoveProductFromCartDialog(
+				JRemoveProductFromCartDialog removeArticleDialog = 
+						new JRemoveProductFromCartDialog(
 					 this.mainFrame, this.cart);
 				removeArticleDialog.setVisible(true);
 			}			 
@@ -535,7 +505,8 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 					this.filterTypeComboBox.getSelectedItem().toString());
 			this.filterPanel.enableCorrectFilter (this.filterTypeString.toString());
 		}
-		else if (e.getSource().equals(this.showCartItem) || e.getSource().equals(this.cartButton)) {
+		else if (e.getSource().equals(this.showCartItem) || 
+				e.getSource().equals(this.cartButton)) {
 			JCartDialog cartDialog = new JCartDialog(this, this.cart, this.store);
 			cartDialog.setVisible(true);
 		}

@@ -37,7 +37,8 @@ public class JAddProductToCartDialog extends JDialog implements ActionListener{
 		this.setResizable(false);
 		this.setLayout(new BorderLayout());
 
-		JSelectProductWithAmountPanel articlePanel = new JSelectProductWithAmountPanel(store.getArticoli());
+		JSelectProductWithAmountPanel articlePanel = 
+				new JSelectProductWithAmountPanel(store.getArticoli());
 
 		this.cancelButton = new JButton(CANCEL_STRING);
 		this.cancelButton.addActionListener(this);

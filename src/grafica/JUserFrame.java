@@ -60,9 +60,11 @@ public class JUserFrame extends JFrame implements ActionListener {
 	private static final String OK_BUTTON_TEXT = "Accedi";
 	private static final String ERROR_TITLE = "Attenzione";
 	private static final String NO_TYPE_ERROR_TEXT = "Selezionare il tipo di utente.";
-	private static final String NO_PERSONAL_DATA_ERROR_TEXT = "Inserire i propri dati correttamente.";
+	private static final String NO_PERSONAL_DATA_ERROR_TEXT = 
+			"Inserire i propri dati correttamente.";
 	private static final String ALERT_FILE_NOT_FOUND_TITLE = "File non trovato";
-	private static final String ALERT_FILE_NOT_FOUND_TEXT = "File contenente il magazzino non trovato.";
+	private static final String ALERT_FILE_NOT_FOUND_TEXT = 
+			"File contenente il magazzino non trovato.";
 	
 	private static final String LAST_CONFIG_FILE = "media/saves/last";
 	

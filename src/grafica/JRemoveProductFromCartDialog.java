@@ -35,7 +35,8 @@ public class JRemoveProductFromCartDialog extends JDialog implements ActionListe
 	private static final String OK_BUTTON_TEXT = "Elimina";
 	private static final String CANCEL_BUTTON_TEXT = "Annulla";
 	private static final String ALERT_REMOVE_PRODUCT_TITLE = "Prodotto eliminato";
-	private static final String ALERT_REMOVE_PRODUCT_TEXT = "Prodotto eliminato correttamente dal carrello.";
+	private static final String ALERT_REMOVE_PRODUCT_TEXT = 
+			"Prodotto eliminato correttamente dal carrello.";
 	
 	public JRemoveProductFromCartDialog (JFrame mainFrame, Carrello cart) {
 		super (mainFrame, TITLE, JDialog.ModalityType.DOCUMENT_MODAL);

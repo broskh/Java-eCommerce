@@ -22,7 +22,8 @@ public class AddProductToCartListener implements ActionListener {
 	private static final String ALERT_TITLE = "Prodotto aggiunto";
 	private static final String ALERT_TEXT = "Prodotto aggiunto correttamente al carrello.";
 	private static final String ALERT_NO_AMOUNT_TITLE = "Attenzione";
-	private static final String ALERT_NO_AMOUNT_TEXT = "Inserire un valore valido nel campo dedicato alla quantità.";
+	private static final String ALERT_NO_AMOUNT_TEXT = 
+			"Inserire un valore valido nel campo dedicato alla quantità.";
 	
 	public AddProductToCartListener (Window windowCaller, Magazzino store, 
 			Carrello cart, StringBuilder code, JTextField amount) {

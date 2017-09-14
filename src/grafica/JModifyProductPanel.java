@@ -89,13 +89,13 @@ public class JModifyProductPanel extends JPanel implements ActionListener{
 		JLabel categoryLabel = new JLabel(CATEGORY_LABEL_TEXT);
 		this.categoryTextField = new JTextField(this.product.getCategoria(), TEXTBOX_WIDTH);
 		JLabel costLabel = new JLabel(PRICE_LABEL_TEXT);
-		this.costTextField = new JTextField(Float.toString(this.product.getPrezzo()), 
-				TEXTBOX_WIDTH);
+		String cost = Float.toString(this.product.getPrezzo());
+		this.costTextField = new JTextField(cost, TEXTBOX_WIDTH);
 		PlainDocument pdCost = (PlainDocument)this.costTextField.getDocument();
 		pdCost.setDocumentFilter(new PriceDocumentFilter());
 		JLabel amountLabel = new JLabel(AMOUNT_LABEL_TEXT);
-		this.amountTextField = new JTextField(Integer.toString(this.product.getQuantita()), 
-				TEXTBOX_WIDTH);
+		String amount = Integer.toString(this.product.getQuantita());
+		this.amountTextField = new JTextField(amount, TEXTBOX_WIDTH);
 		PlainDocument pdAmount = (PlainDocument)this.amountTextField.getDocument();
 		pdAmount.setDocumentFilter(new AmountDocumentFilter());
 		
@@ -106,11 +106,9 @@ public class JModifyProductPanel extends JPanel implements ActionListener{
 		this.perCentTextField.setText(DEFAULT_PER_CENT_VALUE);
 		this.noOfferRadioButton = new JRadioButton(NO_OFFER_TEXT);
 		this.noOfferRadioButton.addActionListener(this);
-		this.perCentOfferRadioButton = new JRadioButton(
-				PER_CENT_OFFER_TEXT);		
+		this.perCentOfferRadioButton = new JRadioButton(PER_CENT_OFFER_TEXT);		
 		this.perCentOfferRadioButton.addActionListener(this);
-		this.threeForTwoOfferRadioButton = new JRadioButton(
-				THREE_FOR_TWO_OFFER__TEXT);		
+		this.threeForTwoOfferRadioButton = new JRadioButton(THREE_FOR_TWO_OFFER__TEXT);		
 		this.threeForTwoOfferRadioButton.addActionListener(this);
 		ButtonGroup buttonGroup = new ButtonGroup();
 		buttonGroup.add(this.noOfferRadioButton);
@@ -120,8 +118,8 @@ public class JModifyProductPanel extends JPanel implements ActionListener{
 		this.modifyButton = new JButton();
 		this.modifyButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		
-		JPanel fieldsPanel = new JPanel(new GridLayout(
-				ATTRIBUTESPANEL_ROWS, ATTIRUBTESPANEL_COLUMNS));
+		JPanel fieldsPanel = new JPanel(
+				new GridLayout(ATTRIBUTESPANEL_ROWS, ATTIRUBTESPANEL_COLUMNS));
 		fieldsPanel.add(codeLabel);
 		fieldsPanel.add(this.codeTextField);
 		fieldsPanel.add(nameLabel);

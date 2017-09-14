@@ -23,7 +23,7 @@ public class ProdottoImportTransferHandler extends TransferHandler {
 
     @Override
     public boolean canImport(TransferSupport support) {
-        return support.isDataFlavorSupported(ProdottoImportTransferHandler.SUPPORTED_DATE_FLAVOR);
+        return support.isDataFlavorSupported(SUPPORTED_DATE_FLAVOR);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class ProdottoImportTransferHandler extends TransferHandler {
         if (canImport(support)) {
             try {
                 Transferable t = support.getTransferable();
-                Object value = t.getTransferData(ProdottoImportTransferHandler.SUPPORTED_DATE_FLAVOR);
+                Object value = t.getTransferData(SUPPORTED_DATE_FLAVOR);
                 if (value instanceof Prodotto) {
                     Component component = support.getComponent();
                     if (component instanceof JButton) {
