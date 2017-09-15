@@ -3,7 +3,8 @@ package negozio;
 import java.util.ArrayList;
 
 /**
- * La classe carrello gestisce tutte le informazioni relative al carrello di un cliente.
+ * La classe carrello gestisce tutte le informazioni relative al carrello 
+ * di un cliente.
  * 
  * @author Alessio Scheri
  * @version 1.0
@@ -11,69 +12,79 @@ import java.util.ArrayList;
  * @see Prodotto
  */
 public class Carrello implements GestioneProdotti{
-	private ArrayList <Prodotto> articoli; /**<Articoli aggiunti dal cliente nel carrello.*/
+	private ArrayList <Prodotto> prodotti; /**<Prodotti presenti nel carrello.*/
 	
 	/**
 	 * Crea un Carrello vuoto.
 	 */
 	public Carrello () {
-		this.articoli = new ArrayList <Prodotto> ();
+		this.prodotti = new ArrayList <Prodotto> ();
 	}
 
 	/**
-	 * @return il totale del costo degli articoli nel carrello, privo di sconto.
+	 * @return il totale del costo dei prodotti nel carrello (privo di sconto).
 	 */
 	public float getTotale() {
 		float totale = 0;
-		for (Prodotto articolo : this.articoli) {
-			totale += articolo.prezzoTotale();
+		for (Prodotto prodotto : this.prodotti) {
+			totale += prodotto.prezzoTotale();
 		}
 		return totale;
 	}
 
 	/**
-	 * @return il totale del costo scontato degli articoli nel carrello.
+	 * @return il totale del costo scontato dei prodotti nel carrello.
 	 */
 	public float getTotaleScontato() {
 		float totaleScontato = 0;
-		for (Prodotto articolo : this.articoli) {
-			totaleScontato += articolo.prezzoTotaleScontato();
+		for (Prodotto prodotto : this.prodotti) {
+			totaleScontato += prodotto.prezzoTotaleScontato();
 		}
 		return totaleScontato;
 	}
 
 
 	/**
-	 * Rimuove tutti gli articoli presenti.
+	 * Rimuove tutti i prodotti presenti.
 	 */
 	public void svuota() {
-		this.articoli.clear();
+		this.prodotti.clear();
 	}
 	
 	@Override
-	public ArrayList <Prodotto> getArticoli() {
-		return articoli;
+	public ArrayList <Prodotto> getProdotti() {
+		return prodotti;
+	}
+
+	@Override
+	public Prodotto getProdotto(String codice) {
+		for (Prodotto prodotto : this.prodotti) {
+			if (prodotto.getCodice().equals(codice)) {
+				return prodotto;
+			}
+		}		
+		return null;
 	}
 
 	@Override
 	public void aggiungiProdotto(Prodotto prodotto) {
-		for (Prodotto articolo : this.articoli) {
-			if (articolo.getCodice().equals(prodotto.getCodice())) {
-				articolo.incrementaQuantita(prodotto.getQuantita());
+		for (Prodotto prodottoPresente : this.prodotti) {
+			if (prodottoPresente.getCodice().equals(prodotto.getCodice())) {
+				prodottoPresente.incrementaQuantita(prodotto.getQuantita());
 				return;
 			}
 		}
-		this.articoli.add(prodotto);
+		this.prodotti.add(prodotto);
 	}
 
 	@Override
 	public boolean rimuoviProdotto(String codice, int quantita) {
-		for (Prodotto articolo : this.articoli) {
-			if (articolo.getCodice().equals(codice)) {
-				if (quantita > 0 && quantita <= articolo.getQuantita()) {
-					articolo.decrementaQuantita(quantita);
-					if (articolo.getQuantita() == 0) {
-						this.articoli.remove(articolo);
+		for (Prodotto prodotto : this.prodotti) {
+			if (prodotto.getCodice().equals(codice)) {
+				if (quantita > 0 && quantita <= prodotto.getQuantita()) {
+					prodotto.decrementaQuantita(quantita);
+					if (prodotto.getQuantita() == 0) {
+						this.prodotti.remove(prodotto);
 					}
 					return true;
 				}
@@ -84,21 +95,11 @@ public class Carrello implements GestioneProdotti{
 	}
 
 	@Override
-	public Prodotto getProdotto(String codice) {
-		for (Prodotto articolo : this.articoli) {
-			if (articolo.getCodice().equals(codice)) {
-				return articolo;
-			}
-		}		
-		return null;
-	}
-
-	@Override
 	public float maxPrezzo() {
 		float max = 0;
-		for (Prodotto articolo : this.articoli) {
-			if (articolo.getPrezzo() > max) {
-				max = articolo.getPrezzo();
+		for (Prodotto prodotto : this.prodotti) {
+			if (prodotto.getPrezzo() > max) {
+				max = prodotto.getPrezzo();
 			}
 		}
 		return max;
@@ -107,9 +108,9 @@ public class Carrello implements GestioneProdotti{
 	@Override
 	public int maxQuantita() {
 		int max = 0;
-		for (Prodotto articolo : this.articoli) {
-			if (articolo.getQuantita() > max) {
-				max = articolo.getQuantita();
+		for (Prodotto prodotto : this.prodotti) {
+			if (prodotto.getQuantita() > max) {
+				max = prodotto.getQuantita();
 			}
 		}
 		return max;
@@ -117,6 +118,6 @@ public class Carrello implements GestioneProdotti{
 
 	@Override
 	public String toString() {
-		return "Carrello [articoli=" + articoli + "]";
+		return "Carrello [prodotti=" + this.prodotti + "]";
 	}
 }

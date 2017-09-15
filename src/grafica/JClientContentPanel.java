@@ -151,7 +151,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		this.store = store;
 		this.client = client;
 		this.cart = this.client.getCarrello();
-		this.viewedArticles = this.store.getArticoli();
+		this.viewedArticles = this.store.getProdotti();
 		this.nPage = 0;
 		this.maxPage = 0;
 		
@@ -470,7 +470,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 			filterDialog.setVisible(true);
 		}
 		else if (e.getSource().equals(this.addArticleItem)) {
-			if (this.store.getArticoli().isEmpty()) {
+			if (this.store.getProdotti().isEmpty()) {
 				JOptionPane.showMessageDialog(this, EMPTY_STORE_TEXT, EMPTY_STORE_TITLE,
 						JOptionPane.ERROR_MESSAGE);
 			}
@@ -481,7 +481,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 			}
 		}
 		else if (e.getSource().equals(this.removeArticleItem)) {
-			if (this.cart.getArticoli().isEmpty()) {
+			if (this.cart.getProdotti().isEmpty()) {
 				JOptionPane.showMessageDialog(this, EMPTY_CART_TEXT, EMPTY_CART_TITLE,
 						JOptionPane.ERROR_MESSAGE);
 			}

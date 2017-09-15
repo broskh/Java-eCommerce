@@ -47,7 +47,7 @@ public class JRemoveProductFromCartDialog extends JDialog implements ActionListe
 		
 		this.cart = cart;
 		this.mainFrame = mainFrame;
-		this.articlePanel = new JSelectProductWithAmountPanel(this.cart.getArticoli());
+		this.articlePanel = new JSelectProductWithAmountPanel(this.cart.getProdotti());
 	
 		this.okButton = new JButton(OK_BUTTON_TEXT);
 		this.okButton.addActionListener(this);			

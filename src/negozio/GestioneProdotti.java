@@ -3,39 +3,45 @@ package negozio;
 import java.util.ArrayList;
 
 /**
- * Questa interfeccia implementa i metodi astratti necessari per la gestione di un'insieme
- * di articoli.
+ * Questa interfeccia implementa i metodi astratti necessari per la gestione di 
+ * un'insieme di prodotti.
  * 
  * @author Alessio Scheri
  * @version 1.0
+ * @see Magazzino
+ * @see Carrello
  */
 public interface GestioneProdotti {
+	
 	/**
-	 * Aggiunge un prodotto agli articoli già presenti.
+	 * @return i prodotti gestiti.
+	 */
+	public ArrayList <Prodotto> getProdotti();
+	
+	/**
+	 * Ritorna un prodotto fra quelli gestiti. Il prodotto viene selezionato
+	 * sulla base del suo codice.
+	 * 
+	 * @param codice Codice del prodotto da ritornare.
+	 * @return il Prodotto con quel codice se è presente, null altrimenti.
+	 */
+	public Prodotto getProdotto(String codice);
+	
+	/**
+	 * Aggiunge un prodotto a quelli già presenti.
 	 * 
 	 * @param prodotto Prodotto da aggiungere.
 	 */
 	public void aggiungiProdotto (Prodotto prodotto);
 	
 	/**
-	 * Rimuove un prodotto dagli articoli presenti. La quantità di unità del prodotto
-	 * da rimuovere deve essere positiva e non maggiore alla quantità attuale del
-	 * prodotto.
+	 * Rimuove un prodotto da quelli presenti.
 	 * 
 	 * @param codice Codice del prodotto da rimuovere.
 	 * @param quantita Quantità di unità del prodotto da rimuovere.
 	 * @return "true" se la rimozione è avvenuta con successo, "false" altrimenti.
 	 */
 	public boolean rimuoviProdotto(String codice, int quantita);
-	
-	/**
-	 * Ritorna un prodotto dagli articoli presenti. Il prodotto viene selezionato
-	 * sulla base del codice dell'articolo.
-	 * 
-	 * @param codice Codice del prodotto da ritornare.
-	 * @return il Prodotto con quel codice se è presente, null altrimenti.
-	 */
-	public Prodotto getProdotto(String codice);
 	
 	/**
 	 * Ritorna il prezzo del prodotto con tale valore maggiore.
@@ -50,10 +56,4 @@ public interface GestioneProdotti {
 	 * @return Quantità massima.
 	 */
 	public int maxQuantita ();
-	
-
-	/**
-	 * @return gli articoli presenti.
-	 */
-	public ArrayList <Prodotto> getArticoli();
 }

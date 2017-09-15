@@ -216,7 +216,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 		} 
 		else if(e.getSource().equals(this.editButton) || 
 				e.getSource().equals(this.modifyMenuItem)) {
-			if (this.store.getArticoli().isEmpty()) {
+			if (this.store.getProdotti().isEmpty()) {
 				JOptionPane.showMessageDialog(this, EMPTY_STORE_TEXT, EMPTY_STORE_TITLE,
 						JOptionPane.ERROR_MESSAGE);
 			}
@@ -229,7 +229,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 		}
 		else if(e.getSource().equals(this.deleteButton) || 
 				e.getSource().equals(this.deleteMenuItem)) {
-			if (this.store.getArticoli().isEmpty()) {
+			if (this.store.getProdotti().isEmpty()) {
 				JOptionPane.showMessageDialog(this, EMPTY_STORE_TEXT, EMPTY_STORE_TITLE,
 						JOptionPane.ERROR_MESSAGE);
 			}

@@ -163,7 +163,7 @@ public class JPaymentDialog extends JDialog implements ActionListener {
 						ALERT_NO_ADDRESS_TITLE, JOptionPane.ERROR_MESSAGE);
 			}
 			else {
-				for (Prodotto articolo : this.cart.getArticoli()) {
+				for (Prodotto articolo : this.cart.getProdotti()) {
 					this.store.rimuoviProdotto(articolo.getCodice(), articolo.getQuantita());
 				}
 				this.cart.svuota();

@@ -6,6 +6,7 @@ import negozio.Carrello;
  * 
  * @author Alessio Scheri
  * @version 1.0
+ * @see Utente
  */
 public class Cliente extends Utente {
 	private Carrello carrello; /**<Carrello del cliente.*/
@@ -30,7 +31,7 @@ public class Cliente extends Utente {
 	}
 
 	/**
-	 * @return il carrello in uso.
+	 * @return il carrello del cliente.
 	 */
 	public Carrello getCarrello () {
 		return carrello;

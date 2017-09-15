@@ -57,7 +57,7 @@ public class JProductsTable extends JTable{
 	}
 	
 	private void basicTable () {
-		this.setModel(new ProductsTableModel(this.productsManager.getArticoli(),
+		this.setModel(new ProductsTableModel(this.productsManager.getProdotti(),
 				this.mode));
 		this.setRowHeight(ROW_HEIGHT);
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -69,13 +69,13 @@ public class JProductsTable extends JTable{
 		TableColumn buttonColumn = this.getColumn(ProductsTableModel.BUTTON_COLUMN);
 		buttonColumn.setCellRenderer(new RemoveColumnRender(ROW_HEIGHT));
 		buttonColumn.setCellEditor(
-				new RemoveColumnEditor(this.productsManager.getArticoli(), ROW_HEIGHT));			
+				new RemoveColumnEditor(this.productsManager.getProdotti(), ROW_HEIGHT));			
 		this.setFocusable(false);
 		this.setRowSelectionAllowed(false);
 	}
 
 	public Prodotto getProductAtRow(int row) {
-		return this.productsManager.getArticoli().get(row);
+		return this.productsManager.getProdotti().get(row);
 	}
 
 	class ImageColumnRender implements TableCellRenderer {
@@ -137,7 +137,7 @@ public class JProductsTable extends JTable{
 	
 		@Override
 		public Object getCellEditorValue() {
-			return this.cart.getArticoli().get(this.lastRowSelected).getQuantita();
+			return this.cart.getProdotti().get(this.lastRowSelected).getQuantita();
 		}
 	
 		@Override
@@ -145,7 +145,7 @@ public class JProductsTable extends JTable{
 				boolean isSelected, int row, int column) {
 			table.getColumn(table.getColumnName(column)).setMinWidth(AmountCell.TEXTFIELD_WIDTH);
 			this.lastRowSelected = row; 
-			Prodotto product = this.cart.getArticoli().get(this.lastRowSelected);
+			Prodotto product = this.cart.getProdotti().get(this.lastRowSelected);
 			Prodotto storeProduct = this.store.getProdotto(product.getCodice());
 			this.cellPanel.setFilter(storeProduct.getQuantita());
 			this.cellPanel.setArticle(product);
@@ -155,7 +155,7 @@ public class JProductsTable extends JTable{
 		
 		@Override
 		public boolean stopCellEditing () {
-			Prodotto cartArticle = this.cart.getArticoli().get(this.lastRowSelected);
+			Prodotto cartArticle = this.cart.getProdotti().get(this.lastRowSelected);
 	    	cartArticle.setQuantita((int)this.getCellEditorValue());
 	    	return true;
 		}

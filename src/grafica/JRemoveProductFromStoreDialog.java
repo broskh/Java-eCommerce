@@ -44,7 +44,7 @@ public class JRemoveProductFromStoreDialog extends JDialog implements ActionList
 		this.store = store;
 		this.storeTableModel = storeTableModel;
 		
-		this.selectProductPanel = new JSelectProductPanel(this.store.getArticoli());
+		this.selectProductPanel = new JSelectProductPanel(this.store.getProdotti());
 		this.selectProductPanel.setLabelText(STRING_LABEL_TEXT);
 		this.selectProductPanel.setButtonText(DELETE_BUTTON_TEXT);
 		this.selectProductPanel.setActionListener(this);

@@ -6,7 +6,6 @@ package utenza;
  * @author Alessio Scheri
  * @version 1.0
  * @see Utente
- * @see Cliente
  */
 public class Amministratore extends Utente {
 

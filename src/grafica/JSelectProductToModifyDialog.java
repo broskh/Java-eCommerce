@@ -41,7 +41,7 @@ public class JSelectProductToModifyDialog extends JDialog implements ActionListe
 		this.mainFrame = mainFrame;
 		this.storeTableModel = storeTableModel;
 				
-		this.selectProductPanel = new JSelectProductPanel(this.store.getArticoli());
+		this.selectProductPanel = new JSelectProductPanel(this.store.getProdotti());
 		this.selectProductPanel.setLabelText(STRING_LABEL_TEXT);
 		this.selectProductPanel.setButtonText(SELECT_BUTTON_TEXT);
 		this.selectProductPanel.setActionListener(this);

@@ -12,6 +12,10 @@ import java.io.Serializable;
  * 
  * @author Alessio Scheri
  * @version 1.0
+ * @see GestioneProdotti
+ * @see Magazzino
+ * @see Carrello
+ * @see Promozione
  */
 public class Prodotto implements Serializable, Cloneable, Transferable {
 	private static final long serialVersionUID = 7588762583069098992L;
@@ -29,7 +33,7 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 			new File ("media/img/immagine_non_disponibile.jpg"); /**<Immagine di default.*/
 	
 	/**
-	 * Crea un Prodotto in offerta, completo di tutte le informazioni.
+	 * Crea un Prodotto, completo di tutte le informazioni.
 	 * 
 	 * @param nome Nome del prodotto.
 	 * @param marca Marca del prodotto.
@@ -46,21 +50,11 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 		this.marca = marca;
 		this.codice = codice;
 		this.categoria = categoria;
-		if (prezzo > 0) {
-			this.prezzo = prezzo;			
-		}
-		else {
-			this.prezzo = 0;
-		}
-		if(immagine.exists() && !immagine.isDirectory()) { 
-			this.immagine = immagine;
-		}
-		else {
-			this.immagine = Prodotto.IMMAGINE_DEFAULT;
-		}
-		if (quantita >= 0) {
-			this.quantita = quantita;
-		}
+		this.prezzo = 0;
+		this.setPrezzo(prezzo);
+		this.setImmagine(immagine);
+		this.quantita = 0;
+		this.setQuantita(quantita);
 		this.offerta = offerta;
 	}
 
@@ -198,7 +192,7 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	 */
 	public void setPrezzo(float prezzo) {
 		if (prezzo > 0) {
-			this.prezzo = prezzo;			
+			this.prezzo = prezzo;
 		}
 	}
 	
@@ -217,6 +211,9 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	public void setImmagine(File immagine) {
 		if(immagine.exists() && !immagine.isDirectory()) { 
 			this.immagine = immagine;
+		}
+		else {
+			this.immagine = IMMAGINE_DEFAULT;
 		}
 	}
 	
