@@ -68,9 +68,9 @@ public class JUserFrame extends JFrame implements ActionListener {
 	
 	private static final String LAST_CONFIG_FILE = "media/saves/last";
 	
-	public JUserFrame(Magazzino store)	{
+	public JUserFrame()	{
 		super(JUserFrame.TITLE);
-		this.store  = store;
+		this.store  = new Magazzino();
 		
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setSize(new Dimension(JUserFrame.FRAME_WIDTH, JUserFrame.FRAME_HEIGHT));

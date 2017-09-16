@@ -33,6 +33,21 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 			new File ("media/img/immagine_non_disponibile.jpg"); /**<Immagine di default.*/
 	
 	/**
+	 * Ritorna il DataFlavor per la classe Prodotto.
+	 * 
+	 * @return il DataFlavor della classe.
+	 */
+	public static final DataFlavor getDataFlavor () {
+		try {
+			return new DataFlavor (DataFlavor.javaJVMLocalObjectMimeType 
+					+ ";class=\""+Prodotto.class.getName() + "\"");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
 	 * Crea un Prodotto, completo di tutte le informazioni.
 	 * 
 	 * @param nome Nome del prodotto.
@@ -59,7 +74,7 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	}
 
 	/**
-	 * Crea un Prodotto in offerta, completo di tutte le informazioni.
+	 * Crea un Prodotto, completo di tutte le informazioni.
 	 * 
 	 * @param nome Nome del prodotto.
 	 * @param marca Marca del prodotto.
@@ -186,7 +201,7 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	}
 	
 	/**
-	 * Modifica il prezzo del prodotto se il valore è maggiore di 0.
+	 * Modifica il prezzo del prodotto (se il valore è maggiore di 0).
 	 * 
 	 * @param prezzo Nuovo prezzo del prodotto.
 	 */
@@ -234,7 +249,7 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	}
 	
 	/**
-	 * Modifica la quantità del prodotto se si tratta di un valore positivo.
+	 * Modifica la quantità del prodotto (se si tratta di un valore positivo).
 	 * 
 	 * @param quantita Nuova quantità del prodotto.
 	 */
@@ -336,24 +351,6 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 		return this.prezzoTotale();
 	}
 	
-
-	@Override
-	public String toString() {
-		return "Prodotto [nome=" + nome + ", marca=" + marca + ", codice=" + codice 
-				+ ", categoria=" + categoria + ", prezzo=" + prezzo + ", immagine=" 
-				+ immagine + ", quantita=" + quantita + ", offerta=" + offerta + "]";
-	}
-	
-	public static final DataFlavor getDataFlavor () {
-		try {
-			return new DataFlavor (DataFlavor.javaJVMLocalObjectMimeType 
-					+ ";class=\""+Prodotto.class.getName() + "\"");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
 	@Override
 	public Prodotto clone() throws CloneNotSupportedException {
 		return (Prodotto) super.clone();
@@ -380,5 +377,13 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 			return this;
 		}
 		return null;
+	}
+	
+
+	@Override
+	public String toString() {
+		return "Prodotto [nome=" + nome + ", marca=" + marca + ", codice=" + codice 
+				+ ", categoria=" + categoria + ", prezzo=" + prezzo + ", immagine=" 
+				+ immagine + ", quantita=" + quantita + ", offerta=" + offerta + "]";
 	}
 }
