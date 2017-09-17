@@ -27,9 +27,9 @@ import negozio.Magazzino;
 public class Java_eCommerce  {
 	private static final int DIMENSIONE_FONT = 13; /**<Dimensione del font di default.*/
 
-	private static final String DIRECTORY_FONT = "media/font/"; 
-	/**<Cartella contenente il font di default.*/
 	private static final String NOME_FONT = "Encode Sans"; /**<Nome del font di default.*/
+	private static final String DIRECTORY_FONT = 
+			"media/font/"; /**<Cartella contenente il font di default.*/	
 	
 	/**
 	 * Il metodo main prima di tutto modifica il font di default e il tema grafico 

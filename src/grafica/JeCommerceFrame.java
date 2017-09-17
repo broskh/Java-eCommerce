@@ -3,11 +3,10 @@ package grafica;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-//import java.awt.GraphicsEnvironment;
-//import java.awt.Rectangle;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -35,14 +34,18 @@ public class JeCommerceFrame extends JFrame implements ComponentListener {
 	private static final String ADMIN_STRING = "Amministratore";
 	private static final String CLIENT_STRING = "Cliente";
 	private static final String AUTHOR = "Alessio Scheri";
+	
+	public static final String SOFTWARE_ICON = "media/img/software_icon.png";
  
 	public JeCommerceFrame (Utente user, Magazzino store) {
 		super (TITLE);
-		this.user = user;
+		this.setIconImage(new ImageIcon(JeCommerceFrame.SOFTWARE_ICON).getImage());
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setMinimumSize(new Dimension(MINIMUM_JFRAME_WIDTH, MINIMUM_JFRAME_HEIGHT));
 		this.addComponentListener(this);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+		this.user = user;
 
 		if (this.user.isAmministratore()) {
 			this.contentPanel = new JAdminContentPanel(this, store);

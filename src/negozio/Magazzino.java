@@ -42,6 +42,13 @@ public class Magazzino implements GestioneProdotti {
 	public static final String STRINGA_FILTRO_QUANTITA = 
 			"Quantità"; /**<Stringa che indica il filtro per quantità.*/
 	
+	/**
+	 * Crea un Magazzino vuoto.
+	 */
+	public Magazzino () {
+		this.prodotti = new ArrayList <Prodotto> ();
+	}
+	
 	/*
 	 * Prende un file immagine e ne ritorna il file che dovrà contenerne la 
 	 * copia dopo il salvataggio del magazzino.
@@ -49,24 +56,24 @@ public class Magazzino implements GestioneProdotti {
 	 * @param oldImageFile File dell'immagine da copiare.
 	 * @return il file che ne conterrà la copia.
 	 */
-	private File getNewImageFile (File oldImageFile) {
-		String newFileName = oldImageFile.getName();
-		File newFile = new File (DIRECTORY_IMMAGINI_PRODOTTI + newFileName);
-		if (!newFile.exists()) {
-			return newFile;
+	private File getNuovoFileImmagine (File immagineSorgente) {
+		String nuovoNomeFile = immagineSorgente.getName();
+		File nuovoFile = new File (DIRECTORY_IMMAGINI_PRODOTTI + nuovoNomeFile);
+		if (!nuovoFile.exists()) {
+			return nuovoFile;
 		}
-		String extension = "";
-		int extensionIndex = newFileName.lastIndexOf('.');
-		if (extensionIndex != -1) {
-			extension = newFileName.substring(extensionIndex, newFileName.length());
-			newFileName = newFileName.substring(0, extensionIndex);
+		String estensione = "";
+		int indiceEstensione = nuovoNomeFile.lastIndexOf('.');
+		if (indiceEstensione != -1) {
+			estensione = nuovoNomeFile.substring(indiceEstensione, nuovoNomeFile.length());
+			nuovoNomeFile = nuovoNomeFile.substring(0, indiceEstensione);
 		}
 		int i = 0;
 		do {
 			i++;
-			newFile = new File (DIRECTORY_IMMAGINI_PRODOTTI + newFileName + "_" + i + extension);
-		} while (newFile.exists());
-		return newFile;
+			nuovoFile = new File (DIRECTORY_IMMAGINI_PRODOTTI + nuovoNomeFile + "_" + i + estensione);
+		} while (nuovoFile.exists());
+		return nuovoFile;
 	}
 
 	/*
@@ -74,24 +81,17 @@ public class Magazzino implements GestioneProdotti {
 	 * 
 	 * @param prodotto Prodotto del quale copiare l'immagine.
 	 */
-	private void copyProductImage(Prodotto prodotto) {
+	private void copiaImmagineProdotto(Prodotto prodotto) {
 		if (!prodotto.getImmagine().equals(Prodotto.IMMAGINE_DEFAULT)) {	
-			File newFile = getNewImageFile(prodotto.getImmagine());
+			File nuovoFile = getNuovoFileImmagine(prodotto.getImmagine());
 			try {
-				Files.copy(prodotto.getImmagine().toPath(), newFile.toPath());
-				prodotto.setImmagine(newFile);
+				Files.copy(prodotto.getImmagine().toPath(), nuovoFile.toPath());
+				prodotto.setImmagine(nuovoFile);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 		
-	}
-	
-	/**
-	 * Crea un Magazzino vuoto.
-	 */
-	public Magazzino () {
-		this.prodotti = new ArrayList <Prodotto> ();
 	}
 	
 	/**
@@ -110,7 +110,7 @@ public class Magazzino implements GestioneProdotti {
 				vecchioMagazzino.caricaMagazzino(file);
 			}
 			for (Prodotto prodotto : this.prodotti) {
-				this.copyProductImage(prodotto);
+				this.copiaImmagineProdotto(prodotto);
 			}
 			if (vecchioMagazzino != null) {
 				for (Prodotto prodotto : vecchioMagazzino.getProdotti()) {

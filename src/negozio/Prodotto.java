@@ -33,21 +33,6 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 			new File ("media/img/immagine_non_disponibile.jpg"); /**<Immagine di default.*/
 	
 	/**
-	 * Ritorna il DataFlavor per la classe Prodotto.
-	 * 
-	 * @return il DataFlavor della classe.
-	 */
-	public static final DataFlavor getDataFlavor () {
-		try {
-			return new DataFlavor (DataFlavor.javaJVMLocalObjectMimeType 
-					+ ";class=\""+Prodotto.class.getName() + "\"");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	/**
 	 * Crea un Prodotto, completo di tutte le informazioni.
 	 * 
 	 * @param nome Nome del prodotto.
@@ -129,6 +114,23 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 		this ("", "", "", "", 0, Prodotto.IMMAGINE_DEFAULT, 0, null);
 	}
 	
+	/**<Immagine di default.*/
+	
+	/**
+	 * Ritorna il DataFlavor per la classe Prodotto.
+	 * 
+	 * @return il DataFlavor della classe.
+	 */
+	public static final DataFlavor getDataFlavor () {
+		try {
+			return new DataFlavor (DataFlavor.javaJVMLocalObjectMimeType 
+					+ ";class=\""+Prodotto.class.getName() + "\"");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	/**
 	 * @return il nome del prodotto.
 	 */
