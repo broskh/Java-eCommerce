@@ -10,6 +10,13 @@ import javax.swing.SwingConstants;
 
 import negozio.Prodotto;
 
+/**
+ * Classe per visualizzare un'icona.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
 public class JIconLabel extends JLabel {
 	private static final long serialVersionUID = 7691599046739986927L;
 	

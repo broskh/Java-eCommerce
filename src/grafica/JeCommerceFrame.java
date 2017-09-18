@@ -16,6 +16,13 @@ import negozio.Magazzino;
 import utenza.Cliente;
 import utenza.Utente;
 
+/**
+ * JFrame principale del programma.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
 public class JeCommerceFrame extends JFrame implements ComponentListener {
 	private static final long serialVersionUID = 611728494453017801L;
 	
@@ -100,7 +107,7 @@ public class JeCommerceFrame extends JFrame implements ComponentListener {
 	public void componentResized(ComponentEvent e) {
 		if (!this.user.isAmministratore()) {
 			((JClientContentPanel) this.contentPanel).resetPagina();
-			((JClientContentPanel) this.contentPanel).updateArticles ();
+			((JClientContentPanel) this.contentPanel).updateProducts ();
 		}		
 	}
 

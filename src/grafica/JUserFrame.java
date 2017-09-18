@@ -31,6 +31,14 @@ import utenza.Amministratore;
 import utenza.Cliente;
 import utenza.Utente;
 
+/**
+ * JFrame per la scelta del tipo di utente e l'immissione delle 
+ * sue informazioni di base.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
 public class JUserFrame extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 979362510733265067L;
 	

@@ -5,6 +5,14 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.DocumentFilter;
 
+/**
+ * DocumentFilter per JTextField utilizzata per l'inserimento
+ * di una quantità.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
 public class AmountDocumentFilter extends DocumentFilter {
 	
 	private int maxValue;

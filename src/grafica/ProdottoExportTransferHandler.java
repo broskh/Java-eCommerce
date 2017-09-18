@@ -10,6 +10,13 @@ import javax.swing.TransferHandler;
 
 import negozio.Prodotto;
 
+/**
+ * Classe per inviare un oggetto Prodotto tramite drag & drop.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
 public class ProdottoExportTransferHandler extends TransferHandler {
     private static final long serialVersionUID = -3689725432297463459L;
 

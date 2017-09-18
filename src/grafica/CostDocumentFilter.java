@@ -5,18 +5,26 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.DocumentFilter;
 
-public class PriceDocumentFilter extends DocumentFilter{
+/**
+ * DocumentFilter per JTextField utilizzata per l'inserimento
+ * di un prezzo.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
+public class CostDocumentFilter extends DocumentFilter{
 
 	private float maxValue;
 
 	private static final String EMPTY_FIELD_VALUE = "0";
 	private static final int NULL_VALUE = -1;
 	
-	public PriceDocumentFilter(float maxValue) {
+	public CostDocumentFilter(float maxValue) {
 		this.maxValue = maxValue;
 	}
 	
-	public PriceDocumentFilter() {
+	public CostDocumentFilter() {
 		this(NULL_VALUE);
 	}
 	

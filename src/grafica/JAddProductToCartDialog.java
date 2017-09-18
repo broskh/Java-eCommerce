@@ -14,6 +14,13 @@ import javax.swing.JPanel;
 import negozio.Carrello;
 import negozio.Magazzino;
 
+/**
+ * JDialog per l'aggiutna di un prodotto al carrello.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
 public class JAddProductToCartDialog extends JDialog implements ActionListener{
 	private static final long serialVersionUID = -4438831458822655741L;
 

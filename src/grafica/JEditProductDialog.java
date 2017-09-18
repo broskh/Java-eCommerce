@@ -13,7 +13,14 @@ import javax.swing.JOptionPane;
 import negozio.Magazzino;
 import negozio.Prodotto;
 
-public class JModifyProductDialog extends JDialog implements ActionListener{
+/**
+ * JDialog per la modifica delle informazioni di un prodotto.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
+public class JEditProductDialog extends JDialog implements ActionListener{
 	private static final long serialVersionUID = -5456722239846991776L;
 	
 	private Prodotto product;
@@ -21,7 +28,7 @@ public class JModifyProductDialog extends JDialog implements ActionListener{
 
 	private JFrame mainFrame;
 	private ProductsTableModel storeTableModel;
-	private JModifyProductPanel modifyProductPanel;
+	private JEditProductPanel modifyProductPanel;
 	
 	private static final String TITLE = "Modifica prodotto";
 	private static final int FRAME_HEIGHT = 510;
@@ -41,7 +48,7 @@ public class JModifyProductDialog extends JDialog implements ActionListener{
 	
 	
 	
-	public JModifyProductDialog(JFrame mainFrame,Prodotto product, Magazzino store, ProductsTableModel storeTableModel) {
+	public JEditProductDialog(JFrame mainFrame,Prodotto product, Magazzino store, ProductsTableModel storeTableModel) {
 		super(mainFrame, TITLE, ModalityType.DOCUMENT_MODAL);		
 		this.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));		
 		this.setLocationRelativeTo(null);
@@ -52,7 +59,7 @@ public class JModifyProductDialog extends JDialog implements ActionListener{
 		this.mainFrame = mainFrame;
 		this.storeTableModel = storeTableModel;
 				
-		this.modifyProductPanel = new JModifyProductPanel(this.product);
+		this.modifyProductPanel = new JEditProductPanel(this.product);
 		this.modifyProductPanel.setButtonText(BUTTON_TEXT);
 		this.modifyProductPanel.setButtonActionListener(this);
 

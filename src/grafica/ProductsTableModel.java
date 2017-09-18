@@ -10,6 +10,14 @@ import javax.swing.table.AbstractTableModel;
 
 import negozio.Prodotto;
 
+/**
+ * Modello per la visualizzazione delle informazioni relative ad un insieme 
+ * di prodotti.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
 public class ProductsTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = -3450099361845613304L;
 	

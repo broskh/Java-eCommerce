@@ -21,6 +21,13 @@ import javax.swing.border.EtchedBorder;
 
 import negozio.Magazzino;
 
+/**
+ * JPanel per la visualizzazione della schermata dell'utente amministratore.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
 public class JAdminContentPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -3936116522061776556L;
 

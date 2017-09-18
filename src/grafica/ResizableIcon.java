@@ -9,6 +9,13 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+/**
+ * Classe per realizzare icone e ridimensionarle.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
 public class ResizableIcon {
 	
 	private File image;

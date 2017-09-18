@@ -14,6 +14,14 @@ import javax.swing.text.PlainDocument;
 
 import negozio.Prodotto;
 
+/**
+ * JPanel per la selezione di un prodotto con la possibilità di indicare
+ * la quantità.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
 public class JSelectProductWithAmountPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -8842725930146342385L;
 	

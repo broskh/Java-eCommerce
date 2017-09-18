@@ -22,7 +22,15 @@ import negozio.Promozione;
 import negozio.ScontoPercentuale;
 import negozio.ScontoTrePerDue;
 
-public class JModifyProductPanel extends JPanel implements ActionListener{
+/**
+ * JPanel contenente tutti i componenti necessari per immettere tutte le 
+ * informazioni relative ad un prodotto.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
+public class JEditProductPanel extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 3050586973997645118L;
 
 	private Prodotto product;
@@ -64,11 +72,11 @@ public class JModifyProductPanel extends JPanel implements ActionListener{
 
 	private static final String DEFAULT_PER_CENT_VALUE = "0";
 	
-	public JModifyProductPanel () {
+	public JEditProductPanel () {
 		this (new Prodotto ()); 
 	}
 	
-	public JModifyProductPanel(Prodotto product) {
+	public JEditProductPanel(Prodotto product) {
 		this.product = product;
 		
 		this.imageLabel = new JIconLabel(this.product.getImmagine(), ICON_SIZE);
@@ -92,7 +100,7 @@ public class JModifyProductPanel extends JPanel implements ActionListener{
 		String cost = Float.toString(this.product.getPrezzo());
 		this.costTextField = new JTextField(cost, TEXTBOX_WIDTH);
 		PlainDocument pdCost = (PlainDocument)this.costTextField.getDocument();
-		pdCost.setDocumentFilter(new PriceDocumentFilter());
+		pdCost.setDocumentFilter(new CostDocumentFilter());
 		JLabel amountLabel = new JLabel(AMOUNT_LABEL_TEXT);
 		String amount = Integer.toString(this.product.getQuantita());
 		this.amountTextField = new JTextField(amount, TEXTBOX_WIDTH);

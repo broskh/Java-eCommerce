@@ -4,6 +4,13 @@ import java.io.File;
 
 import javax.swing.filechooser.FileFilter;
 
+/**
+ * FileFilter per l'utilizzo di file contenenti le informazioni di un magazzino.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
 public class StoreFileFilter extends FileFilter {
 	
 	public static final String EXTENSION = ".mag";

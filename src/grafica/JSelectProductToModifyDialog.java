@@ -12,6 +12,13 @@ import javax.swing.JFrame;
 import negozio.Magazzino;
 import negozio.Prodotto;
 
+/**
+ * JDialog per la selezione di un prodotto da modificare.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
 public class JSelectProductToModifyDialog extends JDialog implements ActionListener {
 	private static final long serialVersionUID = 2972527475553839904L;
 	
@@ -58,7 +65,7 @@ public class JSelectProductToModifyDialog extends JDialog implements ActionListe
 	public void actionPerformed(ActionEvent e) {
 		this.dispose();
 		Prodotto product = this.store.getProdotto(this.selectProductPanel.getSelectedCode());	
-		JModifyProductDialog modifyProductDialog = new JModifyProductDialog(this.mainFrame, 
+		JEditProductDialog modifyProductDialog = new JEditProductDialog(this.mainFrame, 
 				product, this.store, this.storeTableModel);
 		modifyProductDialog.setVisible(true);
 	}

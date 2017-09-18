@@ -14,6 +14,13 @@ import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.border.AbstractBorder;
 
+/**
+ * Classe per la realizzazione di un bordo arrotondato.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
 class RoundedBorder extends AbstractBorder {
 	private static final long serialVersionUID = -3657330492427556942L;
 	

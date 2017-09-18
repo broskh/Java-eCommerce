@@ -15,6 +15,13 @@ import javax.swing.JPanel;
 import negozio.Carrello;
 import negozio.Prodotto;
 
+/**
+ * JDialog per la rimozione di un prodotto dal carrello.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
 public class JRemoveProductFromCartDialog extends JDialog implements ActionListener{
 	private static final long serialVersionUID = -4438831458822655741L;
 	
@@ -23,7 +30,7 @@ public class JRemoveProductFromCartDialog extends JDialog implements ActionListe
 	private JButton okButton;
 	private JButton cancelButton;
 	private JFrame mainFrame;
-	private JSelectProductWithAmountPanel articlePanel;
+	private JSelectProductWithAmountPanel productPanel;
 	
 	private static final int DIALOG_WIDTH = 400;
 	private static final int DIALOG_HEIGHT = 145;
@@ -47,7 +54,7 @@ public class JRemoveProductFromCartDialog extends JDialog implements ActionListe
 		
 		this.cart = cart;
 		this.mainFrame = mainFrame;
-		this.articlePanel = new JSelectProductWithAmountPanel(this.cart.getProdotti());
+		this.productPanel = new JSelectProductWithAmountPanel(this.cart.getProdotti());
 	
 		this.okButton = new JButton(OK_BUTTON_TEXT);
 		this.okButton.addActionListener(this);			
@@ -66,7 +73,7 @@ public class JRemoveProductFromCartDialog extends JDialog implements ActionListe
 
 		this.add(Box.createVerticalStrut(DIALOG_MARGIN), BorderLayout.PAGE_START);
 		this.add(Box.createHorizontalStrut(DIALOG_MARGIN), BorderLayout.WEST);
-		this.add(articlePanel, BorderLayout.CENTER);
+		this.add(productPanel, BorderLayout.CENTER);
 		this.add(Box.createHorizontalStrut(DIALOG_MARGIN), BorderLayout.EAST);
 		this.add(bottomPanel, BorderLayout.PAGE_END);
 	}
@@ -77,12 +84,12 @@ public class JRemoveProductFromCartDialog extends JDialog implements ActionListe
 			this.dispose();
 		}
 		else if (e.getSource().equals(this.okButton)) {
-			String code = this.articlePanel.getCode().toString();
-			Prodotto article = this.cart.getProdotto(code);
-			if (article != null) {
-				int amount = this.articlePanel.getAmount();
-				if (amount > article.getQuantita()) {
-					amount = article.getQuantita();
+			String code = this.productPanel.getCode().toString();
+			Prodotto product = this.cart.getProdotto(code);
+			if (product != null) {
+				int amount = this.productPanel.getAmount();
+				if (amount > product.getQuantita()) {
+					amount = product.getQuantita();
 				}
 				this.cart.rimuoviProdotto(code, amount);
 				this.dispose();

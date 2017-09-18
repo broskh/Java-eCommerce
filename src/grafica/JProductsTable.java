@@ -29,6 +29,14 @@ import negozio.GestioneProdotti;
 import negozio.Magazzino;
 import negozio.Prodotto;
 
+/**
+ * JTable per la visualizzazione dei prodotti del magazzino o del carrello 
+ * a seconda della modalità indicata.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
 public class JProductsTable extends JTable{
 	private static final long serialVersionUID = 8903295824672808583L;
 	
@@ -78,6 +86,13 @@ public class JProductsTable extends JTable{
 		return this.productsManager.getProdotti().get(row);
 	}
 
+	/**
+	 * TableCellRenderer per la visualizzazione dell'icona del prodotto.
+	 * 
+	 * @author Alessio Scheri
+	 * @version 1.0
+	 *
+	 */
 	class ImageColumnRender implements TableCellRenderer {
 		
 		private int iconSize;
@@ -96,6 +111,13 @@ public class JProductsTable extends JTable{
 		}
 	}
 	
+	/**
+	 * Cella per la visualizzazione dell'icona del prodotto.
+	 * 
+	 * @author Alessio Scheri
+	 * @version 1.0
+	 *
+	 */
 	class ImageCell extends JPanel {
 		private static final long serialVersionUID = 2028713241711826134L;
 	
@@ -113,6 +135,13 @@ public class JProductsTable extends JTable{
 		}
 	}
 	
+	/**
+	 * CellEditor per la modifica della quantità del prodotto.
+	 * 
+	 * @author Alessio Scheri
+	 * @version 1.0
+	 *
+	 */
 	class AmountColumnEditor extends DefaultCellEditor{
 	    private static final long serialVersionUID = 7039137261252411532L;
 	    
@@ -124,13 +153,13 @@ public class JProductsTable extends JTable{
 		
 		private static final int NULL_VALUE = -1;
 	
-	    public AmountColumnEditor (ProductsTableModel articlesTableModel, 
+	    public AmountColumnEditor (ProductsTableModel productsTableModel, 
 	    		Carrello cart, Magazzino store, int cellHeight) {
 	    	super (new JTextField());
 	    	this.lastRowSelected = NULL_VALUE;
 	    	this.cart = cart;
 	    	this.store = store;
-	    	this.cellPanel = new AmountCell(cellHeight, articlesTableModel);
+	    	this.cellPanel = new AmountCell(cellHeight, productsTableModel);
 			
 	        this.setClickCountToStart(1);
 	    }
@@ -148,15 +177,15 @@ public class JProductsTable extends JTable{
 			Prodotto product = this.cart.getProdotti().get(this.lastRowSelected);
 			Prodotto storeProduct = this.store.getProdotto(product.getCodice());
 			this.cellPanel.setFilter(storeProduct.getQuantita());
-			this.cellPanel.setArticle(product);
+			this.cellPanel.setProduct(product);
 			ProductsTableModel.setCellBackgroundColor(cellPanel, row);
 	        return this.cellPanel;
 		}
 		
 		@Override
 		public boolean stopCellEditing () {
-			Prodotto cartArticle = this.cart.getProdotti().get(this.lastRowSelected);
-	    	cartArticle.setQuantita((int)this.getCellEditorValue());
+			Prodotto cartProduct = this.cart.getProdotti().get(this.lastRowSelected);
+	    	cartProduct.setQuantita((int)this.getCellEditorValue());
 	    	return true;
 		}
 	
@@ -186,6 +215,13 @@ public class JProductsTable extends JTable{
 		}
 	}
 	
+	/**
+	 * TableCellRenderer per la modifica della quantità del prodotto.
+	 * 
+	 * @author Alessio Scheri
+	 * @version 1.0
+	 *
+	 */
 	class AmountColumnRender implements TableCellRenderer {
 		
 		private int rowHeight;
@@ -205,24 +241,31 @@ public class JProductsTable extends JTable{
 		}
 	}
 	
+	/**
+	 * Cella per la modifica della quantità del prodotto.
+	 * 
+	 * @author Alessio Scheri
+	 * @version 1.0
+	 *
+	 */
 	class AmountCell extends JPanel {
 		private static final long serialVersionUID = 2028713241711826134L;
 	
 		private JTextField textField;
-		private ProductsTableModel articlesTableModel;
-		private Prodotto article;
+		private ProductsTableModel productsTableModel;
+		private Prodotto product;
 	
 		public static final int TEXTFIELD_WIDTH = 50;
 	
-		public AmountCell (int rowHeight, Prodotto article, Integer maxValue, 
-				ProductsTableModel articlesTableModel) {
+		public AmountCell (int rowHeight, Prodotto product, Integer maxValue, 
+				ProductsTableModel productsTableModel) {
 			this.textField = new JTextField();
 			this.textField.setPreferredSize(new Dimension(
 					TEXTFIELD_WIDTH, (int)this.textField.getPreferredSize().getHeight()));
-			this.article = article;
-			this.articlesTableModel = articlesTableModel;
-			if (article != null) {
-				this.textField.setText(Integer.toString(this.article.getQuantita()));
+			this.product = product;
+			this.productsTableModel = productsTableModel;
+			if (product != null) {
+				this.textField.setText(Integer.toString(this.product.getQuantita()));
 			}
 			this.initTableUpdate();
 			if (maxValue != null) {
@@ -238,39 +281,39 @@ public class JProductsTable extends JTable{
 	        this.add(mainPanel, gbc);
 		}
 		
-		public AmountCell (int rowHeight, ProductsTableModel articlesTableModel) {
-			this (rowHeight, null, null, articlesTableModel);
+		public AmountCell (int rowHeight, ProductsTableModel productsTableModel) {
+			this (rowHeight, null, null, productsTableModel);
 		}
 		
-		public AmountCell (int rowHeight, Prodotto article) {
-			this (rowHeight, article, null, null);
+		public AmountCell (int rowHeight, Prodotto product) {
+			this (rowHeight, product, null, null);
 		}	
 		
 		private boolean initTableUpdate () {
-			if (this.articlesTableModel != null && this.article != null) {
+			if (this.productsTableModel != null && this.product != null) {
 				this.textField.getDocument().addDocumentListener(new DocumentListener() {
 					
 					@Override
 					public void removeUpdate(DocumentEvent e) {
 						if (!AmountCell.this.textField.getText().isEmpty()) {
-							AmountCell.this.article.setQuantita(Integer.parseInt(
+							AmountCell.this.product.setQuantita(Integer.parseInt(
 									AmountCell.this.textField.getText()));
-							articlesTableModel.fireTableDataChanged();
+							productsTableModel.fireTableDataChanged();
 						}
 					}
 					
 					@Override
 					public void insertUpdate(DocumentEvent e) {
-						AmountCell.this.article.setQuantita(Integer.parseInt(
+						AmountCell.this.product.setQuantita(Integer.parseInt(
 								AmountCell.this.textField.getText()));
-						articlesTableModel.fireTableDataChanged();
+						productsTableModel.fireTableDataChanged();
 					}
 					
 					@Override
 					public void changedUpdate(DocumentEvent e) {
-						AmountCell.this.article.setQuantita(Integer.parseInt(
+						AmountCell.this.product.setQuantita(Integer.parseInt(
 								AmountCell.this.textField.getText()));
-						articlesTableModel.fireTableDataChanged();
+						productsTableModel.fireTableDataChanged();
 					}
 				});
 				return true;
@@ -278,23 +321,23 @@ public class JProductsTable extends JTable{
 			return false;
 		}
 		
-		public void setArticle (Prodotto article) {
-			this.article = article;
-			this.textField.setText(Integer.toString(this.article.getQuantita()));
+		public void setProduct (Prodotto product) {
+			this.product = product;
+			this.textField.setText(Integer.toString(this.product.getQuantita()));
 			this.initTableUpdate();
 		}
 		
-		public void setArticlesTableModel (ProductsTableModel articlesTableModel) {
-			this.articlesTableModel = articlesTableModel;
+		public Prodotto getProduct() {
+			return this.product;
+		}
+		
+		public void setProductsTableModel (ProductsTableModel productsTableModel) {
+			this.productsTableModel = productsTableModel;
 			this.initTableUpdate();
 		}
 		
-		public Prodotto getArticle() {
-			return this.article;
-		}
-		
-		public ProductsTableModel getArticlesTableModel () {
-			return this.articlesTableModel;
+		public ProductsTableModel getProductsTableModel () {
+			return this.productsTableModel;
 		}
 		
 		public void setFilter (int maxValue) {
@@ -303,6 +346,13 @@ public class JProductsTable extends JTable{
 		}
 	}
 	
+	/**
+	 * TableCellRenderer per la rimozione della quantità del prodotto.
+	 * 
+	 * @author Alessio Scheri
+	 * @version 1.0
+	 *
+	 */
 	class RemoveColumnRender implements TableCellRenderer {
 		
 		private int rowHeight;
@@ -321,21 +371,28 @@ public class JProductsTable extends JTable{
 		}
 	}
 	
+	/**
+	 * CellEditor per la rimozione della quantità del prodotto.
+	 * 
+	 * @author Alessio Scheri
+	 * @version 1.0
+	 *
+	 */
 	class RemoveColumnEditor extends DefaultCellEditor {
 	    private static final long serialVersionUID = -5785051616524283761L;
 	
 		private Integer lastRowSelected;
 		private RemoveCell cellPanel;
-		private ArrayList <Prodotto> articles;
+		private ArrayList <Prodotto> products;
 		
 		private static final int NULL_VALUE = -1;
 	
-	    public RemoveColumnEditor (ArrayList <Prodotto> articles, int rowHeight) {
+	    public RemoveColumnEditor (ArrayList <Prodotto> products, int rowHeight) {
 	    	super (new JTextField());
-	    	this.articles = articles;
+	    	this.products = products;
 	    	this.lastRowSelected = NULL_VALUE;
 	    	this.cellPanel = new RemoveCell(rowHeight);
-	    	this.cellPanel.setArticoli(this.articles);
+	    	this.cellPanel.setArticoli(this.products);
 			
 	        this.setClickCountToStart(1);
 	    }
@@ -386,6 +443,13 @@ public class JProductsTable extends JTable{
 		}
 	}
 	
+	/**
+	 * Cella per la rimozione della quantità del prodotto.
+	 * 
+	 * @author Alessio Scheri
+	 * @version 1.0
+	 *
+	 */
 	class RemoveCell extends JPanel implements ActionListener{	
 		private static final long serialVersionUID = -3278269777576840442L;
 	

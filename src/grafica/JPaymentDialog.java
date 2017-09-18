@@ -24,6 +24,13 @@ import negozio.Carrello;
 import negozio.Magazzino;
 import negozio.Prodotto;
 
+/**
+ * JDialog per effettuare il pagamento e l'acquisto del contenuto del carrello.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
 public class JPaymentDialog extends JDialog implements ActionListener {
 	private static final long serialVersionUID = 8784508325649310067L;
 	
@@ -168,7 +175,7 @@ public class JPaymentDialog extends JDialog implements ActionListener {
 				}
 				this.cart.svuota();
 				this.setVisible(false);
-				this.clientContenPanel.updateArticles();
+				this.clientContenPanel.updateProducts();
 				JOptionPane.showMessageDialog(mainWindow, ALERT_SUCCESS_TEXT,
 						ALERT_SUCCESS_TITLE, JOptionPane.INFORMATION_MESSAGE);
 			}

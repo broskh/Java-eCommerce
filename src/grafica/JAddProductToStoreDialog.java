@@ -13,6 +13,13 @@ import javax.swing.JOptionPane;
 import negozio.Magazzino;
 import negozio.Prodotto;
 
+/**
+ * JDialog per l'aggiunta di un prodotto al magazzino.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
 public class JAddProductToStoreDialog extends JDialog implements ActionListener{
 	
 	private static final long serialVersionUID = -3173951653228607174L;
@@ -21,7 +28,7 @@ public class JAddProductToStoreDialog extends JDialog implements ActionListener{
 	private Prodotto product;
 
 	private JFrame mainFrame;
-	private JModifyProductPanel modifyProductPanel;
+	private JEditProductPanel modifyProductPanel;
 	private ProductsTableModel storeTableModel;
 
 	protected static final int FRAME_HEIGHT = 510;
@@ -50,7 +57,7 @@ public class JAddProductToStoreDialog extends JDialog implements ActionListener{
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		
-		this.modifyProductPanel = new JModifyProductPanel(this.product);
+		this.modifyProductPanel = new JEditProductPanel(this.product);
 		this.modifyProductPanel.setButtonText(BUTTON_TEXT);
 		this.modifyProductPanel.setButtonActionListener(this);
 

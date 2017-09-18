@@ -11,6 +11,14 @@ import javax.swing.event.ChangeListener;
 
 import negozio.Magazzino;
 
+/**
+ * Pannello per l'immissione delle informazioni necessarie per filtrare
+ * i prodotti.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
 public class JFilterPanel extends JPanel implements ChangeListener{
 	private static final long serialVersionUID = 6101085833044744812L;
 	

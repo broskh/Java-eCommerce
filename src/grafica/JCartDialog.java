@@ -15,6 +15,13 @@ import javax.swing.SwingUtilities;
 import negozio.Carrello;
 import negozio.Magazzino;
 
+/**
+ * JDialog per la visualizzazione del carrello.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
 public class JCartDialog extends JDialog implements ActionListener{
 	private static final long serialVersionUID = 6774400022574447743L;
 

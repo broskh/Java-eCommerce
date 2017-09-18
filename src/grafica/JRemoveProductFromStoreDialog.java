@@ -13,6 +13,13 @@ import javax.swing.JOptionPane;
 import negozio.Magazzino;
 import negozio.Prodotto;
 
+/**
+ * JDialog per la rimozione di un prodotto dal magazzino.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
 public class JRemoveProductFromStoreDialog extends JDialog implements ActionListener {
 	private static final long serialVersionUID = 8312477817724761485L;
 

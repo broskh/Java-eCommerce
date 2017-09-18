@@ -13,6 +13,13 @@ import javax.swing.SwingUtilities;
 
 import negozio.Magazzino;
 
+/**
+ * JDialog per filtrare un insieme di prodotti.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
 public class JFilterDialog extends JDialog implements ActionListener{
 	private static final long serialVersionUID = -4438831458822655741L;
 

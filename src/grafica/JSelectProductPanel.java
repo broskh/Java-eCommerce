@@ -14,6 +14,14 @@ import javax.swing.JPanel;
 
 import negozio.Prodotto;
 
+/**
+ * JPanel per la selezione di un prodotto senza la possibilità di 
+ * indicare la quantità.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
 public class JSelectProductPanel extends JPanel {
 	private static final long serialVersionUID = -7373492742309698433L;
 

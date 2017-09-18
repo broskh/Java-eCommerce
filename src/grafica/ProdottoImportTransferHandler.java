@@ -10,6 +10,13 @@ import javax.swing.TransferHandler;
 import negozio.GestioneProdotti;
 import negozio.Prodotto;
 
+/**
+ * Classe per ottenere un oggetto Prodotto tramite drag & drop.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
 public class ProdottoImportTransferHandler extends TransferHandler {
 	private static final long serialVersionUID = 7407303027786470664L;
 

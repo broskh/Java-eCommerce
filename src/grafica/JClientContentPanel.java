@@ -40,13 +40,20 @@ import negozio.Prodotto;
 
 import utenza.Cliente;
 
+/**
+ * JPanel per la visualizzazione della schermata dell'utente cliente.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
 public class JClientContentPanel extends JPanel implements ActionListener{
 	private static final long serialVersionUID = -3383648558571677903L;
 
 	private Magazzino store;
 	private Cliente client;
 	private Carrello cart;
-	private ArrayList <Prodotto> viewedArticles;
+	private ArrayList <Prodotto> viewedProducts;
 	private int nPage;
 	private int maxPage;
 	private StringBuilder filterTypeString;
@@ -67,8 +74,8 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	private JMenuItem costFilterItem;
 	private JMenuItem amountFilterItem;
 	private JMenuItem showCartItem;
-	private JMenuItem addArticleItem;
-	private JMenuItem removeArticleItem;
+	private JMenuItem addProductItem;
+	private JMenuItem removeProductItem;
 	private JMenuItem emptyCartItem;
 
 	private static final int DEFAULT_GENERIC_MARGIN = 15;
@@ -82,21 +89,21 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	private static final int CONTROLPANEL_RIGHT_MARGIN = 20;
 	private static final int CONTROLPANEL_LEFT_MARGIN = 20;
 	private static final int CONTROLPANEL_HORIZONTAL_SPACE = 60;
-	private static final int ARTICLES_MARGIN = 10;
+	private static final int PRODUCTS_MARGIN = 10;
 
 	private static final int MENUBAR_HEIGHT = 22;
 	private static final int CONTROLPANEL_HEIGHT = 80;
 	private static final int BOTTOM_BUTTON_SIZE = 45;
-	private static final int ARTICLE_AMOUNT_WIDTH = 50;
-	private static final int ARTICLE_AMOUNT_HEIGHT = 25;
+	private static final int PRODUCT_AMOUNT_WIDTH = 50;
+	private static final int PRODUCT_AMOUNT_HEIGHT = 25;
 	private static final int PRODUCT_ICON_SIZE = 120;
-	private static final int ARTICLE_ADD_BUTTON_SIZE = 32;
+	private static final int PRODUCT_ADD_BUTTON_SIZE = 32;
 	private static final int CART_BUTTON_SIZE = 80;
-	private static final int ARTICLE_INTERACTION_HEIGHT = 35;
-	private static final int ARTICLE_INTERACTION_HORIZONTAL_SPACE = 50;
-	private static final int ARTICLE_INFORMATION_SPACE = 7;	
-	private static final int ARTICLE_BORDER_SIZE = 3;
-	private static final int ARTICLE_BORDER_RADII = 15;
+	private static final int PRODUCT_INTERACTION_HEIGHT = 35;
+	private static final int PRODUCT_INTERACTION_HORIZONTAL_SPACE = 50;
+	private static final int PRODUCT_INFORMATION_SPACE = 7;	
+	private static final int PRODUCT_BORDER_SIZE = 3;
+	private static final int PRODUCT_BORDER_RADII = 15;
 	private static final int WIDTH = 220;
 	
 	private static final int DEFAULT_AMOUNT = 1;
@@ -122,8 +129,8 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	private static final String CART_MENU_STRING = "Carrello";
 	private static final String CLOSE_ITEM_STRING = "Chiudi";
 	private static final String SHOW_CART_ITEM = "Visualizza";
-	private static final String ADD_ARTICLE_ITEM = "Aggiungi articolo";
-	private static final String REMOVE_ARTICLE_ITEM = "Rimuovi articolo";
+	private static final String ADD_PRODUCT_ITEM = "Aggiungi articolo";
+	private static final String REMOVE_PRODUCT_ITEM = "Rimuovi articolo";
 	private static final String EMPTY_CART_ITEM = "Svuota";
 	private static final String CURRENCY_SYMBOL = " €";
 	private static final String NONE_OFFER_TEXT = "Nessuna";
@@ -151,7 +158,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		this.store = store;
 		this.client = client;
 		this.cart = this.client.getCarrello();
-		this.viewedArticles = this.store.getProdotti();
+		this.viewedProducts = this.store.getProdotti();
 		this.nPage = 0;
 		this.maxPage = 0;
 		
@@ -160,9 +167,9 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		this.add(this.contentPanel(), BorderLayout.CENTER);		
 	}
 	
-	public void setViewedArticles (ArrayList <Prodotto> viewedArticles) {
-		this.viewedArticles = viewedArticles;
-		this.updateArticles();
+	public void setViewedProducts (ArrayList <Prodotto> viewedProducts) {
+		this.viewedProducts = viewedProducts;
+		this.updateProducts();
 	}
 
 	private JPanel contentPanel () {
@@ -236,16 +243,16 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		
 		this.showCartItem = new JMenuItem(SHOW_CART_ITEM);
 		this.showCartItem.addActionListener(this);
-		this.addArticleItem = new JMenuItem(ADD_ARTICLE_ITEM);
-		this.addArticleItem.addActionListener(this);
-		this.removeArticleItem = new JMenuItem(REMOVE_ARTICLE_ITEM);
-		this.removeArticleItem.addActionListener(this);
+		this.addProductItem = new JMenuItem(ADD_PRODUCT_ITEM);
+		this.addProductItem.addActionListener(this);
+		this.removeProductItem = new JMenuItem(REMOVE_PRODUCT_ITEM);
+		this.removeProductItem.addActionListener(this);
 		this.emptyCartItem = new JMenuItem(EMPTY_CART_ITEM);
 		this.emptyCartItem.addActionListener(new EmptyCartListener (this.mainFrame, this.cart));
 		JMenu cartMenu = new JMenu (CART_MENU_STRING);
 		cartMenu.add(this.showCartItem);
-		cartMenu.add(this.addArticleItem);
-		cartMenu.add(this.removeArticleItem);
+		cartMenu.add(this.addProductItem);
+		cartMenu.add(this.removeProductItem);
 		cartMenu.add(this.emptyCartItem);
 		
 		JMenuBar clientMenubar = new JMenuBar();
@@ -310,7 +317,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		return controlPanel;
 	}
 	
-	private JPanel articlePanel (Prodotto product) {
+	private JPanel productPanel (Prodotto product) {
 		JIconLabel imageLabel = new JIconLabel(product.getImmagine(), PRODUCT_ICON_SIZE);
 		imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -348,12 +355,12 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		
 		JTextField amountTextField = new JTextField (String.valueOf(DEFAULT_AMOUNT));
 		amountTextField.setPreferredSize(
-				new Dimension (ARTICLE_AMOUNT_WIDTH, ARTICLE_AMOUNT_HEIGHT));
+				new Dimension (PRODUCT_AMOUNT_WIDTH, PRODUCT_AMOUNT_HEIGHT));
 		PlainDocument doc = (PlainDocument) amountTextField.getDocument();
 		doc.setDocumentFilter(new AmountDocumentFilter(product.getQuantita()));	
 		JImageButton addToCartButton = 
 				new JImageButton(
-				new File(ADD_IMAGE_PATH), ARTICLE_ADD_BUTTON_SIZE, ADD_BUTTON_TEXT);
+				new File(ADD_IMAGE_PATH), PRODUCT_ADD_BUTTON_SIZE, ADD_BUTTON_TEXT);
 		addToCartButton.addActionListener(new AddProductToCartListener(this.store, 
 				this.cart, new StringBuilder(product.getCodice()), amountTextField));
 		addToCartButton.setBackground(ADD_PRODUCT_BUTTON_COLOR);
@@ -362,7 +369,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		interactionPanel.setOpaque(false);
 		interactionPanel.add(amountTextField);
 		interactionPanel.add(Box.createRigidArea(new Dimension(
-				ARTICLE_INTERACTION_HORIZONTAL_SPACE, ARTICLE_INTERACTION_HEIGHT)));
+				PRODUCT_INTERACTION_HORIZONTAL_SPACE, PRODUCT_INTERACTION_HEIGHT)));
 		interactionPanel.add(addToCartButton);
 		
 		JPanel bottomPanel = new JPanel(new BorderLayout());
@@ -375,57 +382,57 @@ public class JClientContentPanel extends JPanel implements ActionListener{
         JPanel mainPanel = new JPanel(new BorderLayout(0, DEFAULT_GENERIC_MARGIN));
         mainPanel.setBackground(Color.WHITE);
         mainPanel.setBorder (new RoundedBorder(
-        		Color.GRAY, ARTICLE_BORDER_SIZE, ARTICLE_BORDER_RADII, 0));
-        mainPanel.setPreferredSize(new Dimension(WIDTH, JClientContentPanel.articlePanelHeight()));
+        		Color.GRAY, PRODUCT_BORDER_SIZE, PRODUCT_BORDER_RADII, 0));
+        mainPanel.setPreferredSize(new Dimension(WIDTH, JClientContentPanel.productPanelHeight()));
         mainPanel.add (imagePanel, BorderLayout.PAGE_START);
         mainPanel.add (informationPanel, BorderLayout.CENTER);
         mainPanel.add (Box.createHorizontalStrut(DEFAULT_GENERIC_MARGIN), BorderLayout.WEST);
         mainPanel.add (bottomPanel, BorderLayout.PAGE_END);
 
-        JPanel articlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-        articlePanel.setOpaque(false);
-        articlePanel.setTransferHandler(new ProdottoExportTransferHandler(product, amountTextField));
-		articlePanel.addMouseMotionListener(new ArticleMouseAdapter(articlePanel));
-        articlePanel.add (mainPanel, BorderLayout.PAGE_START);
-        return articlePanel;
+        JPanel productPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        productPanel.setOpaque(false);
+        productPanel.setTransferHandler(new ProdottoExportTransferHandler(product, amountTextField));
+		productPanel.addMouseMotionListener(new ProductMouseAdapter(productPanel));
+        productPanel.add (mainPanel, BorderLayout.PAGE_START);
+        return productPanel;
 	}
 	
-	public static int articlePanelHeight () {
-		return  ARTICLE_BORDER_SIZE + DEFAULT_GENERIC_MARGIN + 
+	public static int productPanelHeight () {
+		return  PRODUCT_BORDER_SIZE + DEFAULT_GENERIC_MARGIN + 
 				PRODUCT_ICON_SIZE + DEFAULT_GENERIC_MARGIN + 
 				(new JLabel().getFont().getSize() + 
-				ARTICLE_INFORMATION_SPACE) * 7 + DEFAULT_GENERIC_MARGIN + 
-				ARTICLE_INTERACTION_HEIGHT + DEFAULT_GENERIC_MARGIN * 2 + 
-				ARTICLE_BORDER_SIZE;
+				PRODUCT_INFORMATION_SPACE) * 7 + DEFAULT_GENERIC_MARGIN + 
+				PRODUCT_INTERACTION_HEIGHT + DEFAULT_GENERIC_MARGIN * 2 + 
+				PRODUCT_BORDER_SIZE;
 	}
 	
-	public void updateArticles () {
+	public void updateProducts () {
 		JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 		int showcaseWidth = mainFrame.getWidth() - FRAME_RIGHT_MARGIN - FRAME_LEFT_MARGIN;
 		int showcaseHeight = this.getHeight() - CONTROLPANEL_HEIGHT - 
 				CONTENTPANEL_TOP_MARGIN - CONTENTPANEL_BOTTOM_MARGIN - 
 				BOTTOMBUTTONS_TOP_MARGIN - this.backButton.getHeight() - 1;
-		int nColumns = showcaseWidth / (JClientContentPanel.WIDTH + ARTICLES_MARGIN);
-		int nRows = showcaseHeight / (JClientContentPanel.articlePanelHeight() + ARTICLES_MARGIN);
-		int nVisibleArticles = nRows * nColumns;
-		this.maxPage = this.viewedArticles.size() / nVisibleArticles;
-		if (this.maxPage != 0 && this.viewedArticles.size() % nVisibleArticles == 0) {
+		int nColumns = showcaseWidth / (JClientContentPanel.WIDTH + PRODUCTS_MARGIN);
+		int nRows = showcaseHeight / (JClientContentPanel.productPanelHeight() + PRODUCTS_MARGIN);
+		int nVisibleProducts = nRows * nColumns;
+		this.maxPage = this.viewedProducts.size() / nVisibleProducts;
+		if (this.maxPage != 0 && this.viewedProducts.size() % nVisibleProducts == 0) {
 			this.maxPage--;
 		}
 
 		this.mainContentPanel.remove(this.showcasePanel);
 		this.showcasePanel = new JPanel(new GridLayout(nRows, nColumns, 
-				ARTICLES_MARGIN, ARTICLES_MARGIN));
-		for (int i = 0; i < nVisibleArticles && 
-				(i + nVisibleArticles * this.nPage) < this.viewedArticles.size(); i++) {
-			this.showcasePanel.add(this.articlePanel(
-					this.viewedArticles.get(i + nVisibleArticles * this.nPage)));
+				PRODUCTS_MARGIN, PRODUCTS_MARGIN));
+		for (int i = 0; i < nVisibleProducts && 
+				(i + nVisibleProducts * this.nPage) < this.viewedProducts.size(); i++) {
+			this.showcasePanel.add(this.productPanel(
+					this.viewedProducts.get(i + nVisibleProducts * this.nPage)));
 		}
-		if ((this.viewedArticles.size() - (this.nPage * nVisibleArticles)) < nVisibleArticles) {
-			int box = nVisibleArticles - (this.viewedArticles.size() % nVisibleArticles);
+		if ((this.viewedProducts.size() - (this.nPage * nVisibleProducts)) < nVisibleProducts) {
+			int box = nVisibleProducts - (this.viewedProducts.size() % nVisibleProducts);
 			for (int i = 0; i < box; i++) {
 				this.showcasePanel.add(Box.createRigidArea(new Dimension(
-						JClientContentPanel.WIDTH, JClientContentPanel.articlePanelHeight())));
+						JClientContentPanel.WIDTH, JClientContentPanel.productPanelHeight())));
 			}
 		}
 		//aggiorno
@@ -435,7 +442,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	
 	public void resetPagina () {
 		this.nPage = 0;
-		this.updateArticles();
+		this.updateProducts();
 	}
 	
 	private void nextPage () {
@@ -443,7 +450,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		if (this.nPage > this.maxPage) {
 			this.nPage = this.maxPage;
 		}
-		this.updateArticles();		
+		this.updateProducts();		
 	}
 	
 	private void previousPage () {
@@ -451,7 +458,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		if (this.nPage < 0) {
 			this.nPage = 0;
 		}
-		this.updateArticles();
+		this.updateProducts();
 	}
 
 	@Override
@@ -469,27 +476,27 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 					this, this.store, ((JMenuItem)e.getSource()).getText());
 			filterDialog.setVisible(true);
 		}
-		else if (e.getSource().equals(this.addArticleItem)) {
+		else if (e.getSource().equals(this.addProductItem)) {
 			if (this.store.getProdotti().isEmpty()) {
 				JOptionPane.showMessageDialog(this, EMPTY_STORE_TEXT, EMPTY_STORE_TITLE,
 						JOptionPane.ERROR_MESSAGE);
 			}
 			else {
-				JAddProductToCartDialog addArticleDialog = new JAddProductToCartDialog(
+				JAddProductToCartDialog addProductDialog = new JAddProductToCartDialog(
 						this.mainFrame, this.store, this.cart);
-				addArticleDialog.setVisible(true);
+				addProductDialog.setVisible(true);
 			}
 		}
-		else if (e.getSource().equals(this.removeArticleItem)) {
+		else if (e.getSource().equals(this.removeProductItem)) {
 			if (this.cart.getProdotti().isEmpty()) {
 				JOptionPane.showMessageDialog(this, EMPTY_CART_TEXT, EMPTY_CART_TITLE,
 						JOptionPane.ERROR_MESSAGE);
 			}
 			else {
-				JRemoveProductFromCartDialog removeArticleDialog = 
+				JRemoveProductFromCartDialog removeProductDialog = 
 						new JRemoveProductFromCartDialog(
 					 this.mainFrame, this.cart);
-				removeArticleDialog.setVisible(true);
+				removeProductDialog.setVisible(true);
 			}			 
 		}
 		else if (e.getSource().equals(this.backButton)) {
@@ -510,16 +517,20 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		}
 	}
 	
-	class ArticleMouseAdapter extends MouseAdapter {
-		private JPanel articlePanel;
+	/**
+	 * Mouse Adapter per indicare la possibilità di drag & drop dei
+	 * JPanel contenenti le informazioni dei prodotti.
+	 */
+	class ProductMouseAdapter extends MouseAdapter {
+		private JPanel productPanel;
 		
-		public ArticleMouseAdapter (JPanel articlePanel) {
-			 this.articlePanel = articlePanel;
+		public ProductMouseAdapter (JPanel productPanel) {
+			 this.productPanel = productPanel;
 		}
 		
 		@Override
         public void mouseMoved(MouseEvent e) {
-        	this.articlePanel.setCursor(new Cursor(Cursor.MOVE_CURSOR));
+        	this.productPanel.setCursor(new Cursor(Cursor.MOVE_CURSOR));
         }
     	
         @Override

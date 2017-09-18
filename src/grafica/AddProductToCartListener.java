@@ -11,6 +11,13 @@ import negozio.Carrello;
 import negozio.Magazzino;
 import negozio.Prodotto;
 
+/**
+ * ActionListener per l'aggiunta di un prodotto al carrello.
+ * 
+ * @author Alessio Scheri
+ * @version 1.0
+ *
+ */
 public class AddProductToCartListener implements ActionListener {
 	
 	private Carrello cart;
@@ -61,9 +68,9 @@ public class AddProductToCartListener implements ActionListener {
 				newAmount -= inCart.getQuantita();
 			}
 			try {
-				Prodotto newArticle = inStore.clone();
-				newArticle.setQuantita(newAmount);
-				this.cart.aggiungiProdotto(newArticle);
+				Prodotto newProduct = inStore.clone();
+				newProduct.setQuantita(newAmount);
+				this.cart.aggiungiProdotto(newProduct);
 				if (this.windowCaller != null) {
 					this.windowCaller.dispose();
 				}
