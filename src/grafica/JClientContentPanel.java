@@ -466,6 +466,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		if (e.getSource().equals(this.closeItem)) {
 			this.mainFrame.dispose();
 			System.exit(0);
+			System.setProperty("apple.eawt.quitStrategy", "CLOSE_ALL_WINDOWS");
 		 }
 		 else if (e.getSource().equals(this.nameFilterItem) || 
 				 e.getSource().equals(this.brandFilterItem) ||

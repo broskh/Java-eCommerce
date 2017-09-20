@@ -172,6 +172,7 @@ public class JUserFrame extends JFrame implements ActionListener {
 										ALERT_FILE_NOT_FOUND_TITLE, JOptionPane.INFORMATION_MESSAGE);
 								this.dispose();
 								System.exit(0);
+								System.setProperty("apple.eawt.quitStrategy", "CLOSE_ALL_WINDOWS");
 							}
 						}
 						else {
@@ -179,6 +180,7 @@ public class JUserFrame extends JFrame implements ActionListener {
 									ALERT_FILE_NOT_FOUND_TITLE, JOptionPane.INFORMATION_MESSAGE);
 							this.dispose();
 							System.exit(0);
+							System.setProperty("apple.eawt.quitStrategy", "CLOSE_ALL_WINDOWS");
 						}
 						lastBufferedReader.close();
 					} catch (FileNotFoundException e1) {

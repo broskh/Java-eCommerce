@@ -250,6 +250,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 		else if (e.getSource().equals(this.closeMenuItem)) {
 			this.mainFrame.dispose();
 			System.exit(0);
+			System.setProperty("apple.eawt.quitStrategy", "CLOSE_ALL_WINDOWS");
 		}
 	}
 }
