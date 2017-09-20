@@ -11,7 +11,7 @@ import javax.swing.TransferHandler;
 import negozio.Prodotto;
 
 /**
- * Classe per inviare un oggetto Prodotto tramite drag & drop.
+ * Classe per inviare un oggetto Prodotto tramite drag {@literal &} drop.
  * 
  * @author Alessio Scheri
  * @version 1.0

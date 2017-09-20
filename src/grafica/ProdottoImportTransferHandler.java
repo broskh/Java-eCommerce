@@ -11,7 +11,7 @@ import negozio.GestioneProdotti;
 import negozio.Prodotto;
 
 /**
- * Classe per ottenere un oggetto Prodotto tramite drag & drop.
+ * Classe per ottenere un oggetto Prodotto tramite drag {@literal &} drop.
  * 
  * @author Alessio Scheri
  * @version 1.0

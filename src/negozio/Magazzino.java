@@ -21,26 +21,45 @@ import java.util.ArrayList;
  * @see Prodotto
  */
 public class Magazzino implements GestioneProdotti {
-	private ArrayList <Prodotto> prodotti; /**<Prodotti presenti in magazzino.*/
+	/**
+	 * Prodotti presenti in magazzino.
+	 */
+	private ArrayList <Prodotto> prodotti;
 
+	/**
+	 * Percorso dove salvare le immagini dei prodotti in magazzino.
+	 */
 	private static final String DIRECTORY_IMMAGINI_PRODOTTI = "media/img/products/";
-	/**<Percorso dove salvare le immagini dei prodotti in magazzino.*/
+	/**
+	 * Percorso del file nel quale è memorizzato il percorso dell'ultimo file 
+	 * magazzino salvato.
+	 */
 	private static final String PERCORSO_FILE_LAST = "media/saves/last"; 
-	/**<Percorso del file nel quale è memorizzato il percorso dell'ultimo file 
-	 * magazzino salvato.*/
-
-	public static final String STRINGA_FILTRO_NOME = 
-			"Nome"; /**<Stringa che indica il filtro per nome.*/
-	public static final String STRINGA_FILTRO_MARCA = 
-			"Marca"; /**<Stringa che indica il filtro per marca.*/
-	public static final String STRINGA_FILTRO_CODICE = 
-			"Codice"; /**<Stringa che indica il filtro per codice.*/
-	public static final String STRINGA_FILTRO_CATEGORIA = 
-			"Categoria"; /**<Stringa che indica il filtro per categoria.*/
-	public static final String STRINGA_FILTRO_PREZZO = 
-			"Prezzo"; /**<Stringa che indica il filtro per prezzo.*/
-	public static final String STRINGA_FILTRO_QUANTITA = 
-			"Quantità"; /**<Stringa che indica il filtro per quantità.*/
+	
+	/**
+	 * Stringa che indica il filtro per nome.
+	 */
+	public static final String STRINGA_FILTRO_NOME = "Nome"; 
+	/**
+	 * Stringa che indica il filtro per marca.
+	 */
+	public static final String STRINGA_FILTRO_MARCA = "Marca";
+	/**
+	 * Stringa che indica il filtro per codice.
+	 */
+	public static final String STRINGA_FILTRO_CODICE = "Codice";
+	/**
+	 * Stringa che indica il filtro per categoria.
+	 */
+	public static final String STRINGA_FILTRO_CATEGORIA = "Categoria";
+	/**
+	 * Stringa che indica il filtro per prezzo.
+	 */
+	public static final String STRINGA_FILTRO_PREZZO = "Prezzo";
+	/**
+	 * Stringa che indica il filtro per quantità.
+	 */
+	public static final String STRINGA_FILTRO_QUANTITA = "Quantità"; 
 	
 	/**
 	 * Crea un Magazzino vuoto.

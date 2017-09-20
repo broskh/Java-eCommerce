@@ -7,11 +7,13 @@ package negozio;
  * @author Alessio Scheri
  * @version 1.0
  * @see Promozione
- *  */
+ */
 public class ScontoPercentuale extends Promozione {
 	private static final long serialVersionUID = 90255911234820305L;
-	
-	private int percentuale; /**<Percentuale di sconto.*/
+	/**
+	 * Percentuale di sconto.
+	 */
+	private int percentuale;
 	
 	/**
 	 * Crea un oggetto ScontoPercentuale definendo il valore dello sconto.

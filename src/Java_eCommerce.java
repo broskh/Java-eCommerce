@@ -8,6 +8,7 @@ import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import grafica.JUserFrame;
 import negozio.Magazzino;
+import utenza.Utente;
 
 /**
  * La classe Java_eCommerce è la classe principale che contiene il metodo main per 
@@ -25,11 +26,20 @@ import negozio.Magazzino;
  * @see Utente
  */
 public class Java_eCommerce  {
-	private static final int DIMENSIONE_FONT = 13; /**<Dimensione del font di default.*/
+	/**
+	 * Dimensione del font di default.
+	 */
+	private static final int DIMENSIONE_FONT = 13;
 
-	private static final String NOME_FONT = "Encode Sans"; /**<Nome del font di default.*/
+	/**
+	 * Nome del font di default.
+	 */
+	private static final String NOME_FONT = "Encode Sans";
+	 /**
+	  * Cartella contenente il font di default.
+	  */	
 	private static final String DIRECTORY_FONT = 
-			"media/font/"; /**<Cartella contenente il font di default.*/	
+			"media/font/";
 	
 	/**
 	 * Il metodo main prima di tutto modifica il font di default e il tema grafico 

@@ -19,15 +19,38 @@ import java.io.Serializable;
  */
 public class Prodotto implements Serializable, Cloneable, Transferable {
 	private static final long serialVersionUID = 7588762583069098992L;
-	
-	private String nome; /**<Nome del prodotto.*/
-	private String marca; /**<Marca del prodotto.*/
-	private String codice; /**<Codice del prodotto.*/
-	private String categoria; /**<Categoria alla quale appartiene il prodotto.*/
-	private float prezzo; /**<Prezzo del prodotto.*/
-	private File immagine; /**<Immagine del prodotto.*/
-	private int quantita; /**<Quantità del prodotto presente.*/
-	private Promozione offerta; /**<Promozione attiva sul prodotto.*/
+	/**
+	 * Nome del prodotto.
+	 */
+	private String nome;
+	/**
+	 * Marca del prodotto.
+	 */
+	private String marca;
+	/**
+	 * Codice del prodotto.
+	 */
+	private String codice;
+	/**
+	 * Categoria alla quale appartiene il prodotto.
+	 */
+	private String categoria;
+	/**
+	 * Prezzo del prodotto.
+	 */
+	private float prezzo;
+	/**
+	 * Immagine del prodotto.
+	 */
+	private File immagine;
+	/**
+	 * Quantità del prodotto presente.
+	 */
+	private int quantita;
+	/**
+	 * Promozione attiva sul prodotto.
+	 */
+	private Promozione offerta;
 	
 	public static final File IMMAGINE_DEFAULT = 
 			new File ("media/img/immagine_non_disponibile.jpg"); /**<Immagine di default.*/

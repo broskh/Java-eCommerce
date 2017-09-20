@@ -9,7 +9,10 @@ import negozio.Carrello;
  * @see Utente
  */
 public class Cliente extends Utente {
-	private Carrello carrello; /**<Carrello del cliente.*/
+	/**
+	 * Carrello del cliente.
+	 */
+	private Carrello carrello;
 	
 	/**
 	 * Crea un Cliente con nome e cognome.

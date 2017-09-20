@@ -22,15 +22,15 @@ import javax.swing.plaf.basic.BasicSliderUI;
  * The thumb controls are used to select the lower and upper value of a range
  * with predetermined minimum and maximum values.
  * 
- * <p>Note that RangeSlider makes use of the default BoundedRangeModel, which 
+ * <p>Note that JRangeSlider makes use of the default BoundedRangeModel, which 
  * supports an inner range defined by a value and an extent.  The upper value
- * returned by RangeSlider is simply the lower value plus the extent.</p>
+ * returned by JRangeSlider is simply the lower value plus the extent.</p>
  */
 public class JRangeSlider extends JSlider {
 	private static final long serialVersionUID = 3008066426765752845L;
 
 	/**
-     * Constructs a RangeSlider with default minimum and maximum values of 0
+     * Constructs a JRangeSlider with default minimum and maximum values of 0
      * and 100.
      */
     public JRangeSlider() {
@@ -38,8 +38,11 @@ public class JRangeSlider extends JSlider {
     }
 
     /**
-     * Constructs a RangeSlider with the specified default minimum and maximum 
+     * Constructs a JRangeSlider with the specified default minimum and maximum 
      * values.
+     * 
+     * @param min JRangeSlider minimum value.
+     * @param max JRangeSlider maximum value.
      */
     public JRangeSlider(int min, int max) {
         super(min, max);
@@ -75,6 +78,8 @@ public class JRangeSlider extends JSlider {
 
     /**
      * Returns the lower value in the range.
+     * 
+     * @return the lower value.
      */
     public int getLowerValue() {
         return this.getValue();
@@ -82,6 +87,8 @@ public class JRangeSlider extends JSlider {
 
     /**
      * Sets the lower value in the range.
+     * 
+     * @param value New lower value.
      */
     @Override
     public void setValue(int value) {
@@ -102,6 +109,8 @@ public class JRangeSlider extends JSlider {
 
     /**
      * Sets the lower value in the range.
+     * 
+     * @param value New lower value.
      */
     public void setLowerValue(int value) {
         this.setValue(value);
@@ -109,6 +118,8 @@ public class JRangeSlider extends JSlider {
 
     /**
      * Returns the upper value in the range.
+     * 
+     * @return the lower value.
      */
     public int getUpperValue() {
         return getValue() + getExtent();
@@ -116,6 +127,8 @@ public class JRangeSlider extends JSlider {
 
     /**
      * Sets the upper value in the range.
+     * 
+     * @param value New upper value.
      */
     public void setUpperValue(int value) {
         // Compute new extent.

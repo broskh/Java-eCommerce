@@ -9,8 +9,14 @@
   * @see Cliente
   */
 public abstract class Utente {
-	protected String nome; /**<Nome dell'utente.*/
-	protected String cognome; /**<Cognome dell'utente.*/
+	/**
+	 * Nome dell'utente
+	 */
+	protected String nome;
+	 /**
+	  * Cognome dell'utente. 
+	  */
+	protected String cognome;
 	
 	/**
 	 * Crea un Utente definendo nome e cognome.

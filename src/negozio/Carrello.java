@@ -12,7 +12,10 @@ import java.util.ArrayList;
  * @see Prodotto
  */
 public class Carrello implements GestioneProdotti{
-	private ArrayList <Prodotto> prodotti; /**<Prodotti presenti nel carrello.*/
+	/**
+	 * Prodotti presenti nel carrello.
+	 */
+	private ArrayList <Prodotto> prodotti;
 	
 	/**
 	 * Crea un Carrello vuoto.
