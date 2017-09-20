@@ -17,6 +17,8 @@ public class ScontoPercentuale extends Promozione {
 	
 	/**
 	 * Crea un oggetto ScontoPercentuale definendo il valore dello sconto.
+	 * 
+	 * @param percentuale Percentuale di sconto.
 	 */
 	public ScontoPercentuale (int percentuale) {
 		super ();
