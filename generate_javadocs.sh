@@ -1,6 +1,6 @@
 #!/bin/bash
 
-javadoc -d doc -link https://docs.oracle.com/javase/8/docs/api/ -sourcepath src grafica negozio utenza src/Java_eCommerce.java
+javadoc -d doc -link https://docs.oracle.com/javase/8/docs/api/ -author -version -sourcepath src grafica negozio utenza src/Java_eCommerce.java
 if [ $? -eq 0 ]
 then
 	echo "*******************************"
