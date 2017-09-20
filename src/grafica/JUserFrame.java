@@ -171,7 +171,7 @@ public class JUserFrame extends JFrame implements ActionListener {
 								JOptionPane.showMessageDialog(this, ALERT_FILE_NOT_FOUND_TEXT,
 										ALERT_FILE_NOT_FOUND_TITLE, JOptionPane.INFORMATION_MESSAGE);
 								this.dispose();
-								System.exit(0);
+								System.exit(1);
 								System.setProperty("apple.eawt.quitStrategy", "CLOSE_ALL_WINDOWS");
 							}
 						}
@@ -179,7 +179,7 @@ public class JUserFrame extends JFrame implements ActionListener {
 							JOptionPane.showMessageDialog(this, ALERT_FILE_NOT_FOUND_TEXT,
 									ALERT_FILE_NOT_FOUND_TITLE, JOptionPane.INFORMATION_MESSAGE);
 							this.dispose();
-							System.exit(0);
+							System.exit(2);
 							System.setProperty("apple.eawt.quitStrategy", "CLOSE_ALL_WINDOWS");
 						}
 						lastBufferedReader.close();
