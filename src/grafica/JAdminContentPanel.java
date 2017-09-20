@@ -249,6 +249,7 @@ public class JAdminContentPanel extends JPanel implements ActionListener {
 		}
 		else if (e.getSource().equals(this.closeMenuItem)) {
 			this.mainFrame.dispose();
+			System.exit(0);
 		}
 	}
 }

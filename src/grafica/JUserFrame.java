@@ -170,11 +170,15 @@ public class JUserFrame extends JFrame implements ActionListener {
 							else {
 								JOptionPane.showMessageDialog(this, ALERT_FILE_NOT_FOUND_TEXT,
 										ALERT_FILE_NOT_FOUND_TITLE, JOptionPane.INFORMATION_MESSAGE);
+								this.dispose();
+								System.exit(0);
 							}
 						}
 						else {
 							JOptionPane.showMessageDialog(this, ALERT_FILE_NOT_FOUND_TEXT,
 									ALERT_FILE_NOT_FOUND_TITLE, JOptionPane.INFORMATION_MESSAGE);
+							this.dispose();
+							System.exit(0);
 						}
 						lastBufferedReader.close();
 					} catch (FileNotFoundException e1) {
@@ -182,7 +186,7 @@ public class JUserFrame extends JFrame implements ActionListener {
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
-					this.setVisible(false);
+					this.dispose();
 				}
 				else {
 					JOptionPane.showMessageDialog(this, JUserFrame.NO_TYPE_ERROR_TEXT,

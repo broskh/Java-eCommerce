@@ -465,6 +465,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(this.closeItem)) {
 			this.mainFrame.dispose();
+			System.exit(0);
 		 }
 		 else if (e.getSource().equals(this.nameFilterItem) || 
 				 e.getSource().equals(this.brandFilterItem) ||
