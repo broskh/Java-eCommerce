@@ -1,7 +1,7 @@
  package utenza;
  
  /**
-  * La classe astratta Utente gestisce le informazioni di base di un utente.
+  * Classe astratta per la gestione delle informazioni di base di un utente.
   * 
   * @author Alessio Scheri
   * @version 1.0
@@ -19,7 +19,7 @@ public abstract class Utente {
 	protected String cognome;
 	
 	/**
-	 * Crea un Utente definendo nome e cognome.
+	 * Crea un {@link Utente} definendo nome e cognome.
 	 * 
 	 * @param nome Nome dell'utente.
 	 * @param cognome Cognome dell'utente.
@@ -30,13 +30,15 @@ public abstract class Utente {
 	}
 	
 	/**
-	 * Crea un Utente senza informazioni di base.
+	 * Crea un {@link Utente} senza informazioni di base.
 	 */
 	protected Utente () {
 		this  ("", "");
 	}
 
 	/**
+	 * Ritorna il nome dell'utente.
+	 * 
 	 * @return il nome dell'utente.
 	 */
 	public String getNome () {
@@ -52,7 +54,9 @@ public abstract class Utente {
 		this.nome = nome;
 	}
 
-	/**
+	/** 
+	 * Ritorna il cognome dell'utente.
+	 * 
 	 * @return il cognome dell'utente.
 	 */
 	public String getCognome () {
@@ -69,7 +73,9 @@ public abstract class Utente {
 	}
 	
 	/**
-	 * @return "true" se l'utente è amministratore, "false" se è un cliente.
+	 * Indica se l'utente è di tipo amministratore o no.
+	 * 
+	 * @return <code>true</code> se l'utente è amministratore, <code>false</code> se è un cliente.
 	 */
 	public abstract boolean isAmministratore ();
 

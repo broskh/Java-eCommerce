@@ -13,7 +13,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 
 /**
- * La classe Magazzino gestisce le informazioni relative al magazzino di un negozio.
+ * Classe che gestisce le informazioni relative al magazzino di un negozio.
  * 
  * @author Alessio Scheri
  * @version 1.0
@@ -62,7 +62,7 @@ public class Magazzino implements GestioneProdotti {
 	public static final String STRINGA_FILTRO_QUANTITA = "Quantità"; 
 	
 	/**
-	 * Crea un Magazzino vuoto.
+	 * Crea un {@link Magazzino} vuoto.
 	 */
 	public Magazzino () {
 		this.prodotti = new ArrayList <Prodotto> ();
@@ -299,8 +299,8 @@ public class Magazzino implements GestioneProdotti {
 	public ArrayList <Prodotto> filtraPerPrezzo (float prezzoMin, float prezzoMax) {
 		ArrayList <Prodotto> prodottiFiltrati = new ArrayList <Prodotto> ();
 		for (Prodotto prodotto : this.prodotti) {
-			if (prodotto.prezzoCadaunoScontato() >= prezzoMin && 
-					prodotto.prezzoCadaunoScontato() <= prezzoMax) {
+			if (prodotto.getPrezzoCadaunoScontato() >= prezzoMin && 
+					prodotto.getPrezzoCadaunoScontato() <= prezzoMax) {
 				prodottiFiltrati.add(prodotto);
 			}
 		}

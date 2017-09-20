@@ -335,7 +335,7 @@ public class JClientContentPanel extends JPanel implements ActionListener{
 		JLabel priceLabel = new JLabel(COST_LABEL + product.getPrezzo() + CURRENCY_SYMBOL);
 		JLabel availabilityLabel = new JLabel(AVAILABILITY_LABEL + product.getQuantita());
 		String offer;
-		if (product.getOfferta() == null) {
+		if (!product.inOfferta()) {
 			offer = NONE_OFFER_TEXT;
 		}
 		else {

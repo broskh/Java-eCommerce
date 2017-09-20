@@ -13,7 +13,7 @@ import negozio.Magazzino;
 
 /**
  * Pannello per l'immissione delle informazioni necessarie per filtrare
- * i prodotti.
+ * un insieme di prodotti.
  * 
  * @author Alessio Scheri
  * @version 1.0

@@ -6,7 +6,7 @@ import javax.swing.text.Document;
 import javax.swing.text.DocumentFilter;
 
 /**
- * DocumentFilter per JTextField utilizzata per l'inserimento
+ * DocumentFilter per JTextField utilizzata nell'inserimento
  * di un prezzo.
  * 
  * @author Alessio Scheri

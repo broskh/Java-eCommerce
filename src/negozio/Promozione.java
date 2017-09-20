@@ -15,8 +15,7 @@ public abstract class Promozione  implements Serializable{
 	private static final long serialVersionUID = 6507101060017034505L;
 
 	/**
-	 * Calcola il prezzo scontato di una determinata quantita di prodotti dello 
-	 * stesso tipo.
+	 * Calcola il prezzo scontato di una determinata quantita di un prodotto.
 	 * 
 	 * @param prezzo Prezzo cadauno.
 	 * @param quantita Quantita di pezzi sui quali deve essere calcolato lo sconto.

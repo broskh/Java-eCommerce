@@ -1,8 +1,8 @@
 package negozio;
 
 /**
- * La classe ScontoPercentuale gestisce le informazioni relative ad una promozione
- * che fornisce uno sconto corrispondente ad una determinata percentuale del prezzo originale.
+ * Classe che gestisce le informazioni relative ad una promozione che fornisce uno 
+ * sconto corrispondente ad una determinata percentuale del prezzo originale.
  * 
  * @author Alessio Scheri
  * @version 1.0
@@ -16,7 +16,7 @@ public class ScontoPercentuale extends Promozione {
 	private int percentuale;
 	
 	/**
-	 * Crea un oggetto ScontoPercentuale definendo il valore dello sconto.
+	 * Crea un oggetto {@link ScontoPercentuale} definendo il valore dello sconto.
 	 * 
 	 * @param percentuale Percentuale di sconto.
 	 */
@@ -31,13 +31,15 @@ public class ScontoPercentuale extends Promozione {
 	}
 	
 	/**
-	 * Crea un oggetto ScontoPercentuale definendo il valore dello sconto uguale a 0.
+	 * Crea un oggetto {@link ScontoPercentuale} definendo il valore dello sconto uguale a 0.
 	 */
 	public ScontoPercentuale () {
 		this (0);
 	}
 	
 	/**
+	 * Ritorna il valore percentuale dello sconto.
+	 * 
 	 * @return il valore percentuale dello sconto.
 	 */
 	public int getPercentuale() {

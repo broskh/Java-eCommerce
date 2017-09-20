@@ -3,7 +3,7 @@ package negozio;
 import java.util.ArrayList;
 
 /**
- * Questa interfeccia implementa i metodi astratti necessari per la gestione di 
+ * Questa interfeccia consente di implementare i metodi necessari per la gestione di 
  * un'insieme di prodotti.
  * 
  * @author Alessio Scheri
@@ -14,6 +14,8 @@ import java.util.ArrayList;
 public interface GestioneProdotti {
 	
 	/**
+	 * Ritorna i prodotti gestiti.
+	 * 
 	 * @return i prodotti gestiti.
 	 */
 	public ArrayList <Prodotto> getProdotti();
@@ -44,14 +46,14 @@ public interface GestioneProdotti {
 	public boolean rimuoviProdotto(String codice, int quantita);
 	
 	/**
-	 * Ritorna il prezzo del prodotto con tale valore maggiore.
+	 * Ritorna il prezzo con valore maggiore fra tutti quelli dei prodotti gestiti.
 	 * 
 	 * @return Prezzo massimo.
 	 */
 	public float maxPrezzo ();
 	
 	/**
-	 * Ritorna la quantità del prodotto con tale valore maggiore.
+	 * Ritorna la quantità con valore maggiore fra tutte quelle dei prodotti gestiti.
 	 * 
 	 * @return Quantità massima.
 	 */

@@ -30,8 +30,8 @@ import negozio.Magazzino;
 import negozio.Prodotto;
 
 /**
- * JTable per la visualizzazione dei prodotti del magazzino o del carrello 
- * a seconda della modalità indicata.
+ * JTable per la visualizzazione dei prodotti di un magazzino o di un carrello 
+ * (a seconda della modalità indicata).
  * 
  * @author Alessio Scheri
  * @version 1.0

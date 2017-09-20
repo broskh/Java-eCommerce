@@ -1,7 +1,7 @@
 package utenza;
 
 /**
- * La classe Amministratore gestisce le informazioni di un utente amministratore.
+ * Classe che gestisce le informazioni di un utente di tipo amministratore.
  * 
  * @author Alessio Scheri
  * @version 1.0
@@ -10,7 +10,7 @@ package utenza;
 public class Amministratore extends Utente {
 
 	/**
-	 * Crea un Amministratore con nome e cognome.
+	 * Crea un {@link Amministratore} con nome e cognome.
 	 * 
 	 * @param nome Nome dell'utente amministratore.
 	 * @param cognome Cognome dell'utente amministratore.
@@ -20,7 +20,7 @@ public class Amministratore extends Utente {
 	}
 
 	/**
-	 * Crea un Amministratore senza informazioni di base.
+	 * Crea un {@link Amministratore} senza informazioni di base.
 	 */
 	public Amministratore () {
 		super ();

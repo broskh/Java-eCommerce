@@ -3,8 +3,7 @@ package negozio;
 import java.util.ArrayList;
 
 /**
- * La classe carrello gestisce tutte le informazioni relative al carrello 
- * di un cliente.
+ * Classe che gestisce tutte le informazioni relative al carrello di un cliente.
  * 
  * @author Alessio Scheri
  * @version 1.0
@@ -18,37 +17,41 @@ public class Carrello implements GestioneProdotti{
 	private ArrayList <Prodotto> prodotti;
 	
 	/**
-	 * Crea un Carrello vuoto.
+	 * Crea un {@link Carrello} vuoto.
 	 */
 	public Carrello () {
 		this.prodotti = new ArrayList <Prodotto> ();
 	}
 
 	/**
-	 * @return il totale del costo dei prodotti nel carrello (privo di sconto).
+	 * Ritorna il totale del costo dei prodotti nel carrello (privo di sconto).
+	 * 
+	 * @return il totale non scontato.
 	 */
 	public float getTotale() {
 		float totale = 0;
 		for (Prodotto prodotto : this.prodotti) {
-			totale += prodotto.prezzoTotale();
+			totale += prodotto.getPrezzoTotale();
 		}
 		return totale;
 	}
 
 	/**
-	 * @return il totale del costo scontato dei prodotti nel carrello.
+	 * Ritorna il totale del costo scontato dei prodotti nel carrello.
+	 * 
+	 * @return il totale scontato.
 	 */
 	public float getTotaleScontato() {
 		float totaleScontato = 0;
 		for (Prodotto prodotto : this.prodotti) {
-			totaleScontato += prodotto.prezzoTotaleScontato();
+			totaleScontato += prodotto.getPrezzoTotaleScontato();
 		}
 		return totaleScontato;
 	}
 
 
 	/**
-	 * Rimuove tutti i prodotti presenti.
+	 * Rimuove tutti i prodotti presenti nel carrello.
 	 */
 	public void svuota() {
 		this.prodotti.clear();

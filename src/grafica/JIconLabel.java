@@ -11,7 +11,7 @@ import javax.swing.SwingConstants;
 import negozio.Prodotto;
 
 /**
- * Classe per visualizzare un'icona.
+ * Componente per visualizzare un'icona.
  * 
  * @author Alessio Scheri
  * @version 1.0

@@ -120,14 +120,14 @@ public class ProductsTableModel extends AbstractTableModel {
 			case CATEGORY_COLUMN_NUMBER:
 				return this.products.get(rowIndex).getCategoria();
 			case OFFER_COLUMN_NUMBER:
-				if (this.products.get(rowIndex).getOfferta() != null) {
+				if (this.products.get(rowIndex).inOfferta()) {
 					return this.products.get(rowIndex).getOfferta().toString();
 				}
 				return NONE_OFFER_TEXT;
 			case EACH_COST_COLUMN_NUMBER:
 				if (this.mode == ProductsTableModel.CART_MODE) {
 					return String.format("%.2f", this.products.get(
-							rowIndex).prezzoCadaunoScontato());
+							rowIndex).getPrezzoCadaunoScontato());
 				}
 				else if (this.mode == ProductsTableModel.STORE_MODE) {
 					return String.format("%.2f", this.products.get(
@@ -136,11 +136,11 @@ public class ProductsTableModel extends AbstractTableModel {
 				break;
 			case EACH_DISCOUNTED_COST_COLUMN_NUMBER:
 				if (this.mode == ProductsTableModel.CART_MODE) {
-					float cost = this.products.get(rowIndex).prezzoTotaleScontato();
+					float cost = this.products.get(rowIndex).getPrezzoTotaleScontato();
 					return String.format("%.2f", cost);
 				}
 				else if (this.mode == ProductsTableModel.STORE_MODE) {
-					float cost = this.products.get(rowIndex).prezzoCadaunoScontato();
+					float cost = this.products.get(rowIndex).getPrezzoCadaunoScontato();
 					return String.format("%.2f", cost);
 				}
 				break;

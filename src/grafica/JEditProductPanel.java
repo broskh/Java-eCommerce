@@ -23,7 +23,7 @@ import negozio.ScontoPercentuale;
 import negozio.ScontoTrePerDue;
 
 /**
- * JPanel contenente tutti i componenti necessari per immettere tutte le 
+ * JPanel contenente tutti i componenti necessari per immettere le 
  * informazioni relative ad un prodotto.
  * 
  * @author Alessio Scheri
@@ -156,7 +156,7 @@ public class JEditProductPanel extends JPanel implements ActionListener{
 	}
 	
 	private void selectCorrectOffer () {
-		if(this.product.getOfferta() == null) {
+		if(!this.product.inOfferta()) {
 			this.noOfferRadioButton.setSelected(true);
 			this.perCentTextField.setEnabled(false);
 		}

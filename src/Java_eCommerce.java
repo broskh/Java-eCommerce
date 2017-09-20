@@ -14,7 +14,7 @@ import utenza.Utente;
  * La classe Java_eCommerce è la classe principale che contiene il metodo main per 
  * l'esecuzione del programma.
  * Il programma  consiste in un semplice e-Commerce che consente di accedere in due
- * diverse modalità utente e a seconda della scelta offre funzionalità differenti.
+ * diverse modalità utente e, a seconda della scelta, offre funzionalità differenti.
  * All'utente amministratore viene data la possibilità di gestire il magazzino e i 
  * prodotti che in esso sono contenuti.
  * L'utente cliente può invece sfruttare le apposite funzionalità per la visualizzazione 
@@ -42,10 +42,10 @@ public class Java_eCommerce  {
 			"media/font/";
 	
 	/**
-	 * Il metodo main prima di tutto modifica il font di default e il tema grafico 
-	 * della GUI. In seguito si occupa di aprire la schermata iniziale che consente la 
-	 * scelta dell'utente. Sarà poi questa schermata a occuparsi di far procedere 
-	 * correttamente l'esecuzione del software.
+	 * Il metodo main si occupa di configurare la GUI di default e di aprire la prima
+	 * schermata del programma. Prima di tutto modifica il font di default e il tema grafico.
+	 * In seguito mostra la schermata per la scelta dell'utente. Sarà poi questa schermata 
+	 * a occuparsi di far procedere correttamente l'esecuzione del software.
 	 * 
 	 * @param args Argomenti non utilizzati.
 	 */

@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 import negozio.Carrello;
 
 /**
- * ActionListener per svuotare il carrello.
+ * ActionListener per svuotare un carrello.
  * 
  * @author Alessio Scheri
  * @version 1.0

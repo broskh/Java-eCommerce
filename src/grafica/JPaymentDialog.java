@@ -25,7 +25,7 @@ import negozio.Magazzino;
 import negozio.Prodotto;
 
 /**
- * JDialog per effettuare il pagamento e l'acquisto del contenuto del carrello.
+ * JDialog per effettuare il pagamento e l'acquisto del contenuto di un carrello.
  * 
  * @author Alessio Scheri
  * @version 1.0

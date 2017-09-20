@@ -8,7 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 /**
- * Classe per la realizzazione di un bottone con immagine.
+ * Componente per la realizzazione di un bottone con immagine.
  * 
  * @author Alessio Scheri
  * @version 1.0

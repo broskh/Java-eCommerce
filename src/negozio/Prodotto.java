@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 /**
- * La classe prodotto gestisce tutte le informazioni relative ad un prodotto.
+ * Classe che gestisce tutte le informazioni relative ad un prodotto.
  * 
  * @author Alessio Scheri
  * @version 1.0
@@ -52,11 +52,14 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	 */
 	private Promozione offerta;
 	
+	/**
+	 * Immagine di default.
+	 */
 	public static final File IMMAGINE_DEFAULT = 
-			new File ("media/img/immagine_non_disponibile.jpg"); /**<Immagine di default.*/
+			new File ("media/img/immagine_non_disponibile.jpg");
 	
 	/**
-	 * Crea un Prodotto, completo di tutte le informazioni.
+	 * Crea un {@link Prodotto}, completo di tutte le informazioni.
 	 * 
 	 * @param nome Nome del prodotto.
 	 * @param marca Marca del prodotto.
@@ -82,7 +85,7 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	}
 
 	/**
-	 * Crea un Prodotto, completo di tutte le informazioni.
+	 * Crea un {@link Prodotto}, completo di tutte le informazioni.
 	 * 
 	 * @param nome Nome del prodotto.
 	 * @param marca Marca del prodotto.
@@ -99,7 +102,7 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	}
 
 	/**
-	 * Crea un Prodotto non in offerta, completo di tutte le informazioni.
+	 * Crea un {@link Prodotto} non in offerta, completo di tutte le informazioni.
 	 * 
 	 * @param nome Nome del prodotto.
 	 * @param marca Marca del prodotto.
@@ -115,7 +118,7 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	}
 
 	/**
-	 * Crea un Prodotto non in offerta, completo di tutte le informazioni.
+	 * Crea un {@link Prodotto} non in offerta, completo di tutte le informazioni.
 	 * 
 	 * @param nome Nome del prodotto.
 	 * @param marca Marca del prodotto.
@@ -131,13 +134,11 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	}
 
 	/**
-	 * Crea un Prodotto vuoto, senza alcun tipo di informazione.
+	 * Crea un {@link Prodotto} vuoto, senza alcun tipo di informazione.
 	 */
 	public Prodotto() {
 		this ("", "", "", "", 0, Prodotto.IMMAGINE_DEFAULT, 0, null);
 	}
-	
-	/**<Immagine di default.*/
 	
 	/**
 	 * Ritorna il DataFlavor per la classe Prodotto.
@@ -155,6 +156,8 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	}
 
 	/**
+	 * Ritorna il nome del prodotto.
+	 * 
 	 * @return il nome del prodotto.
 	 */
 	public String getNome() {
@@ -171,6 +174,8 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	}
 	
 	/**
+	 * Ritorna la marca del prodotto.
+	 * 
 	 * @return la marca del prodotto.
 	 */
 	public String getMarca() {
@@ -187,6 +192,8 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	}
 	
 	/**
+	 * Ritorna il codice del prodotto.
+	 * 
 	 * @return il codice del prodotto.
 	 */
 	public String getCodice() {
@@ -203,6 +210,8 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	}
 	
 	/**
+	 * Ritorna la categoria del prodotto.
+	 * 
 	 * @return la categoria nella quale è inserito il prodotto.
 	 */
 	public String getCategoria() {
@@ -219,6 +228,8 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	}
 	
 	/**
+	 * Ritorna il prezzo del prodotto.
+	 * 
 	 * @return il prezzo del prodotto.
 	 */
 	public float getPrezzo() {
@@ -237,6 +248,8 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	}
 	
 	/**
+	 * Ritorna l'immagine del prodotto.
+	 * 
 	 * @return l'immagine del prodotto.
 	 */
 	public File getImmagine() {
@@ -267,6 +280,8 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	}
 	
 	/**
+	 * Ritorna la quantità del prodotto.
+	 * 
 	 * @return la quantità del prodotto.
 	 */
 	public int getQuantita() {
@@ -285,6 +300,8 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	}
 	
 	/**
+	 * Ritorna l'offerta attiva sul prodotto.
+	 * 
 	 * @return l'offerta attiva sul prodotto.
 	 */
 	public Promozione getOfferta() {
@@ -334,7 +351,8 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	/**
 	 * Indica se un Prodotto è in offerta.
 	 * 
-	 * @return "true" se sul Prodotto è attiva un'offerta, "fasle" altrimenti.
+	 * @return <code>true</code> se sul Prodotto è attiva un'offerta, 
+	 * <code>false</code> altrimenti.
 	 */
 	public boolean inOfferta () {
 		if (this.offerta != null) {
@@ -348,7 +366,7 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	 * 
 	 * @return il prezzo scontato cadauno.
 	 */
-	public float prezzoCadaunoScontato () {
+	public float getPrezzoCadaunoScontato () {
 		if (this.offerta != null) {
 			return this.offerta.calcolaSconto(this.prezzo, 1);
 		}
@@ -356,24 +374,24 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 	}
 	
 	/**
-	 * Calcola il prezzo dell'intera quantità del prodotto.
+	 * Calcola il prezzo non scontato dell'intera quantità del prodotto.
 	 * 
-	 * @return il prezzo di tutte le unità del prodotto.
+	 * @return il prezzo totale non scontato.
 	 */
-	public float prezzoTotale () {
+	public float getPrezzoTotale () {
 		return this.prezzo * this.quantita;
 	}
 	
 	/**
 	 * Calcola il prezzo scontato dell'intera quantità del prodotto.
 	 * 
-	 * @return il prezzo scontato di tutte le unità del prodotto.
+	 * @return il prezzo totale scontato.
 	 */
-	public float prezzoTotaleScontato () {
+	public float getPrezzoTotaleScontato () {
 		if (this.offerta != null) {
 			return this.offerta.calcolaSconto(this.prezzo, this.quantita);
 		}
-		return this.prezzoTotale();
+		return this.getPrezzoTotale();
 	}
 	
 	@Override
@@ -404,7 +422,6 @@ public class Prodotto implements Serializable, Cloneable, Transferable {
 		return null;
 	}
 	
-
 	@Override
 	public String toString() {
 		return "Prodotto [nome=" + nome + ", marca=" + marca + ", codice=" + codice 
