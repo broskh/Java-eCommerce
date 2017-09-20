@@ -1275,7 +1275,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+prezzoCadaunoScontato(): float",
+											"text": "+getPrezzoCadaunoScontato(): float",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5,
 											"wordWrap": false
@@ -1304,7 +1304,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+prezzoTotale(): float",
+											"text": "+getPrezzoTotale(): float",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5,
 											"wordWrap": false
@@ -1333,7 +1333,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+prezzoTotaleScontato(): float",
+											"text": "+getPrezzoTotaleScontato(): float",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5,
 											"wordWrap": false
@@ -11176,7 +11176,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFZdPc4JSmmq/M="
 							},
-							"name": "prezzoCadaunoScontato",
+							"name": "getPrezzoCadaunoScontato",
 							"visibility": "public",
 							"isStatic": false,
 							"isLeaf": false,
@@ -11207,7 +11207,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFZdPc4JSmmq/M="
 							},
-							"name": "prezzoTotale",
+							"name": "getPrezzoTotale",
 							"visibility": "public",
 							"isStatic": false,
 							"isLeaf": false,
@@ -11238,7 +11238,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFZdPc4JSmmq/M="
 							},
-							"name": "prezzoTotaleScontato",
+							"name": "getPrezzoTotaleScontato",
 							"visibility": "public",
 							"isStatic": false,
 							"isLeaf": false,
