@@ -1,35 +1,35 @@
 # Java-eCommerce
-## Introduzione
-Semplice e-commerce realizzato nell'ambito di un progetto d'esame.
+## Introduction
+Simple e-commerce created within a university exam project.
 <br>
-Questo software dotato di interfaccia grafica offre le funzionalità di base per la gestione e l'utilizzo di un magazzino.
+This software has a Swing-based GUI and allows the basic functionality for managing and using the warehouse.
 
-## Funzionalità
-### Scelta utente
-La prima finestra mostrata consente fornire i propri dati e di scegliere la modalità con la quale utilizzare il software.
+## Features
+### User type choice
+The first window displayed allows to insert user information and to choose how to use the software.
 
 ![Java-eCommerce - Scelta utente](https://imgur.com/UtiBGgd.png)
 
-### Modalità Amministratore
-In questa modalità viene data la possibilità di gestire il magazzino e i prodotti che in esso sono contenuti. In particolare è possibile:
-- Aggiungere prodotti dal magazzino.
-- Modificare prodotti dal magazzino.
-- Rimuovere prodotti dal magazzino.
-- Salvare il magazzino.
-- Caricare un magazzino.
+### Administrator mode
+In this mode the user can manage the warehouse and the products contained in it. In particular he can:
+- Add products to the warehouse.
+- Change products in the warehouse.
+- Delete products from the warehouse.
+- Save the warehouse.
+- Load the warehouse.
 
 ![Java-eCommerce - Amministratore](https://imgur.com/bzFZt1n.png)
 
-### Modalità Cliente
-In questa modalità viene data la possibilità di visulizzare i prodotti in magazzino e procedere con l'operazione di acquisto. In particolare è possibile:
-- Aggiungere prodotti al carrello.
-- Rimuovere prodotti al carrello.
-- Visualizzare il carrello.
-- Svuotare il carrello.
-- Filtrare i prodotti in magazzino da visualizzare.
+### Client mode
+In this mode the user can see the products in the warehouse and proceed with the purchase. In particular he can:
+- Add products to cart.
+- Delete products from the cart.
+- View the cart.
+- Empty the cart
+- Filter products in the warehouse.
 
 ![Java-eCommerce - Cliente](https://imgur.com/NvO0BFF.png)
-> È disponibile anche il drag & drop per l'aggiunta di prodotti al carrello.
+> It is also available the Drag & Drop to add products to the cart.
 
-## Documentazione
-La documentazione in formato HTML è presente all'interno della cartella *doc/*. Aprendo il file *index.html* è possibile navigarla liberamente tramite qualsiasi browser.
+## Documentation
+The documentation in HTML format is available into the folder *doc/*. Within any browser is possible to surf the documentation and explore it.
